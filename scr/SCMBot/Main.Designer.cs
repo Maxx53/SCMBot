@@ -35,7 +35,6 @@
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -52,16 +51,20 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(184, 19);
+            this.loginButton.Location = new System.Drawing.Point(184, 34);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(81, 27);
+            this.loginButton.Size = new System.Drawing.Size(88, 27);
             this.loginButton.TabIndex = 8;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
@@ -110,18 +113,10 @@
             this.label3.TabIndex = 18;
             this.label3.Text = "Password";
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(184, 50);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(81, 15);
-            this.progressBar1.TabIndex = 19;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.loginButton);
-            this.groupBox1.Controls.Add(this.progressBar1);
             this.groupBox1.Controls.Add(this.loginBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.passwordBox);
@@ -285,11 +280,36 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Main";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel1,
+            this.ProgressBar1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 263);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(577, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 36;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // ProgressBar1
+            // 
+            this.ProgressBar1.Name = "ProgressBar1";
+            this.ProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.ProgressBar1.Visible = false;
+            // 
+            // StatusLabel1
+            // 
+            this.StatusLabel1.Name = "StatusLabel1";
+            this.StatusLabel1.Size = new System.Drawing.Size(38, 17);
+            this.StatusLabel1.Text = "Ready";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 268);
+            this.ClientSize = new System.Drawing.Size(577, 285);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -306,7 +326,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -318,7 +341,6 @@
         private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label1;
@@ -335,6 +357,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar ProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel1;
     }
 }
 
