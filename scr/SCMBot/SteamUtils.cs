@@ -21,27 +21,49 @@ namespace SCMBot
         const string _ref = _comlog + "home/?goto=market%2F";
         const string _getrsa = _comlog + "getrsakey/";
         const string _dologin = _comlog + "dologin/";
+        const string _logout = _comlog + "logout/";
         const string _market = "http://steamcommunity.com/market/";
         const string _blist = _market + "buylisting/";
         const string _lists = _market + "listings/";
+        public const string _search = _market + "search?q=";
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
+
 
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
 
-        List<LotData> lotList = new List<LotData>();
+        List<MutliString> lotList = new List<MutliString>();
+        public List<MutliString> searchList = new List<MutliString>();
 
-        public class LotData
+        public class MutliString
         {
-            public LotData(string sellerId, string price, string feeprice)
+            public MutliString(string sellerId, string price, string feeprice)
             {
                 this.SellerId = sellerId;
                 this.Price = price;
                 this.FeePrice = feeprice;
             }
+
+            public MutliString(string name, string game, string link, string quant, string startprice, string imglink)
+            {
+                this.Name = name;
+                this.Game = game;
+                this.Link = link;
+                this.Quant = quant;
+                this.StartPrice = startprice;
+                this.ImgLink = imglink;
+            }
+
+            public string Name { set; get; }
+            public string Game { set; get; }
+            public string Link { set; get; }
+            public string ImgLink { set; get; }
+            public string Quant { set; get; }
+            public string StartPrice { set; get; }
             public string SellerId { set; get; }
             public string Price { set; get; }
             public string FeePrice { set; get; }
+
         }
 
 
@@ -88,8 +110,6 @@ namespace SCMBot
             int val = (int)hex;
             return val - (val < 58 ? 48 : 55);
         }
-
-
 
 
         public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
@@ -153,27 +173,6 @@ namespace SCMBot
             string encryptedPass = Convert.ToBase64String(encodedPassword);
 
             return Uri.EscapeDataString(encryptedPass);
-        }
-
-        public static Image LoadImage(string url)
-        {
-            try
-            {
-                WebClient wClient = new WebClient();
-                byte[] imageByte = wClient.DownloadData(url);
-                using (MemoryStream ms = new MemoryStream(imageByte, 0, imageByte.Length))
-                {
-                    ms.Write(imageByte, 0, imageByte.Length);
-                    return Image.FromStream(ms, true);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Main.AddtoLog(e.GetType() + ". " + e.Message);
-                return null;
-            }  
-            
         }
 
         //Спасибо хабру
@@ -250,21 +249,24 @@ namespace SCMBot
         //steam utils
 
 
-        public static void GetNameBalance(CookieContainer cock, out string name, out string balance)
+        public static string GetNameBalance(CookieContainer cock)
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = SendPostRequest(string.Empty, _market, string.Empty, cock, false);
 
-            name = string.Empty;
-            balance = string.Empty;
 
-            string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString();
+            string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString().Trim();
+            if (parseName == "")
+            {
+                return string.Empty;
+            }
+            string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*)(?=<div id=\"global_action_menu\">)", RegexOptions.Singleline).ToString();
+            parseImg = parseImg.Substring(0, parseImg.Length - 46);
 
             int nlength = parseName.Length;
             if (nlength != 0)
             {
                 parseName = parseName.Substring(0, nlength - 6);
-                name = parseName;
             }
 
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?<=</span>)").ToString();
@@ -273,9 +275,8 @@ namespace SCMBot
             if (blength != 0)
             {
                 parseAmount = parseAmount.Substring(0, parseAmount.IndexOf(" "));
-                balance = parseAmount;
             }
-
+            return string.Format("{0};{1};{2}", parseName, parseAmount, parseImg);
         }
 
 
@@ -301,7 +302,7 @@ namespace SCMBot
 
         }
 
-        public static void ParseLotList(string content, List<LotData> lst)
+        public static void ParseLotList(string content, List<MutliString> lst)
         {
             lst.Clear();
 
@@ -333,10 +334,48 @@ namespace SCMBot
                     string[] parts = Regex.Split(amount, " +");
 
                     //Заполняем список лотов
-                    lst.Add(new LotData(sellid, parts[0], parts[1]));
+                    lst.Add(new MutliString(sellid, parts[0], parts[1]));
                 }
             }
             else MessageBox.Show("Не удалось загрузить список предметов!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+
+        }
+
+
+
+        public static void ParseSearchRes(string content, List<MutliString> lst)
+        {
+            lst.Clear();
+
+            MatchCollection matches = Regex.Matches(content, "(?<=market_listing_row_link\" href)(.*?)(?<=</a>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
+            if (matches.Count != 0)
+            {
+
+                foreach (Match match in matches)
+                {
+                    string currmatch = match.Groups[1].Value;
+
+                    string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\">)").ToString();
+                
+                    string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
+
+                    
+                    string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
+                    ItemPrice = Regex.Replace(ItemPrice, "&#(.*?);", string.Empty);
+                    ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,]+", string.Empty);
+
+                    string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
+                    ItemName = ItemName.Remove(0, ItemName.IndexOf(">")+1);
+
+                    string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
+                    
+                    string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
+
+                    //Заполняем список 
+                    lst.Add(new MutliString(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
+                }
+            }
+            else MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
 
         }
       

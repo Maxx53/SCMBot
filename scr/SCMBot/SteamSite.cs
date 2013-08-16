@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
 
 namespace SCMBot
 {
@@ -18,13 +19,22 @@ namespace SCMBot
         public string wishedPrice { set; get; }
         public string scanDelay { set; get; }
         public string pageLink { set; get; }
+
+        public string reqTxt { set; get; }
+        public string linkTxt { set; get; }
+
+        public bool Logged { set; get; }
+        public bool LoginProcess { set; get; }
         public bool toBuy { set; get; }
+
         public CookieContainer cookieCont { set; get; }
 
         public Semaphore Sem = new Semaphore(0, 1);
 
         private BackgroundWorker loginThread = new BackgroundWorker();
         private BackgroundWorker scanThread = new BackgroundWorker();
+        private BackgroundWorker reqThread = new BackgroundWorker();
+
 
         public SteamSite()
         {
@@ -33,7 +43,11 @@ namespace SCMBot
 
             scanThread.WorkerSupportsCancellation = true;
             scanThread.DoWork += new DoWorkEventHandler(scanThread_DoWork);
+
+            reqThread.WorkerSupportsCancellation = true;
+            reqThread.DoWork += new DoWorkEventHandler(reqThread_DoWork);
          }
+
 
         public void Login()
         {
@@ -42,6 +56,28 @@ namespace SCMBot
                 loginThread.RunWorkerAsync();
             }
         }
+
+        public void CancelLogin()
+        {
+            if (loginThread.IsBusy == true)
+            {
+                loginThread.CancelAsync();
+            }
+        }
+
+        public void Logout()
+        {
+            ThreadStart threadStart = delegate() {
+                SendPostRequest(string.Empty, _logout, _market, cookieCont, false);
+                doMessage(flag.Logout_, string.Empty);
+                Logged = false;
+            };
+            Thread pTh = new Thread(threadStart);
+            pTh.IsBackground = true;
+            pTh.Start();
+        }
+
+
 
         public void ScanPrices()
         {
@@ -62,20 +98,38 @@ namespace SCMBot
         }
 
 
+        public void reqLoad()
+        {
+            if (reqThread.IsBusy != true)
+            {
+                reqThread.RunWorkerAsync();
+            }
+        }
+
+        private void reqThread_DoWork(object sender, DoWorkEventArgs e)
+
+        {
+            ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList);
+            doMessage(flag.Search_success, string.Empty);
+        }
+
         private void loginThread_DoWork(object sender, DoWorkEventArgs e)
         {
+            BackgroundWorker worker = sender as BackgroundWorker;
 
+            LoginProcess = true;
+            Logged = false;
             doMessage(flag.Rep_progress, "20");
+            //if (worker.CancellationPending == true)
+              //  return;
 
-            string acc = string.Empty;
-            string balance = string.Empty;
-
-            GetNameBalance(cookieCont, out acc, out balance);
-
-            if (acc != string.Empty)
+            string accInfo = GetNameBalance(cookieCont);
+            if (accInfo != string.Empty)
             {
-                doMessage(flag.Already_logged, balance);
+                doMessage(flag.Already_logged, accInfo);
                 doMessage(flag.Rep_progress, "100");
+                LoginProcess = false;
+                Logged = true;
                 return;
             }
 
@@ -89,6 +143,8 @@ namespace SCMBot
             }
 
             doMessage(flag.Rep_progress, "40");
+          //  if (worker.CancellationPending == true)
+             //   return;
 
             Dictionary<string, string> serialLogin = ParseJson(log_content);
 
@@ -105,6 +161,8 @@ namespace SCMBot
             string firstTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, capchaId,
                                                             string.Empty, steamId, timeStamp), _dologin, _ref, cookieCont, true);
             doMessage(flag.Rep_progress, "60");
+           // if (worker.CancellationPending == true)
+           //     return;
             serialLogin.Clear();
 
             Dictionary<string, string> serialCheck = ParseJson(firstTry);
@@ -123,10 +181,12 @@ namespace SCMBot
                 {
                     guardCheckForm.codgroupEnab = false;
                     capchaId = serialCheck["captcha_gid"];
-                    guardCheckForm.capchImg = LoadImage(_capcha + capchaId);
+                    Main.loadImg(_capcha + capchaId, guardCheckForm.capchImg, false);
                 }
 
                 doMessage(flag.Rep_progress, "80");
+            //    if (worker.CancellationPending == true)
+             //       return;
 
                 if (guardCheckForm.ShowDialog() == DialogResult.OK)
                 {
@@ -138,12 +198,11 @@ namespace SCMBot
 
                     if (serialFinal.ContainsKey("login_complete"))
                     {
-                        string ball = string.Empty;
-                        string name = string.Empty;
-                        GetNameBalance(cookieCont, out name, out ball);
+                        string accInfo2 = GetNameBalance(cookieCont);
 
-                        doMessage(flag.Login_success, ball);
+                        doMessage(flag.Login_success, accInfo2);
                         doMessage(flag.Rep_progress, "100");
+                        Logged = true;
                         Main.AddtoLog("Login Success");
                     }
                     else if (serialFinal["message"] == "SteamGuard")
@@ -170,13 +229,12 @@ namespace SCMBot
             }
             else if (serialCheck.ContainsKey("login_complete"))
             {
-                string ball = string.Empty;
-                string name = string.Empty;
-                GetNameBalance(cookieCont, out name, out ball);
+                string accInfo3 = GetNameBalance(cookieCont);
 
-                doMessage(flag.Login_success, ball);
+                doMessage(flag.Login_success, accInfo3);
                 doMessage(flag.Rep_progress, "100");
                 Main.AddtoLog("Login Success");
+                Logged = true;
             }
             else
             {
@@ -186,6 +244,7 @@ namespace SCMBot
             }
 
             serialCheck.Clear();
+            LoginProcess = false;
         }
 
 
@@ -215,7 +274,7 @@ namespace SCMBot
 
             while (worker.CancellationPending == false)
             {
-                ParseLotList(SendPostRequest(string.Empty, _lists + pageLink, string.Empty, cookieCont, false), lotList);
+                ParseLotList(SendPostRequest(string.Empty, pageLink, string.Empty, cookieCont, false), lotList);
 
                 //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
                 string lul = lotList[0].Price;
@@ -230,7 +289,7 @@ namespace SCMBot
                     {
                         string subtotal = Convert.ToInt32(lotList[0].FeePrice).ToString();
                         string total = Convert.ToInt32(lotList[0].Price).ToString();
-                        string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, _lists + pageLink, total, subtotal);
+                        string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, total, subtotal);
                         doMessage(flag.Success_buy, walletball);
                     }
                 }

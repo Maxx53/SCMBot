@@ -42,10 +42,10 @@ namespace SCMBot
             set { capchgroupBox.Enabled = value; }
         }
 
-         public Image capchImg
+         public PictureBox capchImg
         {
-            get { return capchapicBox.Image; }
-            set { capchapicBox.Image = value; }
+            get { return capchapicBox; }
+            set { capchapicBox = value; }
         }
 
        
