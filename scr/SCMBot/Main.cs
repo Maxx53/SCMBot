@@ -23,6 +23,7 @@ namespace SCMBot
     public partial class Main : Form
     {
         SteamSite steam = new SteamSite();
+        List<byte> lboxCols = new List<byte>();
 
         public Main()
         {
@@ -34,6 +35,7 @@ namespace SCMBot
         private void Main_Load(object sender, EventArgs e)
         {
             steam.delegMessage += new eventDelegate(Event_Message);
+            listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
 
             steam.cookieCont = ReadCookiesFromDisk("coockies.dat");
             LoadSettings();
@@ -77,6 +79,11 @@ namespace SCMBot
             loginButton.Text = "Logout";
         }
 
+        public string GetPriceFormat(string mess)
+        {
+            return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, "units");
+        }
+
         private void Event_Message(object sender, string message, flag myflag)
         {
             switch (myflag)
@@ -111,10 +118,13 @@ namespace SCMBot
                     loginButton.Text = "Login";
                     break;
                 case flag.Price_htext:
-                    AppendText(richTextBox1, message, true);
+                    lboxAdd(GetPriceFormat(message), 1);
+                    break;
+                case flag.Price_btext:
+                    lboxAdd(GetPriceFormat(message), 2);
                     break;
                 case flag.Price_text:
-                    AppendText(richTextBox1, message, false);
+                    lboxAdd(GetPriceFormat(message), 0);
                     break;
 
                 case flag.Rep_progress:
@@ -134,8 +144,9 @@ namespace SCMBot
                     StatusLabel1.Text = "Scan Cancelled";
                     break;
                 case flag.Search_success:
+
                     comboBox1.Items.Clear();
-                    StatusLabel1.Text = "Finded: " + steam.searchList.Count.ToString();
+                    StatusLabel1.Text = string.Format("Found: {0}, Shown: {1}", message, steam.searchList.Count.ToString());
                     for (int i = 0; i < steam.searchList.Count; i++)
                     {
                         var ourItem = steam.searchList[i];
@@ -143,6 +154,7 @@ namespace SCMBot
 
                     }
                     comboBox1.DroppedDown = true;
+                    button1.Enabled = true;
                     break;
             }
 
@@ -172,6 +184,41 @@ namespace SCMBot
         }
 
 
+        private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            Brush myBrush = Brushes.Black;
+
+            if (((ListBox)sender).Items.Count != 0)
+            {
+                switch (lboxCols[e.Index])
+                {
+                    case 0:
+                        myBrush = Brushes.Black;
+                        break;
+                    case 1:
+                        myBrush = Brushes.Red;
+                        break;
+                    case 2:
+                        myBrush = Brushes.Green;
+                        break;
+
+                }
+
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds,  StringFormat.GenericDefault);
+                e.DrawFocusRectangle();
+            }
+
+        }
+
+
+        private void lboxAdd(string rowtxt, byte colbyte)
+        {
+            lboxCols.Add(colbyte);
+            listBox1.Items.Add(rowtxt);
+        }
+
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             WriteCookiesToDisk("coockies.dat", steam.cookieCont);
@@ -185,6 +232,7 @@ namespace SCMBot
             {
                 if (steam.LoginProcess)
                 {
+                    //TODO: adequate login cancellation!
                     steam.CancelLogin();
                 }
                 else
@@ -205,23 +253,39 @@ namespace SCMBot
 
         private void button4_Click(object sender, EventArgs e)
         {
-            steam.scanDelay = textBox1.Text;
-            steam.wishedPrice = wishpriceBox.Text;
-            steam.pageLink = textBox5.Text;
-            steam.ScanPrices();
+            if (!steam.scaninProg)
+            {
+                int num;
 
-            StatusLabel1.Text = "Scanning Prices...";
+                if (Int32.TryParse(textBox1.Text, out num) && wishpriceBox.Text != string.Empty && textBox5.Text.Contains(SteamSite._market))
+                {
+                    steam.scanDelay = textBox1.Text;
+                    steam.wishedPrice = wishpriceBox.Text;
+                    steam.pageLink = textBox5.Text;
+                    steam.toBuy = checkBox1.Checked;
+                    steam.ScanPrices();
 
-           // if (prload.IsBusy != true)
-           // {
-           //     prload.RunWorkerAsync();
-          //  }
+                    StatusLabel1.Text = "Scanning Prices...";
+                    button4.Text = "Stop";
+                }
+                else
+                {
+                    MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+
+            else
+            {
+                steam.CancelScan();
+                button4.Text = "Start";
+            }
         }
 
 
         private void button5_Click(object sender, EventArgs e)
         {
-            steam.CancelScan();
+           
         }
 
 
@@ -232,9 +296,23 @@ namespace SCMBot
 
         private void button1_Click(object sender, EventArgs e)
         {
+            button1.Enabled = false;
             steam.reqTxt = comboBox1.Text;
             steam.linkTxt = SteamSite._search;
             steam.reqLoad();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            if (steam.Logged)
+            StartCmdLine(string.Format("{0}/id/{1}", SteamSite._mainsite, label10.Text), string.Empty, false);
+        }
+        
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if (textBox5.Text.Contains(SteamSite._mainsite))
+                StartCmdLine(textBox5.Text, string.Empty, false);
+
         }
 
 

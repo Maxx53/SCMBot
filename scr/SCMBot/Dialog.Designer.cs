@@ -129,15 +129,14 @@
             // 
             // capchapicBox
             // 
-            this.capchapicBox.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.capchapicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.capchapicBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.capchapicBox.Location = new System.Drawing.Point(10, 19);
             this.capchapicBox.Name = "capchapicBox";
             this.capchapicBox.Size = new System.Drawing.Size(206, 40);
             this.capchapicBox.TabIndex = 23;
             this.capchapicBox.TabStop = false;
             // 
-            // Form2
+            // Dialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -146,7 +145,7 @@
             this.Controls.Add(this.codgroupBox);
             this.Controls.Add(this.okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form2";
+            this.Name = "Dialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Steam Guard Check";
             this.codgroupBox.ResumeLayout(false);

@@ -28,7 +28,8 @@ namespace SCMBot
         Success_buy = 8,
         Scan_cancel = 9,
         Scan_progress = 10,
-        Search_success = 11
+        Search_success = 11,
+        Price_btext = 12
     }
 
 
@@ -36,7 +37,7 @@ namespace SCMBot
     {
         const string logPath = "logfile.txt";
         const string appName = "SCM Bot alpha";
-
+        //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
@@ -94,20 +95,22 @@ namespace SCMBot
             }
         }
 
-        public static void AppendText(RichTextBox box, string text, bool highlight)
+
+        static private Color backColor(Image img)
         {
-            box.SelectionStart = box.TextLength;
-            box.SelectionLength = 0;
+            Color back = SystemColors.Control;
+            Bitmap bitmap =  new Bitmap(img);
+            var colors = new List<Color>();
+            for (int y = 0; y < bitmap.Size.Height; y++)
+            {
+                //Let's grab bunch of pixels from center of image
+                colors.Add(bitmap.GetPixel(bitmap.Size.Width / 2, y));
+            }
 
-            if (highlight)
-                box.SelectionColor = Color.Red;
-            else
-                box.SelectionColor = Color.Black;
-
-            box.AppendText(string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), text, "ед.\r\n"));
-            box.SelectionColor = box.ForeColor;
-
-            box.SelectionStart = box.Text.Length + 1;
+            float imageBrightness = colors.Average(color => color.GetBrightness());
+            if (imageBrightness > 0.6)
+                back = Color.Black;
+            return back;
         }
 
 
@@ -129,7 +132,9 @@ namespace SCMBot
             using (MemoryStream ms = new MemoryStream(imageByte, 0, imageByte.Length))
             {
                 ms.Write(imageByte, 0, imageByte.Length);
-                picbox.Image = Image.FromStream(ms, true);
+                var resimg = Image.FromStream(ms, true);
+                picbox.BackColor = backColor(resimg);
+                picbox.Image = resimg;
             }
         }
 
@@ -170,6 +175,15 @@ namespace SCMBot
             memoryStream.Close();
             cryptoStream.Close();
             return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+        }
+
+        public void StartCmdLine(string process, string param, bool wait)
+        {
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            p.StartInfo = new System.Diagnostics.ProcessStartInfo(process, param);
+            p.Start();
+            if (wait)
+                p.WaitForExit();
         }
     }
 }

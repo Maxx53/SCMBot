@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using System.Collections;
+using System.Reflection;
 
 namespace SCMBot
 {
@@ -25,6 +27,7 @@ namespace SCMBot
 
         public bool Logged { set; get; }
         public bool LoginProcess { set; get; }
+        public bool scaninProg { set; get; }
         public bool toBuy { set; get; }
 
         public CookieContainer cookieCont { set; get; }
@@ -83,6 +86,7 @@ namespace SCMBot
         {
             if (scanThread.IsBusy != true)
             {
+                scaninProg = true;
                 scanThread.RunWorkerAsync();
             }
         }
@@ -91,6 +95,7 @@ namespace SCMBot
         {
             if (scanThread.WorkerSupportsCancellation == true && scanThread.IsBusy)
             {
+                scaninProg = false;
                 Sem.Release();
                 scanThread.CancelAsync();
             }
@@ -107,10 +112,8 @@ namespace SCMBot
         }
 
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
-
         {
-            ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList);
-            doMessage(flag.Search_success, string.Empty);
+            doMessage(flag.Search_success, ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList));
         }
 
         private void loginThread_DoWork(object sender, DoWorkEventArgs e)
@@ -248,6 +251,9 @@ namespace SCMBot
         }
 
 
+
+
+
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -255,18 +261,7 @@ namespace SCMBot
             //Небольшая проблема с форматом цены, обязательно указывать копейки после запятой или точки.
             int wished = Convert.ToInt32(Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty));
 
-            string sessid = string.Empty;
-
-
-            for (int i = 0; i < cookieCont.Count; i++)
-            {
-                string tempcook = cookieCont.GetCookies(new Uri("https://steamcommunity.com/"))[i].Value.ToString();
-                if (tempcook.Length == 20)
-                {
-                    sessid = tempcook;
-                    break;
-                }
-            }
+            string sessid = GetSessId(cookieCont);
 
             //TODO: Проверка наличия цифр, запятой или точки
             int delay = Convert.ToInt32(scanDelay);
@@ -280,18 +275,17 @@ namespace SCMBot
                 string lul = lotList[0].Price;
                 int current = Convert.ToInt32(lul);
                 string prtoTxt = lul.Insert(lul.Length - 2, ",");
-
                 if (current < wished)
                 {
-                    doMessage(flag.Price_htext, prtoTxt);
-
-                    if (toBuy)
+                      if (toBuy)
                     {
                         string subtotal = Convert.ToInt32(lotList[0].FeePrice).ToString();
                         string total = Convert.ToInt32(lotList[0].Price).ToString();
                         string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, total, subtotal);
                         doMessage(flag.Success_buy, walletball);
-                    }
+                        doMessage(flag.Price_btext, prtoTxt);
+                    } 
+                      else doMessage(flag.Price_htext, prtoTxt);
                 }
                 else
                     doMessage(flag.Price_text, prtoTxt);

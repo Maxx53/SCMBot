@@ -17,22 +17,22 @@ namespace SCMBot
 
         public event eventDelegate delegMessage;
 
+        public const string _mainsite = "http://steamcommunity.com/";
         const string _comlog = "https://steamcommunity.com/login/";
         const string _ref = _comlog + "home/?goto=market%2F";
         const string _getrsa = _comlog + "getrsakey/";
         const string _dologin = _comlog + "dologin/";
         const string _logout = _comlog + "logout/";
-        const string _market = "http://steamcommunity.com/market/";
+        public const string _market = _mainsite + "market/";
         const string _blist = _market + "buylisting/";
         const string _lists = _market + "listings/";
         public const string _search = _market + "search?q=";
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
 
-
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
 
-        List<MutliString> lotList = new List<MutliString>();
+        private List<MutliString> lotList = new List<MutliString>();
         public List<MutliString> searchList = new List<MutliString>();
 
         public class MutliString
@@ -242,12 +242,25 @@ namespace SCMBot
             return str;
         }
 
-
-
-
-
         //steam utils
 
+        private static string GetSessId(CookieContainer coock)
+        {
+            string resId = string.Empty;
+            var stcook = coock.GetCookies(new Uri(_mainsite));
+
+            for (int i = 0; i < stcook.Count; i++)
+            {
+                string cookname = stcook[i].Name.ToString();
+
+                if (cookname == "sessionid")
+                {
+                    resId = stcook[i].Value.ToString();
+                    break;
+                }
+            }
+            return resId;
+        }
 
         public static string GetNameBalance(CookieContainer cock)
         {
@@ -343,9 +356,10 @@ namespace SCMBot
 
 
 
-        public static void ParseSearchRes(string content, List<MutliString> lst)
+        public static string ParseSearchRes(string content, List<MutliString> lst)
         {
             lst.Clear();
+            string totalfind = "0";
 
             MatchCollection matches = Regex.Matches(content, "(?<=market_listing_row_link\" href)(.*?)(?<=</a>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
             if (matches.Count != 0)
@@ -370,13 +384,19 @@ namespace SCMBot
                     string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
                     
                     string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
+                    //<span id="searchResults_total">33</span>
 
                     //Заполняем список 
                     lst.Add(new MutliString(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
                 }
-            }
-            else MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
 
+                totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
+
+            }
+            else 
+                MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+           
+            return totalfind;
         }
       
 
