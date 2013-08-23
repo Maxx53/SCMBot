@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace SCMBot
@@ -67,7 +65,7 @@ namespace SCMBot
         }
 
 
-        protected void doMessage(flag myflag, string message)
+        protected void doMessage(flag myflag, int searchId, string message)
         {
 
             if (delegMessage != null)
@@ -76,11 +74,11 @@ namespace SCMBot
 
                 if (target != null && target.InvokeRequired)
                 {
-                    target.Invoke(delegMessage, new object[] { this, message, myflag });
+                    target.Invoke(delegMessage, new object[] { this, message, searchId, myflag });
                 }
                 else
                 {
-                    delegMessage(this, message, myflag);
+                    delegMessage(this, message, searchId, myflag);
                 }
             }
         }
@@ -127,7 +125,7 @@ namespace SCMBot
                 request.Method = "POST";
                 request.Referer = refer;
                 request.ContentType = "application/x-www-form-urlencoded";
-                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)";
+                request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:22.0) Gecko/20100101 Firefox/22.0";
                 request.ContentLength = requestData.Length;
 
                 using (var s = request.GetRequestStream())
@@ -391,7 +389,6 @@ namespace SCMBot
                 }
 
                 totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
-
             }
             else 
                 MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;

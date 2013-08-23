@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Net;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.ComponentModel;
-using System.IO;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -17,13 +13,14 @@ using System.IO;
 
 namespace SCMBot
 {
-
-
-
     public partial class Main : Form
     {
-        SteamSite steam = new SteamSite();
+        SteamSite steam_srch = new SteamSite();
         List<byte> lboxCols = new List<byte>();
+        SearchPagePos sppos;
+
+        List<ScanItem> ScanItLst = new List<ScanItem>();
+        List<SteamSite> SteamLst = new List<SteamSite>();
 
         public Main()
         {
@@ -34,16 +31,37 @@ namespace SCMBot
 
         private void Main_Load(object sender, EventArgs e)
         {
-            steam.delegMessage += new eventDelegate(Event_Message);
+            steam_srch.delegMessage += new eventDelegate(Event_Message);
             listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
 
-            steam.cookieCont = ReadCookiesFromDisk("coockies.dat");
+            steam_srch.cookieCont = ReadCookiesFromDisk("coockies.dat");
             LoadSettings();
             
             if (checkBox2.Checked)
-                loginButton.PerformClick(); 
+                loginButton.PerformClick();
+
+         
         }
 
+        private void addTabItem(string link, string price, string tabId)
+        {
+            if (tabId == string.Empty)
+            tabControl1.TabPages.Add("Item " + (tabControl1.TabCount + 1).ToString());
+            else
+                tabControl1.TabPages.Add(tabId);
+
+            ScanItem scanIt = new ScanItem();
+            tabControl1.TabPages[tabControl1.TabCount - 1].Controls.Add(scanIt);
+            scanIt.linkValue = link;
+            scanIt.wishedValue = price;
+            scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
+            ScanItLst.Add(scanIt);
+
+            SteamSite ScanSite = new SteamSite();
+            ScanSite.delegMessage += new eventDelegate(Event_Message);
+            ScanSite.cookieCont = steam_srch.cookieCont;
+            SteamLst.Add(ScanSite);
+        }
 
         private void LoadSettings()
         {
@@ -52,7 +70,7 @@ namespace SCMBot
             loginBox.Text = settings.lastLogin;
             checkBox2.Checked = settings.loginOnstart;
             passwordBox.Text = Decrypt(settings.lastPass);
-            textBox1.Text = settings.delayVal.ToString();
+           // textBox1.Text = settings.delayVal.ToString();
 
         }
 
@@ -64,7 +82,7 @@ namespace SCMBot
             settings.lastLogin = loginBox.Text;
             settings.loginOnstart = checkBox2.Checked;
             settings.lastPass = Encrypt(passwordBox.Text);
-            settings.delayVal = Convert.ToInt32(textBox1.Text);
+           // settings.delayVal = Convert.ToInt32(textBox1.Text);
             settings.Save();
         }
 
@@ -84,7 +102,7 @@ namespace SCMBot
             return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, "units");
         }
 
-        private void Event_Message(object sender, string message, flag myflag)
+        private void Event_Message(object sender, string message, int searchId, flag myflag)
         {
             switch (myflag)
             {
@@ -132,7 +150,8 @@ namespace SCMBot
                     break;
 
                 case flag.Scan_progress:
-                    StatusLabel1.Text = "Prices Loaded: "+ message;
+                    //StatusLabel1.Text = "Prices Loaded: "+ message;
+                    //Nonsense
                     break;
 
                 case flag.Success_buy:
@@ -146,20 +165,114 @@ namespace SCMBot
                 case flag.Search_success:
 
                     comboBox1.Items.Clear();
-                    StatusLabel1.Text = string.Format("Found: {0}, Shown: {1}", message, steam.searchList.Count.ToString());
-                    for (int i = 0; i < steam.searchList.Count; i++)
+                    StatusLabel1.Text = string.Format("Found: {0}, Shown: {1}", message, steam_srch.searchList.Count.ToString());
+
+                    if (sppos.CurrentPos == 1)
                     {
-                        var ourItem = steam.searchList[i];
+                        int found = Convert.ToInt32(message);
+                        sppos.PageCount = found / 10;
+                        if (found % 10 != 0)
+                            sppos.PageCount++;
+
+                    }
+
+                    label13.Text = string.Format("{0}/{1}", sppos.CurrentPos.ToString(), sppos.PageCount.ToString());
+                   
+                    if (sppos.PageCount > 1)
+                    {
+                        prevButton.Enabled = true;
+                        nextButton.Enabled = true;
+                    }
+                    else
+                    {
+                        prevButton.Enabled = false;
+                        nextButton.Enabled = false;
+                    }
+
+                    for (int i = 0; i < steam_srch.searchList.Count; i++)
+                    {
+                        var ourItem = steam_srch.searchList[i];
                         comboBox1.Items.Add(string.Format("Type: {0}, Item: {1}", ourItem.Game, ourItem.Name));
 
                     }
                     comboBox1.DroppedDown = true;
-                    button1.Enabled = true;
+                    searchButton.Enabled = true;
+                    findSetButton.Enabled = true;
                     break;
             }
 
         }
 
+
+        private void addtoScan_Click(object sender, EventArgs e)
+        {
+            if (steam_srch.searchList.Count != 0)
+            {
+                for (int i = 0; i < steam_srch.searchList.Count; i++)
+                {
+                 var currItem = steam_srch.searchList[i];
+                 addTabItem(currItem.Link, currItem.StartPrice, currItem.Name);
+                }
+            }
+        }
+
+
+        private void findSetButton_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.Items.Count != 0)
+            {
+                comboBox1.Text = string.Format("\"{0}\"", steam_srch.searchList[comboBox1.SelectedIndex].Game);
+                searchButton.PerformClick();
+            }
+        }
+
+        private void doSearch(byte type)
+        {
+            switch (type)
+            {
+                case 0:
+                    sppos = new SearchPagePos(0, 1);
+                    break;
+                case 1:
+                    if (sppos.CurrentPos < sppos.PageCount)
+                        sppos.CurrentPos++;
+                    else sppos.CurrentPos = 1;
+
+                    break;
+                case 2:
+                    if (sppos.CurrentPos > 1)
+                        sppos.CurrentPos--;
+                    else sppos.CurrentPos = sppos.PageCount;
+                    break;
+                default:
+                    break;
+            }
+
+            steam_srch.reqTxt = string.Format("{0}&start={1}0", comboBox1.Text, sppos.CurrentPos - 1);
+            steam_srch.linkTxt = SteamSite._search;
+            steam_srch.reqLoad();
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            doSearch(0);
+            searchButton.Enabled = false;
+            findSetButton.Enabled = false;
+        }
+
+
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            doSearch(1);
+            nextButton.Enabled = false; 
+
+        }
+
+        private void prevButton_Click(object sender, EventArgs e)
+        {
+            doSearch(2);
+            prevButton.Enabled = false;
+        }
 
         public void StartLoadImgTread(string imgUrl, PictureBox picbox)
         {
@@ -173,12 +286,13 @@ namespace SCMBot
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var ourItem = steam.searchList[comboBox1.SelectedIndex];
+            var ourItem = steam_srch.searchList[comboBox1.SelectedIndex];
             labelQuant.Text = ourItem.Quant;
             labelStPrice.Text = ourItem.StartPrice;
-            wishpriceBox.Text = ourItem.StartPrice;
-            textBox5.Text = ourItem.Link;
-            textBox5.Select(textBox5.Text.Length, 0);
+
+            addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name);
+
+            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
             StartLoadImgTread(ourItem.ImgLink, pictureBox1);
 
         }
@@ -221,52 +335,56 @@ namespace SCMBot
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            WriteCookiesToDisk("coockies.dat", steam.cookieCont);
+            WriteCookiesToDisk("coockies.dat", steam_srch.cookieCont);
             SaveSettings();
         }
 
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            if (!steam.Logged)
+            if (!steam_srch.Logged)
             {
-                if (steam.LoginProcess)
+                if (steam_srch.LoginProcess)
                 {
                     //TODO: adequate login cancellation!
-                    steam.CancelLogin();
+                    steam_srch.CancelLogin();
                 }
                 else
                 {
-                    steam.UserName = loginBox.Text;
-                    steam.Password = passwordBox.Text;
-                    steam.Login();
+                    steam_srch.UserName = loginBox.Text;
+                    steam_srch.Password = passwordBox.Text;
+                    steam_srch.Login();
                     ProgressBar1.Visible = true;
                     StatusLabel1.Text = "Try Login...";
                     loginButton.Text = "Cancel";
                 }
             }
             else
-                steam.Logout();
+                steam_srch.Logout();
 
         }
 
 
-        private void button4_Click(object sender, EventArgs e)
+        public void ScanItemButton_Click(object sender, EventArgs e)
         {
+            var scanItem = ScanItLst[tabControl1.SelectedIndex];
+            var steam = SteamLst[tabControl1.SelectedIndex];
+
             if (!steam.scaninProg)
             {
                 int num;
-
-                if (Int32.TryParse(textBox1.Text, out num) && wishpriceBox.Text != string.Empty && textBox5.Text.Contains(SteamSite._market))
+                
+                if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
                 {
-                    steam.scanDelay = textBox1.Text;
-                    steam.wishedPrice = wishpriceBox.Text;
-                    steam.pageLink = textBox5.Text;
-                    steam.toBuy = checkBox1.Checked;
+                    steam.scanDelay = scanItem.delayValue;
+                    steam.wishedPrice = scanItem.wishedValue;
+                    steam.pageLink = scanItem.linkValue;
+                    steam.toBuy = scanItem.tobuyValue;
+                    steam.scanID = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
                     steam.ScanPrices();
 
                     StatusLabel1.Text = "Scanning Prices...";
-                    button4.Text = "Stop";
+                    scanItem.ButtonText = "Stop";
                 }
                 else
                 {
@@ -278,43 +396,66 @@ namespace SCMBot
             else
             {
                 steam.CancelScan();
-                button4.Text = "Start";
+                scanItem.ButtonText = "Start";
             }
         }
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-           
-        }
-
+        
 
         public void AddToFormTxt(string acc)
         {
             this.Text += string.Format(" ({0})", acc);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            button1.Enabled = false;
-            steam.reqTxt = comboBox1.Text;
-            steam.linkTxt = SteamSite._search;
-            steam.reqLoad();
-        }
-
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (steam.Logged)
+            if (steam_srch.Logged)
             StartCmdLine(string.Format("{0}/id/{1}", SteamSite._mainsite, label10.Text), string.Empty, false);
         }
         
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            if (textBox5.Text.Contains(SteamSite._mainsite))
-                StartCmdLine(textBox5.Text, string.Empty, false);
+            //if (textBox5.Text.Contains(SteamSite._mainsite))
+                //StartCmdLine(textBox5.Text, string.Empty, false);
 
         }
 
+        private void comboBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+               //e.SuppressKeyPress = true;
+                searchButton.PerformClick();
+            }
+        }
 
-   }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            addTabItem(string.Empty, string.Empty, string.Empty);
+        }
+
+        private void tabControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            var tabControl = sender as TabControl;
+            TabPage tabPageCurrent = null;
+            if (e.Button == MouseButtons.Middle)
+            {
+                for (var i = 0; i < tabControl.TabCount; i++)
+                {
+                    if (!tabControl.GetTabRect(i).Contains(e.Location))
+                        continue;
+                    tabPageCurrent = tabControl.TabPages[i];
+                    break;
+                }
+                if (tabPageCurrent != null)
+                {
+                    var k = tabControl.TabPages.IndexOf(tabPageCurrent);
+                    SteamLst.RemoveAt(k);
+                    ScanItLst.RemoveAt(k);
+                    tabControl.TabPages.Remove(tabPageCurrent);
+                  
+                }
+            }
+        }
+
+    }
 }

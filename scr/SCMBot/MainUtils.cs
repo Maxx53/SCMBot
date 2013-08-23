@@ -7,12 +7,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Threading;
 using System.Security.Cryptography;
 
 namespace SCMBot
 {
-    public delegate void eventDelegate(object sender, string message, flag myflag);
+    public delegate void eventDelegate(object sender, string message, int searchId, flag myflag);
 
     [Flags]
     public enum flag : byte
@@ -41,6 +40,21 @@ namespace SCMBot
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
+
+
+        public class SearchPagePos
+        {
+            public SearchPagePos(int pageCount, int currentPos)
+            {
+                this.PageCount = pageCount;
+                this.CurrentPos = currentPos;
+            }
+
+            public int PageCount { set; get; }
+            public int CurrentPos { set; get; }
+
+        }
+
 
         public static void AddtoLog(string logstr)
         {

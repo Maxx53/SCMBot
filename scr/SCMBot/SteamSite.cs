@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
-using System.IO;
-using System.Collections;
-using System.Reflection;
 
 namespace SCMBot
 {
@@ -21,6 +16,7 @@ namespace SCMBot
         public string wishedPrice { set; get; }
         public string scanDelay { set; get; }
         public string pageLink { set; get; }
+        public string scanID { set; get; }
 
         public string reqTxt { set; get; }
         public string linkTxt { set; get; }
@@ -72,7 +68,7 @@ namespace SCMBot
         {
             ThreadStart threadStart = delegate() {
                 SendPostRequest(string.Empty, _logout, _market, cookieCont, false);
-                doMessage(flag.Logout_, string.Empty);
+                doMessage(flag.Logout_, 0, string.Empty);
                 Logged = false;
             };
             Thread pTh = new Thread(threadStart);
@@ -113,7 +109,7 @@ namespace SCMBot
 
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            doMessage(flag.Search_success, ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList));
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList));
         }
 
         private void loginThread_DoWork(object sender, DoWorkEventArgs e)
@@ -122,15 +118,15 @@ namespace SCMBot
 
             LoginProcess = true;
             Logged = false;
-            doMessage(flag.Rep_progress, "20");
+            doMessage(flag.Rep_progress, 0, "20");
             //if (worker.CancellationPending == true)
               //  return;
 
             string accInfo = GetNameBalance(cookieCont);
             if (accInfo != string.Empty)
             {
-                doMessage(flag.Already_logged, accInfo);
-                doMessage(flag.Rep_progress, "100");
+                doMessage(flag.Already_logged, 0, accInfo);
+                doMessage(flag.Rep_progress, 0, "100");
                 LoginProcess = false;
                 Logged = true;
                 return;
@@ -145,7 +141,7 @@ namespace SCMBot
                 return;
             }
 
-            doMessage(flag.Rep_progress, "40");
+            doMessage(flag.Rep_progress, 0, "40");
           //  if (worker.CancellationPending == true)
              //   return;
 
@@ -163,7 +159,7 @@ namespace SCMBot
 
             string firstTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, capchaId,
                                                             string.Empty, steamId, timeStamp), _dologin, _ref, cookieCont, true);
-            doMessage(flag.Rep_progress, "60");
+            doMessage(flag.Rep_progress, 0, "60");
            // if (worker.CancellationPending == true)
            //     return;
             serialLogin.Clear();
@@ -187,7 +183,7 @@ namespace SCMBot
                     Main.loadImg(_capcha + capchaId, guardCheckForm.capchImg, false);
                 }
 
-                doMessage(flag.Rep_progress, "80");
+                doMessage(flag.Rep_progress, 0, "80");
             //    if (worker.CancellationPending == true)
              //       return;
 
@@ -203,8 +199,8 @@ namespace SCMBot
                     {
                         string accInfo2 = GetNameBalance(cookieCont);
 
-                        doMessage(flag.Login_success, accInfo2);
-                        doMessage(flag.Rep_progress, "100");
+                        doMessage(flag.Login_success, 0, accInfo2);
+                        doMessage(flag.Rep_progress, 0, "100");
                         Logged = true;
                         Main.AddtoLog("Login Success");
                     }
@@ -223,7 +219,7 @@ namespace SCMBot
                 else
                 {
                     Main.AddtoLog("Login Guard Check Cancelled");
-                    doMessage(flag.Login_cancel, string.Empty);
+                    doMessage(flag.Login_cancel, 0, string.Empty);
                     e.Cancel = true;
                 }
 
@@ -234,15 +230,15 @@ namespace SCMBot
             {
                 string accInfo3 = GetNameBalance(cookieCont);
 
-                doMessage(flag.Login_success, accInfo3);
-                doMessage(flag.Rep_progress, "100");
+                doMessage(flag.Login_success, 0, accInfo3);
+                doMessage(flag.Rep_progress, 0, "100");
                 Main.AddtoLog("Login Success");
                 Logged = true;
             }
             else
             {
                 Main.AddtoLog("Login Guard Check Cancelled");
-                doMessage(flag.Login_cancel, string.Empty);
+                doMessage(flag.Login_cancel, 0, string.Empty);
                 e.Cancel = true;
             }
 
@@ -274,7 +270,7 @@ namespace SCMBot
                 //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
                 string lul = lotList[0].Price;
                 int current = Convert.ToInt32(lul);
-                string prtoTxt = lul.Insert(lul.Length - 2, ",");
+                string prtoTxt = scanID + ": " + lul.Insert(lul.Length - 2, ",");
                 if (current < wished)
                 {
                       if (toBuy)
@@ -282,20 +278,20 @@ namespace SCMBot
                         string subtotal = Convert.ToInt32(lotList[0].FeePrice).ToString();
                         string total = Convert.ToInt32(lotList[0].Price).ToString();
                         string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, total, subtotal);
-                        doMessage(flag.Success_buy, walletball);
-                        doMessage(flag.Price_btext, prtoTxt);
-                    } 
-                      else doMessage(flag.Price_htext, prtoTxt);
+                        doMessage(flag.Success_buy, 0, walletball);
+                        doMessage(flag.Price_btext, 0, prtoTxt);
+                    }
+                      else doMessage(flag.Price_htext, 0, prtoTxt);
                 }
                 else
-                    doMessage(flag.Price_text, prtoTxt);
+                    doMessage(flag.Price_text, 0, prtoTxt);
 
-                doMessage(flag.Scan_progress, prog.ToString());
+                doMessage(flag.Scan_progress, 0, prog.ToString());
                 Sem.WaitOne(delay);
                 prog++;
             }
 
-            doMessage(flag.Scan_cancel, string.Empty);
+            doMessage(flag.Scan_cancel, 0, string.Empty);
         }
 
     }
