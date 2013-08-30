@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
+using System.Text;
+using System.Net;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -16,7 +18,6 @@ namespace SCMBot
     public partial class Main : Form
     {
         SteamSite steam_srch = new SteamSite();
-        List<byte> lboxCols = new List<byte>();
         SearchPagePos sppos;
 
         List<ScanItem> ScanItLst = new List<ScanItem>();
@@ -32,15 +33,12 @@ namespace SCMBot
         private void Main_Load(object sender, EventArgs e)
         {
             steam_srch.delegMessage += new eventDelegate(Event_Message);
-            listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
-
             steam_srch.cookieCont = ReadCookiesFromDisk("coockies.dat");
+
             LoadSettings();
             
             if (checkBox2.Checked)
                 loginButton.PerformClick();
-
-         
         }
 
         private void addTabItem(string link, string price, string tabId)
@@ -69,7 +67,10 @@ namespace SCMBot
 
             loginBox.Text = settings.lastLogin;
             checkBox2.Checked = settings.loginOnstart;
-            passwordBox.Text = Decrypt(settings.lastPass);
+            //If you need password crypting
+            //passwordBox.Text = Decrypt(settings.lastPass);
+            passwordBox.Text = settings.lastPass;
+
            // textBox1.Text = settings.delayVal.ToString();
 
         }
@@ -81,7 +82,10 @@ namespace SCMBot
 
             settings.lastLogin = loginBox.Text;
             settings.loginOnstart = checkBox2.Checked;
-            settings.lastPass = Encrypt(passwordBox.Text);
+            //If you need password crypting
+            //settings.lastPass = Encrypt(passwordBox.Text);
+            settings.lastPass = passwordBox.Text;
+
            // settings.delayVal = Convert.ToInt32(textBox1.Text);
             settings.Save();
         }
@@ -89,12 +93,18 @@ namespace SCMBot
 
         public void GetAccInfo(string mess)
         {
-            string[] accinfo = mess.Split(';');
-            StartLoadImgTread(accinfo[2], pictureBox2);
-            label5.Text = accinfo[1];
-            label10.Text = accinfo[0];
-            ProgressBar1.Visible = false;
-            loginButton.Text = "Logout";
+            if (mess != string.Empty)
+            {
+                string[] accinfo = mess.Split(';');
+                StartLoadImgTread(accinfo[2], pictureBox2);
+                label5.Text = accinfo[1];
+                label10.Text = accinfo[0];
+                ProgressBar1.Visible = false;
+                loginButton.Text = "Logout";
+            }
+            else
+                MessageBox.Show("wtf?");
+
         }
 
         public string GetPriceFormat(string mess)
@@ -136,13 +146,13 @@ namespace SCMBot
                     loginButton.Text = "Login";
                     break;
                 case flag.Price_htext:
-                    lboxAdd(GetPriceFormat(message), 1);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 1);
                     break;
                 case flag.Price_btext:
-                    lboxAdd(GetPriceFormat(message), 2);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 2);
                     break;
                 case flag.Price_text:
-                    lboxAdd(GetPriceFormat(message), 0);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 0);
                     break;
 
                 case flag.Rep_progress:
@@ -298,41 +308,6 @@ namespace SCMBot
         }
 
 
-        private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            e.DrawBackground();
-
-            Brush myBrush = Brushes.Black;
-
-            if (((ListBox)sender).Items.Count != 0)
-            {
-                switch (lboxCols[e.Index])
-                {
-                    case 0:
-                        myBrush = Brushes.Black;
-                        break;
-                    case 1:
-                        myBrush = Brushes.Red;
-                        break;
-                    case 2:
-                        myBrush = Brushes.Green;
-                        break;
-
-                }
-
-                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds,  StringFormat.GenericDefault);
-                e.DrawFocusRectangle();
-            }
-
-        }
-
-
-        private void lboxAdd(string rowtxt, byte colbyte)
-        {
-            lboxCols.Add(colbyte);
-            listBox1.Items.Add(rowtxt);
-        }
-
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             WriteCookiesToDisk("coockies.dat", steam_srch.cookieCont);
@@ -380,7 +355,7 @@ namespace SCMBot
                     steam.wishedPrice = scanItem.wishedValue;
                     steam.pageLink = scanItem.linkValue;
                     steam.toBuy = scanItem.tobuyValue;
-                    steam.scanID = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
+                    steam.scanID = tabControl1.SelectedIndex;
                     steam.ScanPrices();
 
                     StatusLabel1.Text = "Scanning Prices...";
@@ -416,7 +391,6 @@ namespace SCMBot
         {
             //if (textBox5.Text.Contains(SteamSite._mainsite))
                 //StartCmdLine(textBox5.Text, string.Empty, false);
-
         }
 
         private void comboBox1_KeyUp(object sender, KeyEventArgs e)
@@ -449,10 +423,16 @@ namespace SCMBot
                 if (tabPageCurrent != null)
                 {
                     var k = tabControl.TabPages.IndexOf(tabPageCurrent);
+                    SteamLst[k].CancelScan();
                     SteamLst.RemoveAt(k);
+                    ScanItLst[k].Dispose();
                     ScanItLst.RemoveAt(k);
                     tabControl.TabPages.Remove(tabPageCurrent);
-                  
+                    //Update id's
+                    for (int i = 0; i < SteamLst.Count; i++)
+                    {
+                        SteamLst[i].scanID = i;
+                    }
                 }
             }
         }

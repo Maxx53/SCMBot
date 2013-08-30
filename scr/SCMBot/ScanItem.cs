@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Collections.Generic;
 
 
 namespace SCMBot
@@ -7,6 +9,7 @@ namespace SCMBot
     public partial class ScanItem : UserControl
     {
         public event EventHandler ButtonClick;
+        List<byte> lboxCols = new List<byte>();
 
         public string linkValue
         {
@@ -48,6 +51,46 @@ namespace SCMBot
         {
             if (this.ButtonClick != null)
                 this.ButtonClick(this, e);  
+        }
+
+
+        public void lboxAdd(string rowtxt, byte colbyte)
+        {
+            int lastsel = listBox1.SelectedIndex;
+            lboxCols.Add(colbyte);
+            listBox1.Items.Add(rowtxt);
+            listBox1.SelectedIndex = listBox1.Items.Count - 1;
+            listBox1.SelectedIndex = -1;
+
+        }
+
+        private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+                 e.DrawBackground();
+
+            Brush myBrush = Brushes.Black;
+
+            if (((ListBox)sender).Items.Count != 0)
+            {
+                switch (lboxCols[e.Index])
+                {
+                    case 0:
+                        myBrush = Brushes.Black;
+                        break;
+                    case 1:
+                        myBrush = Brushes.Red;
+                        break;
+                    case 2:
+                        myBrush = Brushes.Green;
+                        break;
+
+                }
+
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds,  StringFormat.GenericDefault);
+                e.DrawFocusRectangle();
+            }
+
+    
         }
 
     }

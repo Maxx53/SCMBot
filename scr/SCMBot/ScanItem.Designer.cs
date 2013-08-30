@@ -36,13 +36,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(77, 70);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(66, 20);
+            this.textBox1.Size = new System.Drawing.Size(116, 20);
             this.textBox1.TabIndex = 42;
             this.textBox1.Text = "3000";
             // 
@@ -50,14 +51,14 @@
             // 
             this.textBox5.Location = new System.Drawing.Point(77, 9);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(189, 20);
+            this.textBox5.Size = new System.Drawing.Size(116, 20);
             this.textBox5.TabIndex = 35;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(178, 35);
+            this.button4.Location = new System.Drawing.Point(77, 119);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(88, 29);
+            this.button4.Size = new System.Drawing.Size(116, 37);
             this.button4.TabIndex = 36;
             this.button4.Text = "Start";
             this.button4.UseVisualStyleBackColor = true;
@@ -76,7 +77,7 @@
             // 
             this.wishpriceBox.Location = new System.Drawing.Point(77, 40);
             this.wishpriceBox.Name = "wishpriceBox";
-            this.wishpriceBox.Size = new System.Drawing.Size(90, 20);
+            this.wishpriceBox.Size = new System.Drawing.Size(116, 20);
             this.wishpriceBox.TabIndex = 38;
             this.wishpriceBox.Text = "0,00";
             // 
@@ -101,18 +102,29 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(178, 69);
+            this.checkBox1.Location = new System.Drawing.Point(77, 96);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(44, 17);
             this.checkBox1.TabIndex = 40;
             this.checkBox1.Text = "buy";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // listBox1
+            // 
+            this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(199, 9);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(258, 147);
+            this.listBox1.TabIndex = 43;
+            this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
+            // 
             // ScanItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.button4);
@@ -122,7 +134,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Name = "ScanItem";
-            this.Size = new System.Drawing.Size(276, 96);
+            this.Size = new System.Drawing.Size(471, 170);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,5 +150,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

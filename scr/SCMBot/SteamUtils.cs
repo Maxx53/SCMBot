@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace SCMBot
 {
-
+    
     public partial class SteamSite
     {
 
@@ -29,17 +29,18 @@ namespace SCMBot
 
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
+        const string buyReq = "sessionid={0}&currency=5&subtotal={1}&fee={2}&total={3}";
 
         private List<MutliString> lotList = new List<MutliString>();
         public List<MutliString> searchList = new List<MutliString>();
 
         public class MutliString
         {
-            public MutliString(string sellerId, string price, string feeprice)
+            public MutliString(string sellerId, string price, string subtotal)
             {
                 this.SellerId = sellerId;
                 this.Price = price;
-                this.FeePrice = feeprice;
+                this.SubTotal = subtotal;
             }
 
             public MutliString(string name, string game, string link, string quant, string startprice, string imglink)
@@ -60,7 +61,7 @@ namespace SCMBot
             public string StartPrice { set; get; }
             public string SellerId { set; get; }
             public string Price { set; get; }
-            public string FeePrice { set; get; }
+            public string SubTotal { set; get; }
 
         }
 
@@ -119,13 +120,10 @@ namespace SCMBot
                 var request = (HttpWebRequest)
                     WebRequest.Create(url);
 
-                request.AllowAutoRedirect = false;
-                request.KeepAlive = true;
                 request.CookieContainer = cookie;
                 request.Method = "POST";
                 request.Referer = refer;
                 request.ContentType = "application/x-www-form-urlencoded";
-                request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:22.0) Gecko/20100101 Firefox/22.0";
                 request.ContentLength = requestData.Length;
 
                 using (var s = request.GetRequestStream())
@@ -145,7 +143,7 @@ namespace SCMBot
 
                 cookie = request.CookieContainer;
                 resp.Close();
-
+                stream.Close();
                 return content;
             }
 
@@ -157,6 +155,7 @@ namespace SCMBot
             }
 
         }
+
 
         public static string EncryptPassword(string steam_rsa, string password, string modval, string expval)
         {
@@ -173,7 +172,7 @@ namespace SCMBot
             return Uri.EscapeDataString(encryptedPass);
         }
 
-        //Спасибо хабру
+        //Thanks to habrahabr.ru
         static Dictionary<string, string> ParseJson(string res)
         {
             var lines = res.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -242,30 +241,11 @@ namespace SCMBot
 
         //steam utils
 
-        private static string GetSessId(CookieContainer coock)
-        {
-            string resId = string.Empty;
-            var stcook = coock.GetCookies(new Uri(_mainsite));
-
-            for (int i = 0; i < stcook.Count; i++)
-            {
-                string cookname = stcook[i].Name.ToString();
-
-                if (cookname == "sessionid")
-                {
-                    resId = stcook[i].Value.ToString();
-                    break;
-                }
-            }
-            return resId;
-        }
-
         public static string GetNameBalance(CookieContainer cock)
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = SendPostRequest(string.Empty, _market, string.Empty, cock, false);
-
-
+       
             string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString().Trim();
             if (parseName == "")
             {
@@ -291,23 +271,63 @@ namespace SCMBot
         }
 
 
+        private static string prFormat(string input)
+        {
+            string result = input;
+
+            if (input.Length < 3)
+            {
+                result = input + "00";
+            }
+
+            return result;
+        }
+
+
+        private static string GetSessId(CookieContainer coock)
+        {
+            //sessid sample MTMyMTg5MTk5Mw%3D%3D
+            string resId = string.Empty;
+            var stcook = coock.GetCookies(new Uri(_mainsite));
+
+            for (int i = 0; i < stcook.Count; i++)
+            {
+                string cookname = stcook[i].Name.ToString();
+
+                if (cookname == "sessionid")
+                {
+                    resId = stcook[i].Value.ToString();
+                    break;
+                }
+            }
+            return resId;
+        }
+
+
         static string BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal)
         {
-            string fee = (Convert.ToInt32(total) - Convert.ToInt32(subtotal)).ToString();
+            int int_total = Convert.ToInt32(prFormat(total));
+            int int_sub = Convert.ToInt32(prFormat(subtotal));
+            string fee = (int_total - int_sub).ToString();
 
-            string data = "sessionid=" + sessid + "&currency=5&subtotal=" + subtotal + "&fee=" + fee + "&total=" + total;
+            string data = string.Format(buyReq, sessid, int_sub, fee, int_total);
 
             //buy
-            string buyres = SendPostRequest(data, _blist + itemId, _lists + link, cock, true);
-
-            Dictionary<string, string> serialBuy = ParseJson(buyres);
-
-            if (serialBuy["success"] == "1")
+            //29.08.2013 Steam Update Issue!
+            string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
+            if (buyres != string.Empty)
             {
-                string balance = serialBuy["wallet_balance"];
-                balance = balance.Insert(balance.Length - 2, ",");
-                return balance;
 
+                Dictionary<string, string> serialBuy = ParseJson(buyres);
+
+                if (serialBuy["success"] == "1")
+                {
+                    string balance = serialBuy["wallet_balance"];
+                    balance = balance.Insert(balance.Length - 2, ",");
+                    return balance;
+
+                }
+                else return string.Empty;
             }
             else return string.Empty;
 
@@ -316,6 +336,9 @@ namespace SCMBot
         public static void ParseLotList(string content, List<MutliString> lst)
         {
             lst.Clear();
+
+            if (content == string.Empty)
+                return;
 
             MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_seller\">", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
 
@@ -346,12 +369,14 @@ namespace SCMBot
 
                     //Заполняем список лотов
                     lst.Add(new MutliString(sellid, parts[0], parts[1]));
+                    
+                    //Remove this to parse all 10 items
+                    return;
                 }
             }
             else MessageBox.Show("Не удалось загрузить список предметов!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
 
         }
-
 
 
         public static string ParseSearchRes(string content, List<MutliString> lst)
@@ -382,7 +407,6 @@ namespace SCMBot
                     string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
                     
                     string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
-                    //<span id="searchResults_total">33</span>
 
                     //Заполняем список 
                     lst.Add(new MutliString(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));

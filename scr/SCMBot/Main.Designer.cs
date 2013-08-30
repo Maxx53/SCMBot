@@ -35,13 +35,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -61,17 +59,18 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.button1 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(183, 15);
+            this.loginButton.Location = new System.Drawing.Point(172, 13);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(88, 27);
             this.loginButton.TabIndex = 8;
@@ -81,7 +80,7 @@
             // 
             // loginBox
             // 
-            this.loginBox.Location = new System.Drawing.Point(83, 19);
+            this.loginBox.Location = new System.Drawing.Point(72, 17);
             this.loginBox.Name = "loginBox";
             this.loginBox.Size = new System.Drawing.Size(90, 20);
             this.loginBox.TabIndex = 15;
@@ -89,7 +88,7 @@
             // 
             // passwordBox
             // 
-            this.passwordBox.Location = new System.Drawing.Point(83, 45);
+            this.passwordBox.Location = new System.Drawing.Point(72, 43);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.PasswordChar = '*';
             this.passwordBox.Size = new System.Drawing.Size(90, 20);
@@ -99,7 +98,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 22);
+            this.label2.Location = new System.Drawing.Point(33, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 17;
@@ -108,7 +107,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 48);
+            this.label3.Location = new System.Drawing.Point(9, 46);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 18;
@@ -116,47 +115,43 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.checkBox2);
-            this.groupBox1.Controls.Add(this.pictureBox2);
             this.groupBox1.Controls.Add(this.loginButton);
-            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.loginBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.passwordBox);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(12, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(281, 114);
+            this.groupBox1.Size = new System.Drawing.Size(266, 70);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(84, 72);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(56, 13);
-            this.label10.TabIndex = 35;
-            this.label10.Text = "UserName";
-            // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(183, 48);
+            this.checkBox2.Location = new System.Drawing.Point(172, 46);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(90, 17);
             this.checkBox2.TabIndex = 32;
             this.checkBox2.Text = "Login at start";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(54, 24);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(56, 13);
+            this.label10.TabIndex = 35;
+            this.label10.Text = "UserName";
+            // 
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Location = new System.Drawing.Point(41, 72);
+            this.pictureBox2.Location = new System.Drawing.Point(11, 24);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 32);
             this.pictureBox2.TabIndex = 33;
@@ -166,7 +161,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(84, 91);
+            this.label8.Location = new System.Drawing.Point(54, 43);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(81, 13);
             this.label8.TabIndex = 32;
@@ -175,39 +170,20 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(171, 91);
+            this.label5.Location = new System.Drawing.Point(141, 42);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 28;
             this.label5.Text = "None";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.listBox1);
-            this.groupBox2.Location = new System.Drawing.Point(299, 4);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(266, 240);
-            this.groupBox2.TabIndex = 33;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Prices Log";
-            // 
-            // listBox1
-            // 
-            this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 18);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(254, 212);
-            this.listBox1.TabIndex = 0;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel1,
             this.ProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 367);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 389);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(577, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(490, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 36;
             this.statusStrip1.Text = "statusStrip1";
@@ -227,17 +203,17 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 82);
+            this.comboBox1.Location = new System.Drawing.Point(6, 82);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(535, 21);
+            this.comboBox1.Size = new System.Drawing.Size(453, 21);
             this.comboBox1.TabIndex = 38;
-            this.comboBox1.Text = "postal";
+            this.comboBox1.Text = "saints row IV";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(397, 51);
+            this.searchButton.Location = new System.Drawing.Point(309, 51);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(80, 25);
             this.searchButton.TabIndex = 39;
@@ -260,9 +236,9 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.comboBox1);
             this.groupBox4.Controls.Add(this.searchButton);
-            this.groupBox4.Location = new System.Drawing.Point(12, 246);
+            this.groupBox4.Location = new System.Drawing.Point(12, 274);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(553, 109);
+            this.groupBox4.Size = new System.Drawing.Size(471, 109);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Find Item";
@@ -270,7 +246,7 @@
             // findSetButton
             // 
             this.findSetButton.Enabled = false;
-            this.findSetButton.Location = new System.Drawing.Point(397, 20);
+            this.findSetButton.Location = new System.Drawing.Point(309, 20);
             this.findSetButton.Name = "findSetButton";
             this.findSetButton.Size = new System.Drawing.Size(80, 25);
             this.findSetButton.TabIndex = 50;
@@ -280,7 +256,7 @@
             // 
             // addtoScan
             // 
-            this.addtoScan.Location = new System.Drawing.Point(311, 20);
+            this.addtoScan.Location = new System.Drawing.Point(223, 20);
             this.addtoScan.Name = "addtoScan";
             this.addtoScan.Size = new System.Drawing.Size(80, 25);
             this.addtoScan.TabIndex = 49;
@@ -292,7 +268,7 @@
             // 
             this.prevButton.Enabled = false;
             this.prevButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.prevButton.Location = new System.Drawing.Point(311, 52);
+            this.prevButton.Location = new System.Drawing.Point(223, 52);
             this.prevButton.Name = "prevButton";
             this.prevButton.Size = new System.Drawing.Size(25, 25);
             this.prevButton.TabIndex = 48;
@@ -303,7 +279,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(340, 58);
+            this.label13.Location = new System.Drawing.Point(252, 58);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(23, 13);
             this.label13.TabIndex = 47;
@@ -312,7 +288,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(267, 58);
+            this.label11.Location = new System.Drawing.Point(179, 58);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(38, 13);
             this.label11.TabIndex = 46;
@@ -322,7 +298,7 @@
             // 
             this.nextButton.Enabled = false;
             this.nextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.nextButton.Location = new System.Drawing.Point(366, 52);
+            this.nextButton.Location = new System.Drawing.Point(278, 52);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(25, 25);
             this.nextButton.TabIndex = 45;
@@ -334,7 +310,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Location = new System.Drawing.Point(483, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(395, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);
             this.pictureBox1.TabIndex = 44;
@@ -379,17 +355,17 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Location = new System.Drawing.Point(12, 123);
+            this.tabControl1.Location = new System.Drawing.Point(12, 79);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(281, 121);
+            this.tabControl1.Size = new System.Drawing.Size(471, 189);
             this.tabControl1.TabIndex = 41;
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(266, 218);
+            this.button1.Location = new System.Drawing.Point(12, 242);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(25, 24);
             this.button1.TabIndex = 36;
@@ -397,16 +373,29 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.pictureBox2);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Location = new System.Drawing.Point(284, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(199, 70);
+            this.groupBox2.TabIndex = 36;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Account Info";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 389);
+            this.ClientSize = new System.Drawing.Size(490, 411);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -419,12 +408,13 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.groupBox2.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -441,7 +431,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar ProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel1;
@@ -455,7 +444,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button nextButton;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label11;
@@ -464,6 +452,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button addtoScan;
         private System.Windows.Forms.Button findSetButton;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 
