@@ -347,10 +347,10 @@ namespace SCMBot
 
             if (!steam.scaninProg)
             {
-                int num;
+              //  int num;
                 
-                if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
-                {
+                //if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
+               // {
                     steam.scanDelay = scanItem.delayValue;
                     steam.wishedPrice = scanItem.wishedValue;
                     steam.pageLink = scanItem.linkValue;
@@ -360,12 +360,12 @@ namespace SCMBot
 
                     StatusLabel1.Text = "Scanning Prices...";
                     scanItem.ButtonText = "Stop";
-                }
-                else
-                {
-                    MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-
+             //   }
+             //   else
+             //   {
+             //       MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+             //   }
+            //
             }
 
             else

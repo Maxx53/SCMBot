@@ -16,13 +16,18 @@ namespace SCMBot
         public event eventDelegate delegMessage;
 
         public const string _mainsite = "http://steamcommunity.com/";
+
         const string _comlog = "https://steamcommunity.com/login/";
         const string _ref = _comlog + "home/?goto=market%2F";
         const string _getrsa = _comlog + "getrsakey/";
         const string _dologin = _comlog + "dologin/";
         const string _logout = _comlog + "logout/";
         public const string _market = _mainsite + "market/";
-        const string _blist = _market + "buylisting/";
+        //const string _blist = _market + "buylisting/";
+        //FIX
+        public const string _mainsiteS = "https://steamcommunity.com/";
+        const string _blist = _mainsiteS + "market/buylisting/";
+
         const string _lists = _market + "listings/";
         public const string _search = _market + "search?q=";
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
@@ -314,6 +319,7 @@ namespace SCMBot
 
             //buy
             //29.08.2013 Steam Update Issue!
+            //FIX: using SSL - https:// in url
             string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
             if (buyres != string.Empty)
             {
