@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.loginButton = new System.Windows.Forms.Button();
             this.loginBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,46 +37,42 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.searchButton = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.findSetButton = new System.Windows.Forms.Button();
-            this.addtoScan = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.fullSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emptyTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prevButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.nextButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelStPrice = new System.Windows.Forms.Label();
             this.labelQuant = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.buyNowButton = new System.Windows.Forms.Button();
+            this.addtoScan = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.searchButton = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
+            this.selectedItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // loginButton
-            // 
-            this.loginButton.Location = new System.Drawing.Point(172, 13);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(88, 27);
-            this.loginButton.TabIndex = 8;
-            this.loginButton.Text = "Login";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // loginBox
             // 
@@ -141,22 +137,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(54, 24);
+            this.label10.Location = new System.Drawing.Point(98, 24);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(56, 13);
+            this.label10.Size = new System.Drawing.Size(32, 13);
             this.label10.TabIndex = 35;
-            this.label10.Text = "UserName";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Location = new System.Drawing.Point(11, 24);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox2.TabIndex = 33;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.label10.Text = "None";
             // 
             // label8
             // 
@@ -170,7 +155,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(141, 42);
+            this.label5.Location = new System.Drawing.Point(141, 43);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 28;
@@ -211,19 +196,9 @@
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
-            // searchButton
-            // 
-            this.searchButton.Location = new System.Drawing.Point(309, 51);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(80, 25);
-            this.searchButton.TabIndex = 39;
-            this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
-            // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.findSetButton);
+            this.groupBox4.Controls.Add(this.buyNowButton);
             this.groupBox4.Controls.Add(this.addtoScan);
             this.groupBox4.Controls.Add(this.prevButton);
             this.groupBox4.Controls.Add(this.label13);
@@ -243,26 +218,30 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Find Item";
             // 
-            // findSetButton
+            // contextMenuStrip1
             // 
-            this.findSetButton.Enabled = false;
-            this.findSetButton.Location = new System.Drawing.Point(309, 20);
-            this.findSetButton.Name = "findSetButton";
-            this.findSetButton.Size = new System.Drawing.Size(80, 25);
-            this.findSetButton.TabIndex = 50;
-            this.findSetButton.Text = "Find Full Set";
-            this.findSetButton.UseVisualStyleBackColor = true;
-            this.findSetButton.Click += new System.EventHandler(this.findSetButton_Click);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectedItemToolStripMenuItem,
+            this.fullSetToolStripMenuItem,
+            this.emptyTabToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(152, 70);
             // 
-            // addtoScan
+            // fullSetToolStripMenuItem
             // 
-            this.addtoScan.Location = new System.Drawing.Point(223, 20);
-            this.addtoScan.Name = "addtoScan";
-            this.addtoScan.Size = new System.Drawing.Size(80, 25);
-            this.addtoScan.TabIndex = 49;
-            this.addtoScan.Text = "Add to Scan";
-            this.addtoScan.UseVisualStyleBackColor = true;
-            this.addtoScan.Click += new System.EventHandler(this.addtoScan_Click);
+            this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
+            this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
+            this.fullSetToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.fullSetToolStripMenuItem.Text = "Full Set";
+            this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
+            // 
+            // emptyTabToolStripMenuItem
+            // 
+            this.emptyTabToolStripMenuItem.Image = global::SCMBot.Properties.Resources.blank;
+            this.emptyTabToolStripMenuItem.Name = "emptyTabToolStripMenuItem";
+            this.emptyTabToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.emptyTabToolStripMenuItem.Text = "EmptyTab";
+            this.emptyTabToolStripMenuItem.Click += new System.EventHandler(this.emptyTabToolStripMenuItem_Click);
             // 
             // prevButton
             // 
@@ -305,17 +284,6 @@
             this.nextButton.Text = ">";
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Location = new System.Drawing.Point(395, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
-            this.pictureBox1.TabIndex = 44;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // labelStPrice
             // 
@@ -362,19 +330,9 @@
             this.tabControl1.TabIndex = 41;
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(12, 242);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 24);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.pictureBox2);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label5);
@@ -386,13 +344,107 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Account Info";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(54, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "Name:";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox2.Location = new System.Drawing.Point(11, 24);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox2.TabIndex = 33;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // buyNowButton
+            // 
+            this.buyNowButton.Image = global::SCMBot.Properties.Resources.buy_now;
+            this.buyNowButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buyNowButton.Location = new System.Drawing.Point(223, 20);
+            this.buyNowButton.Name = "buyNowButton";
+            this.buyNowButton.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.buyNowButton.Size = new System.Drawing.Size(80, 25);
+            this.buyNowButton.TabIndex = 51;
+            this.buyNowButton.Text = "Buy Now";
+            this.buyNowButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buyNowButton.UseVisualStyleBackColor = true;
+            this.buyNowButton.Click += new System.EventHandler(this.buyNowButton_Click);
+            // 
+            // addtoScan
+            // 
+            this.addtoScan.ContextMenuStrip = this.contextMenuStrip1;
+            this.addtoScan.Image = global::SCMBot.Properties.Resources.add;
+            this.addtoScan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.addtoScan.Location = new System.Drawing.Point(309, 20);
+            this.addtoScan.Name = "addtoScan";
+            this.addtoScan.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.addtoScan.Size = new System.Drawing.Size(80, 25);
+            this.addtoScan.TabIndex = 49;
+            this.addtoScan.Text = "To Scan";
+            this.addtoScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.addtoScan.UseVisualStyleBackColor = true;
+            this.addtoScan.Click += new System.EventHandler(this.addtoScan_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Location = new System.Drawing.Point(395, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
+            this.pictureBox1.TabIndex = 44;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // searchButton
+            // 
+            this.searchButton.Image = global::SCMBot.Properties.Resources.search;
+            this.searchButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.searchButton.Location = new System.Drawing.Point(309, 51);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.searchButton.Size = new System.Drawing.Size(80, 25);
+            this.searchButton.TabIndex = 39;
+            this.searchButton.Text = "Search";
+            this.searchButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
+            // loginButton
+            // 
+            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
+            this.loginButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.loginButton.Location = new System.Drawing.Point(172, 13);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.loginButton.Size = new System.Drawing.Size(88, 27);
+            this.loginButton.TabIndex = 8;
+            this.loginButton.Text = "Login";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            // 
+            // selectedItemToolStripMenuItem
+            // 
+            this.selectedItemToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
+            this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
+            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.selectedItemToolStripMenuItem.Text = "Selected Item";
+            this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 411);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.statusStrip1);
@@ -407,14 +459,15 @@
             this.Load += new System.EventHandler(this.Main_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -449,10 +502,14 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button prevButton;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button addtoScan;
-        private System.Windows.Forms.Button findSetButton;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button buyNowButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem selectedItemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fullSetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem emptyTabToolStripMenuItem;
     }
 }
 

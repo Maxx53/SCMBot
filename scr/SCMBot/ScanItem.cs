@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading;
 
 
 namespace SCMBot
@@ -41,6 +42,20 @@ namespace SCMBot
             set { button4.Text = value; }
         }
 
+        public string ImgLink
+        {
+            set {
+
+                ThreadStart threadStart = delegate() { Main.loadImg(value, pictureBox1, false, true); };
+                Thread pTh = new Thread(threadStart);
+                pTh.IsBackground = true;
+                pTh.Start();
+
+
+
+                //Main.loadImg(value, pictureBox1, false);
+            }
+        }
 
         public ScanItem()
         {

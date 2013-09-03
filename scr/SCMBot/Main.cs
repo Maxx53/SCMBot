@@ -19,6 +19,8 @@ namespace SCMBot
     {
         SteamSite steam_srch = new SteamSite();
         SearchPagePos sppos;
+        string lastSrch;
+        bool addonComplete = false;
 
         List<ScanItem> ScanItLst = new List<ScanItem>();
         List<SteamSite> SteamLst = new List<SteamSite>();
@@ -41,7 +43,7 @@ namespace SCMBot
                 loginButton.PerformClick();
         }
 
-        private void addTabItem(string link, string price, string tabId)
+        private void addTabItem(string link, string price, string tabId, string imgLink)
         {
             if (tabId == string.Empty)
             tabControl1.TabPages.Add("Item " + (tabControl1.TabCount + 1).ToString());
@@ -52,6 +54,7 @@ namespace SCMBot
             tabControl1.TabPages[tabControl1.TabCount - 1].Controls.Add(scanIt);
             scanIt.linkValue = link;
             scanIt.wishedValue = price;
+            scanIt.ImgLink = imgLink;
             scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
             ScanItLst.Add(scanIt);
 
@@ -167,6 +170,7 @@ namespace SCMBot
                 case flag.Success_buy:
                     StatusLabel1.Text = "Item bought";
                     label5.Text = message;
+                    buyNowButton.Enabled = true;
                     break;
 
                 case flag.Scan_cancel:
@@ -205,9 +209,21 @@ namespace SCMBot
                         comboBox1.Items.Add(string.Format("Type: {0}, Item: {1}", ourItem.Game, ourItem.Name));
 
                     }
+
+                    if (addonComplete)
+                    {
+                        for (int i = 0; i < steam_srch.searchList.Count; i++)
+                        {
+                            var currItem = steam_srch.searchList[i];
+                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink);
+                        }
+                        addonComplete = false;
+                    }
+                    else
                     comboBox1.DroppedDown = true;
+
                     searchButton.Enabled = true;
-                    findSetButton.Enabled = true;
+
                     break;
             }
 
@@ -216,25 +232,70 @@ namespace SCMBot
 
         private void addtoScan_Click(object sender, EventArgs e)
         {
-            if (steam_srch.searchList.Count != 0)
-            {
-                for (int i = 0; i < steam_srch.searchList.Count; i++)
-                {
-                 var currItem = steam_srch.searchList[i];
-                 addTabItem(currItem.Link, currItem.StartPrice, currItem.Name);
-                }
-            }
+            contextMenuStrip1.Show(this.addtoScan, new Point(0, this.addtoScan.Height)); 
         }
 
 
-        private void findSetButton_Click(object sender, EventArgs e)
+        bool searchRight()
         {
-            if (comboBox1.Items.Count != 0)
+            return (comboBox1.Items.Count != 0 && steam_srch.searchList.Count != 0 && comboBox1.SelectedIndex > -1);
+        }
+
+        private void searchFirstMess()
+        {
+            MessageBox.Show("Try to find and choose an Item first", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void fullSetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //if (fullsetFinded)
+            //{}
+            if (searchRight())
             {
                 comboBox1.Text = string.Format("\"{0}\"", steam_srch.searchList[comboBox1.SelectedIndex].Game);
                 searchButton.PerformClick();
+
+                addonComplete = true;
             }
+            else
+                searchFirstMess();
         }
+
+
+        private void buyNowButton_Click(object sender, EventArgs e)
+        {
+            if (searchRight())
+            {
+                var ourItem = steam_srch.searchList[comboBox1.SelectedIndex];
+                steam_srch.BuyNow = true;
+                steam_srch.pageLink = ourItem.Link;
+                steam_srch.ScanPrices();
+                buyNowButton.Enabled = false;
+                StatusLabel1.Text = "Buying \"" + ourItem.Name + "\" in process...";
+            }
+            else 
+                searchFirstMess(); 
+
+        }
+
+        private void selectedItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (searchRight())
+            {
+                var ourItem = steam_srch.searchList[comboBox1.SelectedIndex];
+                addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink);
+                tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+            }
+            else
+                searchFirstMess();
+        }
+
+
+        private void emptyTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty);
+        }
+
 
         private void doSearch(byte type)
         {
@@ -242,6 +303,7 @@ namespace SCMBot
             {
                 case 0:
                     sppos = new SearchPagePos(0, 1);
+                    lastSrch = comboBox1.Text;
                     break;
                 case 1:
                     if (sppos.CurrentPos < sppos.PageCount)
@@ -258,7 +320,7 @@ namespace SCMBot
                     break;
             }
 
-            steam_srch.reqTxt = string.Format("{0}&start={1}0", comboBox1.Text, sppos.CurrentPos - 1);
+            steam_srch.reqTxt = string.Format("{0}&start={1}0", lastSrch, sppos.CurrentPos - 1);
             steam_srch.linkTxt = SteamSite._search;
             steam_srch.reqLoad();
         }
@@ -267,7 +329,6 @@ namespace SCMBot
         {
             doSearch(0);
             searchButton.Enabled = false;
-            findSetButton.Enabled = false;
         }
 
 
@@ -284,9 +345,9 @@ namespace SCMBot
             prevButton.Enabled = false;
         }
 
-        public void StartLoadImgTread(string imgUrl, PictureBox picbox)
+        public static void StartLoadImgTread(string imgUrl, PictureBox picbox)
         {
-            ThreadStart threadStart = delegate() { loadImg(imgUrl, picbox, true); };
+            ThreadStart threadStart = delegate() { loadImg(imgUrl, picbox, true, false); };
             Thread pTh = new Thread(threadStart);
             pTh.IsBackground = true;
             pTh.Start();
@@ -300,9 +361,10 @@ namespace SCMBot
             labelQuant.Text = ourItem.Quant;
             labelStPrice.Text = ourItem.StartPrice;
 
-            addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name);
+            //addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink);
 
-            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+           // tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+
             StartLoadImgTread(ourItem.ImgLink, pictureBox1);
 
         }
@@ -347,10 +409,10 @@ namespace SCMBot
 
             if (!steam.scaninProg)
             {
-              //  int num;
+                int num;
                 
-                //if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
-               // {
+                if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
+                {
                     steam.scanDelay = scanItem.delayValue;
                     steam.wishedPrice = scanItem.wishedValue;
                     steam.pageLink = scanItem.linkValue;
@@ -360,12 +422,12 @@ namespace SCMBot
 
                     StatusLabel1.Text = "Scanning Prices...";
                     scanItem.ButtonText = "Stop";
-             //   }
-             //   else
-             //   {
-             //       MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-             //   }
-            //
+               }
+               else
+               {
+                    MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               }
+            
             }
 
             else
@@ -402,10 +464,7 @@ namespace SCMBot
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            addTabItem(string.Empty, string.Empty, string.Empty);
-        }
+
 
         private void tabControl1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -436,6 +495,10 @@ namespace SCMBot
                 }
             }
         }
+
+
+
+
 
     }
 }

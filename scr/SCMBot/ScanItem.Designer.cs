@@ -37,11 +37,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(77, 70);
+            this.textBox1.Location = new System.Drawing.Point(77, 63);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(116, 20);
             this.textBox1.TabIndex = 42;
@@ -56,9 +58,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(77, 119);
+            this.button4.Location = new System.Drawing.Point(77, 113);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(116, 37);
+            this.button4.Size = new System.Drawing.Size(116, 43);
             this.button4.TabIndex = 36;
             this.button4.Text = "Start";
             this.button4.UseVisualStyleBackColor = true;
@@ -67,7 +69,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 43);
+            this.label1.Location = new System.Drawing.Point(5, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 13);
             this.label1.TabIndex = 37;
@@ -75,7 +77,7 @@
             // 
             // wishpriceBox
             // 
-            this.wishpriceBox.Location = new System.Drawing.Point(77, 40);
+            this.wishpriceBox.Location = new System.Drawing.Point(77, 36);
             this.wishpriceBox.Name = "wishpriceBox";
             this.wishpriceBox.Size = new System.Drawing.Size(116, 20);
             this.wishpriceBox.TabIndex = 38;
@@ -84,7 +86,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(38, 73);
+            this.label6.Location = new System.Drawing.Point(38, 66);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(34, 13);
             this.label6.TabIndex = 41;
@@ -102,7 +104,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(77, 96);
+            this.checkBox1.Location = new System.Drawing.Point(77, 90);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(44, 17);
             this.checkBox1.TabIndex = 40;
@@ -119,11 +121,22 @@
             this.listBox1.TabIndex = 43;
             this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Location = new System.Drawing.Point(5, 91);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
+            this.pictureBox1.TabIndex = 45;
+            this.pictureBox1.TabStop = false;
+            // 
             // ScanItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox5);
@@ -135,6 +148,7 @@
             this.Controls.Add(this.checkBox1);
             this.Name = "ScanItem";
             this.Size = new System.Drawing.Size(471, 170);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,5 +165,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

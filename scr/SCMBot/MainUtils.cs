@@ -110,9 +110,11 @@ namespace SCMBot
         }
 
 
-        static private Color backColor(Image img)
+        static private Color backColor(Image img, bool doWhite)
         {
             Color back = SystemColors.Control;
+            if (doWhite)
+                back = Color.White;
             Bitmap bitmap =  new Bitmap(img);
             var colors = new List<Color>();
             for (int y = 0; y < bitmap.Size.Height; y++)
@@ -128,8 +130,11 @@ namespace SCMBot
         }
 
 
-        static public void loadImg(string imgurl, PictureBox picbox, bool drawtext)
+        static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
         {
+            if (imgurl == string.Empty)
+                return;
+
             if (drawtext)
             {
                 StringFormat sf = new StringFormat();
@@ -147,7 +152,7 @@ namespace SCMBot
             {
                 ms.Write(imageByte, 0, imageByte.Length);
                 var resimg = Image.FromStream(ms, true);
-                picbox.BackColor = backColor(resimg);
+                picbox.BackColor = backColor(resimg, doWhite);
                 picbox.Image = resimg;
             }
         }

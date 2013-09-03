@@ -25,6 +25,7 @@ namespace SCMBot
         public bool LoginProcess { set; get; }
         public bool scaninProg { set; get; }
         public bool toBuy { set; get; }
+        public bool BuyNow { set; get; }
 
         public CookieContainer cookieCont { set; get; }
 
@@ -180,7 +181,7 @@ namespace SCMBot
                 {
                     guardCheckForm.codgroupEnab = false;
                     capchaId = serialCheck["captcha_gid"];
-                    Main.loadImg(_capcha + capchaId, guardCheckForm.capchImg, false);
+                    Main.loadImg(_capcha + capchaId, guardCheckForm.capchImg, false, false);
                 }
 
                 doMessage(flag.Rep_progress, 0, "80");
@@ -251,49 +252,66 @@ namespace SCMBot
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-
-            //Небольшая проблема с форматом цены, обязательно указывать копейки после запятой или точки.
-            int wished = Convert.ToInt32(Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty));
-
-            //TODO: Проверка наличия цифр, запятой или точки
-            int delay = Convert.ToInt32(scanDelay);
-            int prog = 1;
-
             string sessid = GetSessId(cookieCont);
 
-            while (worker.CancellationPending == false)
+            if (BuyNow)
             {
                 ParseLotList(SendPostRequest(string.Empty, pageLink, string.Empty, cookieCont, false), lotList);
-
                 if (lotList.Count == 0)
                 {
                     doMessage(flag.Price_text, scanID, "Error");
-                    continue;
-                }
-
-                //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
-                string total = lotList[0].Price;
-                int current = Convert.ToInt32(total);
-                string prtoTxt = total.Insert(total.Length - 2, ",");
-                if (current < wished)
-                {
-                    if (toBuy)
-                    {
-                        string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal);
-                        doMessage(flag.Success_buy, scanID, walletball);
-                        doMessage(flag.Price_btext, scanID, prtoTxt);
-                    }
-                    else doMessage(flag.Price_htext, 0, prtoTxt);
                 }
                 else
-                    doMessage(flag.Price_text, scanID, prtoTxt);
-
-                doMessage(flag.Scan_progress, scanID, prog.ToString());
-                Sem.WaitOne(delay);
-                prog++;
+                {
+                    string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal);
+                    BuyNow = false;
+                    doMessage(flag.Success_buy, scanID, walletball);
+                }
             }
+            else
+            {
+                //Небольшая проблема с форматом цены, обязательно указывать копейки после запятой или точки.
+                int wished = Convert.ToInt32(Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty));
 
-            doMessage(flag.Scan_cancel, scanID, string.Empty);
+                //TODO: Проверка наличия цифр, запятой или точки
+                int delay = Convert.ToInt32(scanDelay);
+                int prog = 1;
+
+                while (worker.CancellationPending == false)
+                {
+                    ParseLotList(SendPostRequest(string.Empty, pageLink, string.Empty, cookieCont, false), lotList);
+
+                    if (lotList.Count == 0)
+                    {
+                        doMessage(flag.Price_text, scanID, "Error");
+                        continue;
+                    }
+
+                    //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
+                    string total = lotList[0].Price;
+                    int current = Convert.ToInt32(total);
+                    string prtoTxt = total.Insert(total.Length - 2, ",");
+                    if (current < wished)
+                    {
+                        if (toBuy)
+                        {
+                            string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal);
+                            doMessage(flag.Success_buy, scanID, walletball);
+                            doMessage(flag.Price_btext, scanID, prtoTxt);
+                        }
+                        else doMessage(flag.Price_htext, 0, prtoTxt);
+                    }
+                    else
+                        doMessage(flag.Price_text, scanID, prtoTxt);
+
+                    doMessage(flag.Scan_progress, scanID, prog.ToString());
+                    Sem.WaitOne(delay);
+                    prog++;
+                }
+
+                doMessage(flag.Scan_cancel, scanID, string.Empty);
+
+            }
         }
 
     }
