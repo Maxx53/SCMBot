@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SCMBot
 {
@@ -20,12 +21,17 @@ namespace SCMBot
 
         public string reqTxt { set; get; }
         public string linkTxt { set; get; }
-
+   
         public bool Logged { set; get; }
         public bool LoginProcess { set; get; }
         public bool scaninProg { set; get; }
         public bool toBuy { set; get; }
         public bool BuyNow { set; get; }
+
+        public int invApp { get; set; }
+        
+        public static string accName;
+        
 
         public CookieContainer cookieCont { set; get; }
 
@@ -34,7 +40,11 @@ namespace SCMBot
         private BackgroundWorker loginThread = new BackgroundWorker();
         private BackgroundWorker scanThread = new BackgroundWorker();
         private BackgroundWorker reqThread = new BackgroundWorker();
+        private BackgroundWorker sellThread = new BackgroundWorker();
 
+        private BackgroundWorker getInventory = new BackgroundWorker();
+
+        public List<ItemToSell> toSellList = new List<ItemToSell>(); 
 
         public SteamSite()
         {
@@ -46,8 +56,37 @@ namespace SCMBot
 
             reqThread.WorkerSupportsCancellation = true;
             reqThread.DoWork += new DoWorkEventHandler(reqThread_DoWork);
+
+
+            getInventory.WorkerSupportsCancellation = true;
+            getInventory.DoWork += new DoWorkEventHandler(getInventory_DoWork);
+
+            sellThread.WorkerSupportsCancellation = true;
+            sellThread.DoWork += new DoWorkEventHandler(sellThread_DoWork);
          }
 
+        public class AppType
+        {
+            public AppType(string app, string context)
+            {
+                this.App = app;
+                this.Context = context;
+            }
+            public string App { set; get; }
+            public string Context { set; get; }
+        }
+
+        public class ItemToSell
+        {
+            public ItemToSell(string assetid, string price)
+            {
+                this.AssetId = assetid;
+                this.Price = price;
+            }
+
+            public string AssetId { set; get; }
+            public string Price { set; get; }
+        }
 
         public void Login()
         {
@@ -68,7 +107,7 @@ namespace SCMBot
         public void Logout()
         {
             ThreadStart threadStart = delegate() {
-                SendPostRequest(string.Empty, _logout, _market, cookieCont, false);
+                GetRequest(_logout, cookieCont);
                 doMessage(flag.Logout_, 0, string.Empty);
                 Logged = false;
             };
@@ -96,7 +135,6 @@ namespace SCMBot
                 Sem.Release();
                 scanThread.CancelAsync();
             }
-
         }
 
 
@@ -108,10 +146,86 @@ namespace SCMBot
             }
         }
 
+
+        public void loadInventory()
+        {
+            if (getInventory.IsBusy != true)
+            {
+                getInventory.RunWorkerAsync();
+            }
+        }
+
+        public void ItemSell()
+        {
+            if (sellThread.IsBusy != true)
+            {
+                sellThread.RunWorkerAsync();
+            }
+        }
+
+
+        static AppType GetUrlApp(int appIndx, bool isGetInv)
+        {
+            string app = "753";
+            string cont = "2";
+
+            switch (appIndx)
+            {
+                case 0: 
+                    app = "753";
+                    cont = "6";
+                    break;
+                case 1: 
+                    app = "440";
+                    cont = "2";
+                    break;
+
+                case 2:
+                    app = "570";
+                    cont = "2";
+                    break;
+            }
+            if (isGetInv)
+            return new AppType(string.Format("{0}/{1}",app,cont),string.Empty);
+            else return new AppType( app, cont);
+
+
+        }
+
+        private void getInventory_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            doMessage(flag.Inventory_Loaded, 0, ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
+                cookieCont)));
+        }
+
+        private void sellThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var cunt = toSellList.Count;
+
+            if (cunt != 0)
+            {
+                var appReq = GetUrlApp(invApp, false);
+
+                int incr = (100 / cunt);
+
+                for (int i = 0; i < cunt; i++)
+                {
+                    var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
+                    SendPostRequest(req, _sellitem, _market, cookieCont, false);
+                    doMessage(flag.Sell_progress, 0, (incr * (i + 1)).ToString());
+                }
+
+                doMessage(flag.Items_Sold, 0, string.Empty);
+            }
+        }
+
+
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            doMessage(flag.Search_success, 0, ParseSearchRes(SendPostRequest(string.Empty, linkTxt + reqTxt, _market, cookieCont, false), searchList));
+            doMessage(flag.Search_success, 0, ParseSearchRes(GetRequest(linkTxt + reqTxt, cookieCont), searchList));
         }
+
 
         private void loginThread_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -121,7 +235,7 @@ namespace SCMBot
             Logged = false;
             doMessage(flag.Rep_progress, 0, "20");
             //if (worker.CancellationPending == true)
-              //  return;
+            //  return;
 
             string accInfo = GetNameBalance(cookieCont);
             if (accInfo != string.Empty)
@@ -133,7 +247,7 @@ namespace SCMBot
                 return;
             }
 
-        begin:
+
 
             string log_content = SendPostRequest("username=" + UserName, _getrsa, _ref, cookieCont, true);
             if (log_content == string.Empty)
@@ -143,79 +257,73 @@ namespace SCMBot
             }
 
             doMessage(flag.Rep_progress, 0, "40");
-          //  if (worker.CancellationPending == true)
-             //   return;
+            //  if (worker.CancellationPending == true)
+            //   return;
 
-            Dictionary<string, string> serialLogin = ParseJson(log_content);
+            var rRSA = JsonConvert.DeserializeObject<RespRSA>(log_content);
+            string firstTry = string.Empty;
+            string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
 
-            string modval = serialLogin["publickey_mod"];
-            string expval = serialLogin["publickey_exp"];
-            string timeStamp = serialLogin["timestamp"];
+        begin:
 
-            string finalpass = EncryptPassword(log_content, Password, modval, expval);
+            if (rRSA.Success)
+            {
+                firstTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, string.Empty,
+                                                                string.Empty, string.Empty, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
+                doMessage(flag.Rep_progress, 0, "60");
+                // if (worker.CancellationPending == true)
+                //     return;
+            }
+            else
+            {
+                return;
+                //el probleme, comondante
+            }
 
-            string capchaId = string.Empty;
-            string steamId = string.Empty;
+            var rProcess = JsonConvert.DeserializeObject<RespProcess>(firstTry);
 
-
-            string firstTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, capchaId,
-                                                            string.Empty, steamId, timeStamp), _dologin, _ref, cookieCont, true);
-            doMessage(flag.Rep_progress, 0, "60");
-           // if (worker.CancellationPending == true)
-           //     return;
-            serialLogin.Clear();
-
-            Dictionary<string, string> serialCheck = ParseJson(firstTry);
-
-            if (serialCheck.ContainsKey("message"))
+            if (firstTry.Contains("message"))
             {
 
                 Dialog guardCheckForm = new Dialog();
 
-                if (serialCheck["message"] == "SteamGuard")
+                if (rProcess.isEmail)
                 {
                     guardCheckForm.capchgroupEnab = false;
-                    steamId = serialCheck["emailsteamid"];
                 }
-                else if (serialCheck["message"] == "Error verifying humanity")
+                else if (rProcess.isCaptcha)
                 {
                     guardCheckForm.codgroupEnab = false;
-                    capchaId = serialCheck["captcha_gid"];
-                    Main.loadImg(_capcha + capchaId, guardCheckForm.capchImg, false, false);
+                    Main.loadImg(_capcha + rProcess.Captcha_Id, guardCheckForm.capchImg, false, false);
                 }
 
                 doMessage(flag.Rep_progress, 0, "80");
-            //    if (worker.CancellationPending == true)
-             //       return;
+                //    if (worker.CancellationPending == true)
+                //       return;
 
                 if (guardCheckForm.ShowDialog() == DialogResult.OK)
                 {
 
-                    string secondTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, capchaId,
-                                                           guardCheckForm.capchaText, steamId, timeStamp), _dologin, _ref, cookieCont, true);
+                    string secondTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
+                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
 
-                    Dictionary<string, string> serialFinal = ParseJson(secondTry);
 
-                    if (serialFinal.ContainsKey("login_complete"))
+                    var rFinal = JsonConvert.DeserializeObject<RespFinal>(secondTry);
+
+                    if (rFinal.Success && rFinal.isComplete)
                     {
                         string accInfo2 = GetNameBalance(cookieCont);
-
                         doMessage(flag.Login_success, 0, accInfo2);
                         doMessage(flag.Rep_progress, 0, "100");
                         Logged = true;
                         Main.AddtoLog("Login Success");
                     }
-                    else if (serialFinal["message"] == "SteamGuard")
+                    else
                     {
                         //TODO: Разобрать кашу, выкинуть goto
                         goto begin;
                     }
 
-                    else
-                    {
-                        Main.AddtoLog("Login Problem");
-                        e.Cancel = true;
-                    }
                 }
                 else
                 {
@@ -227,7 +335,8 @@ namespace SCMBot
                 guardCheckForm.Dispose();
 
             }
-            else if (serialCheck.ContainsKey("login_complete"))
+
+            else if (rProcess.Success)
             {
                 string accInfo3 = GetNameBalance(cookieCont);
 
@@ -243,7 +352,6 @@ namespace SCMBot
                 e.Cancel = true;
             }
 
-            serialCheck.Clear();
             LoginProcess = false;
         }
 
@@ -256,7 +364,8 @@ namespace SCMBot
 
             if (BuyNow)
             {
-                ParseLotList(SendPostRequest(string.Empty, pageLink, string.Empty, cookieCont, false), lotList);
+                ParseLotList(GetRequest(pageLink, cookieCont), lotList);
+
                 if (lotList.Count == 0)
                 {
                     doMessage(flag.Price_text, scanID, "Error");
@@ -279,7 +388,7 @@ namespace SCMBot
 
                 while (worker.CancellationPending == false)
                 {
-                    ParseLotList(SendPostRequest(string.Empty, pageLink, string.Empty, cookieCont, false), lotList);
+                    ParseLotList(GetRequest(pageLink, cookieCont), lotList);
 
                     if (lotList.Count == 0)
                     {
@@ -313,6 +422,11 @@ namespace SCMBot
 
             }
         }
+
+
+
+
+
 
     }
 }

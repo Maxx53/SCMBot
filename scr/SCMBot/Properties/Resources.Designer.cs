@@ -81,6 +81,13 @@ namespace SCMBot.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cancel {
+            get {
+                object obj = ResourceManager.GetObject("cancel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap fullset {
             get {
                 object obj = ResourceManager.GetObject("fullset", resourceCulture);

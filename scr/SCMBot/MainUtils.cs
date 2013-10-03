@@ -8,10 +8,12 @@ using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Security.Cryptography;
+using System.Collections;
 
 namespace SCMBot
 {
     public delegate void eventDelegate(object sender, string message, int searchId, flag myflag);
+
 
     [Flags]
     public enum flag : byte
@@ -28,7 +30,10 @@ namespace SCMBot
         Scan_cancel = 9,
         Scan_progress = 10,
         Search_success = 11,
-        Price_btext = 12
+        Price_btext = 12,
+        Inventory_Loaded = 13,
+        Items_Sold = 14,
+        Sell_progress = 15
     }
 
 
@@ -52,6 +57,66 @@ namespace SCMBot
 
             public int PageCount { set; get; }
             public int CurrentPos { set; get; }
+
+        }
+
+
+        class ItemComparer : IComparer
+        {
+            int columnIndex = 0;
+            bool sortAscending = true;
+            public int ColumnIndex
+            {
+                set
+                {
+                    if (columnIndex == value)
+                        sortAscending = !sortAscending;
+                    else
+                    {
+                        columnIndex = value;
+                        sortAscending = true;
+                    }
+                }
+            }
+
+            public int Compare(object x, object y)
+            {
+                string value1 = ((ListViewItem)x).SubItems[columnIndex].Text;
+                string value2 = ((ListViewItem)y).SubItems[columnIndex].Text;
+                return String.Compare(value1, value2) * (sortAscending ? 1 : -1);
+            }
+        }
+
+        private static void SetColumnWidths(ListView list, bool useUpdate)
+        {
+            if (useUpdate)
+                list.BeginUpdate();
+
+            int width;
+            int totalWidth = 0;
+
+            foreach (ColumnHeader col in list.Columns)
+            {
+                if (list.Columns.Count != col.DisplayIndex)
+                {
+                    col.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                    width = col.Width;
+
+                    col.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                    if (width > col.Width)
+                        col.Width = width;
+
+                    totalWidth += col.Width;
+                }
+                else
+                {
+                    col.Width = (list.ClientSize.Width - totalWidth);
+                }
+
+            }
+
+            if (useUpdate)
+                list.EndUpdate();
 
         }
 

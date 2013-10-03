@@ -6,6 +6,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+
 
 namespace SCMBot
 {
@@ -36,19 +38,52 @@ namespace SCMBot
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
         const string buyReq = "sessionid={0}&currency=5&subtotal={1}&fee={2}&total={3}";
 
-        private List<MutliString> lotList = new List<MutliString>();
-        public List<MutliString> searchList = new List<MutliString>();
+        const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
+        public const string invImgUrl = "http://cdn.steamcommunity.com/economy/image/{0}/96fx96f";
+        public const string _sellitem = _mainsiteS + "market/sellitem/";
+        public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
 
-        public class MutliString
+        private List<ScanItem> lotList = new List<ScanItem>();
+        public List<SearchItem> searchList = new List<SearchItem>();
+        public List<InventItem> inventList = new List<InventItem>();
+
+        public class ScanItem
         {
-            public MutliString(string sellerId, string price, string subtotal)
+            public ScanItem(string sellerId, string price, string subtotal)
             {
                 this.SellerId = sellerId;
                 this.Price = price;
                 this.SubTotal = subtotal;
             }
 
-            public MutliString(string name, string game, string link, string quant, string startprice, string imglink)
+            public string SellerId { set; get; }
+            public string Price { set; get; }
+            public string SubTotal { set; get; }
+        }
+
+        public class InventItem
+        {
+            public InventItem(string assetid, string name, string type, string price, string imglink)
+            {
+                this.Name = name;
+                this.AssetId = assetid;
+                this.Type = type;
+                this.Price = price;
+                this.ImgLink = imglink;
+            }
+
+            public string Name { set; get; }
+            public string ImgLink { set; get; }
+            public string Price { set; get; }
+            public string Type { set; get; }
+            public string AssetId { set; get; }
+
+        }
+
+        public class SearchItem
+        {
+
+            public SearchItem(string name, string game, string link, string quant, string startprice, string imglink)
             {
                 this.Name = name;
                 this.Game = game;
@@ -64,12 +99,111 @@ namespace SCMBot
             public string ImgLink { set; get; }
             public string Quant { set; get; }
             public string StartPrice { set; get; }
-            public string SellerId { set; get; }
-            public string Price { set; get; }
-            public string SubTotal { set; get; }
 
         }
 
+
+        //JSON Stuff...
+
+        public class RespRSA
+        {
+
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+
+            [JsonProperty("publickey_mod")]
+            public string Module { get; set; }
+
+            [JsonProperty("publickey_exp")]
+            public string Exponent { get; set; }
+
+            [JsonProperty("timestamp")]
+            public string TimeStamp { get; set; }
+        }
+
+        public class RespProcess
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+
+            [JsonProperty("emailauth_needed")]
+            public bool isEmail { get; set; }
+
+            [JsonProperty("captcha_needed")]
+            public bool isCaptcha { get; set; }
+
+            [JsonProperty("message")]
+            public string Message { get; set; }
+
+            [JsonProperty("captcha_gid")]
+            public string Captcha_Id { get; set; }
+
+            [JsonProperty("emailsteamid")]
+            public string Email_Id { get; set; }
+        }
+
+        public class RespFinal
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+
+            [JsonProperty("login_complete")]
+            public bool isComplete { get; set; }
+        }
+
+
+        public class InventoryData
+        {
+            [JsonProperty("rgInventory")]
+            public IDictionary<string, InvItem> myInvent { get; set; }
+
+            [JsonProperty("rgDescriptions")]
+            public IDictionary<string, ItemDescr> invDescr { get; set; }
+        }
+
+
+        public class InvItem
+        {
+            [JsonProperty("id")]
+            public string assetid { get; set; }
+
+            [JsonProperty("classid")]
+            public string classid { get; set; }
+        }
+
+
+        public class ItemDescr
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("icon_url")]
+            public string IconUrl { get; set; }
+
+            [JsonProperty("type")]
+            public string Type { get; set; }
+
+            [JsonProperty("market_hash_name")]
+            public string MarketName { get; set; }
+        }
+
+
+        public class WalletInfo
+        {
+            [JsonProperty("wallet_info")]
+            public Wallet WalletRes { get; set; }
+        }
+
+        public class Wallet
+        {
+            [JsonProperty("wallet_balance")]
+            public string Balance { get; set; }
+            [JsonProperty("success")]
+            public int Success { get; set; }
+        }
+
+
+        //End JSON
 
         protected void doMessage(flag myflag, int searchId, string message)
         {
@@ -119,6 +253,7 @@ namespace SCMBot
         public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
         {
             var requestData = Encoding.UTF8.GetBytes(req);
+            string content = string.Empty;
 
             try
             {
@@ -138,8 +273,6 @@ namespace SCMBot
 
                 HttpWebResponse resp = (HttpWebResponse)request.GetResponse();
 
-                string content = string.Empty;
-
                 var stream = new StreamReader(resp.GetResponseStream());
                 content = stream.ReadToEnd();
 
@@ -156,13 +289,45 @@ namespace SCMBot
             {
                 MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Main.AddtoLog(e.GetType() + ". " + e.Message);
-                return string.Empty;
+                return content;
             }
 
         }
 
 
-        public static string EncryptPassword(string steam_rsa, string password, string modval, string expval)
+
+        public static string GetRequest(string url, CookieContainer cookie)
+        {
+             string content = string.Empty;
+
+             try
+             {
+                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+                 request.Method = "GET";
+                 request.Accept = "application/json";
+                 request.CookieContainer = cookie;
+
+                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                 var stream = new StreamReader(response.GetResponseStream());
+                 content = stream.ReadToEnd();
+
+                 response.Close();
+                 stream.Close();
+
+                 return content;
+             }
+             catch (Exception e)
+             {
+                 MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 Main.AddtoLog(e.GetType() + ". " + e.Message);
+                 return content;
+             }
+        }
+
+
+
+        public static string EncryptPassword(string password, string modval, string expval)
         {
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
             RSAParameters rsaParams = new RSAParameters();
@@ -177,79 +342,13 @@ namespace SCMBot
             return Uri.EscapeDataString(encryptedPass);
         }
 
-        //Thanks to habrahabr.ru
-        static Dictionary<string, string> ParseJson(string res)
-        {
-            var lines = res.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            var ht = new Dictionary<string, string>(20);
-            var st = new Stack<string>(20);
-
-            for (int i = 0; i < lines.Length; ++i)
-            {
-                var line = lines[i];
-                var pair = line.Split(":".ToCharArray(), 2, StringSplitOptions.RemoveEmptyEntries);
-
-                if (pair.Length == 2)
-                {
-                    var key = ClearString(pair[0]);
-                    var val = ClearString(pair[1]);
-
-                    if (val == "{")
-                    {
-                        st.Push(key);
-                    }
-                    else
-                    {
-                        if (st.Count > 0)
-                        {
-                            key = string.Join("_", st) + "_" + key;
-                        }
-
-                        if (ht.ContainsKey(key))
-                        {
-                            ht[key] += "&" + val;
-                        }
-                        else
-                        {
-                            ht.Add(key, val);
-                        }
-                    }
-                }
-                else if (line.IndexOf('}') != -1 && st.Count > 0)
-                {
-                    st.Pop();
-                }
-            }
-
-            return ht;
-        }
-
-
-        static string ClearString(string str)
-        {
-            str = str.Trim();
-
-            var ind0 = str.IndexOf("\"");
-            var ind1 = str.LastIndexOf("\"");
-
-            if (ind0 != -1 && ind1 != -1)
-            {
-                str = str.Substring(ind0 + 1, ind1 - ind0 - 1);
-            }
-            else if (str[str.Length - 1] == ',')
-            {
-                str = str.Substring(0, str.Length - 1);
-            }
-
-            return str;
-        }
 
         //steam utils
 
         public static string GetNameBalance(CookieContainer cock)
         {
             Main.AddtoLog("Getting account name and balance...");
-            string markpage = SendPostRequest(string.Empty, _market, string.Empty, cock, false);
+            string markpage = GetRequest(_market, cock);
        
             string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString().Trim();
             if (parseName == "")
@@ -262,7 +361,7 @@ namespace SCMBot
             int nlength = parseName.Length;
             if (nlength != 0)
             {
-                parseName = parseName.Substring(0, nlength - 6);
+                accName = parseName.Substring(0, nlength - 6);
             }
 
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?<=</span>)").ToString();
@@ -272,7 +371,7 @@ namespace SCMBot
             {
                 parseAmount = parseAmount.Substring(0, parseAmount.IndexOf(" "));
             }
-            return string.Format("{0};{1};{2}", parseName, parseAmount, parseImg);
+            return string.Format("{0};{1};{2}", accName, parseAmount, parseImg);
         }
 
 
@@ -289,7 +388,7 @@ namespace SCMBot
         }
 
 
-        private static string GetSessId(CookieContainer coock)
+        public static string GetSessId(CookieContainer coock)
         {
             //sessid sample MTMyMTg5MTk5Mw%3D%3D
             string resId = string.Empty;
@@ -323,12 +422,11 @@ namespace SCMBot
             string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
             if (buyres != string.Empty)
             {
+                var AfterBuy = JsonConvert.DeserializeObject<WalletInfo>(buyres);
 
-                Dictionary<string, string> serialBuy = ParseJson(buyres);
-
-                if (serialBuy["success"] == "1")
+                if (AfterBuy.WalletRes.Success == 1)
                 {
-                    string balance = serialBuy["wallet_balance"];
+                    string balance = AfterBuy.WalletRes.Balance;
                     balance = balance.Insert(balance.Length - 2, ",");
                     return balance;
 
@@ -339,7 +437,7 @@ namespace SCMBot
 
         }
 
-        public static void ParseLotList(string content, List<MutliString> lst)
+       public static void ParseLotList(string content, List<ScanItem> lst)
         {
             lst.Clear();
 
@@ -374,7 +472,7 @@ namespace SCMBot
                     string[] parts = Regex.Split(amount, " +");
 
                     //Заполняем список лотов
-                    lst.Add(new MutliString(sellid, parts[0], parts[1]));
+                    lst.Add(new ScanItem(sellid, parts[0], parts[1]));
                     
                     //Remove this to parse all 10 items
                     return;
@@ -385,7 +483,7 @@ namespace SCMBot
         }
 
 
-        public static string ParseSearchRes(string content, List<MutliString> lst)
+        public static string ParseSearchRes(string content, List<SearchItem> lst)
         {
             lst.Clear();
             string totalfind = "0";
@@ -415,7 +513,7 @@ namespace SCMBot
                     string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
 
                     //Заполняем список 
-                    lst.Add(new MutliString(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
+                    lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
                 }
 
                 totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
@@ -425,7 +523,26 @@ namespace SCMBot
            
             return totalfind;
         }
-      
+
+
+        public string ParseInventory(string content)
+        {
+            inventList.Clear();
+
+            var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
+
+
+            foreach (InvItem prop in rgDescr.myInvent.Values)
+            {
+                var ourItem = rgDescr.invDescr[prop.classid + "_0"];
+                //parse cost by url (_lists + 753/ + ourItem.MarketName)
+                //or (_search + name)
+
+                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, "None ", ourItem.IconUrl));
+            }
+
+            return inventList.Count.ToString();
+        }
 
     }
 }

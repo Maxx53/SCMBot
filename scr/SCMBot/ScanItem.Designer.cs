@@ -58,6 +58,7 @@
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button4.Location = new System.Drawing.Point(77, 113);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(116, 43);
@@ -103,6 +104,7 @@
             // 
             // checkBox1
             // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(77, 90);
             this.checkBox1.Name = "checkBox1";
@@ -113,16 +115,20 @@
             // 
             // listBox1
             // 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(199, 9);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(258, 147);
+            this.listBox1.Size = new System.Drawing.Size(352, 147);
             this.listBox1.TabIndex = 43;
             this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Location = new System.Drawing.Point(5, 91);
@@ -147,7 +153,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Name = "ScanItem";
-            this.Size = new System.Drawing.Size(471, 170);
+            this.Size = new System.Drawing.Size(565, 170);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
