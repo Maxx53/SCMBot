@@ -44,6 +44,7 @@ namespace SCMBot
             if (checkBox2.Checked)
                 loginButton.PerformClick();
 
+            //temp
             comboBox3.SelectedIndex = 0;
         }
 
@@ -80,6 +81,7 @@ namespace SCMBot
             //If you need password crypting
             //passwordBox.Text = Decrypt(settings.lastPass);
             passwordBox.Text = settings.lastPass;
+            comboBox2.SelectedIndex = settings.curComb;
         }
 
 
@@ -92,6 +94,7 @@ namespace SCMBot
             //If you need password crypting
             //settings.lastPass = Encrypt(passwordBox.Text);
             settings.lastPass = passwordBox.Text;
+            settings.curComb = comboBox2.SelectedIndex;
             settings.Save();
         }
 
@@ -248,13 +251,14 @@ namespace SCMBot
                 case flag.Inventory_Loaded:
                     InventoryList.Items.Clear();
                     label4.Text = message;
-
+                    InventoryList.Groups[0].Header = string.Format("In Inventory ({0})", steam_srch.inventList.Count);
                     for (int i = 0; i < steam_srch.inventList.Count; i++)
                     {
                         var ourItem = steam_srch.inventList[i];
                         string[] row = { string.Empty, ourItem.Type, ourItem.Name, ourItem.Price };
-                        InventoryList.Items.Add(new ListViewItem(row));
-
+                        var lstItem = new ListViewItem(row);
+                        lstItem.Group = InventoryList.Groups[0];
+                        InventoryList.Items.Add(lstItem);
                     }
 
                     SetColumnWidths(InventoryList, true);
@@ -436,6 +440,28 @@ namespace SCMBot
 
         }
 
+        public static string GetCurrency(int comboItm)
+        {
+            //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB
+            string output = "5";
+
+            switch (comboItm)
+            {
+                case 0:
+                    output = "1";
+                    break;
+                case 1:
+                    output = "2";
+                    break;
+                case 2:
+                    output = "3";
+                    break;
+                case 3:
+                    output = "5";
+                    break;
+            }
+            return output;
+        }
 
         public void ScanItemButton_Click(object sender, EventArgs e)
         {
@@ -453,6 +479,7 @@ namespace SCMBot
                     steam.pageLink = scanItem.linkValue;
                     steam.toBuy = scanItem.tobuyValue;
                     steam.scanID = tabControl1.SelectedIndex;
+                    steam.currency = GetCurrency(comboBox2.SelectedIndex);
                     steam.ScanPrices();
 
                     StatusLabel1.Text = "Scanning Prices...";
@@ -627,6 +654,11 @@ namespace SCMBot
                 var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
                 StartLoadImgTread(string.Format(SteamSite.invImgUrl, ourItem.ImgLink), pictureBox3);
             }
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            steam_srch.currency = GetCurrency(comboBox2.SelectedIndex);
         }
 
 

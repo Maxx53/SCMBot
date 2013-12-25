@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace SCMBot
 {
-    
+
     public partial class SteamSite
     {
 
@@ -36,7 +36,9 @@ namespace SCMBot
 
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
-        const string buyReq = "sessionid={0}&currency=5&subtotal={1}&fee={2}&total={3}";
+        //Currency FIX
+        //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
+        const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}";
 
         const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
         public const string invImgUrl = "http://cdn.steamcommunity.com/economy/image/{0}/96fx96f";
@@ -277,7 +279,7 @@ namespace SCMBot
                 content = stream.ReadToEnd();
 
                 if (tolog)
-                Main.AddtoLog(content);
+                    Main.AddtoLog(content);
 
                 cookie = request.CookieContainer;
                 resp.Close();
@@ -298,31 +300,31 @@ namespace SCMBot
 
         public static string GetRequest(string url, CookieContainer cookie)
         {
-             string content = string.Empty;
+            string content = string.Empty;
 
-             try
-             {
-                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
-                 request.Method = "GET";
-                 request.Accept = "application/json";
-                 request.CookieContainer = cookie;
+                request.Method = "GET";
+                request.Accept = "application/json";
+                request.CookieContainer = cookie;
 
-                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                 var stream = new StreamReader(response.GetResponseStream());
-                 content = stream.ReadToEnd();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                var stream = new StreamReader(response.GetResponseStream());
+                content = stream.ReadToEnd();
 
-                 response.Close();
-                 stream.Close();
+                response.Close();
+                stream.Close();
 
-                 return content;
-             }
-             catch (Exception e)
-             {
-                 MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 Main.AddtoLog(e.GetType() + ". " + e.Message);
-                 return content;
-             }
+                return content;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Main.AddtoLog(e.GetType() + ". " + e.Message);
+                return content;
+            }
         }
 
 
@@ -349,7 +351,7 @@ namespace SCMBot
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = GetRequest(_market, cock);
-       
+
             string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString().Trim();
             if (parseName == "")
             {
@@ -408,13 +410,13 @@ namespace SCMBot
         }
 
 
-        static string BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal)
+        static string BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
         {
             int int_total = Convert.ToInt32(prFormat(total));
             int int_sub = Convert.ToInt32(prFormat(subtotal));
             string fee = (int_total - int_sub).ToString();
 
-            string data = string.Format(buyReq, sessid, int_sub, fee, int_total);
+            string data = string.Format(buyReq, sessid, int_sub, fee, int_total, currStr);
 
             //buy
             //29.08.2013 Steam Update Issue!
@@ -437,7 +439,19 @@ namespace SCMBot
 
         }
 
-       public static void ParseLotList(string content, List<ScanItem> lst)
+        private static string fixNotFracture(string input)
+        {
+            string output = input.Trim();
+
+            if (input.IndexOf(",") == -1)
+            {
+                output = input + "00";
+            }
+
+            return output.Replace(",", string.Empty);
+        }
+
+        public static void ParseLotList(string content, List<ScanItem> lst)
         {
             lst.Clear();
 
@@ -464,16 +478,14 @@ namespace SCMBot
 
                     //Отделяем строку, содержащую цены
                     string amount = currmatch.Substring(43, currmatch.Length - 43);
-
-                    //Чистим цены, оставляем цифры и пробелы
-                    amount = Regex.Replace(amount, @"[^\d\ ]+", string.Empty).Trim();
-
-                    //Разделяем, с содержанием цен
                     string[] parts = Regex.Split(amount, " +");
+                    string _price = fixNotFracture(parts[0]);
+                    string _subtot = fixNotFracture(parts[1].Remove(0, 1));
+
 
                     //Заполняем список лотов
-                    lst.Add(new ScanItem(sellid, parts[0], parts[1]));
-                    
+                    lst.Add(new ScanItem(sellid, _price, _subtot));
+
                     //Remove this to parse all 10 items
                     return;
                 }
@@ -497,19 +509,19 @@ namespace SCMBot
                     string currmatch = match.Groups[1].Value;
 
                     string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\">)").ToString();
-                
+
                     string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
 
-                    
+
                     string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
                     ItemPrice = Regex.Replace(ItemPrice, "&#(.*?);", string.Empty);
                     ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,]+", string.Empty);
 
                     string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
-                    ItemName = ItemName.Remove(0, ItemName.IndexOf(">")+1);
+                    ItemName = ItemName.Remove(0, ItemName.IndexOf(">") + 1);
 
                     string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
-                    
+
                     string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
 
                     //Заполняем список 
@@ -518,19 +530,18 @@ namespace SCMBot
 
                 totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
             }
-            else 
+            else
                 MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
-           
+
             return totalfind;
         }
 
 
+        //Currently Not Working!
         public string ParseInventory(string content)
         {
             inventList.Clear();
-
             var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
-
 
             foreach (InvItem prop in rgDescr.myInvent.Values)
             {

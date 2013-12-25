@@ -70,5 +70,17 @@ namespace SCMBot.Properties {
                 this["lastPass"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int curComb {
+            get {
+                return ((int)(this["curComb"]));
+            }
+            set {
+                this["curComb"] = value;
+            }
+        }
     }
 }

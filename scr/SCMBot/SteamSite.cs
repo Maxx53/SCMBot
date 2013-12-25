@@ -19,6 +19,8 @@ namespace SCMBot
         public string pageLink { set; get; }
         public int scanID { set; get; }
 
+        public string currency { set; get; }
+
         public string reqTxt { set; get; }
         public string linkTxt { set; get; }
    
@@ -195,9 +197,12 @@ namespace SCMBot
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            doMessage(flag.Inventory_Loaded, 0, ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
-                cookieCont)));
+           doMessage(flag.Inventory_Loaded, 0, ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
+               cookieCont)));
+           // ParseOnSale(GetRequest(_market, cookieCont));
+
         }
+
 
         private void sellThread_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -372,15 +377,40 @@ namespace SCMBot
                 }
                 else
                 {
-                    string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal);
+                    string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
                     BuyNow = false;
                     doMessage(flag.Success_buy, scanID, walletball);
                 }
             }
             else
             {
-                //Небольшая проблема с форматом цены, обязательно указывать копейки после запятой или точки.
-                int wished = Convert.ToInt32(Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty));
+                var match = wishedPrice.IndexOfAny(".,".ToCharArray());
+                if (match == -1)
+                {
+                    wishedPrice += "00";
+                }
+                else
+                {
+                    if (wishedPrice.Length > match + 3)
+                    {
+                        wishedPrice = wishedPrice.Substring(0, match + 3);
+                    }
+                    else
+                        if (wishedPrice.Length == match + 1)
+                        {
+                            wishedPrice += "00";
+                        }
+                        else
+                        {
+                            wishedPrice += "0";
+                        }
+                  
+                    wishedPrice = Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty);
+                }
+
+
+
+                int wished = Convert.ToInt32(wishedPrice);
 
                 //TODO: Проверка наличия цифр, запятой или точки
                 int delay = Convert.ToInt32(scanDelay);
@@ -400,11 +430,12 @@ namespace SCMBot
                     string total = lotList[0].Price;
                     int current = Convert.ToInt32(total);
                     string prtoTxt = total.Insert(total.Length - 2, ",");
+
                     if (current < wished)
                     {
                         if (toBuy)
                         {
-                            string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal);
+                            string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
                             doMessage(flag.Success_buy, scanID, walletball);
                             doMessage(flag.Price_btext, scanID, prtoTxt);
                         }
