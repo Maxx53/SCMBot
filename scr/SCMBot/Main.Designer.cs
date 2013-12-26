@@ -207,7 +207,7 @@
             this.ProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 653);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(558, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(552, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 36;
             this.statusStrip1.Text = "statusStrip1";
@@ -231,9 +231,9 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(6, 82);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(522, 21);
+            this.comboBox1.Size = new System.Drawing.Size(516, 21);
             this.comboBox1.TabIndex = 38;
-            this.comboBox1.Text = "saints row IV";
+            this.comboBox1.Text = "snow globe";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
@@ -257,7 +257,7 @@
             this.groupBox4.Location = new System.Drawing.Point(8, 194);
             this.groupBox4.MinimumSize = new System.Drawing.Size(300, 109);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(540, 109);
+            this.groupBox4.Size = new System.Drawing.Size(534, 109);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Find Item";
@@ -267,7 +267,7 @@
             this.buyNowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buyNowButton.Image = global::SCMBot.Properties.Resources.buy_now;
             this.buyNowButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buyNowButton.Location = new System.Drawing.Point(292, 20);
+            this.buyNowButton.Location = new System.Drawing.Point(286, 20);
             this.buyNowButton.Name = "buyNowButton";
             this.buyNowButton.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.buyNowButton.Size = new System.Drawing.Size(80, 25);
@@ -283,7 +283,7 @@
             this.addtoScan.ContextMenuStrip = this.contextMenuStrip1;
             this.addtoScan.Image = global::SCMBot.Properties.Resources.add;
             this.addtoScan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.addtoScan.Location = new System.Drawing.Point(378, 20);
+            this.addtoScan.Location = new System.Drawing.Point(372, 20);
             this.addtoScan.Name = "addtoScan";
             this.addtoScan.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.addtoScan.Size = new System.Drawing.Size(80, 25);
@@ -331,7 +331,7 @@
             this.prevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.prevButton.Enabled = false;
             this.prevButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.prevButton.Location = new System.Drawing.Point(292, 52);
+            this.prevButton.Location = new System.Drawing.Point(286, 52);
             this.prevButton.Name = "prevButton";
             this.prevButton.Size = new System.Drawing.Size(25, 25);
             this.prevButton.TabIndex = 48;
@@ -343,7 +343,7 @@
             // 
             this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(321, 58);
+            this.label13.Location = new System.Drawing.Point(315, 58);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(23, 13);
             this.label13.TabIndex = 47;
@@ -353,7 +353,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(248, 58);
+            this.label11.Location = new System.Drawing.Point(242, 58);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(38, 13);
             this.label11.TabIndex = 46;
@@ -364,7 +364,7 @@
             this.nextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nextButton.Enabled = false;
             this.nextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.nextButton.Location = new System.Drawing.Point(347, 52);
+            this.nextButton.Location = new System.Drawing.Point(341, 52);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(25, 25);
             this.nextButton.TabIndex = 45;
@@ -377,9 +377,10 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Location = new System.Drawing.Point(464, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(458, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 44;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -425,7 +426,7 @@
             this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.searchButton.Image = global::SCMBot.Properties.Resources.search;
             this.searchButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.searchButton.Location = new System.Drawing.Point(378, 51);
+            this.searchButton.Location = new System.Drawing.Point(372, 51);
             this.searchButton.Name = "searchButton";
             this.searchButton.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.searchButton.Size = new System.Drawing.Size(80, 25);
@@ -444,7 +445,7 @@
             this.tabControl1.MinimumSize = new System.Drawing.Size(300, 191);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(543, 191);
+            this.tabControl1.Size = new System.Drawing.Size(537, 191);
             this.tabControl1.TabIndex = 41;
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             // 
@@ -459,7 +460,7 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Location = new System.Drawing.Point(286, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(192, 70);
+            this.groupBox2.Size = new System.Drawing.Size(186, 70);
             this.groupBox2.TabIndex = 36;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Account Info";
@@ -480,6 +481,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(11, 24);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 33;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -487,7 +489,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(431, 44);
+            this.button1.Location = new System.Drawing.Point(425, 44);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(96, 25);
             this.button1.TabIndex = 42;
@@ -499,7 +501,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(482, 71);
+            this.label4.Location = new System.Drawing.Point(476, 71);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 43;
@@ -508,7 +510,7 @@
             // SellButton
             // 
             this.SellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SellButton.Location = new System.Drawing.Point(431, 216);
+            this.SellButton.Location = new System.Drawing.Point(425, 216);
             this.SellButton.Name = "SellButton";
             this.SellButton.Size = new System.Drawing.Size(96, 24);
             this.SellButton.TabIndex = 45;
@@ -519,7 +521,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(431, 190);
+            this.textBox1.Location = new System.Drawing.Point(425, 190);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(96, 20);
             this.textBox1.TabIndex = 46;
@@ -529,9 +531,10 @@
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox3.Location = new System.Drawing.Point(431, 87);
+            this.pictureBox3.Location = new System.Drawing.Point(425, 87);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(96, 96);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox3.TabIndex = 47;
             this.pictureBox3.TabStop = false;
             // 
@@ -544,7 +547,7 @@
             "Trading Cards",
             "TF 2",
             "Dota 2"});
-            this.comboBox3.Location = new System.Drawing.Point(431, 17);
+            this.comboBox3.Location = new System.Drawing.Point(425, 17);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(96, 21);
             this.comboBox3.TabIndex = 48;
@@ -565,7 +568,7 @@
             this.groupBox3.Location = new System.Drawing.Point(9, 3);
             this.groupBox3.MinimumSize = new System.Drawing.Size(300, 249);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(540, 249);
+            this.groupBox3.Size = new System.Drawing.Size(534, 249);
             this.groupBox3.TabIndex = 49;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "My Inventory (Test)";
@@ -593,7 +596,7 @@
             this.InventoryList.Location = new System.Drawing.Point(6, 17);
             this.InventoryList.MultiSelect = false;
             this.InventoryList.Name = "InventoryList";
-            this.InventoryList.Size = new System.Drawing.Size(419, 222);
+            this.InventoryList.Size = new System.Drawing.Size(413, 222);
             this.InventoryList.TabIndex = 51;
             this.InventoryList.UseCompatibleStateImageBehavior = false;
             this.InventoryList.View = System.Windows.Forms.View.Details;
@@ -625,7 +628,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(433, 71);
+            this.label6.Location = new System.Drawing.Point(427, 71);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 13);
             this.label6.TabIndex = 50;
@@ -649,7 +652,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer1.Size = new System.Drawing.Size(558, 571);
+            this.splitContainer1.Size = new System.Drawing.Size(552, 571);
             this.splitContainer1.SplitterDistance = 306;
             this.splitContainer1.TabIndex = 50;
             // 
@@ -657,7 +660,7 @@
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.comboBox2);
-            this.groupBox5.Location = new System.Drawing.Point(484, 3);
+            this.groupBox5.Location = new System.Drawing.Point(478, 3);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(67, 70);
             this.groupBox5.TabIndex = 51;
@@ -673,9 +676,9 @@
             "GBP",
             "EUR",
             "RUB"});
-            this.comboBox2.Location = new System.Drawing.Point(10, 21);
+            this.comboBox2.Location = new System.Drawing.Point(6, 21);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(45, 21);
+            this.comboBox2.Size = new System.Drawing.Size(56, 21);
             this.comboBox2.TabIndex = 0;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -683,14 +686,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(558, 675);
+            this.ClientSize = new System.Drawing.Size(552, 675);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(486, 709);
+            this.MinimumSize = new System.Drawing.Size(560, 709);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SCM Bot alpha";

@@ -33,7 +33,8 @@ namespace SCMBot
         Price_btext = 12,
         Inventory_Loaded = 13,
         Items_Sold = 14,
-        Sell_progress = 15
+        Sell_progress = 15,
+        Error_buy = 16
     }
 
 
@@ -202,13 +203,7 @@ namespace SCMBot
 
             if (drawtext)
             {
-                StringFormat sf = new StringFormat();
-                sf.LineAlignment = StringAlignment.Center;
-                sf.Alignment = StringAlignment.Center;
-
-                Graphics G = picbox.CreateGraphics();
-                G.Clear(System.Drawing.SystemColors.Control);
-                G.DrawString("Load...", Main.DefaultFont, Brushes.Black, picbox.ClientRectangle, sf);
+              picbox.Image = Properties.Resources.working;
             }
 
             WebClient wClient = new WebClient();

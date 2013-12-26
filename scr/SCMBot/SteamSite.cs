@@ -289,7 +289,6 @@ namespace SCMBot
 
             if (firstTry.Contains("message"))
             {
-
                 Dialog guardCheckForm = new Dialog();
 
                 if (rProcess.isEmail)
@@ -298,8 +297,19 @@ namespace SCMBot
                 }
                 else if (rProcess.isCaptcha)
                 {
+                    string newcap = string.Empty;
+
+                    if (rProcess.isBadCap)
+                    {
+                        newcap = GetRequest(_refrcap, cookieCont);
+                        newcap = _capcha + newcap.Substring(8, 20);
+                    }
+                    else
+                    {
+                        newcap =  _capcha + rProcess.Captcha_Id;
+                    }
                     guardCheckForm.codgroupEnab = false;
-                    Main.loadImg(_capcha + rProcess.Captcha_Id, guardCheckForm.capchImg, false, false);
+                    Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
                 }
 
                 doMessage(flag.Rep_progress, 0, "80");
@@ -377,9 +387,16 @@ namespace SCMBot
                 }
                 else
                 {
-                    string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
+                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
                     BuyNow = false;
-                    doMessage(flag.Success_buy, scanID, walletball);
+                    if (buyresp.Succsess)
+                    {
+                        doMessage(flag.Success_buy, scanID, buyresp.Mess);
+                    }
+                    else
+                    {
+                        doMessage(flag.Error_buy, scanID, buyresp.Mess);
+                    }
                 }
             }
             else
@@ -435,11 +452,20 @@ namespace SCMBot
                     {
                         if (toBuy)
                         {
-                            string walletball = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
-                            doMessage(flag.Success_buy, scanID, walletball);
-                            doMessage(flag.Price_btext, scanID, prtoTxt);
+                            var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
+
+                            if (buyresp.Succsess)
+                            {
+                                doMessage(flag.Success_buy, scanID, buyresp.Mess);
+                                doMessage(flag.Price_btext, scanID, prtoTxt);
+                            }
+                            else
+                            {
+                                doMessage(flag.Error_buy, scanID, buyresp.Mess);
+                            }
+                            
                         }
-                        else doMessage(flag.Price_htext, 0, prtoTxt);
+                        else doMessage(flag.Price_htext, scanID, prtoTxt);
                     }
                     else
                         doMessage(flag.Price_text, scanID, prtoTxt);

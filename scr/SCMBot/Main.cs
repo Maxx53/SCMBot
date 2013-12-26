@@ -120,9 +120,12 @@ namespace SCMBot
 
         }
 
-        public string GetPriceFormat(string mess)
+        public string GetPriceFormat(string mess, bool addcurr)
         {
-            return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, "units");
+            string curr = string.Empty;
+            if (addcurr)
+                curr = "units";
+            return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, curr);
         }
         
 
@@ -161,13 +164,13 @@ namespace SCMBot
                     SetButton(loginButton, "Login");
                     break;
                 case flag.Price_htext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 1);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true), 1);
                     break;
                 case flag.Price_btext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 2);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true), 2);
                     break;
                 case flag.Price_text:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message), 0);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true), 0);
                     break;
 
                 case flag.Rep_progress:
@@ -182,6 +185,12 @@ namespace SCMBot
                 case flag.Success_buy:
                     StatusLabel1.Text = "Item bought";
                     label5.Text = message;
+                    buyNowButton.Enabled = true;
+                    break;
+
+                case flag.Error_buy:
+                    StatusLabel1.Text = "Error while buying!";
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false), 1);
                     buyNowButton.Enabled = true;
                     break;
 
@@ -660,7 +669,6 @@ namespace SCMBot
         {
             steam_srch.currency = GetCurrency(comboBox2.SelectedIndex);
         }
-
 
    }
 }

@@ -18,6 +18,7 @@ namespace SCMBot
         public event eventDelegate delegMessage;
 
         public const string _mainsite = "http://steamcommunity.com/";
+        public const string _mainsiteS = "https://steamcommunity.com/";
 
         const string _comlog = "https://steamcommunity.com/login/";
         const string _ref = _comlog + "home/?goto=market%2F";
@@ -27,12 +28,13 @@ namespace SCMBot
         public const string _market = _mainsite + "market/";
         //const string _blist = _market + "buylisting/";
         //FIX
-        public const string _mainsiteS = "https://steamcommunity.com/";
+
         const string _blist = _mainsiteS + "market/buylisting/";
 
         const string _lists = _market + "listings/";
         public const string _search = _market + "search?q=";
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
+        const string _refrcap = "https://steamcommunity.com/actions/RefreshCaptcha/?count=1";
 
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
@@ -80,6 +82,18 @@ namespace SCMBot
             public string Type { set; get; }
             public string AssetId { set; get; }
 
+        }
+
+        public class BuyResponse
+        {
+            public BuyResponse(bool succsess, string Mess)
+            {
+                this.Succsess = succsess;
+                this.Mess = Mess;
+            }
+
+            public bool Succsess { set; get; }
+            public string Mess { set; get; }
         }
 
         public class SearchItem
@@ -142,6 +156,9 @@ namespace SCMBot
 
             [JsonProperty("emailsteamid")]
             public string Email_Id { get; set; }
+
+            [JsonProperty("bad_captcha")]
+            public bool isBadCap { get; set; }
         }
 
         public class RespFinal
@@ -171,6 +188,10 @@ namespace SCMBot
 
             [JsonProperty("classid")]
             public string classid { get; set; }
+
+            //FIX
+            [JsonProperty("instanceid")]
+            public string instanceid { get; set; }
         }
 
 
@@ -189,6 +210,11 @@ namespace SCMBot
             public string MarketName { get; set; }
         }
 
+        public class InfoMessage
+        {
+            [JsonProperty("message")]
+            public string Message { get; set; }
+        }
 
         public class WalletInfo
         {
@@ -264,6 +290,7 @@ namespace SCMBot
 
                 request.CookieContainer = cookie;
                 request.Method = "POST";
+                //request.Proxy = new WebProxy("74.62.42.195", 80);
                 request.Referer = refer;
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = requestData.Length;
@@ -284,15 +311,27 @@ namespace SCMBot
                 cookie = request.CookieContainer;
                 resp.Close();
                 stream.Close();
-                return content;
             }
-
-            catch (Exception e)
+            catch (WebException e)
             {
-                MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Main.AddtoLog(e.GetType() + ". " + e.Message);
-                return content;
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    WebResponse resp = e.Response;
+                    using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                    {
+                        content = sr.ReadToEnd();
+                    }
+                }
+               
             }
+            return content;
+
+            //catch (Exception e)
+            //{
+           //     MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          //      Main.AddtoLog(e.GetType() + ". " + e.Message);
+           //     return content;
+          //  }
 
         }
 
@@ -305,7 +344,7 @@ namespace SCMBot
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
+                //request.Proxy = new WebProxy("74.62.42.195", 80);
                 request.Method = "GET";
                 request.Accept = "application/json";
                 request.CookieContainer = cookie;
@@ -410,7 +449,7 @@ namespace SCMBot
         }
 
 
-        static string BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
+        static BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
         {
             int int_total = Convert.ToInt32(prFormat(total));
             int int_sub = Convert.ToInt32(prFormat(subtotal));
@@ -422,6 +461,15 @@ namespace SCMBot
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
             string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
+           
+            if (buyres.Contains("message"))
+            {
+                //Already buyed!
+                var ErrBuy = JsonConvert.DeserializeObject<InfoMessage>(buyres);
+                return new BuyResponse(false, ErrBuy.Message);
+            }
+            else
+            
             if (buyres != string.Empty)
             {
                 var AfterBuy = JsonConvert.DeserializeObject<WalletInfo>(buyres);
@@ -430,12 +478,12 @@ namespace SCMBot
                 {
                     string balance = AfterBuy.WalletRes.Balance;
                     balance = balance.Insert(balance.Length - 2, ",");
-                    return balance;
+                    return new BuyResponse(true, balance);
 
                 }
-                else return string.Empty;
+                else return new BuyResponse(false, "Unknown Error");
             }
-            else return string.Empty;
+            else return new BuyResponse(false, "Unknown Error");
 
         }
 
@@ -541,11 +589,12 @@ namespace SCMBot
         public string ParseInventory(string content)
         {
             inventList.Clear();
+            
             var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
 
             foreach (InvItem prop in rgDescr.myInvent.Values)
             {
-                var ourItem = rgDescr.invDescr[prop.classid + "_0"];
+                var ourItem = rgDescr.invDescr[prop.classid + "_" + prop.instanceid];
                 //parse cost by url (_lists + 753/ + ourItem.MarketName)
                 //or (_search + name)
 
