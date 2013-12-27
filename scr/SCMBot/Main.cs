@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
+// Это альфа-версия, совершенно сырой продукт. Не предназначено для продажи, уважай чужой труд!
 // По вопросам могу ответить, контактные данные ниже.
 // email: demmaxx@gmail.com
 // icq: 615485
@@ -81,7 +82,6 @@ namespace SCMBot
             //If you need password crypting
             //passwordBox.Text = Decrypt(settings.lastPass);
             passwordBox.Text = settings.lastPass;
-            comboBox2.SelectedIndex = settings.curComb;
         }
 
 
@@ -94,7 +94,6 @@ namespace SCMBot
             //If you need password crypting
             //settings.lastPass = Encrypt(passwordBox.Text);
             settings.lastPass = passwordBox.Text;
-            settings.curComb = comboBox2.SelectedIndex;
             settings.Save();
         }
 
@@ -108,10 +107,11 @@ namespace SCMBot
         {
             if (mess != string.Empty)
             {
-                string[] accinfo = mess.Split(';');
+                string[] accinfo = mess.Split('|');
                 StartLoadImgTread(accinfo[2], pictureBox2);
                 label5.Text = accinfo[1];
                 label10.Text = accinfo[0];
+                steam_srch.currency = accinfo[3];
                 ProgressBar1.Visible = false;
                 SetButton(loginButton, "Logout");
             }
@@ -449,28 +449,6 @@ namespace SCMBot
 
         }
 
-        public static string GetCurrency(int comboItm)
-        {
-            //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB
-            string output = "5";
-
-            switch (comboItm)
-            {
-                case 0:
-                    output = "1";
-                    break;
-                case 1:
-                    output = "2";
-                    break;
-                case 2:
-                    output = "3";
-                    break;
-                case 3:
-                    output = "5";
-                    break;
-            }
-            return output;
-        }
 
         public void ScanItemButton_Click(object sender, EventArgs e)
         {
@@ -488,7 +466,8 @@ namespace SCMBot
                     steam.pageLink = scanItem.linkValue;
                     steam.toBuy = scanItem.tobuyValue;
                     steam.scanID = tabControl1.SelectedIndex;
-                    steam.currency = GetCurrency(comboBox2.SelectedIndex);
+                    steam.currency = steam_srch.currency;
+                    steam.currencies.Current = steam_srch.currencies.Current;
                     steam.ScanPrices();
 
                     StatusLabel1.Text = "Scanning Prices...";
@@ -663,11 +642,6 @@ namespace SCMBot
                 var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
                 StartLoadImgTread(string.Format(SteamSite.invImgUrl, ourItem.ImgLink), pictureBox3);
             }
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            steam_srch.currency = GetCurrency(comboBox2.SelectedIndex);
         }
 
    }

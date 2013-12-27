@@ -46,7 +46,9 @@ namespace SCMBot
 
         private BackgroundWorker getInventory = new BackgroundWorker();
 
-        public List<ItemToSell> toSellList = new List<ItemToSell>(); 
+        public List<ItemToSell> toSellList = new List<ItemToSell>();
+
+        public CurrInfoLst currencies = new CurrInfoLst();
 
         public SteamSite()
         {
@@ -242,7 +244,8 @@ namespace SCMBot
             //if (worker.CancellationPending == true)
             //  return;
 
-            string accInfo = GetNameBalance(cookieCont);
+            string accInfo = GetNameBalance(cookieCont, currencies);
+
             if (accInfo != string.Empty)
             {
                 doMessage(flag.Already_logged, 0, accInfo);
@@ -327,7 +330,7 @@ namespace SCMBot
 
                     if (rFinal.Success && rFinal.isComplete)
                     {
-                        string accInfo2 = GetNameBalance(cookieCont);
+                        string accInfo2 = GetNameBalance(cookieCont, currencies);
                         doMessage(flag.Login_success, 0, accInfo2);
                         doMessage(flag.Rep_progress, 0, "100");
                         Logged = true;
@@ -353,7 +356,7 @@ namespace SCMBot
 
             else if (rProcess.Success)
             {
-                string accInfo3 = GetNameBalance(cookieCont);
+                string accInfo3 = GetNameBalance(cookieCont, currencies);
 
                 doMessage(flag.Login_success, 0, accInfo3);
                 doMessage(flag.Rep_progress, 0, "100");
@@ -371,15 +374,49 @@ namespace SCMBot
         }
 
 
+        private static string GetSweetPrice(string input)
+        {
+            string res = string.Empty;
+
+            var match = input.IndexOfAny(".,".ToCharArray());
+
+            if ((match == -1) | (match == input.Length - 1))
+            {
+                res = input + "00";
+            }
+            else
+            {
+                //Укорачиваем
+                if (input.Length > match + 3)
+                {
+                    res = input.Substring(0, match + 3);
+                }
+                else
+                    //Удлинняем
+                    if (input.Length == match)
+                    {
+                        res = input + "00";
+                    }
+                    else if (input.Length == match + 2)
+                    {
+                        res = input + "0";
+                    }
+                    else res = input;
+            }
+
+            return Regex.Replace(res, @"[d\.\,]+", string.Empty);
+
+        }
 
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             string sessid = GetSessId(cookieCont);
 
+
             if (BuyNow)
             {
-                ParseLotList(GetRequest(pageLink, cookieCont), lotList);
+                ParseLotList(GetRequest(pageLink, cookieCont), lotList, currencies);
 
                 if (lotList.Count == 0)
                 {
@@ -398,92 +435,68 @@ namespace SCMBot
                         doMessage(flag.Error_buy, scanID, buyresp.Mess);
                     }
                 }
+                return;
             }
             else
             {
-                var match = wishedPrice.IndexOfAny(".,".ToCharArray());
-                if (match == -1)
+                wishedPrice = GetSweetPrice(wishedPrice);
+            }
+
+            int wished = Convert.ToInt32(wishedPrice);
+
+            //TODO: Проверка наличия цифр, запятой или точки
+            int delay = Convert.ToInt32(scanDelay);
+            int prog = 1;
+
+            while (worker.CancellationPending == false)
+            {
+                ParseLotList(GetRequest(pageLink, cookieCont), lotList, currencies);
+
+                if (lotList.Count == 0)
                 {
-                    wishedPrice += "00";
+                    doMessage(flag.Price_text, scanID, "Error");
+                    continue;
                 }
-                else
+
+                //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
+                string total = lotList[0].Price;
+                int current = Convert.ToInt32(total);
+                string prtoTxt = total.Insert(total.Length - 2, ",");
+
+                if (current < wished)
                 {
-                    if (wishedPrice.Length > match + 3)
+                    if (toBuy)
                     {
-                        wishedPrice = wishedPrice.Substring(0, match + 3);
-                    }
-                    else
-                        if (wishedPrice.Length == match + 1)
+                        var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
+
+                        if (buyresp.Succsess)
                         {
-                            wishedPrice += "00";
+                            doMessage(flag.Success_buy, scanID, buyresp.Mess);
+                            doMessage(flag.Price_btext, scanID, prtoTxt);
                         }
                         else
                         {
-                            wishedPrice += "0";
+                            doMessage(flag.Error_buy, scanID, buyresp.Mess);
                         }
-                  
-                    wishedPrice = Regex.Replace(wishedPrice, @"[d\.\,]+", string.Empty);
-                }
 
-
-
-                int wished = Convert.ToInt32(wishedPrice);
-
-                //TODO: Проверка наличия цифр, запятой или точки
-                int delay = Convert.ToInt32(scanDelay);
-                int prog = 1;
-
-                while (worker.CancellationPending == false)
-                {
-                    ParseLotList(GetRequest(pageLink, cookieCont), lotList);
-
-                    if (lotList.Count == 0)
-                    {
-                        doMessage(flag.Price_text, scanID, "Error");
-                        continue;
                     }
-
-                    //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
-                    string total = lotList[0].Price;
-                    int current = Convert.ToInt32(total);
-                    string prtoTxt = total.Insert(total.Length - 2, ",");
-
-                    if (current < wished)
-                    {
-                        if (toBuy)
-                        {
-                            var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
-
-                            if (buyresp.Succsess)
-                            {
-                                doMessage(flag.Success_buy, scanID, buyresp.Mess);
-                                doMessage(flag.Price_btext, scanID, prtoTxt);
-                            }
-                            else
-                            {
-                                doMessage(flag.Error_buy, scanID, buyresp.Mess);
-                            }
-                            
-                        }
-                        else doMessage(flag.Price_htext, scanID, prtoTxt);
-                    }
-                    else
-                        doMessage(flag.Price_text, scanID, prtoTxt);
-
-                    doMessage(flag.Scan_progress, scanID, prog.ToString());
-                    Sem.WaitOne(delay);
-                    prog++;
+                    else doMessage(flag.Price_htext, scanID, prtoTxt);
                 }
+                else
+                    doMessage(flag.Price_text, scanID, prtoTxt);
 
-                doMessage(flag.Scan_cancel, scanID, string.Empty);
-
+                doMessage(flag.Scan_progress, scanID, prog.ToString());
+                Sem.WaitOne(delay);
+                prog++;
             }
+
+            doMessage(flag.Scan_cancel, scanID, string.Empty);
+
         }
 
 
-
-
-
+        }
 
     }
-}
+
+

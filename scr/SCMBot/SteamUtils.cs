@@ -51,6 +51,7 @@ namespace SCMBot
         public List<SearchItem> searchList = new List<SearchItem>();
         public List<InventItem> inventList = new List<InventItem>();
 
+
         public class ScanItem
         {
             public ScanItem(string sellerId, string price, string subtotal)
@@ -86,15 +87,50 @@ namespace SCMBot
 
         public class BuyResponse
         {
-            public BuyResponse(bool succsess, string Mess)
+            public BuyResponse(bool succsess, string mess)
             {
                 this.Succsess = succsess;
-                this.Mess = Mess;
+                this.Mess = mess;
             }
 
             public bool Succsess { set; get; }
             public string Mess { set; get; }
         }
+
+
+        public class CurrencyInfo
+        {
+            public CurrencyInfo(string asciiName, string trueName, string index)
+            {
+                this.AsciiName = asciiName;
+                this.TrueName = trueName;
+                this.Index = index;
+            }
+
+            public string AsciiName { set; get; }
+            public string TrueName { set; get; }
+            public string Index { set; get; }
+        }
+
+        public class CurrInfoLst : List<CurrencyInfo>
+        {
+            public CurrInfoLst()
+            {
+                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB
+
+                this.Add(new CurrencyInfo("&#36;", "$", "1"));
+                this.Add(new CurrencyInfo("p&#1091;&#1073;.", "руб.", "5"));
+                this.Add(new CurrencyInfo("&#163;", "£", "2"));
+                this.Add(new CurrencyInfo("&#8364;", "€", "3"));
+                
+                //Brasilian Real? I guess...
+                this.Add(new CurrencyInfo("R&#36;", "R$", "4"));
+                this.Current = 0;
+            }
+
+            public int Current { set; get; }
+        }
+
 
         public class SearchItem
         {
@@ -117,6 +153,7 @@ namespace SCMBot
             public string StartPrice { set; get; }
 
         }
+
 
 
         //JSON Stuff...
@@ -290,7 +327,6 @@ namespace SCMBot
 
                 request.CookieContainer = cookie;
                 request.Method = "POST";
-                //request.Proxy = new WebProxy("74.62.42.195", 80);
                 request.Referer = refer;
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = requestData.Length;
@@ -344,7 +380,6 @@ namespace SCMBot
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                //request.Proxy = new WebProxy("74.62.42.195", 80);
                 request.Method = "GET";
                 request.Accept = "application/json";
                 request.CookieContainer = cookie;
@@ -386,33 +421,39 @@ namespace SCMBot
 
         //steam utils
 
-        public static string GetNameBalance(CookieContainer cock)
+        public static string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = GetRequest(_market, cock);
+            
+            //For testring purposes!
+            //string markpage = File.ReadAllText(@"C:\dollars.html");
 
-            string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?<=\"><img)").ToString().Trim();
+            string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?=\"><img)").ToString().Trim();
             if (parseName == "")
             {
                 return string.Empty;
             }
+
+            accName = parseName;
             string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*)(?=<div id=\"global_action_menu\">)", RegexOptions.Singleline).ToString();
             parseImg = parseImg.Substring(0, parseImg.Length - 46);
 
-            int nlength = parseName.Length;
-            if (nlength != 0)
-            {
-                accName = parseName.Substring(0, nlength - 6);
-            }
+            string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
+            string curInd = "0";
 
-            string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?<=</span>)").ToString();
+            for (int i = 0; i < currLst.Count; i++)
+			{
+                if (parseAmount.Contains(currLst[i].AsciiName))
+                {
+                    parseAmount = parseAmount.Replace(currLst[i].AsciiName, currLst[i].TrueName);
+                    curInd = currLst[i].Index;
+                    currLst.Current = i;
+                    break;
+                }
+			}
 
-            int blength = parseAmount.Length;
-            if (blength != 0)
-            {
-                parseAmount = parseAmount.Substring(0, parseAmount.IndexOf(" "));
-            }
-            return string.Format("{0};{1};{2}", accName, parseAmount, parseImg);
+            return string.Format("{0}|{1}|{2}|{3}", accName, parseAmount, parseImg, curInd);
         }
 
 
@@ -461,7 +502,7 @@ namespace SCMBot
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
             string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
-           
+
             if (buyres.Contains("message"))
             {
                 //Already buyed!
@@ -491,17 +532,26 @@ namespace SCMBot
         {
             string output = input.Trim();
 
-            if (input.IndexOf(",") == -1)
+            if (input.IndexOfAny(",.".ToCharArray()) == -1)
             {
                 output = input + "00";
             }
 
-            return output.Replace(",", string.Empty);
+            if (output.Contains(","))
+                output = output.Replace(",", string.Empty);
+            else
+            if (output.Contains("."))
+                output = output.Replace(".", string.Empty);
+
+            return output;
         }
 
-        public static void ParseLotList(string content, List<ScanItem> lst)
+        public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst)
         {
             lst.Clear();
+
+            //For testring purposes!
+            //content = File.ReadAllText(@"C:\dollars.html");
 
             if (content == string.Empty)
                 return;
@@ -515,21 +565,25 @@ namespace SCMBot
                 {
                     string currmatch = match.Groups[1].Value;
 
-                    //Чистим результат от тегов, символов ascii
+                    //Чистим результат от тегов
                     //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
                     currmatch = Regex.Replace(currmatch, "<[^>]+>", string.Empty).Trim();
-                    currmatch = Regex.Replace(currmatch, "&#(.*?);", " ");
+
+                    //Удаляем ascii кода нашей текущей валюты
+                    currmatch = Regex.Replace(currmatch, currLst[currLst.Current].AsciiName, string.Empty);
+
                     currmatch = Regex.Replace(currmatch, @"[^\.\,\d\ ]+", string.Empty);
 
                     //Отделяем номер лота
                     string sellid = currmatch.Substring(2, 19);
 
                     //Отделяем строку, содержащую цены
-                    string amount = currmatch.Substring(43, currmatch.Length - 43);
-                    string[] parts = Regex.Split(amount, " +");
-                    string _price = fixNotFracture(parts[0]);
-                    string _subtot = fixNotFracture(parts[1].Remove(0, 1));
+                    string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
 
+                    string[] parts = Regex.Split(amount, " +");
+ 
+                    string _price = fixNotFracture(parts[0]);
+                    string _subtot = fixNotFracture(parts[1]);
 
                     //Заполняем список лотов
                     lst.Add(new ScanItem(sellid, _price, _subtot));
@@ -585,7 +639,7 @@ namespace SCMBot
         }
 
 
-        //Currently Not Working!
+        //Fixed
         public string ParseInventory(string content)
         {
             inventList.Clear();
