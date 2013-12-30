@@ -34,7 +34,8 @@ namespace SCMBot
         Inventory_Loaded = 13,
         Items_Sold = 14,
         Sell_progress = 15,
-        Error_buy = 16
+        Error_buy = 16,
+        StripImg = 17
     }
 
 

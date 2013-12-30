@@ -43,10 +43,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripImage = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.labelFindCurr = new System.Windows.Forms.Label();
             this.buyNowButton = new System.Windows.Forms.Button();
             this.addtoScan = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -71,7 +73,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.SellButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.InventoryList = new System.Windows.Forms.ListView();
@@ -80,6 +81,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -88,8 +90,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -151,7 +153,7 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(172, 46);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(90, 17);
+            this.checkBox2.Size = new System.Drawing.Size(87, 17);
             this.checkBox2.TabIndex = 32;
             this.checkBox2.Text = "Login at start";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -175,7 +177,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(91, 24);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(32, 13);
+            this.label10.Size = new System.Drawing.Size(33, 13);
             this.label10.TabIndex = 35;
             this.label10.Text = "None";
             // 
@@ -184,7 +186,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(54, 43);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.Size = new System.Drawing.Size(40, 13);
             this.label8.TabIndex = 32;
             this.label8.Text = "Wallet:";
             // 
@@ -193,13 +195,15 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(91, 43);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.Size = new System.Drawing.Size(33, 13);
             this.label5.TabIndex = 28;
             this.label5.Text = "None";
             // 
             // statusStrip1
             // 
+            this.statusStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripImage,
             this.StatusLabel1,
             this.ProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 653);
@@ -209,10 +213,18 @@
             this.statusStrip1.TabIndex = 36;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripImage
+            // 
+            this.toolStripImage.AutoSize = false;
+            this.toolStripImage.Image = global::SCMBot.Properties.Resources.ready;
+            this.toolStripImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripImage.Name = "toolStripImage";
+            this.toolStripImage.Size = new System.Drawing.Size(17, 17);
+            // 
             // StatusLabel1
             // 
             this.StatusLabel1.Name = "StatusLabel1";
-            this.StatusLabel1.Size = new System.Drawing.Size(38, 17);
+            this.StatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.StatusLabel1.Text = "Ready";
             // 
             // ProgressBar1
@@ -238,6 +250,7 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.labelFindCurr);
             this.groupBox4.Controls.Add(this.buyNowButton);
             this.groupBox4.Controls.Add(this.addtoScan);
             this.groupBox4.Controls.Add(this.prevButton);
@@ -259,9 +272,19 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Find Item";
             // 
+            // labelFindCurr
+            // 
+            this.labelFindCurr.AutoSize = true;
+            this.labelFindCurr.Location = new System.Drawing.Point(116, 38);
+            this.labelFindCurr.Name = "labelFindCurr";
+            this.labelFindCurr.Size = new System.Drawing.Size(29, 13);
+            this.labelFindCurr.TabIndex = 52;
+            this.labelFindCurr.Text = "units";
+            // 
             // buyNowButton
             // 
             this.buyNowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buyNowButton.Enabled = false;
             this.buyNowButton.Image = global::SCMBot.Properties.Resources.buy_now;
             this.buyNowButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buyNowButton.Location = new System.Drawing.Point(286, 20);
@@ -278,6 +301,7 @@
             // 
             this.addtoScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addtoScan.ContextMenuStrip = this.contextMenuStrip1;
+            this.addtoScan.Enabled = false;
             this.addtoScan.Image = global::SCMBot.Properties.Resources.add;
             this.addtoScan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addtoScan.Location = new System.Drawing.Point(372, 20);
@@ -297,13 +321,13 @@
             this.fullSetToolStripMenuItem,
             this.emptyTabToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(152, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 70);
             // 
             // selectedItemToolStripMenuItem
             // 
             this.selectedItemToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
-            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.selectedItemToolStripMenuItem.Text = "Selected Item";
             this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
             // 
@@ -311,7 +335,7 @@
             // 
             this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
-            this.fullSetToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.fullSetToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.fullSetToolStripMenuItem.Text = "Full Set";
             this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
             // 
@@ -319,7 +343,7 @@
             // 
             this.emptyTabToolStripMenuItem.Image = global::SCMBot.Properties.Resources.blank;
             this.emptyTabToolStripMenuItem.Name = "emptyTabToolStripMenuItem";
-            this.emptyTabToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.emptyTabToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.emptyTabToolStripMenuItem.Text = "EmptyTab";
             this.emptyTabToolStripMenuItem.Click += new System.EventHandler(this.emptyTabToolStripMenuItem_Click);
             // 
@@ -342,7 +366,7 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(315, 58);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 13);
+            this.label13.Size = new System.Drawing.Size(24, 13);
             this.label13.TabIndex = 47;
             this.label13.Text = "0/0";
             // 
@@ -405,7 +429,7 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(12, 38);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(61, 13);
+            this.label12.Size = new System.Drawing.Size(58, 13);
             this.label12.TabIndex = 41;
             this.label12.Text = "Start price:";
             // 
@@ -414,7 +438,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(20, 58);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.Size = new System.Drawing.Size(49, 13);
             this.label9.TabIndex = 40;
             this.label9.Text = "Quantity:";
             // 
@@ -500,7 +524,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(476, 71);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
+            this.label4.Size = new System.Drawing.Size(33, 13);
             this.label4.TabIndex = 43;
             this.label4.Text = "None";
             // 
@@ -522,18 +546,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(96, 20);
             this.textBox1.TabIndex = 46;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox3.Location = new System.Drawing.Point(425, 87);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox3.TabIndex = 47;
-            this.pictureBox3.TabStop = false;
             // 
             // comboBox3
             // 
@@ -627,9 +639,21 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(427, 71);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 50;
             this.label6.Text = "Count: ";
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox3.Location = new System.Drawing.Point(425, 87);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(96, 96);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox3.TabIndex = 47;
+            this.pictureBox3.TabStop = false;
             // 
             // splitContainer1
             // 
@@ -680,9 +704,9 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -743,6 +767,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripImage;
+        private System.Windows.Forms.Label labelFindCurr;
     }
 }
 

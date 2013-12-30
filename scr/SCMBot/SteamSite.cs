@@ -199,9 +199,10 @@ namespace SCMBot
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
         {
 
-           doMessage(flag.Inventory_Loaded, 0, ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
-               cookieCont)));
-           // ParseOnSale(GetRequest(_market, cookieCont));
+           ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
+               cookieCont));
+
+           doMessage(flag.Inventory_Loaded, 0, ParseOnSale(GetRequest(_market, cookieCont), currencies));
 
         }
 
@@ -230,7 +231,7 @@ namespace SCMBot
 
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            doMessage(flag.Search_success, 0, ParseSearchRes(GetRequest(linkTxt + reqTxt, cookieCont), searchList));
+            doMessage(flag.Search_success, 0, ParseSearchRes(GetRequest(linkTxt + reqTxt, cookieCont), searchList, currencies));
         }
 
 

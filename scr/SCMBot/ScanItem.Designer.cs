@@ -72,7 +72,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(5, 39);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 37;
             this.label1.Text = "Wished Price";
             // 
@@ -98,7 +98,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(5, 12);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 39;
             this.label4.Text = "Link to Item";
             // 
@@ -108,7 +108,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(77, 90);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(44, 17);
+            this.checkBox1.Size = new System.Drawing.Size(43, 17);
             this.checkBox1.TabIndex = 40;
             this.checkBox1.Text = "buy";
             this.checkBox1.UseVisualStyleBackColor = true;

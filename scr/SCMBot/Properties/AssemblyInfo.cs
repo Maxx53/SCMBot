@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Steam Market Bot")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SCMBot alpha")]
+[assembly: AssemblyDescription("Steam Community Market Bot Open Source")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("NVTelecom")]
-[assembly: AssemblyProduct("Steam Market Bot")]
-[assembly: AssemblyCopyright("Copyright © NVTelecom 2013")]
+[assembly: AssemblyCompany("Maxx53")]
+[assembly: AssemblyProduct("Steam Community Market Bot")]
+[assembly: AssemblyCopyright("Copyright © Maxx53, 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

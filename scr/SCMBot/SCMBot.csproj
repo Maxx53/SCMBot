@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Steam.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>3rdParty\Newtonsoft.Json.dll</HintPath>
@@ -170,6 +173,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\working.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ready.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

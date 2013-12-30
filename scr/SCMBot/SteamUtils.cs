@@ -46,6 +46,7 @@ namespace SCMBot
         public const string invImgUrl = "http://cdn.steamcommunity.com/economy/image/{0}/96fx96f";
         public const string _sellitem = _mainsiteS + "market/sellitem/";
         public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
+        public const string removeSell = _mainsiteS + "removelisting/";
 
         private List<ScanItem> lotList = new List<ScanItem>();
         public List<SearchItem> searchList = new List<SearchItem>();
@@ -66,15 +67,17 @@ namespace SCMBot
             public string SubTotal { set; get; }
         }
 
+
         public class InventItem
         {
-            public InventItem(string assetid, string name, string type, string price, string imglink)
+            public InventItem(string assetid, string name, string type, string price, string imglink, bool onSale)
             {
                 this.Name = name;
                 this.AssetId = assetid;
                 this.Type = type;
                 this.Price = price;
                 this.ImgLink = imglink;
+                this.OnSale = onSale;
             }
 
             public string Name { set; get; }
@@ -82,6 +85,7 @@ namespace SCMBot
             public string Price { set; get; }
             public string Type { set; get; }
             public string AssetId { set; get; }
+            public bool OnSale { set; get; }
 
         }
 
@@ -125,10 +129,18 @@ namespace SCMBot
                 
                 //Brasilian Real? I guess...
                 this.Add(new CurrencyInfo("R&#36;", "R$", "4"));
+               
                 this.Current = 0;
+                this.NotSet = true;
             }
 
             public int Current { set; get; }
+            public bool NotSet { set; get; }
+            
+            public string GetCurrentName()
+            {
+                return this[this.Current].TrueName;
+            }
         }
 
 
@@ -315,8 +327,10 @@ namespace SCMBot
         }
 
 
-        public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
+        public string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
         {
+            doMessage(flag.StripImg, 0, string.Empty);
+
             var requestData = Encoding.UTF8.GetBytes(req);
             string content = string.Empty;
 
@@ -360,6 +374,8 @@ namespace SCMBot
                 }
                
             }
+
+            doMessage(flag.StripImg, 1, string.Empty);
             return content;
 
             //catch (Exception e)
@@ -373,8 +389,9 @@ namespace SCMBot
 
 
 
-        public static string GetRequest(string url, CookieContainer cookie)
+        public string GetRequest(string url, CookieContainer cookie)
         {
+            doMessage(flag.StripImg, 0, string.Empty);
             string content = string.Empty;
 
             try
@@ -391,14 +408,16 @@ namespace SCMBot
                 response.Close();
                 stream.Close();
 
-                return content;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Main.AddtoLog(e.GetType() + ". " + e.Message);
-                return content;
+
             }
+
+            doMessage(flag.StripImg, 1, string.Empty);
+            return content;
         }
 
 
@@ -421,7 +440,23 @@ namespace SCMBot
 
         //steam utils
 
-        public static string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
+        private static string GetCurrencyType(string input, CurrInfoLst currLst)
+        {
+            string res = "0";
+            for (int i = 0; i < currLst.Count; i++)
+            {
+                if (input.Contains(currLst[i].AsciiName))
+                {
+                    currLst.Current = i;
+                    currLst.NotSet = false;
+                    res = currLst[i].Index;
+                    break;
+                }
+            }
+            return res;
+        }
+
+        public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = GetRequest(_market, cock);
@@ -440,18 +475,9 @@ namespace SCMBot
             parseImg = parseImg.Substring(0, parseImg.Length - 46);
 
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
-            string curInd = "0";
 
-            for (int i = 0; i < currLst.Count; i++)
-			{
-                if (parseAmount.Contains(currLst[i].AsciiName))
-                {
-                    parseAmount = parseAmount.Replace(currLst[i].AsciiName, currLst[i].TrueName);
-                    curInd = currLst[i].Index;
-                    currLst.Current = i;
-                    break;
-                }
-			}
+            string curInd = GetCurrencyType(parseAmount, currLst);
+            parseAmount = parseAmount.Replace(currLst[currLst.Current].AsciiName, currLst[currLst.Current].TrueName);
 
             return string.Format("{0}|{1}|{2}|{3}", accName, parseAmount, parseImg, curInd);
         }
@@ -490,7 +516,7 @@ namespace SCMBot
         }
 
 
-        static BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
+        private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
         {
             int int_total = Convert.ToInt32(prFormat(total));
             int int_sub = Convert.ToInt32(prFormat(subtotal));
@@ -592,16 +618,16 @@ namespace SCMBot
                     return;
                 }
             }
-            else MessageBox.Show("Не удалось загрузить список предметов!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
-
+            
         }
 
 
-        public static string ParseSearchRes(string content, List<SearchItem> lst)
+        public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)
         {
             lst.Clear();
             string totalfind = "0";
 
+            //content = File.ReadAllText(@"C:\dollar2.html");
             MatchCollection matches = Regex.Matches(content, "(?<=market_listing_row_link\" href)(.*?)(?<=</a>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
             if (matches.Count != 0)
             {
@@ -616,8 +642,26 @@ namespace SCMBot
 
 
                     string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
-                    ItemPrice = Regex.Replace(ItemPrice, "&#(.*?);", string.Empty);
-                    ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,]+", string.Empty);
+                   
+                    //MessageBox.Show(ItemPrice);
+
+                    //ItemPrice = Regex.Replace(ItemPrice, "&#(.*?);", string.Empty);
+
+                    //Удаляем ascii кода нашей текущей валюты
+                    if (currLst.NotSet)
+                    {
+                        //If not loggen in then
+                        GetCurrencyType(ItemPrice, currLst);
+                        ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+                        currLst.NotSet = true;
+                    }
+                    else
+                    {
+                        ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+
+                    }
+
+                    ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,\.]+", string.Empty);
 
                     string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
                     ItemName = ItemName.Remove(0, ItemName.IndexOf(">") + 1);
@@ -633,7 +677,7 @@ namespace SCMBot
                 totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
             }
             else
-                MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+                MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return totalfind;
         }
@@ -652,11 +696,54 @@ namespace SCMBot
                 //parse cost by url (_lists + 753/ + ourItem.MarketName)
                 //or (_search + name)
 
-                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, "None ", ourItem.IconUrl));
+                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, "None ", ourItem.IconUrl, false));
             }
 
             return inventList.Count.ToString();
         }
+
+
+        public string ParseOnSale(string content, CurrInfoLst currLst)
+        {
+
+            string parseBody = Regex.Match(content, "(?<=section market_home_listing_table\">)(.*)(?=<div id=\"tabContentsMyMarketHistory)", RegexOptions.Singleline).ToString();
+
+            MatchCollection matches = Regex.Matches(parseBody, "(?<=market_recent_listing_row listing_)(.*?)(?=	</div>\r\n</div>)", RegexOptions.Singleline);
+            if (matches.Count != 0)
+            {
+                foreach (Match match in matches)
+                {
+                    string currmatch = match.Groups[1].Value;
+
+                    string ImgLink = Regex.Match(currmatch, "(?<=economy/image/)(.*)(?=/38fx38f)").ToString();
+
+                    //If you need:
+                    //string assetid = Regex.Match(currmatch, "(?<='mylisting', ')(.*)(?=\" class=\"item_market)").ToString();
+                    //assetid = assetid.Substring(assetid.Length - 11, 9); 
+
+                    string listId = Regex.Match(currmatch, "(?<=mylisting_)(.*)(?=_image\" src=)").ToString();
+
+                    string captainPrice = Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim();
+
+                    captainPrice = Regex.Replace(captainPrice, currLst[currLst.Current].AsciiName, string.Empty);
+
+
+                    string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
+                   
+                    string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
+
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, true));
+
+                }
+
+            }
+            else
+                MessageBox.Show("nope!");
+
+            return matches.Count.ToString();
+        }
+
+
 
     }
 }
