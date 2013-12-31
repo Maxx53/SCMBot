@@ -160,9 +160,9 @@ namespace SCMBot
 
                 case flag.Login_cancel:
 
-                    MessageBox.Show("Login has been cancelled. Please try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Error while Login: " + message, "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    StatusLabel1.Text = "Login cancelled";
+                    StatusLabel1.Text = message;
 
                     SetButton(loginButton, "Login");
                     ProgressBar1.Visible = false;
@@ -174,6 +174,12 @@ namespace SCMBot
                     SetButton(loginButton, "Login");
                     break;
 
+                case flag.Send_cancel:
+                    var scanItem = ScanItLst[searchId];
+                    var steam = SteamLst[searchId];
+                    steam.CancelScan();
+                    scanItem.ButtonText = "Start";
+                    break;
                 case flag.StripImg:
                     if (searchId == 0)
                         toolStripImage.Image = Properties.Resources.working;
@@ -195,8 +201,7 @@ namespace SCMBot
                     break;
 
                 case flag.Scan_progress:
-                    //StatusLabel1.Text = "Prices Loaded: "+ message;
-                    //Nonsense
+                    StatusLabel1.Text = "Scanning Prices...";
                     break;
 
                 case flag.Success_buy:
@@ -493,6 +498,7 @@ namespace SCMBot
                     steam.wishedPrice = scanItem.wishedValue;
                     steam.pageLink = scanItem.linkValue;
                     steam.toBuy = scanItem.tobuyValue;
+                    steam.BuyQuant = scanItem.tobuyQuant;
                     steam.scanID = tabControl1.SelectedIndex;
                     steam.currency = steam_srch.currency;
                     steam.currencies.Current = steam_srch.currencies.Current;

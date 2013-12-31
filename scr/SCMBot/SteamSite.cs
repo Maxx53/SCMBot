@@ -29,11 +29,13 @@ namespace SCMBot
         public bool scaninProg { set; get; }
         public bool toBuy { set; get; }
         public bool BuyNow { set; get; }
+       
+        public int BuyQuant { get; set; }
 
         public int invApp { get; set; }
         
         public static string accName;
-        
+        public int buyCounter = 0;
 
         public CookieContainer cookieCont { set; get; }
 
@@ -293,6 +295,15 @@ namespace SCMBot
 
             if (firstTry.Contains("message"))
             {
+                if (rProcess.Message == "Incorrect login")
+                {
+                    Main.AddtoLog("Incorrect login");
+                    doMessage(flag.Login_cancel, 0, "Incorrect login");
+                    e.Cancel = true;
+                    LoginProcess = false;
+                    return;
+                }
+
                 Dialog guardCheckForm = new Dialog();
 
                 if (rProcess.isEmail)
@@ -302,16 +313,19 @@ namespace SCMBot
                 else if (rProcess.isCaptcha)
                 {
                     string newcap = string.Empty;
+                    
+                  //  Not much, brb
+                  //  if (rProcess.isBadCap)
+                  //  {
+                  //      MessageBox.Show("cap is bad");
+                  //      newcap = GetRequest(_refrcap, cookieCont);
+                  //      newcap = _capcha + newcap.Substring(8, 20);
+                  //   }
+                  //   else
+                  //   {
+                            newcap =  _capcha + rProcess.Captcha_Id;
+                  //   }
 
-                    if (rProcess.isBadCap)
-                    {
-                        newcap = GetRequest(_refrcap, cookieCont);
-                        newcap = _capcha + newcap.Substring(8, 20);
-                    }
-                    else
-                    {
-                        newcap =  _capcha + rProcess.Captcha_Id;
-                    }
                     guardCheckForm.codgroupEnab = false;
                     Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
                 }
@@ -326,7 +340,10 @@ namespace SCMBot
                     string secondTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
                                                            guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
 
-
+                    MessageBox.Show(rProcess.Captcha_Id);
+                    MessageBox.Show(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
+                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp));
+                    MessageBox.Show(guardCheckForm.capchaText);
                     var rFinal = JsonConvert.DeserializeObject<RespFinal>(secondTry);
 
                     if (rFinal.Success && rFinal.isComplete)
@@ -347,7 +364,7 @@ namespace SCMBot
                 else
                 {
                     Main.AddtoLog("Login Guard Check Cancelled");
-                    doMessage(flag.Login_cancel, 0, string.Empty);
+                    doMessage(flag.Login_cancel, 0, "Login Cancelled");
                     e.Cancel = true;
                 }
 
@@ -369,6 +386,7 @@ namespace SCMBot
                 Main.AddtoLog("Login Guard Check Cancelled");
                 doMessage(flag.Login_cancel, 0, string.Empty);
                 e.Cancel = true;
+                Logged = false;
             }
 
             LoginProcess = false;
@@ -449,6 +467,8 @@ namespace SCMBot
             int delay = Convert.ToInt32(scanDelay);
             int prog = 1;
 
+            buyCounter = 0;
+
             while (worker.CancellationPending == false)
             {
                 ParseLotList(GetRequest(pageLink, cookieCont), lotList, currencies);
@@ -474,6 +494,13 @@ namespace SCMBot
                         {
                             doMessage(flag.Success_buy, scanID, buyresp.Mess);
                             doMessage(flag.Price_btext, scanID, prtoTxt);
+                            buyCounter++;
+
+                            if (buyCounter == BuyQuant)
+                            {
+                                doMessage(flag.Send_cancel, scanID, string.Empty);
+                            }
+
                         }
                         else
                         {

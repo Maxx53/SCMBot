@@ -36,6 +36,12 @@ namespace SCMBot
             set { checkBox1.Checked = value; }
         }
 
+        public int tobuyQuant
+        {
+            get { return Convert.ToInt32(numericUpDown1.Value); }
+            set { numericUpDown1.Value = value; }
+        }
+
         public string ButtonText
         {
             get { return button4.Text;  }
@@ -50,8 +56,6 @@ namespace SCMBot
                 Thread pTh = new Thread(threadStart);
                 pTh.IsBackground = true;
                 pTh.Start();
-
-
 
                 //Main.loadImg(value, pictureBox1, false);
             }

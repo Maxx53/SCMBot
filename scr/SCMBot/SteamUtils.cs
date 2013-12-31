@@ -518,6 +518,9 @@ namespace SCMBot
 
         private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
         {
+            //For test purpose
+            //return new BuyResponse(true, "100");
+
             int int_total = Convert.ToInt32(prFormat(total));
             int int_sub = Convert.ToInt32(prFormat(subtotal));
             string fee = (int_total - int_sub).ToString();

@@ -35,7 +35,8 @@ namespace SCMBot
         Items_Sold = 14,
         Sell_progress = 15,
         Error_buy = 16,
-        StripImg = 17
+        StripImg = 17,
+        Send_cancel = 18
     }
 
 
