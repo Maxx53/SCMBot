@@ -122,6 +122,17 @@ namespace SCMBot
             pTh.Start();
         }
 
+        public void ChangeLng(string lang)
+        {
+            ThreadStart threadStart = delegate()
+            {
+                GetRequest(_lang_chg + lang, cookieCont);
+                doMessage(flag.Lang_Changed, 0, lang);
+            };
+            Thread pTh = new Thread(threadStart);
+            pTh.IsBackground = true;
+            pTh.Start();
+        }
 
 
         public void ScanPrices()
@@ -435,11 +446,12 @@ namespace SCMBot
 
             if (BuyNow)
             {
-                ParseLotList(GetRequest(pageLink, cookieCont), lotList, currencies);
+                string resp_now = GetRequest(pageLink, cookieCont);
+                ParseLotList(resp_now, lotList, currencies);
 
                 if (lotList.Count == 0)
                 {
-                    doMessage(flag.Price_text, scanID, "Error");
+                    doMessage(flag.Error_scan, scanID, resp_now);
                 }
                 else
                 {
@@ -463,7 +475,6 @@ namespace SCMBot
 
             int wished = Convert.ToInt32(wishedPrice);
 
-            //TODO: Проверка наличия цифр, запятой или точки
             int delay = Convert.ToInt32(scanDelay);
             int prog = 1;
 
@@ -471,11 +482,12 @@ namespace SCMBot
 
             while (worker.CancellationPending == false)
             {
-                ParseLotList(GetRequest(pageLink, cookieCont), lotList, currencies);
+                string resp = GetRequest(pageLink, cookieCont);
+                ParseLotList(resp, lotList, currencies);
 
                 if (lotList.Count == 0)
                 {
-                    doMessage(flag.Price_text, scanID, "Error");
+                    doMessage(flag.Error_scan, scanID, resp);
                     continue;
                 }
 

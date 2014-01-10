@@ -183,7 +183,12 @@ namespace SCMBot
                 case flag.StripImg:
                     if (searchId == 0)
                         toolStripImage.Image = Properties.Resources.working;
-                    else toolStripImage.Image = Properties.Resources.ready;
+                    else
+                        toolStripImage.Image = Properties.Resources.ready;
+                    break;
+
+                case flag.Lang_Changed:
+                    StatusLabel1.Text = "Language changed to " + message;
                     break;
 
                 case flag.Price_htext:
@@ -215,7 +220,11 @@ namespace SCMBot
                     ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1);
                     buyNowButton.Enabled = true;
                     break;
-
+                case flag.Error_scan:
+                    StatusLabel1.Text = "Error while scanning!";
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1);
+                    buyNowButton.Enabled = true;
+                    break;
                 case flag.Scan_cancel:
                     StatusLabel1.Text = "Scan Cancelled";
                     break;
@@ -697,6 +706,12 @@ namespace SCMBot
                 StartLoadImgTread(string.Format(SteamSite.invImgUrl, ourItem.ImgLink), pictureBox3);
                 
             }
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Temp solution
+            steam_srch.ChangeLng(comboBox2.SelectedItem.ToString());
         }
 
    }

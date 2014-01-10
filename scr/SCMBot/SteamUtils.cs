@@ -36,6 +36,8 @@ namespace SCMBot
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
         const string _refrcap = "https://steamcommunity.com/actions/RefreshCaptcha/?count=1";
 
+        const string _lang_chg = _market + "?l=";
+
         const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
         //Currency FIX
@@ -43,6 +45,7 @@ namespace SCMBot
         const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}";
 
         const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
+
         public const string invImgUrl = "http://cdn.steamcommunity.com/economy/image/{0}/96fx96f";
         public const string _sellitem = _mainsiteS + "market/sellitem/";
         public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
@@ -409,11 +412,11 @@ namespace SCMBot
                 stream.Close();
 
             }
+
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Main.AddtoLog(e.GetType() + ". " + e.Message);
-
+                content = e.Message;
+                Main.AddtoLog(e.Message);
             }
 
             doMessage(flag.StripImg, 1, string.Empty);

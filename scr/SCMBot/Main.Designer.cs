@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("In inventory", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("On Sale", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("In inventory", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup10 = new System.Windows.Forms.ListViewGroup("On Sale", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.loginBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
@@ -84,6 +84,8 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -243,7 +245,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(516, 21);
             this.comboBox1.TabIndex = 38;
-            this.comboBox1.Text = "snow globe";
+            this.comboBox1.Text = "bit trip";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
@@ -251,6 +253,8 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.comboBox2);
             this.groupBox4.Controls.Add(this.labelFindCurr);
             this.groupBox4.Controls.Add(this.buyNowButton);
             this.groupBox4.Controls.Add(this.addtoScan);
@@ -596,13 +600,13 @@
             this.columnHeader3});
             this.InventoryList.FullRowSelect = true;
             this.InventoryList.GridLines = true;
-            listViewGroup1.Header = "In inventory";
-            listViewGroup1.Name = "listViewGroup1";
-            listViewGroup2.Header = "On Sale";
-            listViewGroup2.Name = "listViewGroup2";
+            listViewGroup9.Header = "In inventory";
+            listViewGroup9.Name = "listViewGroup1";
+            listViewGroup10.Header = "On Sale";
+            listViewGroup10.Name = "listViewGroup2";
             this.InventoryList.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
+            listViewGroup9,
+            listViewGroup10});
             this.InventoryList.Location = new System.Drawing.Point(6, 17);
             this.InventoryList.MultiSelect = false;
             this.InventoryList.Name = "InventoryList";
@@ -683,6 +687,51 @@
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "SCM Bot alpha";
             this.notifyIcon1.Visible = true;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "russian",
+            "english",
+            "german",
+            "bulgarian",
+            "czech",
+            "danish",
+            "dutch",
+            "finnish",
+            "french",
+            "greek",
+            "hungarian",
+            "italian",
+            "japanese",
+            "koreana",
+            "norwegian",
+            "polish",
+            "portuguese",
+            "brazilian",
+            "romanian",
+            "schinese",
+            "spanish",
+            "swedish",
+            "tchinese",
+            "thai",
+            "turkish"});
+            this.comboBox2.Location = new System.Drawing.Point(82, 14);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(101, 21);
+            this.comboBox2.TabIndex = 53;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(18, 17);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.TabIndex = 54;
+            this.label7.Text = "Language:";
             // 
             // Main
             // 
@@ -777,6 +826,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripImage;
         private System.Windows.Forms.Label labelFindCurr;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }
 
