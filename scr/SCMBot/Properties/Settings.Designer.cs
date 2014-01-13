@@ -73,6 +73,8 @@ namespace SCMBot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //Fucking important!
+        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
         public global::SCMBot.saveTabLst saveTabs {
             get {
                 return ((global::SCMBot.saveTabLst)(this["saveTabs"]));
