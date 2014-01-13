@@ -41,11 +41,51 @@ namespace SCMBot
         Lang_Changed = 20
     }
 
+    [SerializableAttribute]
+    public class saveTabLst : List<saveTab>
+    {
+        public int Position { set; get; }
+    }
+
+    [SerializableAttribute]
+    public class saveTab
+    {
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy)
+            {
+                this.Name = name;
+                this.Price = price;
+                this.Link = link;
+                this.ImgLink = imglink;
+                this.Delay = delay;
+                this.BuyQnt = buyQnt;
+                this.ToBuy = toBuy;
+            }
+
+            public string Name { set; get; }
+            public string ImgLink { set; get; }
+            public string Link { set; get; }
+            public string Price { set; get; }
+            public int BuyQnt { set; get; }
+            public int Delay { set; get; }
+            public bool ToBuy { set; get; }
+    }
+
 
     public partial class Main
     {
         const string logPath = "logfile.txt";
         const string appName = "SCM Bot alpha";
+        const string notifTxt = "{0}\r\n{1} {2}";
+
+        const string aboutApp = appName + "\r\nOpensource Project"
+                                        + "\r\nNote: Program may contain critical bugs, for testing purposes only!"
+                                        + "\r\nCopyright © 2013 Maxx53"
+                                        + "\r\n\r\nDo you want to vist Github page?";
+
+        const string homePage = "https://github.com/Maxx53/SteamCMBot";
+        const string helpPage = homePage + "/wiki";
+
+        
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";

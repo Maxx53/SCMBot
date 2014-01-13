@@ -11,6 +11,9 @@ namespace SCMBot
     {
         public event EventHandler ButtonClick;
         List<byte> lboxCols = new List<byte>();
+        string imgLinkVal = string.Empty;
+
+        public string ItemName { set; get; }
 
         public string linkValue
         {
@@ -50,14 +53,14 @@ namespace SCMBot
 
         public string ImgLink
         {
+            get { return imgLinkVal; }
             set {
-
-                ThreadStart threadStart = delegate() { Main.loadImg(value, pictureBox1, false, true); };
+            
+                imgLinkVal = value;
+                ThreadStart threadStart = delegate() { Main.loadImg(string.Format(SteamSite.fndImgUrl, value), pictureBox1, false, true); };
                 Thread pTh = new Thread(threadStart);
                 pTh.IsBackground = true;
                 pTh.Start();
-
-                //Main.loadImg(value, pictureBox1, false);
             }
         }
 

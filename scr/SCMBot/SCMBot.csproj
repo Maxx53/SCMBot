@@ -90,6 +90,12 @@
     <Compile Include="ScanItem.Designer.cs">
       <DependentUpon>ScanItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="SteamSite.cs" />
     <Compile Include="SteamUtils.cs" />
     <EmbeddedResource Include="Main.resx">
@@ -110,6 +116,9 @@
     </Compile>
     <EmbeddedResource Include="ScanItem.resx">
       <DependentUpon>ScanItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -178,6 +187,9 @@
     <None Include="Resources\ready.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\info.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\settings.png" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

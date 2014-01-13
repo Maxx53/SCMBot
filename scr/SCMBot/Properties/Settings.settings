@@ -14,5 +14,14 @@
     <Setting Name="lastPass" Type="System.String" Scope="User">
       <Value Profile="(Default)">Password</Value>
     </Setting>
+    <Setting Name="saveTabs" Type="SCMBot.saveTabLst" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="minOnClose" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="firstRun" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

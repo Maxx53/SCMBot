@@ -14,8 +14,7 @@ namespace SCMBot
 
     public partial class SteamSite
     {
-
-        public event eventDelegate delegMessage;
+        //================================ Consts ======================= Begin! ============================================
 
         public const string _mainsite = "http://steamcommunity.com/";
         public const string _mainsiteS = "https://steamcommunity.com/";
@@ -46,10 +45,17 @@ namespace SCMBot
 
         const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
 
-        public const string invImgUrl = "http://cdn.steamcommunity.com/economy/image/{0}/96fx96f";
+        public const string imgUri = "http://cdn.steamcommunity.com/economy/image/";
+
+        public const string invImgUrl = imgUri + "{0}/96fx96f";
+        public const string fndImgUrl = imgUri + "{0}/62fx62f";
         public const string _sellitem = _mainsiteS + "market/sellitem/";
         public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
         public const string removeSell = _mainsiteS + "removelisting/";
+
+        //================================ Consts ======================= End ===============================================
+
+        public event eventDelegate delegMessage;
 
         private List<ScanItem> lotList = new List<ScanItem>();
         public List<SearchItem> searchList = new List<SearchItem>();
@@ -674,7 +680,7 @@ namespace SCMBot
 
                     string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
 
-                    string ItemImg = Regex.Match(currmatch, "(?<=_image\" src=\")(.*)(?=\" alt)", RegexOptions.Singleline).ToString();
+                    string ItemImg = Regex.Match(currmatch, "(?<=com/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
 
                     //Заполняем список 
                     lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
@@ -699,10 +705,18 @@ namespace SCMBot
             foreach (InvItem prop in rgDescr.myInvent.Values)
             {
                 var ourItem = rgDescr.invDescr[prop.classid + "_" + prop.instanceid];
+                
                 //parse cost by url (_lists + 753/ + ourItem.MarketName)
-                //or (_search + name)
-
-                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, "None ", ourItem.IconUrl, false));
+                 string price = "None";   
+                
+                //Careful, this action takes time!
+                //string cont = GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ourItem.MarketName, cookieCont);
+                //var tempLst = new List<ScanItem>();
+                //ParseLotList(cont, tempLst, currencies);
+                //if (tempLst.Count != 0)
+                  //  price = tempLst[0].Price;
+                
+                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, false));
             }
 
             return inventList.Count.ToString();
@@ -744,7 +758,8 @@ namespace SCMBot
 
             }
             else
-                MessageBox.Show("nope!");
+                //TODO. Add correct error processing
+                MessageBox.Show("Error Parsing On sale Items!");
 
             return matches.Count.ToString();
         }

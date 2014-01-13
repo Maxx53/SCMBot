@@ -9,6 +9,11 @@ using System.Collections.Generic;
 
 namespace SCMBot
 {
+    public class SteamSiteLst : List<SteamSite>
+    {
+        public string CurrencyName { set; get; }
+    }
+
     partial class SteamSite
     {
         public string UserName { set; get; }
@@ -351,10 +356,11 @@ namespace SCMBot
                     string secondTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
                                                            guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
 
-                    MessageBox.Show(rProcess.Captcha_Id);
-                    MessageBox.Show(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
-                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp));
-                    MessageBox.Show(guardCheckForm.capchaText);
+                   //What 'bout captcha problem?
+                   //MessageBox.Show(rProcess.Captcha_Id);
+                   // MessageBox.Show(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
+                   //                                        guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp));
+                   // MessageBox.Show(guardCheckForm.capchaText);
                     var rFinal = JsonConvert.DeserializeObject<RespFinal>(secondTry);
 
                     if (rFinal.Success && rFinal.isComplete)
