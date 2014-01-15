@@ -13,6 +13,14 @@ namespace SCMBot
         [STAThread]
         static void Main()
         {
+            var lang = Properties.Settings.Default.Language;
+
+            if (!String.IsNullOrEmpty(lang))
+            {
+               System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(lang);
+               System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(lang);
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());

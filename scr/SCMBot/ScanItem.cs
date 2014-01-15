@@ -57,10 +57,13 @@ namespace SCMBot
             set {
             
                 imgLinkVal = value;
-                ThreadStart threadStart = delegate() { Main.loadImg(string.Format(SteamSite.fndImgUrl, value), pictureBox1, false, true); };
-                Thread pTh = new Thread(threadStart);
-                pTh.IsBackground = true;
-                pTh.Start();
+                if (value != string.Empty)
+                {
+                        ThreadStart threadStart = delegate() { Main.loadImg(string.Format(SteamSite.fndImgUrl, value), pictureBox1, false, true); };
+                        Thread pTh = new Thread(threadStart);
+                        pTh.IsBackground = true;
+                        pTh.Start();
+                }
             }
         }
 
@@ -76,14 +79,18 @@ namespace SCMBot
         }
 
 
-        public void lboxAdd(string rowtxt, byte colbyte)
+        public void lboxAdd(string rowtxt, byte colbyte, int limit)
         {
-            int lastsel = listBox1.SelectedIndex;
+            if (listBox1.Items.Count > limit)
+            {
+                listBox1.Items.Clear();
+                lboxCols.Clear();
+            }
+
             lboxCols.Add(colbyte);
             listBox1.Items.Add(rowtxt);
             listBox1.SelectedIndex = listBox1.Items.Count - 1;
             listBox1.SelectedIndex = -1;
-
         }
 
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)

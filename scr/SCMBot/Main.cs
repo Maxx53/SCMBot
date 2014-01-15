@@ -29,35 +29,144 @@ namespace SCMBot
         List<ScanItem> ScanItLst = new List<ScanItem>();
         SteamSiteLst SteamLst = new SteamSiteLst();
         Settings settingsForm = new Settings();
+        Properties.Settings settings = Properties.Settings.Default;
 
         public Main()
         {
+
             InitializeComponent();
             steam_srch.delegMessage += new eventDelegate(Event_Message);
          }
 
-        private void setNotifyText(string mess)
-        {
-            notifyIcon1.Text = string.Format(notifTxt, appName, settingsForm.loginBox.Text, mess);
-        }
+
 
         private void Main_Load(object sender, EventArgs e)
         {
 
-            
-            steam_srch.cookieCont = ReadCookiesFromDisk("coockies.dat");
+            settingsForm.intLangComboBox.DataSource = new System.Globalization.CultureInfo[]
+            {
+              System.Globalization.CultureInfo.GetCultureInfo("ru-RU"),
+              System.Globalization.CultureInfo.GetCultureInfo("en-US")
+            };
+
+
+            settingsForm.intLangComboBox.DisplayMember = "NativeName";
+            settingsForm.intLangComboBox.ValueMember = "Name";
+
+            steam_srch.cookieCont = ReadCookiesFromDisk(cockPath);
 
             InventoryList.ListViewItemSorter = itemComparer;
-            //InventoryList.ListViewItemSorter = itemComparer;
+            
+            //Add sorter?
+            //FounList.ListViewItemSorter = itemComparer;
+           
             LoadSettings(true);
 
-            if (settingsForm.checkBox2.Checked)
+            if (settings.loginOnstart)
                 loginButton.PerformClick();
 
             //temp
             comboBox3.SelectedIndex = 0;
-            setNotifyText("is not logged");
+            setNotifyText(Strings.NotLogged);
         }
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            if (settings.firstRun == true)
+            {
+                MessageBox.Show(Strings.FirstTime, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                settings.firstRun = false;
+                settings.Save();
+                settingsToolStripMenuItem.PerformClick();
+            }
+        }
+
+//=================================================== Settings Stuff ====================== Start ============================
+
+        private void LoadSettings(bool loadtabs)
+        {
+            settingsForm.loginBox.Text = settings.lastLogin;
+            settingsForm.checkBox2.Checked = settings.loginOnstart;
+            settingsForm.logCountBox.Text = settings.logCount.ToString();
+
+            settingsForm.hideInventBox.Checked = settings.hideInvent;
+            splitContainer1.Panel2Collapsed = settings.hideInvent;
+            minimizeOnClosingToolStripMenuItem.Checked = settings.minOnClose;
+
+            if (!String.IsNullOrEmpty(settings.Language))
+            {
+                settingsForm.intLangComboBox.SelectedValue = settings.Language;
+            }
+
+            //If you need password crypting
+            //passwordBox.Text = Decrypt(settings.lastPass);
+            settingsForm.passwordBox.Text = settings.lastPass;
+
+            if (loadtabs)
+                LoadTabs(settings.saveTabs);
+        }
+
+
+        private void SaveSettings(bool savetabs)
+        {
+            settings.lastLogin = settingsForm.loginBox.Text;
+            settings.loginOnstart = settingsForm.checkBox2.Checked;
+            settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
+            settings.hideInvent = settingsForm.hideInventBox.Checked;
+            settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
+
+            settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
+
+            splitContainer1.Panel2Collapsed = settings.hideInvent;
+
+            //If you need password crypting
+            //settings.lastPass = Encrypt(passwordBox.Text);
+            settings.lastPass = settingsForm.passwordBox.Text;
+
+            if (savetabs)
+                SaveTabs(settings.saveTabs);
+
+            settings.Save();
+        }
+
+
+
+        private void LoadTabs(saveTabLst lst)
+        {
+            if (lst != null)
+            {
+                for (int i = 0; i < lst.Count; i++)
+                {
+                    var ourItem = lst[i];
+                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy);
+                }
+
+                tabControl1.SelectedIndex = lst.Position;
+            }
+        }
+
+        private void SaveTabs(saveTabLst lst)
+        {
+            if (lst != null)
+            {
+                lst.Clear();
+
+                if (ScanItLst.Count != 0)
+                {
+                    for (int i = 0; i < ScanItLst.Count; i++)
+                    {
+                        var ourItem = ScanItLst[i];
+                        lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
+                                                   Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue));
+                    }
+                    lst.Position = tabControl1.SelectedIndex;
+                }
+            }
+        }
+
+//=================================================== Settings Stuff ====================== End ==============================
+
+
 
         private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy)
         {
@@ -65,7 +174,7 @@ namespace SCMBot
 
             if (tabId == string.Empty)
             {
-                tabName = "Item " + (tabControl1.TabCount + 1).ToString();
+                tabName = Strings.Item + (tabControl1.TabCount + 1).ToString();
             }
             else
             {
@@ -95,89 +204,6 @@ namespace SCMBot
             SteamLst.Add(ScanSite);
         }
 
-        private void LoadSettings(bool loadtabs)
-        {
-            var settings = Properties.Settings.Default;
-
-            settingsForm.loginBox.Text = settings.lastLogin;
-            settingsForm.checkBox2.Checked = settings.loginOnstart;
-            minimizeOnClosingToolStripMenuItem.Checked = settings.minOnClose;
-
-            if (loadtabs)
-            {
-                LoadTabs(settings.saveTabs);
-
-                if (settings.firstRun == true)
-                {
-                    MessageBox.Show("It's first time launch. Please, check settings.\r\nYou can find it in system tray anytime.", "Attention!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    settings.firstRun = false;
-                    settings.Save();
-                    settingsForm.ShowDialog(this);
-                }
-            }
-
-            //If you need password crypting
-            //passwordBox.Text = Decrypt(settings.lastPass);
-            settingsForm.passwordBox.Text = settings.lastPass;
-        }
-
-
-        private void LoadTabs(saveTabLst lst)
-        {
-            if (lst != null)
-            {
-                for (int i = 0; i < lst.Count; i++)
-                {
-                    var ourItem = lst[i];
-                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy);
-                }
-
-                tabControl1.SelectedIndex = lst.Position;
-            }          
-        }
-
-        private void SaveSettings(bool savetabs)
-        {
-            var settings = Properties.Settings.Default;
-
-            settings.lastLogin = settingsForm.loginBox.Text;
-            settings.loginOnstart = settingsForm.checkBox2.Checked;
-            settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
-
-            if (savetabs)
-                SaveTabs(settings.saveTabs);
-
-            //If you need password crypting
-            //settings.lastPass = Encrypt(passwordBox.Text);
-            settings.lastPass = settingsForm.passwordBox.Text;
-            settings.Save();
-        }
-
-
-        private void SaveTabs(saveTabLst lst)
-        {
-            if (lst != null)
-            {
-                lst.Clear();
-
-                if (ScanItLst.Count != 0)
-                {
-                    for (int i = 0; i < ScanItLst.Count; i++)
-                    {
-                        var ourItem = ScanItLst[i];
-                        lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
-                                                   Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue));
-                    }
-                    lst.Position = tabControl1.SelectedIndex;
-                }
-            }
-        }
-
-        private static void SetButton(Button ourButt, string caption)
-        {
-            ourButt.Text = caption;
-            ourButt.Image = (Image)Properties.Resources.ResourceManager.GetObject(caption.ToLower());
-        }
 
         public void GetAccInfo(string mess)
         {
@@ -189,14 +215,14 @@ namespace SCMBot
                 label10.Text = accinfo[0];
                 steam_srch.currency = accinfo[3];
                 ProgressBar1.Visible = false;
-                SetButton(loginButton, "Logout");
+                SetButton(loginButton, Strings.Logout, 2);
                 buyNowButton.Enabled = true;
                 addtoScan.Enabled = true;
                 SteamLst.CurrencyName = steam_srch.currencies.GetCurrentName();
-                setNotifyText("is logged");
+                setNotifyText(Strings.NotLogged);
             }
             else
-                MessageBox.Show("Error loading account information!");
+                MessageBox.Show(Strings.ErrAccInfo);
 
         }
 
@@ -209,47 +235,46 @@ namespace SCMBot
         }
         
 
-
         private void Event_Message(object sender, string message, int searchId, flag myflag)
         {
             switch (myflag)
             {
                 case flag.Already_logged:
 
-                    AddtoLog("Already Logged");
-                    StatusLabel1.Text = "Already Logged";
+                    AddtoLog(Strings.AlreadyLogged);
+                    StatusLabel1.Text = Strings.AlreadyLogged;
                     GetAccInfo(message);
                     break;
 
                 case flag.Login_success:
 
-                    AddtoLog("Login Success");
-                    StatusLabel1.Text = "Login Success";
+                    AddtoLog(Strings.LoginSucc);
+                    StatusLabel1.Text = Strings.LoginSucc;
                     GetAccInfo(message);
                     break;
 
                 case flag.Login_cancel:
 
-                    MessageBox.Show("Error while Login: " + message, "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Strings.ErrLogin + message, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     StatusLabel1.Text = message;
 
-                    SetButton(loginButton, "Login");
+                    SetButton(loginButton, Strings.Login, 1);
                     ProgressBar1.Visible = false;
                     label5.Text = message;
                     break;
 
                 case flag.Logout_:
-                    StatusLabel1.Text = "Logouted";
-                    SetButton(loginButton, "Login");
-                    setNotifyText("is not logged");
+                    StatusLabel1.Text = Strings.Logouted;
+                    SetButton(loginButton, Strings.Login, 1);
+                    setNotifyText(Strings.NotLogged);
                     break;
 
                 case flag.Send_cancel:
                     var scanItem = ScanItLst[searchId];
                     var steam = SteamLst[searchId];
                     steam.CancelScan();
-                    scanItem.ButtonText = "Start";
+                    scanItem.ButtonText = Strings.Start ;
                     break;
                 case flag.StripImg:
                     if (searchId == 0)
@@ -259,17 +284,17 @@ namespace SCMBot
                     break;
 
                 case flag.Lang_Changed:
-                    StatusLabel1.Text = "Language changed to " + message;
+                    StatusLabel1.Text = Strings.ChangeLang + message;
                     break;
 
                 case flag.Price_htext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
                     break;
                 case flag.Price_btext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
                     break;
                 case flag.Price_text:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
                     break;
 
                 case flag.Rep_progress:
@@ -277,31 +302,31 @@ namespace SCMBot
                     break;
 
                 case flag.Scan_progress:
-                    StatusLabel1.Text = "Scanning Prices...";
+                    StatusLabel1.Text = Strings.ScanPrice;
                     break;
 
                 case flag.Success_buy:
-                    StatusLabel1.Text = "Item bought";
+                    StatusLabel1.Text = Strings.Bought;
                     label5.Text = message;
                     buyNowButton.Enabled = true;
                     break;
 
                 case flag.Error_buy:
-                    StatusLabel1.Text = "Error while buying!";
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1);
+                    StatusLabel1.Text = Strings.BuyError;
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Error_scan:
-                    StatusLabel1.Text = "Error while scanning!";
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1);
+                    StatusLabel1.Text = Strings.ScanError;
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Scan_cancel:
-                    StatusLabel1.Text = "Scan Cancelled";
+                    StatusLabel1.Text = Strings.ScanCancel;
                     break;
 
                 case flag.Items_Sold:
-                    StatusLabel1.Text = "Items on Sale";
+                    StatusLabel1.Text = Strings.SaleItems;
                     ProgressBar1.Visible = false;
                     steam_srch.loadInventory();
                     break;
@@ -311,7 +336,7 @@ namespace SCMBot
                     break;
                 case flag.Search_success:
 
-                    StatusLabel1.Text = string.Format("Found: {0}, Shown: {1}", message, steam_srch.searchList.Count.ToString());
+                    StatusLabel1.Text = string.Format(Strings.FoundShown, message, steam_srch.searchList.Count.ToString());
 
                     if (sppos.CurrentPos == 1)
                     {
@@ -374,8 +399,8 @@ namespace SCMBot
                     InventoryList.Items.Clear();
                     label4.Text = steam_srch.inventList.Count.ToString();
                     int saleCont = Convert.ToInt32(message);
-                    InventoryList.Groups[0].Header = string.Format("In Inventory ({0})", steam_srch.inventList.Count - saleCont);
-                    InventoryList.Groups[1].Header = string.Format("On Sale ({0})", saleCont);
+                    InventoryList.Groups[0].Header = string.Format(Strings.inInventory, steam_srch.inventList.Count - saleCont);
+                    InventoryList.Groups[1].Header = string.Format(Strings.onSale, saleCont);
                     for (int i = 0; i < steam_srch.inventList.Count; i++)
                     {
                         var ourItem = steam_srch.inventList[i];
@@ -398,7 +423,6 @@ namespace SCMBot
             contextMenuStrip1.Show(this.addtoScan, new Point(0, this.addtoScan.Height)); 
         }
 
-
         bool searchRight()
         {
             return (FoundList.Items.Count != 0 && steam_srch.searchList.Count != 0 && FoundList.CheckedItems.Count > -1);
@@ -406,7 +430,7 @@ namespace SCMBot
 
         private void searchFirstMess()
         {
-            MessageBox.Show("Try to find and choose an Item first", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(Strings.TryToFind, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void fullSetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -423,7 +447,6 @@ namespace SCMBot
                 searchFirstMess();
         }
 
-
         private void buyNowButton_Click(object sender, EventArgs e)
         {
             if (searchRight())
@@ -433,7 +456,7 @@ namespace SCMBot
                 steam_srch.pageLink = ourItem.Link;
                 steam_srch.ScanPrices();
                 buyNowButton.Enabled = false;
-                StatusLabel1.Text = "Buying \"" + ourItem.Name + "\" in process...";
+                StatusLabel1.Text = string.Format(Strings.buyingProc, ourItem.Name);
             }
             else 
                 searchFirstMess(); 
@@ -489,7 +512,7 @@ namespace SCMBot
                     break;
             }
 
-            steam_srch.reqTxt = string.Format("{0}&start={1}0", lastSrch, sppos.CurrentPos - 1);
+            steam_srch.reqTxt = string.Format(SteamSite.searchPageReq, lastSrch, sppos.CurrentPos - 1);
             steam_srch.linkTxt = SteamSite._search;
             steam_srch.reqLoad();
         }
@@ -514,15 +537,6 @@ namespace SCMBot
             prevButton.Enabled = false;
         }
 
-        public static void StartLoadImgTread(string imgUrl, PictureBox picbox)
-        {
-            ThreadStart threadStart = delegate() { loadImg(imgUrl, picbox, true, false); };
-            Thread pTh = new Thread(threadStart);
-            pTh.IsBackground = true;
-            pTh.Start();
-
-        }
-
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -533,7 +547,7 @@ namespace SCMBot
             }
             else
             {
-                WriteCookiesToDisk("coockies.dat", steam_srch.cookieCont);
+                WriteCookiesToDisk(cockPath, steam_srch.cookieCont);
                 SaveSettings(true);
             }
         }
@@ -550,12 +564,12 @@ namespace SCMBot
                 }
                 else
                 {
-                    steam_srch.UserName = settingsForm.loginBox.Text;
-                    steam_srch.Password = settingsForm.passwordBox.Text;
+                    steam_srch.UserName = settings.lastLogin;
+                    steam_srch.Password = settings.lastPass;
                     steam_srch.Login();
                     ProgressBar1.Visible = true;
-                    StatusLabel1.Text = "Try Login...";
-                    SetButton(loginButton, "Cancel");
+                    StatusLabel1.Text = Strings.tryLogin;
+                    SetButton(loginButton, Strings.Cancel, 3);
                 }
 
             }
@@ -592,12 +606,12 @@ namespace SCMBot
                         steam.currencies.Current = steam_srch.currencies.Current;
                         steam.ScanPrices();
 
-                        StatusLabel1.Text = "Scanning Prices...";
-                        scanItem.ButtonText = "Stop";
+                        StatusLabel1.Text = Strings.ScanPrice;
+                        scanItem.ButtonText = Strings.Stop;
                     }
                     else
                     {
-                        MessageBox.Show("Check your values and try again.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(Strings.CheckVal, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
 
                 }
@@ -605,10 +619,10 @@ namespace SCMBot
                 else
                 {
                     steam.CancelScan();
-                    scanItem.ButtonText = "Start";
+                    scanItem.ButtonText = Strings.Start;
                 }
             }
-            else MessageBox.Show("Please login first.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
         
@@ -672,7 +686,7 @@ namespace SCMBot
                 steam_srch.loadInventory();
 
             } else
-                MessageBox.Show("Please, Login.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private static string SpliteRemove(string input, char ch)
@@ -708,7 +722,7 @@ namespace SCMBot
 
         private void SellButton_Click(object sender, EventArgs e)
         {
-            if (SellButton.Text == "Sell Checked")
+            if (SellButton.Text == Strings.Sell)
             {
 
                 if ((steam_srch.inventList.Count != 0) && (textBox1.Text != string.Empty))
@@ -716,7 +730,7 @@ namespace SCMBot
                     string truePrice = ConvertToPrice(textBox1.Text);
                     if (truePrice != string.Empty)
                     {
-                        StatusLabel1.Text = "Adding to Sale..";
+                        StatusLabel1.Text = Strings.AddSell;
                         ProgressBar1.Value = 0;
                         ProgressBar1.Visible = true;
                         steam_srch.invApp = comboBox3.SelectedIndex;
@@ -734,16 +748,16 @@ namespace SCMBot
 
                         steam_srch.ItemSell();
                     }
-                    else MessageBox.Show("Price format is invalid!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    else MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
-                    MessageBox.Show("You need to load Inventory fist.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Strings.LoadInvFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
                 //You need to POST this url (SteamSite.removeSell + ourItem.AssetId)
                 //Post data needs only sessionId
-                MessageBox.Show("Feature is not working yet.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Strings.NotWork, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -769,11 +783,11 @@ namespace SCMBot
                 var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
                 if (ourItem.OnSale)
                 {
-                    SellButton.Text = "Remove Sell";
+                    SellButton.Text = Strings.RemSell;
                 }
                 else
                 {
-                    SellButton.Text = "Sell Checked";
+                    SellButton.Text = Strings.Sell;
                 } 
                 StartLoadImgTread(string.Format(SteamSite.invImgUrl, ourItem.ImgLink), pictureBox3);
                 
@@ -782,7 +796,7 @@ namespace SCMBot
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(aboutApp, "About...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show(aboutApp, Strings.AboutTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == System.Windows.Forms.DialogResult.Yes)
             StartCmdLine(homePage, string.Empty, false);
         }
 
@@ -860,6 +874,5 @@ namespace SCMBot
                 searchButton.PerformClick();
             }
         }
-
    }
 }

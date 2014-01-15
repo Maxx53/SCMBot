@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dialog));
             this.okButton = new System.Windows.Forms.Button();
             this.codgroupBox = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,11 +46,8 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(153, 195);
+            resources.ApplyResources(this.okButton, "okButton");
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(86, 28);
-            this.okButton.TabIndex = 2;
-            this.okButton.Text = "ОК";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
@@ -59,95 +57,65 @@
             this.codgroupBox.Controls.Add(this.label1);
             this.codgroupBox.Controls.Add(this.guardBox);
             this.codgroupBox.Controls.Add(this.mailcodeBox);
-            this.codgroupBox.Location = new System.Drawing.Point(12, 12);
+            resources.ApplyResources(this.codgroupBox, "codgroupBox");
             this.codgroupBox.Name = "codgroupBox";
-            this.codgroupBox.Size = new System.Drawing.Size(227, 77);
-            this.codgroupBox.TabIndex = 23;
             this.codgroupBox.TabStop = false;
-            this.codgroupBox.Text = "Enter access code";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 51);
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Description";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 25);
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Email Code";
             // 
             // guardBox
             // 
-            this.guardBox.Location = new System.Drawing.Point(81, 48);
+            resources.ApplyResources(this.guardBox, "guardBox");
             this.guardBox.Name = "guardBox";
-            this.guardBox.Size = new System.Drawing.Size(135, 20);
-            this.guardBox.TabIndex = 6;
-            this.guardBox.Text = "scmarket bot";
             // 
             // mailcodeBox
             // 
-            this.mailcodeBox.Location = new System.Drawing.Point(80, 22);
+            resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
             this.mailcodeBox.Name = "mailcodeBox";
-            this.mailcodeBox.Size = new System.Drawing.Size(136, 20);
-            this.mailcodeBox.TabIndex = 5;
             // 
             // capchgroupBox
             // 
             this.capchgroupBox.Controls.Add(this.label3);
             this.capchgroupBox.Controls.Add(this.capchaBox);
             this.capchgroupBox.Controls.Add(this.capchapicBox);
-            this.capchgroupBox.Location = new System.Drawing.Point(12, 95);
+            resources.ApplyResources(this.capchgroupBox, "capchgroupBox");
             this.capchgroupBox.Name = "capchgroupBox";
-            this.capchgroupBox.Size = new System.Drawing.Size(227, 93);
-            this.capchgroupBox.TabIndex = 24;
             this.capchgroupBox.TabStop = false;
-            this.capchgroupBox.Text = "Enter capcha text";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 68);
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 13);
-            this.label3.TabIndex = 25;
-            this.label3.Text = "Capcha Text";
             // 
             // capchaBox
             // 
-            this.capchaBox.Location = new System.Drawing.Point(81, 65);
+            resources.ApplyResources(this.capchaBox, "capchaBox");
             this.capchaBox.Name = "capchaBox";
-            this.capchaBox.Size = new System.Drawing.Size(135, 20);
-            this.capchaBox.TabIndex = 24;
             // 
             // capchapicBox
             // 
             this.capchapicBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.capchapicBox.Location = new System.Drawing.Point(10, 19);
+            resources.ApplyResources(this.capchapicBox, "capchapicBox");
             this.capchapicBox.Name = "capchapicBox";
-            this.capchapicBox.Size = new System.Drawing.Size(206, 40);
-            this.capchapicBox.TabIndex = 23;
             this.capchapicBox.TabStop = false;
             // 
             // Dialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(252, 228);
             this.Controls.Add(this.capchgroupBox);
             this.Controls.Add(this.codgroupBox);
             this.Controls.Add(this.okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Dialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Steam Guard Check";
             this.codgroupBox.ResumeLayout(false);
             this.codgroupBox.PerformLayout();
             this.capchgroupBox.ResumeLayout(false);

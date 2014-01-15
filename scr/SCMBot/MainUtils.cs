@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Security.Cryptography;
 using System.Collections;
+using System.Threading;
 
 namespace SCMBot
 {
@@ -41,56 +42,62 @@ namespace SCMBot
         Lang_Changed = 20
     }
 
-    [SerializableAttribute]
-    public class saveTabLst : List<saveTab>
-    {
-        public int Position { set; get; }
-    }
-
-    [SerializableAttribute]
-    public class saveTab
-    {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy)
-            {
-                this.Name = name;
-                this.Price = price;
-                this.Link = link;
-                this.ImgLink = imglink;
-                this.Delay = delay;
-                this.BuyQnt = buyQnt;
-                this.ToBuy = toBuy;
-            }
-
-            public string Name { set; get; }
-            public string ImgLink { set; get; }
-            public string Link { set; get; }
-            public string Price { set; get; }
-            public int BuyQnt { set; get; }
-            public int Delay { set; get; }
-            public bool ToBuy { set; get; }
-    }
-
-
     public partial class Main
     {
         const string logPath = "logfile.txt";
         const string appName = "SCM Bot alpha";
         const string notifTxt = "{0}\r\n{1} {2}";
 
-        const string aboutApp = appName + "\r\nOpensource Project"
-                                        + "\r\nNote: Program may contain critical bugs, for testing purposes only!"
-                                        + "\r\nCopyright © 2013 Maxx53"
-                                        + "\r\n\r\nDo you want to vist Github page?";
+        string aboutApp = appName + "\r\n" + Strings.aboutBody;
 
         const string homePage = "https://github.com/Maxx53/SteamCMBot";
         const string helpPage = homePage + "/wiki";
 
+        const string cockPath = "coockies.dat";
         
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
 
+
+        private void setNotifyText(string mess)
+        {
+            notifyIcon1.Text = string.Format(notifTxt, appName, settingsForm.loginBox.Text, mess);
+        }
+
+        private static void SetButton(Button ourButt, string caption, byte type)
+        {
+            ourButt.Text = caption;
+
+            switch (type)
+            {
+                case 1:
+                    ourButt.Image = (Image)Properties.Resources.login;
+                    break;
+                case 2:
+                    ourButt.Image = (Image)Properties.Resources.logout;
+                    break;
+                case 3:
+                    ourButt.Image = (Image)Properties.Resources.cancel;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+
+        public static void StartLoadImgTread(string imgUrl, PictureBox picbox)
+        {
+            if (imgUrl.Contains("http://"))
+            {
+                ThreadStart threadStart = delegate() { loadImg(imgUrl, picbox, true, false); };
+                Thread pTh = new Thread(threadStart);
+                pTh.IsBackground = true;
+                pTh.Start();
+            }
+        }
 
         public class SearchPagePos
         {
@@ -309,4 +316,36 @@ namespace SCMBot
                 p.WaitForExit();
         }
     }
+
+
+    [SerializableAttribute]
+    public class saveTabLst : List<saveTab>
+    {
+        public int Position { set; get; }
+    }
+
+    [SerializableAttribute]
+    public class saveTab
+    {
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy)
+        {
+            this.Name = name;
+            this.Price = price;
+            this.Link = link;
+            this.ImgLink = imglink;
+            this.Delay = delay;
+            this.BuyQnt = buyQnt;
+            this.ToBuy = toBuy;
+        }
+
+        public string Name { set; get; }
+        public string ImgLink { set; get; }
+        public string Link { set; get; }
+        public string Price { set; get; }
+        public int BuyQnt { set; get; }
+        public int Delay { set; get; }
+        public bool ToBuy { set; get; }
+    }
+
+
 }

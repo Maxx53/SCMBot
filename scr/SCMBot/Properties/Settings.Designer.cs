@@ -70,9 +70,25 @@ namespace SCMBot.Properties {
                 this["lastPass"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string Language
+        {
+            get
+            {
+                return ((string)(this["Language"]));
+            }
+            set
+            {
+                this["Language"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //Fucking important!
+        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
         public global::SCMBot.saveTabLst saveTabs {
             get {
                 return ((global::SCMBot.saveTabLst)(this["saveTabs"]));
@@ -84,7 +100,7 @@ namespace SCMBot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool minOnClose {
             get {
                 return ((bool)(this["minOnClose"]));
@@ -103,6 +119,30 @@ namespace SCMBot.Properties {
             }
             set {
                 this["firstRun"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool hideInvent {
+            get {
+                return ((bool)(this["hideInvent"]));
+            }
+            set {
+                this["hideInvent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int logCount {
+            get {
+                return ((int)(this["logCount"]));
+            }
+            set {
+                this["logCount"] = value;
             }
         }
     }

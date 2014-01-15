@@ -29,14 +29,10 @@ namespace SCMBot
             return;
         }
 
-        private void Settings_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
         private void Settings_Load(object sender, EventArgs e)
         {
 
         }
+
     }
 }

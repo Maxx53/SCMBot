@@ -53,6 +53,8 @@ namespace SCMBot
         public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
         public const string removeSell = _mainsiteS + "removelisting/";
 
+        public const string searchPageReq = "{0}&start={1}0";
+
         //================================ Consts ======================= End ===============================================
 
         public event eventDelegate delegMessage;
@@ -560,7 +562,7 @@ namespace SCMBot
                     return new BuyResponse(true, balance);
 
                 }
-                else return new BuyResponse(false, "Unknown Error");
+                else return new BuyResponse(false, Strings.UnknownErr);
             }
             else return new BuyResponse(false, "Unknown Error");
 
@@ -689,7 +691,7 @@ namespace SCMBot
                 totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
             }
             else
-                MessageBox.Show("Не удалось найти!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Strings.SearchErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return totalfind;
         }
@@ -759,7 +761,7 @@ namespace SCMBot
             }
             else
                 //TODO. Add correct error processing
-                MessageBox.Show("Error Parsing On sale Items!");
+            MessageBox.Show(Strings.OnSaleErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return matches.Count.ToString();
         }
