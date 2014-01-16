@@ -22,6 +22,7 @@ namespace SCMBot
         SteamSite steam_srch = new SteamSite();
         SearchPagePos sppos;
         string lastSrch;
+        int lastSelec = 0;
         bool addonComplete = false;
         bool isExit = false;
         ItemComparer itemComparer = new ItemComparer();
@@ -65,8 +66,6 @@ namespace SCMBot
             if (settings.loginOnstart)
                 loginButton.PerformClick();
 
-            //temp
-            comboBox3.SelectedIndex = 0;
             setNotifyText(Strings.NotLogged);
         }
 
@@ -86,8 +85,11 @@ namespace SCMBot
         private void LoadSettings(bool loadtabs)
         {
             settingsForm.loginBox.Text = settings.lastLogin;
+            label3.Text = string.Format("({0})", settings.lastLogin);
+
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
+            comboBox3.SelectedIndex = settings.InvType;
 
             settingsForm.hideInventBox.Checked = settings.hideInvent;
             splitContainer1.Panel2Collapsed = settings.hideInvent;
@@ -114,10 +116,12 @@ namespace SCMBot
             settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
             settings.hideInvent = settingsForm.hideInventBox.Checked;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
+            settings.InvType = comboBox3.SelectedIndex;
 
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
 
             splitContainer1.Panel2Collapsed = settings.hideInvent;
+            label3.Text = string.Format("({0})", settings.lastLogin);
 
             //If you need password crypting
             //settings.lastPass = Encrypt(passwordBox.Text);
@@ -324,9 +328,22 @@ namespace SCMBot
                 case flag.Scan_cancel:
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
-
+                case flag.InvPrice:
+                    string sweet = message.Insert(message.Length - 2, ",");
+                    InventoryList.Items[searchId].SubItems[3].Text = sweet;
+                    textBox1.Text = sweet;
+                    textBox1.ReadOnly = false;
+                    //StatusLabel1.Text = Strings.ScanCancel;
+                    break;
                 case flag.Items_Sold:
-                    StatusLabel1.Text = Strings.SaleItems;
+                    if (steam_srch.isRemove)
+                    {
+                        StatusLabel1.Text = Strings.SellRemoved;
+                    }
+                    else
+                    {
+                        StatusLabel1.Text = Strings.SaleItems;
+                    }
                     ProgressBar1.Visible = false;
                     steam_srch.loadInventory();
                     break;
@@ -398,20 +415,16 @@ namespace SCMBot
                 case flag.Inventory_Loaded:
                     InventoryList.Items.Clear();
                     label4.Text = steam_srch.inventList.Count.ToString();
-                    int saleCont = Convert.ToInt32(message);
-                    InventoryList.Groups[0].Header = string.Format(Strings.inInventory, steam_srch.inventList.Count - saleCont);
-                    InventoryList.Groups[1].Header = string.Format(Strings.onSale, saleCont);
                     for (int i = 0; i < steam_srch.inventList.Count; i++)
                     {
                         var ourItem = steam_srch.inventList[i];
                         string[] row = { string.Empty, ourItem.Type, ourItem.Name, ourItem.Price };
                         var lstItem = new ListViewItem(row);
-                        lstItem.Group = InventoryList.Groups[Convert.ToInt32(ourItem.OnSale)];
                         InventoryList.Items.Add(lstItem);
                     }
-
                     SetColumnWidths(InventoryList, true);
                     button1.Enabled = true;
+                    SellButton.Enabled = true;
                     break;
             }
 
@@ -682,83 +695,58 @@ namespace SCMBot
             if (steam_srch.Logged)
             {
                 button1.Enabled = false;
-                steam_srch.invApp = comboBox3.SelectedIndex;
+                if (comboBox3.SelectedIndex == 3)
+                {
+                    steam_srch.LoadOnSale = true;
+                }
+                else
+                {
+                    steam_srch.LoadOnSale = false;
+                    steam_srch.invApp = comboBox3.SelectedIndex;
+                }
                 steam_srch.loadInventory();
 
             } else
                 MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-
-        private static string SpliteRemove(string input, char ch)
-        {
-            string[] arr = input.Split(ch);
-            return arr[0] + arr[1].Remove(2, arr[1].Length - 2);
-        }
-
-        private static string ConvertToPrice(string input)
-        {
-            //Sorry for this
-
-            string res = string.Empty;
-            input = Regex.Replace(input, @"[^\.\,\d]+", string.Empty);
-
-            if (input != string.Empty)
-                if (input.IndexOf(',') != -1)
-                {
-                    res = SpliteRemove(input, ',');
-                }
-                else if (input.IndexOf('.') != -1)
-                {
-                    res = SpliteRemove(input, '.');
-                }
-
-                else
-                    if (input[0] != 0)
-                        res = input + "00";
-
-            return Convert.ToInt32(res).ToString();
-        }
-
+       
 
         private void SellButton_Click(object sender, EventArgs e)
         {
-            if (SellButton.Text == Strings.Sell)
+
+            if (steam_srch.inventList.Count == 0)
             {
+                MessageBox.Show(Strings.LoadInvFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (InventoryList.CheckedItems.Count == 0)
+            {
+                MessageBox.Show(Strings.CheckIt, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                if ((steam_srch.inventList.Count != 0) && (textBox1.Text != string.Empty))
-                {
-                    string truePrice = ConvertToPrice(textBox1.Text);
-                    if (truePrice != string.Empty)
-                    {
-                        StatusLabel1.Text = Strings.AddSell;
-                        ProgressBar1.Value = 0;
-                        ProgressBar1.Visible = true;
-                        steam_srch.invApp = comboBox3.SelectedIndex;
-                        steam_srch.toSellList.Clear();
-
-
-
-                        for (int i = 0; i < InventoryList.CheckedItems.Count; i++)
-                        {
-                            var viewName = InventoryList.CheckedItems[i].SubItems[2].Text;
-                            var ouritem = steam_srch.inventList.Find(item => item.Name == viewName);
-
-                            steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, truePrice));
-                        }
-
-                        steam_srch.ItemSell();
-                    }
-                    else MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                    MessageBox.Show(Strings.LoadInvFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (steam_srch.isRemove)
+            {
+                StatusLabel1.Text = Strings.RemSellStat;
             }
             else
             {
-                //You need to POST this url (SteamSite.removeSell + ourItem.AssetId)
-                //Post data needs only sessionId
-                MessageBox.Show(Strings.NotWork, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                StatusLabel1.Text = Strings.AddSell;
             }
+
+            ProgressBar1.Value = 0;
+            ProgressBar1.Visible = true;
+            steam_srch.invApp = comboBox3.SelectedIndex;
+            steam_srch.toSellList.Clear();
+
+            for (int i = 0; i < InventoryList.CheckedItems.Count; i++)
+            {
+                var ouritem = steam_srch.inventList[InventoryList.CheckedItems[i].Index];
+                steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
+            }
+
+            steam_srch.ItemSell();
+  
         }
 
         private void InventoryList_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -780,16 +768,27 @@ namespace SCMBot
         {
             if (InventoryList.SelectedIndices.Count != 0)
             {
-                var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
-                if (ourItem.OnSale)
+
+                var lit = InventoryList.SelectedItems[0];
+
+                if (lastSelec != lit.Index)
                 {
-                    SellButton.Text = Strings.RemSell;
+                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
+                    StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox3);
+
+                    var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
+
+                    if (currPr == "None")
+                    {
+                        steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
+                        textBox1.Text = "Loading...";
+                        textBox1.ReadOnly = true;
+                    }
+                    else
+                        textBox1.Text = currPr;
+
+                    lastSelec = lit.Index;
                 }
-                else
-                {
-                    SellButton.Text = Strings.Sell;
-                } 
-                StartLoadImgTread(string.Format(SteamSite.invImgUrl, ourItem.ImgLink), pictureBox3);
                 
             }
         }
@@ -874,5 +873,55 @@ namespace SCMBot
                 searchButton.PerformClick();
             }
         }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox3.SelectedIndex == 3)
+            {
+                SellButton.Text = Strings.RemSell;
+                steam_srch.isRemove = true;
+                textBox1.Clear();
+                textBox1.ReadOnly = true;
+                button2.Enabled = false;
+            }
+            else
+            {
+                SellButton.Text = Strings.Sell;
+                steam_srch.isRemove = false;
+                textBox1.ReadOnly = false;
+                button2.Enabled = true;
+            }
+            SellButton.Enabled = false;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string truePrice = string.Empty;
+            if (textBox1.Text == string.Empty)
+            {
+                MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                truePrice = SteamSite.GetSweetPrice(textBox1.Text);
+                if (truePrice == string.Empty)
+                {
+                    MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+              
+            
+            for (int i = 0; i < InventoryList.SelectedItems.Count; i++)
+            {
+                var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[i]];
+                ourItem.Price = truePrice;
+                InventoryList.SelectedItems[i].SubItems[3].Text = textBox1.Text;
+            }
+
+            
+        }
+
    }
 }

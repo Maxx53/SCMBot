@@ -243,4 +243,13 @@ Copyright © 2013 Maxx53
   <data name="UnknownErr" xml:space="preserve">
     <value>Неопознанная ошибка</value>
   </data>
+  <data name="CheckIt" xml:space="preserve">
+    <value>Пожалуйста, отметьте желаемые предметы</value>
+  </data>
+  <data name="RemSellStat" xml:space="preserve">
+    <value>Снятие с продажи...</value>
+  </data>
+  <data name="SellRemoved" xml:space="preserve">
+    <value>Предмет снят с продажи</value>
+  </data>
 </root>

@@ -47,11 +47,11 @@ namespace SCMBot
 
         public const string imgUri = "http://cdn.steamcommunity.com/economy/image/";
 
-        public const string invImgUrl = imgUri + "{0}/96fx96f";
+        //public const string invImgUrl = imgUri + "{0}/96fx96f";
         public const string fndImgUrl = imgUri + "{0}/62fx62f";
         public const string _sellitem = _mainsiteS + "market/sellitem/";
         public const string sellReq = "sessionid={0}&appid={1}&contextid={2}&assetid={3}&amount=1&price={4}";
-        public const string removeSell = _mainsiteS + "removelisting/";
+        public const string removeSell = _market + "removelisting/";
 
         public const string searchPageReq = "{0}&start={1}0";
 
@@ -81,7 +81,7 @@ namespace SCMBot
 
         public class InventItem
         {
-            public InventItem(string assetid, string name, string type, string price, string imglink, bool onSale)
+            public InventItem(string assetid, string name, string type, string price, string imglink, string marketName, bool onSale)
             {
                 this.Name = name;
                 this.AssetId = assetid;
@@ -89,6 +89,7 @@ namespace SCMBot
                 this.Price = price;
                 this.ImgLink = imglink;
                 this.OnSale = onSale;
+                this.MarketName = marketName;
             }
 
             public string Name { set; get; }
@@ -96,6 +97,7 @@ namespace SCMBot
             public string Price { set; get; }
             public string Type { set; get; }
             public string AssetId { set; get; }
+            public string MarketName { set; get; }
             public bool OnSale { set; get; }
 
         }
@@ -337,6 +339,40 @@ namespace SCMBot
             return val - (val < 58 ? 48 : 55);
         }
 
+
+        public static string GetSweetPrice(string input)
+        {
+            string res = string.Empty;
+
+            var match = input.IndexOfAny(".,".ToCharArray());
+
+            if ((match == -1) | (match == input.Length - 1))
+            {
+                res = input + "00";
+            }
+            else
+            {
+                //Укорачиваем
+                if (input.Length > match + 3)
+                {
+                    res = input.Substring(0, match + 3);
+                }
+                else
+                    //Удлинняем
+                    if (input.Length == match)
+                    {
+                        res = input + "00";
+                    }
+                    else if (input.Length == match + 2)
+                    {
+                        res = input + "0";
+                    }
+                    else res = input;
+            }
+
+            return Regex.Replace(res, @"[d\.\,]+", string.Empty);
+
+        }
 
         public string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
         {
@@ -588,6 +624,7 @@ namespace SCMBot
 
         public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst)
         {
+            File.WriteAllText(@"C:\cont.html", content);
             lst.Clear();
 
             //For testring purposes!
@@ -717,8 +754,8 @@ namespace SCMBot
                 //ParseLotList(cont, tempLst, currencies);
                 //if (tempLst.Count != 0)
                   //  price = tempLst[0].Price;
-                
-                inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, false));
+
+                 inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false));
             }
 
             return inventList.Count.ToString();
@@ -727,7 +764,7 @@ namespace SCMBot
 
         public string ParseOnSale(string content, CurrInfoLst currLst)
         {
-
+            inventList.Clear();
             string parseBody = Regex.Match(content, "(?<=section market_home_listing_table\">)(.*)(?=<div id=\"tabContentsMyMarketHistory)", RegexOptions.Singleline).ToString();
 
             MatchCollection matches = Regex.Matches(parseBody, "(?<=market_recent_listing_row listing_)(.*?)(?=	</div>\r\n</div>)", RegexOptions.Singleline);
@@ -754,7 +791,7 @@ namespace SCMBot
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
 
-                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, true));
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true));
 
                 }
 

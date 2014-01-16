@@ -39,7 +39,8 @@ namespace SCMBot
         StripImg = 17,
         Send_cancel = 18,
         Error_scan = 19,
-        Lang_Changed = 20
+        Lang_Changed = 20,
+        InvPrice = 21
     }
 
     public partial class Main
@@ -98,6 +99,7 @@ namespace SCMBot
                 pTh.Start();
             }
         }
+
 
         public class SearchPagePos
         {

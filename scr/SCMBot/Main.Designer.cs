@@ -54,6 +54,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.InventoryList = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -84,6 +86,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -181,7 +184,7 @@
             this.columnHeader9});
             this.FoundList.FullRowSelect = true;
             this.FoundList.GridLines = true;
-            this.FoundList.MultiSelect = false;
+            this.FoundList.HideSelection = false;
             this.FoundList.Name = "FoundList";
             this.FoundList.UseCompatibleStateImageBehavior = false;
             this.FoundList.View = System.Windows.Forms.View.Details;
@@ -300,6 +303,8 @@
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.InventoryList);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.SellButton);
@@ -312,6 +317,18 @@
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // button2
+            // 
+            resources.ApplyResources(this.button2, "button2");
+            this.button2.Name = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // InventoryList
             // 
             resources.ApplyResources(this.InventoryList, "InventoryList");
@@ -323,11 +340,9 @@
             this.columnHeader3});
             this.InventoryList.FullRowSelect = true;
             this.InventoryList.GridLines = true;
-            this.InventoryList.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            ((System.Windows.Forms.ListViewGroup)(resources.GetObject("InventoryList.Groups"))),
-            ((System.Windows.Forms.ListViewGroup)(resources.GetObject("InventoryList.Groups1")))});
-            this.InventoryList.MultiSelect = false;
+            this.InventoryList.HideSelection = false;
             this.InventoryList.Name = "InventoryList";
+            this.InventoryList.ShowGroups = false;
             this.InventoryList.UseCompatibleStateImageBehavior = false;
             this.InventoryList.View = System.Windows.Forms.View.Details;
             this.InventoryList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.InventoryList_ColumnClick);
@@ -370,8 +385,10 @@
             this.comboBox3.Items.AddRange(new object[] {
             resources.GetString("comboBox3.Items"),
             resources.GetString("comboBox3.Items1"),
-            resources.GetString("comboBox3.Items2")});
+            resources.GetString("comboBox3.Items2"),
+            resources.GetString("comboBox3.Items3")});
             this.comboBox3.Name = "comboBox3";
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // button1
             // 
@@ -525,14 +542,20 @@
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
             // Main
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.loginButton);
+            this.Controls.Add(this.groupBox2);
             this.Name = "Main";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
@@ -619,6 +642,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

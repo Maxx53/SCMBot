@@ -156,6 +156,15 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Please, Check desired Items.
+        /// </summary>
+        internal static string CheckIt {
+            get {
+                return ResourceManager.GetString("CheckIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Check your values and try again..
         /// </summary>
         internal static string CheckVal {
@@ -328,6 +337,15 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Removing from Sell....
+        /// </summary>
+        internal static string RemSellStat {
+            get {
+                return ResourceManager.GetString("RemSellStat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Items on Sale.
         /// </summary>
         internal static string SaleItems {
@@ -378,6 +396,15 @@ namespace SCMBot {
         internal static string Sell {
             get {
                 return ResourceManager.GetString("Sell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Item(s) removed from Sell.
+        /// </summary>
+        internal static string SellRemoved {
+            get {
+                return ResourceManager.GetString("SellRemoved", resourceCulture);
             }
         }
         

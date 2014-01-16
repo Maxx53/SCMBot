@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SCMBot
 {
@@ -34,7 +35,9 @@ namespace SCMBot
         public bool scaninProg { set; get; }
         public bool toBuy { set; get; }
         public bool BuyNow { set; get; }
-       
+        public bool LoadOnSale { get; set; }
+        public bool isRemove { get; set; }
+
         public int BuyQuant { get; set; }
 
         public int invApp { get; set; }
@@ -54,6 +57,7 @@ namespace SCMBot
         private BackgroundWorker getInventory = new BackgroundWorker();
 
         public List<ItemToSell> toSellList = new List<ItemToSell>();
+        public List<string> toUnSellList = new List<string>();
 
         public CurrInfoLst currencies = new CurrInfoLst();
 
@@ -186,6 +190,23 @@ namespace SCMBot
         }
 
 
+        public void GetPriceTread(string ItName, int pos)
+        {
+            ThreadStart threadStart = delegate()
+            {
+                
+                var tempLst = new List<ScanItem>();
+                ParseLotList(GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies);
+                if (tempLst.Count != 0)
+                    doMessage(flag.InvPrice, pos, tempLst[0].Price);
+            };
+            Thread pTh = new Thread(threadStart);
+            pTh.IsBackground = true;
+            pTh.Start();
+
+        }
+
+
         static AppType GetUrlApp(int appIndx, bool isGetInv)
         {
             string app = "753";
@@ -217,10 +238,18 @@ namespace SCMBot
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
         {
 
-           ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App), 
-               cookieCont));
+            if (!LoadOnSale)
+            {
+                ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
+              cookieCont));
+            }
+            else
+            {
+                ParseOnSale(GetRequest(_market, cookieCont), currencies);
+            }
 
-           doMessage(flag.Inventory_Loaded, 0, ParseOnSale(GetRequest(_market, cookieCont), currencies));
+
+           doMessage(flag.Inventory_Loaded, 0, string.Empty);
 
         }
 
@@ -237,8 +266,22 @@ namespace SCMBot
 
                 for (int i = 0; i < cunt; i++)
                 {
-                    var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
-                    SendPostRequest(req, _sellitem, _market, cookieCont, false);
+                    if (isRemove)
+                    {
+                       var req = "sessionid=" + GetSessId(cookieCont);
+                       SendPostRequest(req, removeSell + toSellList[i].AssetId, _market, cookieCont, false);
+                    }
+                    else
+                    {
+                        MessageBox.Show(toSellList[i].Price);
+                        if (toSellList[i].Price != "None")
+                        {
+
+                            var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
+                            SendPostRequest(req, _sellitem, _market, cookieCont, false);
+                        }
+                    }
+
                     doMessage(flag.Sell_progress, 0, (incr * (i + 1)).ToString());
                 }
 
@@ -410,39 +453,6 @@ namespace SCMBot
         }
 
 
-        private static string GetSweetPrice(string input)
-        {
-            string res = string.Empty;
-
-            var match = input.IndexOfAny(".,".ToCharArray());
-
-            if ((match == -1) | (match == input.Length - 1))
-            {
-                res = input + "00";
-            }
-            else
-            {
-                //Укорачиваем
-                if (input.Length > match + 3)
-                {
-                    res = input.Substring(0, match + 3);
-                }
-                else
-                    //Удлинняем
-                    if (input.Length == match)
-                    {
-                        res = input + "00";
-                    }
-                    else if (input.Length == match + 2)
-                    {
-                        res = input + "0";
-                    }
-                    else res = input;
-            }
-
-            return Regex.Replace(res, @"[d\.\,]+", string.Empty);
-
-        }
 
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {

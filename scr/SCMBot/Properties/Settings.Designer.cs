@@ -58,6 +58,21 @@ namespace SCMBot.Properties {
                 this["delayVal"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int InvType
+        {
+            get
+            {
+                return ((int)(this["InvType"]));
+            }
+            set
+            {
+                this["InvType"] = value;
+            }
+        }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

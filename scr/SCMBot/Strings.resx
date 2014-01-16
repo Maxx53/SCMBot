@@ -246,4 +246,13 @@ You can find it in system tray anytime.</value>
   <data name="UnknownErr" xml:space="preserve">
     <value>Unknown Error</value>
   </data>
+  <data name="CheckIt" xml:space="preserve">
+    <value>Please, Check desired Items</value>
+  </data>
+  <data name="RemSellStat" xml:space="preserve">
+    <value>Removing from Sell...</value>
+  </data>
+  <data name="SellRemoved" xml:space="preserve">
+    <value>Item(s) removed from Sell</value>
+  </data>
 </root>
