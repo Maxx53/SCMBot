@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SCMBot
 {
@@ -122,7 +120,7 @@ namespace SCMBot
         public void Logout()
         {
             ThreadStart threadStart = delegate() {
-                GetRequest(_logout, cookieCont);
+                SendGet(_logout, cookieCont);
                 doMessage(flag.Logout_, 0, string.Empty);
                 Logged = false;
             };
@@ -135,7 +133,7 @@ namespace SCMBot
         {
             ThreadStart threadStart = delegate()
             {
-                GetRequest(_lang_chg + lang, cookieCont);
+                SendGet(_lang_chg + lang, cookieCont);
                 doMessage(flag.Lang_Changed, 0, lang);
             };
             Thread pTh = new Thread(threadStart);
@@ -196,7 +194,7 @@ namespace SCMBot
             {
                 
                 var tempLst = new List<ScanItem>();
-                ParseLotList(GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies);
+                ParseLotList(SendGet(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies);
                 if (tempLst.Count != 0)
                     doMessage(flag.InvPrice, pos, tempLst[0].Price);
             };
@@ -240,12 +238,12 @@ namespace SCMBot
 
             if (!LoadOnSale)
             {
-                ParseInventory(GetRequest(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
+                ParseInventory(SendGet(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
               cookieCont));
             }
             else
             {
-                ParseOnSale(GetRequest(_market, cookieCont), currencies);
+                ParseOnSale(SendGet(_market, cookieCont), currencies);
             }
 
 
@@ -269,7 +267,7 @@ namespace SCMBot
                     if (isRemove)
                     {
                        var req = "sessionid=" + GetSessId(cookieCont);
-                       SendPostRequest(req, removeSell + toSellList[i].AssetId, _market, cookieCont, false);
+                       SendPost(req, removeSell + toSellList[i].AssetId, _market, false);
                     }
                     else
                     {
@@ -278,7 +276,7 @@ namespace SCMBot
                         {
 
                             var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
-                            SendPostRequest(req, _sellitem, _market, cookieCont, false);
+                            SendPost(req, _sellitem, _market, false);
                         }
                     }
 
@@ -292,7 +290,7 @@ namespace SCMBot
 
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            doMessage(flag.Search_success, 0, ParseSearchRes(GetRequest(linkTxt + reqTxt, cookieCont), searchList, currencies));
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt + reqTxt, cookieCont), searchList, currencies));
         }
 
 
@@ -319,7 +317,7 @@ namespace SCMBot
 
 
 
-            string log_content = SendPostRequest("username=" + UserName, _getrsa, _ref, cookieCont, true);
+            string log_content = SendPost("username=" + UserName, _getrsa, _ref, true);
             if (log_content == string.Empty)
             {
                 e.Cancel = true;
@@ -338,8 +336,8 @@ namespace SCMBot
 
             if (rRSA.Success)
             {
-                firstTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, string.Empty,
-                                                                string.Empty, string.Empty, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
+                firstTry = SendPost(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, string.Empty,
+                                                                string.Empty, string.Empty, rRSA.TimeStamp), _dologin, _ref, true);
                 doMessage(flag.Rep_progress, 0, "60");
                 // if (worker.CancellationPending == true)
                 //     return;
@@ -396,8 +394,8 @@ namespace SCMBot
                 if (guardCheckForm.ShowDialog() == DialogResult.OK)
                 {
 
-                    string secondTry = SendPostRequest(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
-                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, cookieCont, true);
+                    string secondTry = SendPost(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
+                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, true);
 
                    //What 'bout captcha problem?
                    //MessageBox.Show(rProcess.Captcha_Id);
@@ -462,7 +460,7 @@ namespace SCMBot
 
             if (BuyNow)
             {
-                string resp_now = GetRequest(pageLink, cookieCont);
+                string resp_now = SendGet(pageLink, cookieCont);
                 ParseLotList(resp_now, lotList, currencies);
 
                 if (lotList.Count == 0)
@@ -498,7 +496,7 @@ namespace SCMBot
 
             while (worker.CancellationPending == false)
             {
-                string resp = GetRequest(pageLink, cookieCont);
+                string resp = SendGet(pageLink, cookieCont);
                 ParseLotList(resp, lotList, currencies);
 
                 if (lotList.Count == 0)

@@ -45,6 +45,7 @@ namespace SCMBot
             set { numericUpDown1.Value = value; }
         }
 
+
         public string ButtonText
         {
             get { return button4.Text;  }

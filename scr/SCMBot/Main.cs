@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Threading;
-using System.Text.RegularExpressions;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.

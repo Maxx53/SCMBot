@@ -249,6 +249,98 @@ namespace SCMBot
         }
 
 
+
+        public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
+        {
+
+                var requestData = Encoding.UTF8.GetBytes(req);
+                string content = string.Empty;
+
+                try
+                {
+                    var request = (HttpWebRequest)
+                        WebRequest.Create(url);
+
+                    request.CookieContainer = cookie;
+                    request.Method = "POST";
+                    request.Referer = refer;
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = requestData.Length;
+
+                    using (var s = request.GetRequestStream())
+                    {
+                        s.Write(requestData, 0, requestData.Length);
+                    }
+
+                    HttpWebResponse resp = (HttpWebResponse)request.GetResponse();
+
+                    var stream = new StreamReader(resp.GetResponseStream());
+                    content = stream.ReadToEnd();
+
+                    if (tolog)
+                        AddtoLog(content);
+
+                    cookie = request.CookieContainer;
+                    resp.Close();
+                    stream.Close();
+                }
+                catch (WebException e)
+                {
+                    if (e.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        WebResponse resp = e.Response;
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            content = sr.ReadToEnd();
+                        }
+                    }
+
+                }
+
+                return content;
+       
+            //catch (Exception e)
+            //{
+            //     MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //      Main.AddtoLog(e.GetType() + ". " + e.Message);
+            //     return content;
+            //  }
+
+        }
+
+
+
+        public static string GetRequest(string url, CookieContainer cookie)
+        {
+                string content = string.Empty;
+
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Method = "GET";
+                    request.Accept = "application/json";
+                    request.CookieContainer = cookie;
+
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    var stream = new StreamReader(response.GetResponseStream());
+                    content = stream.ReadToEnd();
+
+                    response.Close();
+                    stream.Close();
+
+                }
+
+                catch (Exception e)
+                {
+                    content = e.Message;
+                    AddtoLog(e.Message);
+                }
+                return content;
+
+        }
+
+
+
         static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
         {
             if (imgurl == string.Empty)

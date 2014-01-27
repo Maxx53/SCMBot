@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
-using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
@@ -54,6 +53,9 @@ namespace SCMBot
         public const string removeSell = _market + "removelisting/";
 
         public const string searchPageReq = "{0}&start={1}0";
+
+        static object Locker = new object();
+
 
         //================================ Consts ======================= End ===============================================
 
@@ -313,6 +315,27 @@ namespace SCMBot
             }
         }
 
+        private string SendPost(string data, string url, string refer, bool tolog)
+        {
+            lock (Locker)
+            {
+                doMessage(flag.StripImg, 0, string.Empty);
+                var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
+                doMessage(flag.StripImg, 1, string.Empty);
+                return res;
+            }
+        }
+
+        private string SendGet(string url, CookieContainer cok)
+        {
+            lock (Locker)
+            {
+                doMessage(flag.StripImg, 0, string.Empty);
+                var res = Main.GetRequest(url, cookieCont);
+                doMessage(flag.StripImg, 1, string.Empty);
+                return res;
+            }
+        }
 
         static byte[] HexToByte(string hex)
         {
@@ -374,100 +397,6 @@ namespace SCMBot
 
         }
 
-        public string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
-        {
-            doMessage(flag.StripImg, 0, string.Empty);
-
-            var requestData = Encoding.UTF8.GetBytes(req);
-            string content = string.Empty;
-
-            try
-            {
-                var request = (HttpWebRequest)
-                    WebRequest.Create(url);
-
-                request.CookieContainer = cookie;
-                request.Method = "POST";
-                request.Referer = refer;
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.ContentLength = requestData.Length;
-
-                using (var s = request.GetRequestStream())
-                {
-                    s.Write(requestData, 0, requestData.Length);
-                }
-
-                HttpWebResponse resp = (HttpWebResponse)request.GetResponse();
-
-                var stream = new StreamReader(resp.GetResponseStream());
-                content = stream.ReadToEnd();
-
-                if (tolog)
-                    Main.AddtoLog(content);
-
-                cookie = request.CookieContainer;
-                resp.Close();
-                stream.Close();
-            }
-            catch (WebException e)
-            {
-                if (e.Status == WebExceptionStatus.ProtocolError)
-                {
-                    WebResponse resp = e.Response;
-                    using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
-                    {
-                        content = sr.ReadToEnd();
-                    }
-                }
-               
-            }
-
-            doMessage(flag.StripImg, 1, string.Empty);
-            return content;
-
-            //catch (Exception e)
-            //{
-           //     MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-          //      Main.AddtoLog(e.GetType() + ". " + e.Message);
-           //     return content;
-          //  }
-
-        }
-
-
-
-        public string GetRequest(string url, CookieContainer cookie)
-        {
-            doMessage(flag.StripImg, 0, string.Empty);
-            string content = string.Empty;
-
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-                request.Accept = "application/json";
-                request.CookieContainer = cookie;
-
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                var stream = new StreamReader(response.GetResponseStream());
-                content = stream.ReadToEnd();
-
-                response.Close();
-                stream.Close();
-
-            }
-
-            catch (Exception e)
-            {
-                content = e.Message;
-                Main.AddtoLog(e.Message);
-            }
-
-            doMessage(flag.StripImg, 1, string.Empty);
-            return content;
-        }
-
-
 
         public static string EncryptPassword(string password, string modval, string expval)
         {
@@ -506,7 +435,7 @@ namespace SCMBot
         public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
-            string markpage = GetRequest(_market, cock);
+            string markpage = SendGet(_market, cock);
             
             //For testring purposes!
             //string markpage = File.ReadAllText(@"C:\dollars.html");
@@ -563,6 +492,7 @@ namespace SCMBot
         }
 
 
+
         private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
         {
             //For test purpose
@@ -577,7 +507,7 @@ namespace SCMBot
             //buy
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
-            string buyres = SendPostRequest(data, _blist + itemId, link, cock, true);
+            string buyres = SendPost(data, _blist + itemId, link, true);
 
             if (buyres.Contains("message"))
             {
@@ -624,7 +554,6 @@ namespace SCMBot
 
         public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst)
         {
-            File.WriteAllText(@"C:\cont.html", content);
             lst.Clear();
 
             //For testring purposes!
@@ -694,10 +623,6 @@ namespace SCMBot
 
                     string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
                    
-                    //MessageBox.Show(ItemPrice);
-
-                    //ItemPrice = Regex.Replace(ItemPrice, "&#(.*?);", string.Empty);
-
                     //Удаляем ascii кода нашей текущей валюты
                     if (currLst.NotSet)
                     {
