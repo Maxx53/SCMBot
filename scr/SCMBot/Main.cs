@@ -126,7 +126,12 @@ namespace SCMBot
             settings.lastPass = settingsForm.passwordBox.Text;
 
             if (savetabs)
-                SaveTabs(settings.saveTabs);
+            {
+                var tabs = settings.saveTabs;
+                if (tabs == null)
+                    tabs = new saveTabLst();
+                SaveTabs(tabs);
+            }
 
             settings.Save();
         }
