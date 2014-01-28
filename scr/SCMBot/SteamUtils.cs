@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System.Threading;
 
 
 namespace SCMBot
@@ -53,9 +54,6 @@ namespace SCMBot
         public const string removeSell = _market + "removelisting/";
 
         public const string searchPageReq = "{0}&start={1}0";
-
-        static object Locker = new object();
-
 
         //================================ Consts ======================= End ===============================================
 
@@ -317,24 +315,31 @@ namespace SCMBot
 
         private string SendPost(string data, string url, string refer, bool tolog)
         {
-            lock (Locker)
-            {
-                doMessage(flag.StripImg, 0, string.Empty);
-                var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
-                doMessage(flag.StripImg, 1, string.Empty);
-                return res;
-            }
+            Main.reqPool.WaitOne();
+
+            doMessage(flag.StripImg, 0, string.Empty);
+            var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
+            doMessage(flag.StripImg, 1, string.Empty);
+
+            Main.reqPool.Release();
+
+            return res;
+
         }
 
         private string SendGet(string url, CookieContainer cok)
         {
-            lock (Locker)
-            {
-                doMessage(flag.StripImg, 0, string.Empty);
-                var res = Main.GetRequest(url, cookieCont);
-                doMessage(flag.StripImg, 1, string.Empty);
-                return res;
-            }
+            Main.reqPool.WaitOne();
+
+            doMessage(flag.StripImg, 0, string.Empty);
+            var res = Main.GetRequest(url, cookieCont);
+            doMessage(flag.StripImg, 1, string.Empty);
+            
+            //MessageBox.Show("blocked");
+
+            Main.reqPool.Release();
+
+            return res;
         }
 
         static byte[] HexToByte(string hex)

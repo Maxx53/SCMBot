@@ -58,21 +58,6 @@ namespace SCMBot.Properties {
                 this["delayVal"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int InvType
-        {
-            get
-            {
-                return ((int)(this["InvType"]));
-            }
-            set
-            {
-                this["InvType"] = value;
-            }
-        }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -88,40 +73,17 @@ namespace SCMBot.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string Language
+        //Fucking important!
+        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
+        public global::SCMBot.saveTabLst saveTabs
         {
             get
             {
-                return ((string)(this["Language"]));
+                return ((global::SCMBot.saveTabLst)(this["saveTabs"]));
             }
             set
             {
-                this["Language"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //Fucking important!
-        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
-        public global::SCMBot.saveTabLst saveTabs {
-            get {
-                return ((global::SCMBot.saveTabLst)(this["saveTabs"]));
-            }
-            set {
                 this["saveTabs"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool minOnClose {
-            get {
-                return ((bool)(this["minOnClose"]));
-            }
-            set {
-                this["minOnClose"] = value;
             }
         }
         
@@ -158,6 +120,54 @@ namespace SCMBot.Properties {
             }
             set {
                 this["logCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int numThreads {
+            get {
+                return ((int)(this["numThreads"]));
+            }
+            set {
+                this["numThreads"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Language {
+            get {
+                return ((string)(this["Language"]));
+            }
+            set {
+                this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int InvType {
+            get {
+                return ((int)(this["InvType"]));
+            }
+            set {
+                this["InvType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool minOnClose {
+            get {
+                return ((bool)(this["minOnClose"]));
+            }
+            set {
+                this["minOnClose"] = value;
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -25,6 +26,8 @@ namespace SCMBot
         bool isExit = false;
         ItemComparer itemComparer = new ItemComparer();
 
+        static public Semaphore reqPool;
+
         List<ScanItem> ScanItLst = new List<ScanItem>();
         SteamSiteLst SteamLst = new SteamSiteLst();
         Settings settingsForm = new Settings();
@@ -36,7 +39,6 @@ namespace SCMBot
             InitializeComponent();
             steam_srch.delegMessage += new eventDelegate(Event_Message);
          }
-
 
 
         private void Main_Load(object sender, EventArgs e)
@@ -82,12 +84,34 @@ namespace SCMBot
 
         private void LoadSettings(bool loadtabs)
         {
+            //#if(DEBUG)
+
+            //Verify that the Property has the required attribute for Binary serialization.
+            System.Reflection.PropertyInfo binarySerializeProperty = settings.GetType().GetProperty("saveTabs");
+            object[] customAttributes = binarySerializeProperty.GetCustomAttributes(typeof(System.Configuration.SettingsSerializeAsAttribute), false);
+            if (customAttributes.Length != 1)
+            {
+                // ooops!
+                // add attribute to settings.designer.cs
+                // [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
+                // right before "public global::SCMBot.saveTabLst saveTabs..."
+
+                throw new ApplicationException("SettingsSerializeAsAttribute required for saveTabs property");
+            }
+
+            //#endif
+
             settingsForm.loginBox.Text = settings.lastLogin;
             label3.Text = string.Format("({0})", settings.lastLogin);
 
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
+            settingsForm.numThreadsBox.Value = settings.numThreads;
+            
+
+
             comboBox3.SelectedIndex = settings.InvType;
+
 
             settingsForm.hideInventBox.Checked = settings.hideInvent;
             splitContainer1.Panel2Collapsed = settings.hideInvent;
@@ -103,7 +127,13 @@ namespace SCMBot
             settingsForm.passwordBox.Text = settings.lastPass;
 
             if (loadtabs)
+            {
                 LoadTabs(settings.saveTabs);
+
+                if (reqPool != null)
+                    reqPool.Dispose();
+                reqPool = new Semaphore(settings.numThreads, settings.numThreads);
+            }
         }
 
 
@@ -113,6 +143,7 @@ namespace SCMBot
             settings.loginOnstart = settingsForm.checkBox2.Checked;
             settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
             settings.hideInvent = settingsForm.hideInventBox.Checked;
+            settings.numThreads = (int)settingsForm.numThreadsBox.Value;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
             settings.InvType = comboBox3.SelectedIndex;
 
@@ -125,14 +156,13 @@ namespace SCMBot
             //settings.lastPass = Encrypt(passwordBox.Text);
             settings.lastPass = settingsForm.passwordBox.Text;
 
+
+
             if (savetabs)
             {
-                var tabs = settings.saveTabs;
-                if (tabs == null)
-                    tabs = new saveTabLst();
-                SaveTabs(tabs);
+                settings.saveTabs = new saveTabLst();
+                SaveTabs(settings.saveTabs);
             }
-
             settings.Save();
         }
 
@@ -154,20 +184,15 @@ namespace SCMBot
 
         private void SaveTabs(saveTabLst lst)
         {
-            if (lst != null)
+            if (ScanItLst.Count != 0)
             {
-                lst.Clear();
-
-                if (ScanItLst.Count != 0)
+                for (int i = 0; i < ScanItLst.Count; i++)
                 {
-                    for (int i = 0; i < ScanItLst.Count; i++)
-                    {
-                        var ourItem = ScanItLst[i];
-                        lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
-                                                   Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue));
-                    }
-                    lst.Position = tabControl1.SelectedIndex;
+                    var ourItem = ScanItLst[i];
+                    lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
+                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue));
                 }
+                lst.Position = tabControl1.SelectedIndex;
             }
         }
 

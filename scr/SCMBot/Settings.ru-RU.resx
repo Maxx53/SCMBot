@@ -163,12 +163,6 @@
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Интерфейс</value>
   </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 13</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>* Требуется перезапуск программы</value>
-  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
   </data>
@@ -204,6 +198,21 @@
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Очищать лог после:</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>* Требуется перезапуск программы</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Сеть</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 13</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Параллельных запросов:</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Настройки</value>

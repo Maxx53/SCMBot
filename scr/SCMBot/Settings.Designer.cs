@@ -41,26 +41,32 @@
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.intLangComboBox = new System.Windows.Forms.ComboBox();
             this.logCountBox = new System.Windows.Forms.MaskedTextBox();
             this.hideInventBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numThreadsBox = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.loginBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.passwordBox);
             this.groupBox1.Controls.Add(this.label2);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -92,9 +98,9 @@
             // 
             // groupBox2
             // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.comboBox2);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -105,6 +111,7 @@
             // 
             // comboBox2
             // 
+            resources.ApplyResources(this.comboBox2, "comboBox2");
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
@@ -133,7 +140,6 @@
             resources.GetString("comboBox2.Items22"),
             resources.GetString("comboBox2.Items23"),
             resources.GetString("comboBox2.Items24")});
-            resources.ApplyResources(this.comboBox2, "comboBox2");
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -146,15 +152,14 @@
             // 
             // groupBox3
             // 
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.intLangComboBox);
             this.groupBox3.Controls.Add(this.logCountBox);
             this.groupBox3.Controls.Add(this.hideInventBox);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -163,11 +168,6 @@
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
             // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
@@ -175,9 +175,9 @@
             // 
             // intLangComboBox
             // 
+            resources.ApplyResources(this.intLangComboBox, "intLangComboBox");
             this.intLangComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.intLangComboBox.FormattingEnabled = true;
-            resources.ApplyResources(this.intLangComboBox, "intLangComboBox");
             this.intLangComboBox.Name = "intLangComboBox";
             // 
             // logCountBox
@@ -202,10 +202,41 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // groupBox4
+            // 
+            resources.ApplyResources(this.groupBox4, "groupBox4");
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.numThreadsBox);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.TabStop = false;
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // numThreadsBox
+            // 
+            resources.ApplyResources(this.numThreadsBox, "numThreadsBox");
+            this.numThreadsBox.Name = "numThreadsBox";
+            // 
             // Settings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
@@ -221,7 +252,11 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -246,5 +281,9 @@
         public System.Windows.Forms.ComboBox intLangComboBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label9;
+        public System.Windows.Forms.NumericUpDown numThreadsBox;
+        private System.Windows.Forms.Label label10;
     }
 }

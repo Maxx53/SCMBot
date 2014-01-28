@@ -412,13 +412,13 @@ namespace SCMBot
     }
 
 
-    [SerializableAttribute]
+    [Serializable]
     public class saveTabLst : List<saveTab>
     {
         public int Position { set; get; }
     }
 
-    [SerializableAttribute]
+    [Serializable]
     public class saveTab
     {
         public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy)
