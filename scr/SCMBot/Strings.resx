@@ -255,4 +255,13 @@ You can find it in system tray anytime.</value>
   <data name="SellRemoved" xml:space="preserve">
     <value>Item(s) removed from Sell</value>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="NFS" xml:space="preserve">
+    <value>Not For Sale</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

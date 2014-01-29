@@ -21,7 +21,7 @@ namespace SCMBot
         SteamSite steam_srch = new SteamSite();
         SearchPagePos sppos;
         string lastSrch;
-        int lastSelec = 0;
+        int lastSelec = -1;
         bool addonComplete = false;
         bool isExit = false;
         ItemComparer itemComparer = new ItemComparer();
@@ -132,7 +132,11 @@ namespace SCMBot
 
                 if (reqPool != null)
                     reqPool.Dispose();
-                reqPool = new Semaphore(settings.numThreads, settings.numThreads);
+
+                int num = settings.numThreads;
+                if (num <= 0)
+                    num = 5;
+                 reqPool = new Semaphore(num, num);
             }
         }
 
@@ -254,7 +258,7 @@ namespace SCMBot
                 setNotifyText(Strings.NotLogged);
             }
             else
-                MessageBox.Show(Strings.ErrAccInfo);
+                MessageBox.Show(Strings.ErrAccInfo, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
 
@@ -364,16 +368,22 @@ namespace SCMBot
                     //StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Items_Sold:
-                    if (steam_srch.isRemove)
+                    if (searchId != 1)
                     {
-                        StatusLabel1.Text = Strings.SellRemoved;
+                        if (steam_srch.isRemove)
+                        {
+                            StatusLabel1.Text = Strings.SellRemoved;
+                        }
+                        else
+                        {
+                            StatusLabel1.Text = Strings.SaleItems;
+                        }
+                        steam_srch.loadInventory();
                     }
                     else
-                    {
-                        StatusLabel1.Text = Strings.SaleItems;
-                    }
+                        StatusLabel1.Text = "Nothing to sell!";
+
                     ProgressBar1.Visible = false;
-                    steam_srch.loadInventory();
                     break;
 
                 case flag.Sell_progress:
@@ -443,16 +453,26 @@ namespace SCMBot
                 case flag.Inventory_Loaded:
                     InventoryList.Items.Clear();
                     label4.Text = steam_srch.inventList.Count.ToString();
-                    for (int i = 0; i < steam_srch.inventList.Count; i++)
-                    {
-                        var ourItem = steam_srch.inventList[i];
-                        string[] row = { string.Empty, ourItem.Type, ourItem.Name, ourItem.Price };
-                        var lstItem = new ListViewItem(row);
-                        InventoryList.Items.Add(lstItem);
-                    }
-                    SetColumnWidths(InventoryList, true);
                     button1.Enabled = true;
-                    SellButton.Enabled = true;
+
+                    if (searchId == 0)
+                    {
+                        for (int i = 0; i < steam_srch.inventList.Count; i++)
+                        {
+                            var ourItem = steam_srch.inventList[i];
+                            string[] row = { string.Empty, ourItem.Type, ourItem.Name, ourItem.Price };
+                            var lstItem = new ListViewItem(row);
+                            InventoryList.Items.Add(lstItem);
+                        }
+                        SetColumnWidths(InventoryList, true);
+                        SellButton.Enabled = true;
+                        button2.Enabled = true;
+                    }
+                    else
+                    {
+                        button2.Enabled = false;
+                        MessageBox.Show("Inventory section is empty!", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                     break;
             }
 
@@ -637,6 +657,8 @@ namespace SCMBot
 
                     if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
                     {
+                        steam.ResellType = scanItem.ResellType;
+                        steam.ResellPrice = scanItem.resellPriceVal;
                         steam.scanDelay = scanItem.delayValue;
                         steam.wishedPrice = scanItem.wishedValue;
                         steam.pageLink = scanItem.linkValue;
@@ -722,8 +744,10 @@ namespace SCMBot
 
             if (steam_srch.Logged)
             {
+                lastSelec = -1;
+
                 button1.Enabled = false;
-                if (comboBox3.SelectedIndex == 3)
+                if (comboBox3.SelectedIndex == 4)
                 {
                     steam_srch.LoadOnSale = true;
                 }
@@ -770,8 +794,10 @@ namespace SCMBot
             for (int i = 0; i < InventoryList.CheckedItems.Count; i++)
             {
                 var ouritem = steam_srch.inventList[InventoryList.CheckedItems[i].Index];
+                if (ouritem.Marketable)
                 steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
             }
+
 
             steam_srch.ItemSell();
   
@@ -804,16 +830,19 @@ namespace SCMBot
                     var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
                     StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox3);
 
-                    var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
+                        var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
 
-                    if (currPr == "None")
-                    {
-                        steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
-                        textBox1.Text = "Loading...";
-                        textBox1.ReadOnly = true;
-                    }
-                    else
-                        textBox1.Text = currPr;
+                        if (currPr == Strings.None)
+                        {
+                            steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
+                            textBox1.Text = Strings.Loading;
+                            textBox1.ReadOnly = true;
+                        }
+                        else
+                            if (currPr == Strings.NFS)
+                                textBox1.ReadOnly = true;
+                        else
+                            textBox1.Text = currPr;
 
                     lastSelec = lit.Index;
                 }
@@ -904,7 +933,7 @@ namespace SCMBot
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox3.SelectedIndex == 3)
+            if (comboBox3.SelectedIndex == 4)
             {
                 SellButton.Text = Strings.RemSell;
                 steam_srch.isRemove = true;
@@ -917,7 +946,6 @@ namespace SCMBot
                 SellButton.Text = Strings.Sell;
                 steam_srch.isRemove = false;
                 textBox1.ReadOnly = false;
-                button2.Enabled = true;
             }
             SellButton.Enabled = false;
         }

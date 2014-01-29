@@ -238,6 +238,15 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на You need to load Inventory fist..
         /// </summary>
         internal static string LoadInvFirst {
@@ -288,6 +297,24 @@ namespace SCMBot {
         internal static string Logouted {
             get {
                 return ResourceManager.GetString("Logouted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Not For Sale.
+        /// </summary>
+        internal static string NFS {
+            get {
+                return ResourceManager.GetString("NFS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        internal static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         

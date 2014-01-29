@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.Threading;
+using System.IO;
 
 
 namespace SCMBot
@@ -43,7 +44,10 @@ namespace SCMBot
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
         const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}";
 
-        const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
+        //New url format
+        //const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
+        //Old Url format, recommended
+        const string _jsonInv = _mainsite + "profiles/{0}/inventory/json/{1}";
 
         public const string imgUri = "http://cdn.steamcommunity.com/economy/image/";
 
@@ -66,22 +70,24 @@ namespace SCMBot
 
         public class ScanItem
         {
-            public ScanItem(string sellerId, string price, string subtotal)
+            public ScanItem(string sellerId, string price, string subtotal, AppType appType)
             {
                 this.SellerId = sellerId;
                 this.Price = price;
                 this.SubTotal = subtotal;
+                this.Type = appType;
             }
 
             public string SellerId { set; get; }
             public string Price { set; get; }
             public string SubTotal { set; get; }
+            public AppType Type { set; get; }
         }
 
 
         public class InventItem
         {
-            public InventItem(string assetid, string name, string type, string price, string imglink, string marketName, bool onSale)
+            public InventItem(string assetid, string name, string type, string price, string imglink, string marketName, bool onSale, bool marketable)
             {
                 this.Name = name;
                 this.AssetId = assetid;
@@ -90,6 +96,9 @@ namespace SCMBot
                 this.ImgLink = imglink;
                 this.OnSale = onSale;
                 this.MarketName = marketName;
+
+                //Dummy
+                this.Marketable = marketable;
             }
 
             public string Name { set; get; }
@@ -100,6 +109,8 @@ namespace SCMBot
             public string MarketName { set; get; }
             public bool OnSale { set; get; }
 
+            //Dummy
+            public bool Marketable { set; get; }
         }
 
         public class BuyResponse
@@ -270,6 +281,10 @@ namespace SCMBot
 
             [JsonProperty("market_hash_name")]
             public string MarketName { get; set; }
+
+            [JsonProperty("marketable")]
+            public bool Marketable { get; set; }
+            
         }
 
         public class InfoMessage
@@ -320,7 +335,7 @@ namespace SCMBot
             doMessage(flag.StripImg, 0, string.Empty);
             var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
             doMessage(flag.StripImg, 1, string.Empty);
-
+            
             Main.reqPool.Release();
 
             return res;
@@ -441,17 +456,22 @@ namespace SCMBot
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = SendGet(_market, cock);
-            
+
             //For testring purposes!
             //string markpage = File.ReadAllText(@"C:\dollars.html");
 
-            string parseName = Regex.Match(markpage, "(?<=steamcommunity.com/id/)(.*)(?=\"><img)").ToString().Trim();
+            //Fix to getting name regex
+            string parseName = Regex.Match(markpage, "(?<=buynow_dialog_myaccountname\">)(.*)(?=</span>)").ToString().Trim();
+            
             if (parseName == "")
             {
                 return string.Empty;
             }
 
-            accName = parseName;
+            //accName = parseName;
+            //Set profileId for old Url format
+            accName = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
+
             string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*)(?=<div id=\"global_action_menu\">)", RegexOptions.Singleline).ToString();
             parseImg = parseImg.Substring(0, parseImg.Length - 46);
 
@@ -460,7 +480,7 @@ namespace SCMBot
             string curInd = GetCurrencyType(parseAmount, currLst);
             parseAmount = parseAmount.Replace(currLst[currLst.Current].AsciiName, currLst[currLst.Current].TrueName);
 
-            return string.Format("{0}|{1}|{2}|{3}", accName, parseAmount, parseImg, curInd);
+            return string.Format("{0}|{1}|{2}|{3}", parseName, parseAmount, parseImg, curInd);
         }
 
 
@@ -513,6 +533,8 @@ namespace SCMBot
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
             string buyres = SendPost(data, _blist + itemId, link, true);
+
+           
 
             if (buyres.Contains("message"))
             {
@@ -587,6 +609,12 @@ namespace SCMBot
 
                     //Отделяем номер лота
                     string sellid = currmatch.Substring(2, 19);
+                    
+                    //Отделяем тип приложения
+                    string appDirty = currmatch.Substring(24, 30);
+                    string[] app = Regex.Split(appDirty, ", ");
+                    var appRes = new AppType(app[0], app[1]);
+
 
                     //Отделяем строку, содержащую цены
                     string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
@@ -597,7 +625,7 @@ namespace SCMBot
                     string _subtot = fixNotFracture(parts[1]);
 
                     //Заполняем список лотов
-                    lst.Add(new ScanItem(sellid, _price, _subtot));
+                    lst.Add(new ScanItem(sellid, _price, _subtot, appRes));
 
                     //Remove this to parse all 10 items
                     return;
@@ -665,34 +693,44 @@ namespace SCMBot
 
 
         //Fixed
-        public string ParseInventory(string content)
+        public int ParseInventory(string content)
         {
             inventList.Clear();
-            
-            var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
-
-            foreach (InvItem prop in rgDescr.myInvent.Values)
+            try
             {
-                var ourItem = rgDescr.invDescr[prop.classid + "_" + prop.instanceid];
-                
-                //parse cost by url (_lists + 753/ + ourItem.MarketName)
-                 string price = "None";   
-                
-                //Careful, this action takes time!
-                //string cont = GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ourItem.MarketName, cookieCont);
-                //var tempLst = new List<ScanItem>();
-                //ParseLotList(cont, tempLst, currencies);
-                //if (tempLst.Count != 0)
-                  //  price = tempLst[0].Price;
+                var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
 
-                 inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false));
+                foreach (InvItem prop in rgDescr.myInvent.Values)
+                {
+                    var ourItem = rgDescr.invDescr[prop.classid + "_" + prop.instanceid];
+
+                    //parse cost by url (_lists + 753/ + ourItem.MarketName)
+                    string price = Strings.None;
+                    
+                    if (!ourItem.Marketable)
+                        price = Strings.NFS;
+
+
+                    //Careful, this action takes time!
+                    //string cont = GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ourItem.MarketName, cookieCont);
+                    //var tempLst = new List<ScanItem>();
+                    //ParseLotList(cont, tempLst, currencies);
+                    //if (tempLst.Count != 0)
+                    //  price = tempLst[0].Price;
+
+                    inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false, ourItem.Marketable));
+                }
+            }
+            catch (Exception e)
+            {
+                Main.AddtoLog(e.Message);
             }
 
-            return inventList.Count.ToString();
+            return inventList.Count;
         }
 
 
-        public string ParseOnSale(string content, CurrInfoLst currLst)
+        public int ParseOnSale(string content, CurrInfoLst currLst)
         {
             inventList.Clear();
             string parseBody = Regex.Match(content, "(?<=section market_home_listing_table\">)(.*)(?=<div id=\"tabContentsMyMarketHistory)", RegexOptions.Singleline).ToString();
@@ -721,7 +759,7 @@ namespace SCMBot
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
 
-                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true));
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true, true));
 
                 }
 
@@ -730,7 +768,7 @@ namespace SCMBot
                 //TODO. Add correct error processing
             MessageBox.Show(Strings.OnSaleErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            return matches.Count.ToString();
+            return matches.Count;
         }
 
 

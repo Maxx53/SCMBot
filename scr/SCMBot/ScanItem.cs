@@ -45,7 +45,18 @@ namespace SCMBot
             set { numericUpDown1.Value = value; }
         }
 
+        public int ResellType
+        {
+            get { return comboBox1.SelectedIndex; }
+            set { comboBox1.SelectedIndex = value; }
+        }
 
+        public string resellPriceVal
+        {
+            get { return resellPriceBox.Text; }
+            set { resellPriceBox.Text = value; }
+        }
+        
         public string ButtonText
         {
             get { return button4.Text;  }
@@ -121,6 +132,17 @@ namespace SCMBot
             }
 
     
+        }
+
+        private void ScanItem_Load(object sender, EventArgs e)
+        {
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+                resellPriceBox.Enabled = Convert.ToBoolean(comboBox1.SelectedIndex);
+
         }
 
     }

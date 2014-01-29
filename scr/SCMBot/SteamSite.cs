@@ -38,9 +38,13 @@ namespace SCMBot
 
         public int BuyQuant { get; set; }
 
+        public int ResellType { get; set; }
+        public string ResellPrice { get; set; }
+
         public int invApp { get; set; }
-        
+
         public static string accName;
+
         public int buyCounter = 0;
 
         public CookieContainer cookieCont { set; get; }
@@ -225,6 +229,10 @@ namespace SCMBot
                     app = "570";
                     cont = "2";
                     break;
+                case 3:
+                    app = "730";
+                    cont = "2";
+                    break;
             }
             if (isGetInv)
             return new AppType(string.Format("{0}/{1}",app,cont),string.Empty);
@@ -235,19 +243,21 @@ namespace SCMBot
 
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
         {
-
+            int invCount = 0;
             if (!LoadOnSale)
             {
-                ParseInventory(SendGet(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
+                invCount = ParseInventory(SendGet(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
               cookieCont));
             }
             else
             {
-                ParseOnSale(SendGet(_market, cookieCont), currencies);
+                invCount = ParseOnSale(SendGet(_market, cookieCont), currencies);
             }
 
-
-           doMessage(flag.Inventory_Loaded, 0, string.Empty);
+            if (invCount > 0)
+                doMessage(flag.Inventory_Loaded, 0, string.Empty);
+            else
+                doMessage(flag.Inventory_Loaded, 1, string.Empty);
 
         }
 
@@ -266,16 +276,16 @@ namespace SCMBot
                 {
                     if (isRemove)
                     {
-                       var req = "sessionid=" + GetSessId(cookieCont);
-                       SendPost(req, removeSell + toSellList[i].AssetId, _market, false);
+                        var req = "sessionid=" + GetSessId(cookieCont);
+                        SendPost(req, removeSell + toSellList[i].AssetId, _market, false);
                     }
                     else
                     {
-                        MessageBox.Show(toSellList[i].Price);
                         if (toSellList[i].Price != "None")
                         {
 
                             var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
+
                             SendPost(req, _sellitem, _market, false);
                         }
                     }
@@ -284,6 +294,10 @@ namespace SCMBot
                 }
 
                 doMessage(flag.Items_Sold, 0, string.Empty);
+            }
+            else
+            {
+                doMessage(flag.Items_Sold, 1, string.Empty);
             }
         }
 
@@ -518,6 +532,23 @@ namespace SCMBot
 
                         if (buyresp.Succsess)
                         {
+
+                            //Better run it in separate thread
+                            if (ResellType != 0)
+                            {
+                                int sellPrice = Convert.ToInt32(lotList[0].Price);
+
+                                switch (ResellType)
+                                {
+                                    case 1: sellPrice += Convert.ToInt32(ResellPrice);
+                                        break;
+                                    case 2: sellPrice = Convert.ToInt32(ResellPrice);
+                                        break;
+                                }
+
+                                Resell(sellPrice, lotList[0].Type, lotList[0].Price);
+                            }
+
                             doMessage(flag.Success_buy, scanID, buyresp.Mess);
                             doMessage(flag.Price_btext, scanID, prtoTxt);
                             buyCounter++;
@@ -548,8 +579,16 @@ namespace SCMBot
 
         }
 
+        private void Resell(int sellPrice, AppType appType, string markName)
+        {
+            //You get the point?
+            //ParseInventory(SendGet(string.Format(_jsonInv, accName, appType.App + "/" + appType.Context), cookieCont));
 
+            //var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.MarketName == markName).AssetId, sellPrice.ToString());
+           // SendPost(req, _sellitem, _market, false);
         }
+
+    }
 
     }
 
