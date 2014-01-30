@@ -281,7 +281,7 @@ namespace SCMBot
                     }
                     else
                     {
-                        if (toSellList[i].Price != "None")
+                        if (toSellList[i].Price != Strings.None)
                         {
 
                             var req = string.Format(sellReq, GetSessId(cookieCont), appReq.App, appReq.Context, toSellList[i].AssetId, toSellList[i].Price);
@@ -530,23 +530,13 @@ namespace SCMBot
                     {
                         var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
 
+                       
                         if (buyresp.Succsess)
                         {
-
-                            //Better run it in separate thread
+                            //Resell 
                             if (ResellType != 0)
                             {
-                                int sellPrice = Convert.ToInt32(lotList[0].Price);
-
-                                switch (ResellType)
-                                {
-                                    case 1: sellPrice += Convert.ToInt32(ResellPrice);
-                                        break;
-                                    case 2: sellPrice = Convert.ToInt32(ResellPrice);
-                                        break;
-                                }
-
-                                Resell(sellPrice, lotList[0].Type, lotList[0].Price);
+                                StartResellThread(lotList[0].Price, ResellPrice, lotList[0].Type, lotList[0].ItemName);
                             }
 
                             doMessage(flag.Success_buy, scanID, buyresp.Mess);
@@ -579,14 +569,37 @@ namespace SCMBot
 
         }
 
-        private void Resell(int sellPrice, AppType appType, string markName)
-        {
-            //You get the point?
-            //ParseInventory(SendGet(string.Format(_jsonInv, accName, appType.App + "/" + appType.Context), cookieCont));
 
-            //var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.MarketName == markName).AssetId, sellPrice.ToString());
-           // SendPost(req, _sellitem, _market, false);
+        private void StartResellThread(string lotPrice, string resellPrice, AppType appType, string markName)
+        {
+            ThreadStart threadStart = delegate()
+            {
+                int sellPrice = Convert.ToInt32(lotPrice);
+                int resell = Convert.ToInt32(GetSweetPrice(resellPrice));
+
+                switch (ResellType)
+                {
+                    case 1: sellPrice += resell;
+                        break;
+                    case 2: sellPrice = resell;
+                        break;
+                }
+
+                //You get the point!
+                ParseInventory(SendGet(string.Format(_jsonInv, accName, appType.App + "/" + appType.Context), cookieCont));
+
+                var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.Name == markName).AssetId, sellPrice.ToString());
+
+                SendPost(req, _sellitem, _market, false);
+                doMessage(flag.Resold, 0, markName);
+
+            };
+            Thread pTh = new Thread(threadStart);
+            pTh.IsBackground = true;
+            pTh.Start();
+
         }
+
 
     }
 

@@ -40,7 +40,8 @@ namespace SCMBot
         Send_cancel = 18,
         Error_scan = 19,
         Lang_Changed = 20,
-        InvPrice = 21
+        InvPrice = 21,
+        Resold = 22
     }
 
     public partial class Main
@@ -421,7 +422,7 @@ namespace SCMBot
     [Serializable]
     public class saveTab
     {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy)
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType)
         {
             this.Name = name;
             this.Price = price;
@@ -430,6 +431,7 @@ namespace SCMBot
             this.Delay = delay;
             this.BuyQnt = buyQnt;
             this.ToBuy = toBuy;
+            this.ResellType = resellType;
         }
 
         public string Name { set; get; }
@@ -439,6 +441,7 @@ namespace SCMBot
         public int BuyQnt { set; get; }
         public int Delay { set; get; }
         public bool ToBuy { set; get; }
+        public int ResellType { get; set; }
     }
 
 

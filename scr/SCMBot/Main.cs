@@ -179,7 +179,7 @@ namespace SCMBot
                 for (int i = 0; i < lst.Count; i++)
                 {
                     var ourItem = lst[i];
-                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy);
+                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy, ourItem.ResellType);
                 }
 
                 tabControl1.SelectedIndex = lst.Position;
@@ -194,7 +194,7 @@ namespace SCMBot
                 {
                     var ourItem = ScanItLst[i];
                     lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
-                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue));
+                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue, ourItem.ResellType));
                 }
                 lst.Position = tabControl1.SelectedIndex;
             }
@@ -204,7 +204,7 @@ namespace SCMBot
 
 
 
-        private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy)
+        private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy, int resellType)
         {
             string tabName = string.Empty;
 
@@ -227,10 +227,13 @@ namespace SCMBot
             tabControl1.TabPages[tabControl1.TabCount - 1].Controls.Add(scanIt);
             scanIt.linkValue = link;
             scanIt.wishedValue = price;
+            scanIt.resellPriceVal = price;
+            scanIt.ResellType = resellType;
             scanIt.ImgLink = imgLink;
             scanIt.delayValue = Delay.ToString();
             scanIt.tobuyQuant = BuyQnt;
             scanIt.tobuyValue = ToBuy;
+
             scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
             ScanItLst.Add(scanIt);
 
@@ -360,6 +363,9 @@ namespace SCMBot
                 case flag.Scan_cancel:
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
+                case flag.Resold:
+                    StatusLabel1.Text = string.Format("Item \"{0}\" resold!", message);
+                    break;
                 case flag.InvPrice:
                     string sweet = message.Insert(message.Length - 2, ",");
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
@@ -438,7 +444,7 @@ namespace SCMBot
                         for (int i = 0; i < steam_srch.searchList.Count; i++)
                         {
                             var currItem = steam_srch.searchList[i];
-                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false);
+                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0);
                         }
                         addonComplete = false;
                     }
@@ -460,7 +466,16 @@ namespace SCMBot
                         for (int i = 0; i < steam_srch.inventList.Count; i++)
                         {
                             var ourItem = steam_srch.inventList[i];
-                            string[] row = { string.Empty, ourItem.Type, ourItem.Name, ourItem.Price };
+                            
+                            string priceRes;
+                            if (ourItem.Price == "0")
+                                priceRes = Strings.None;
+                            else if (ourItem.Price == "1")
+                                priceRes = Strings.NFS;
+                            else
+                                priceRes = ourItem.Price;
+
+                            string[] row = { string.Empty, ourItem.Type, ourItem.Name, priceRes };
                             var lstItem = new ListViewItem(row);
                             InventoryList.Items.Add(lstItem);
                         }
@@ -534,7 +549,7 @@ namespace SCMBot
                 {
                     var viewName = FoundList.CheckedItems[i].SubItems[2].Text;
                     var ourItem = steam_srch.searchList.Find(item => item.Name == viewName);
-                    addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink, 3000, 1, false);
+                    addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink, 3000, 1, false, 0);
                     tabControl1.SelectedIndex = tabControl1.TabCount - 1;
                 }
 
@@ -546,7 +561,7 @@ namespace SCMBot
 
         private void emptyTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty, 3000, 1, false);
+            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty, 3000, 1, false, 0);
         }
 
 

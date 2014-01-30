@@ -70,18 +70,20 @@ namespace SCMBot
 
         public class ScanItem
         {
-            public ScanItem(string sellerId, string price, string subtotal, AppType appType)
+            public ScanItem(string sellerId, string price, string subtotal, AppType appType, string itemName)
             {
                 this.SellerId = sellerId;
                 this.Price = price;
                 this.SubTotal = subtotal;
                 this.Type = appType;
+                this.ItemName = itemName;
             }
 
             public string SellerId { set; get; }
             public string Price { set; get; }
             public string SubTotal { set; get; }
             public AppType Type { set; get; }
+            public string ItemName { set; get; }
         }
 
 
@@ -557,7 +559,7 @@ namespace SCMBot
                 }
                 else return new BuyResponse(false, Strings.UnknownErr);
             }
-            else return new BuyResponse(false, "Unknown Error");
+            else return new BuyResponse(false, Strings.UnknownErr);
 
         }
 
@@ -589,7 +591,7 @@ namespace SCMBot
             if (content == string.Empty)
                 return;
 
-            MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_seller\">", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
+            MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_game_name", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
 
             if (matches.Count != 0)
             {
@@ -597,6 +599,8 @@ namespace SCMBot
                 foreach (Match match in matches)
                 {
                     string currmatch = match.Groups[1].Value;
+
+                    string itName = Regex.Match(currmatch, "(?<=;\">)(.*)(?=</span>)").ToString();
 
                     //Чистим результат от тегов
                     //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
@@ -611,11 +615,11 @@ namespace SCMBot
                     string sellid = currmatch.Substring(2, 19);
                     
                     //Отделяем тип приложения
-                    string appDirty = currmatch.Substring(24, 30);
+                    string appDirty = currmatch.Substring(23, 30);
+
                     string[] app = Regex.Split(appDirty, ", ");
                     var appRes = new AppType(app[0], app[1]);
-
-
+                    
                     //Отделяем строку, содержащую цены
                     string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
 
@@ -625,7 +629,7 @@ namespace SCMBot
                     string _subtot = fixNotFracture(parts[1]);
 
                     //Заполняем список лотов
-                    lst.Add(new ScanItem(sellid, _price, _subtot, appRes));
+                    lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
 
                     //Remove this to parse all 10 items
                     return;
@@ -705,11 +709,10 @@ namespace SCMBot
                     var ourItem = rgDescr.invDescr[prop.classid + "_" + prop.instanceid];
 
                     //parse cost by url (_lists + 753/ + ourItem.MarketName)
-                    string price = Strings.None;
+                    string price = "0";
                     
                     if (!ourItem.Marketable)
-                        price = Strings.NFS;
-
+                        price = "1";
 
                     //Careful, this action takes time!
                     //string cont = GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ourItem.MarketName, cookieCont);

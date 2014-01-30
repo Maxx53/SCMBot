@@ -41,9 +41,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.ExtraGroup = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.resellPriceBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.ExtraGroup.SuspendLayout();
@@ -126,34 +126,34 @@
             // 
             // ExtraGroup
             // 
+            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Controls.Add(this.resellPriceBox);
             this.ExtraGroup.Controls.Add(this.label2);
             this.ExtraGroup.Controls.Add(this.comboBox1);
-            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Name = "ExtraGroup";
             this.ExtraGroup.TabStop = false;
             // 
-            // comboBox1
+            // resellPriceBox
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            resources.GetString("comboBox1.Items"),
-            resources.GetString("comboBox1.Items1"),
-            resources.GetString("comboBox1.Items2")});
-            resources.ApplyResources(this.comboBox1, "comboBox1");
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            resources.ApplyResources(this.resellPriceBox, "resellPriceBox");
+            this.resellPriceBox.Name = "resellPriceBox";
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // resellPriceBox
+            // comboBox1
             // 
-            resources.ApplyResources(this.resellPriceBox, "resellPriceBox");
-            this.resellPriceBox.Name = "resellPriceBox";
+            resources.ApplyResources(this.comboBox1, "comboBox1");
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            resources.GetString("comboBox1.Items"),
+            resources.GetString("comboBox1.Items1"),
+            resources.GetString("comboBox1.Items2")});
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // ScanItem
             // 
@@ -173,7 +173,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Name = "ScanItem";
-            this.Load += new System.EventHandler(this.ScanItem_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ExtraGroup.ResumeLayout(false);

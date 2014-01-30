@@ -134,11 +134,6 @@ namespace SCMBot
     
         }
 
-        private void ScanItem_Load(object sender, EventArgs e)
-        {
-            comboBox1.SelectedIndex = 0;
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
                 resellPriceBox.Enabled = Convert.ToBoolean(comboBox1.SelectedIndex);

@@ -154,4 +154,19 @@
   <data name="checkBox1.Text" xml:space="preserve">
     <value>Купить:</value>
   </data>
+  <data name="ExtraGroup.Text" xml:space="preserve">
+    <value>Перепродать</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="comboBox1.Items" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="comboBox1.Items1" xml:space="preserve">
+    <value>С наценкой</value>
+  </data>
+  <data name="comboBox1.Items2" xml:space="preserve">
+    <value>Своя цена</value>
+  </data>
 </root>
