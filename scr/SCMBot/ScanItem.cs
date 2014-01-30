@@ -39,6 +39,18 @@ namespace SCMBot
             set { checkBox1.Checked = value; }
         }
 
+        public bool scanRecent
+        {
+            get { return checkBox2.Checked; }
+            set { checkBox2.Checked = value; }
+        }
+
+        public bool scanPage
+        {
+            get { return checkBox3.Checked; }
+            set { checkBox3.Checked = value; }
+        }
+
         public int tobuyQuant
         {
             get { return Convert.ToInt32(numericUpDown1.Value); }
@@ -137,6 +149,11 @@ namespace SCMBot
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
                 resellPriceBox.Enabled = Convert.ToBoolean(comboBox1.SelectedIndex);
+
+        }
+
+        private void ScanItem_Load(object sender, EventArgs e)
+        {
 
         }
 

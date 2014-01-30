@@ -7,5 +7,5 @@ If you can't build the source for unknown reason, you can download binary by fol
 
 Если вы не можете собрать код по той или иной причине, скачайте бинарные файлы по ссылке:
 
-Latest version, 25th commit.
+Latest version:
 https://dl.dropboxusercontent.com/u/1288526/SteamCMBot_bin.rar

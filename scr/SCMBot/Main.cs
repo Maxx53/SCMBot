@@ -670,7 +670,7 @@ namespace SCMBot
                 {
                     int num;
 
-                    if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market))
+                    if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market) && (scanItem.scanPage | scanItem.scanRecent))
                     {
                         steam.ResellType = scanItem.ResellType;
                         steam.ResellPrice = scanItem.resellPriceVal;
@@ -680,6 +680,9 @@ namespace SCMBot
                         steam.toBuy = scanItem.tobuyValue;
                         steam.BuyQuant = scanItem.tobuyQuant;
                         steam.scanID = tabControl1.SelectedIndex;
+                        steam.scanName = tabControl1.SelectedTab.Text;
+                        steam.scanPage = scanItem.scanPage;
+                        steam.scanRecent = scanItem.scanRecent;
                         steam.currency = steam_srch.currency;
                         steam.currencies.Current = steam_srch.currencies.Current;
                         steam.ScanPrices();

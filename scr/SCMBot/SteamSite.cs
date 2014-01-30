@@ -43,6 +43,11 @@ namespace SCMBot
 
         public int invApp { get; set; }
 
+        public bool scanRecent { get; set; }
+        public bool scanPage { get; set; }
+
+        public string scanName { get; set; }
+
         public static string accName;
 
         public int buyCounter = 0;
@@ -198,7 +203,7 @@ namespace SCMBot
             {
                 
                 var tempLst = new List<ScanItem>();
-                ParseLotList(SendGet(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies);
+                ParseLotList(SendGet(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies, false);
                 if (tempLst.Count != 0)
                     doMessage(flag.InvPrice, pos, tempLst[0].Price);
             };
@@ -240,6 +245,8 @@ namespace SCMBot
 
 
         }
+
+
 
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -465,6 +472,48 @@ namespace SCMBot
         }
 
 
+        public void BuyLogic(int wished, string sessid, ScanItem ourItem)
+        {
+            string total = ourItem.Price;
+            int current = Convert.ToInt32(total);
+            string prtoTxt = total.Insert(total.Length - 2, ",");
+
+            if (current < wished)
+            {
+                if (toBuy)
+                {
+                    var buyresp = BuyItem(cookieCont, sessid, ourItem.SellerId, pageLink, ourItem.Price, ourItem.SubTotal, currency);
+
+                    if (buyresp.Succsess)
+                    {
+                        //Resell 
+                        if (ResellType != 0)
+                        {
+                            StartResellThread(ourItem.Price, ResellPrice, ourItem.Type, ourItem.ItemName);
+                        }
+
+                        doMessage(flag.Success_buy, scanID, buyresp.Mess);
+                        doMessage(flag.Price_btext, scanID, prtoTxt);
+                        buyCounter++;
+
+                        if (buyCounter == BuyQuant)
+                        {
+                            doMessage(flag.Send_cancel, scanID, string.Empty);
+                        }
+
+                    }
+                    else
+                    {
+                        doMessage(flag.Error_buy, scanID, buyresp.Mess);
+                    }
+
+                }
+                else doMessage(flag.Price_htext, scanID, prtoTxt);
+            }
+            else
+                doMessage(flag.Price_text, scanID, prtoTxt);
+        }
+
 
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -475,7 +524,7 @@ namespace SCMBot
             if (BuyNow)
             {
                 string resp_now = SendGet(pageLink, cookieCont);
-                ParseLotList(resp_now, lotList, currencies);
+                ParseLotList(resp_now, lotList, currencies, false);
 
                 if (lotList.Count == 0)
                 {
@@ -501,6 +550,7 @@ namespace SCMBot
                 wishedPrice = GetSweetPrice(wishedPrice);
             }
 
+
             int wished = Convert.ToInt32(wishedPrice);
 
             int delay = Convert.ToInt32(scanDelay);
@@ -508,59 +558,54 @@ namespace SCMBot
 
             buyCounter = 0;
 
+            //Scan cycle
             while (worker.CancellationPending == false)
             {
-                string resp = SendGet(pageLink, cookieCont);
-                ParseLotList(resp, lotList, currencies);
-
-                if (lotList.Count == 0)
+                if (scanPage)
                 {
-                    doMessage(flag.Error_scan, scanID, resp);
-                    continue;
-                }
+                    string resp = SendGet(pageLink, cookieCont);
+                    ParseLotList(resp, lotList, currencies, false);
 
-                //Возьмем самый верхний лот со страницы. Он же первый в нашем списке лотов.
-                string total = lotList[0].Price;
-                int current = Convert.ToInt32(total);
-                string prtoTxt = total.Insert(total.Length - 2, ",");
-
-                if (current < wished)
-                {
-                    if (toBuy)
+                    if (lotList.Count == 0)
                     {
-                        var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
-
-                       
-                        if (buyresp.Succsess)
-                        {
-                            //Resell 
-                            if (ResellType != 0)
-                            {
-                                StartResellThread(lotList[0].Price, ResellPrice, lotList[0].Type, lotList[0].ItemName);
-                            }
-
-                            doMessage(flag.Success_buy, scanID, buyresp.Mess);
-                            doMessage(flag.Price_btext, scanID, prtoTxt);
-                            buyCounter++;
-
-                            if (buyCounter == BuyQuant)
-                            {
-                                doMessage(flag.Send_cancel, scanID, string.Empty);
-                            }
-
-                        }
-                        else
-                        {
-                            doMessage(flag.Error_buy, scanID, buyresp.Mess);
-                        }
-
+                        doMessage(flag.Error_scan, scanID, resp);
+                        continue;
                     }
-                    else doMessage(flag.Price_htext, scanID, prtoTxt);
+
+                    BuyLogic(wished, sessid, lotList[0]);
                 }
-                else
-                    doMessage(flag.Price_text, scanID, prtoTxt);
+
+                if (scanRecent)
+                {
+                    ParseResent(SendGet(recentMarket, cookieCont));
+
+                    if (lotList.Count == 0)
+                    {
+                        doMessage(flag.Error_scan, scanID, "err");
+                        continue;
+                    }
+
+                    bool found = false;
+
+                    for (int i = 0; i < lotList.Count; i++)
+                    {
+                        if (lotList[i].ItemName == scanName)
+                        {
+                            BuyLogic(wished, sessid, lotList[i]);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        doMessage(flag.Price_text, scanID, "None");
+                    }
+
+                }
 
                 doMessage(flag.Scan_progress, scanID, prog.ToString());
+
                 Sem.WaitOne(delay);
                 prog++;
             }

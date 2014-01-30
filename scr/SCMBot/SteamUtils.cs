@@ -59,6 +59,8 @@ namespace SCMBot
 
         public const string searchPageReq = "{0}&start={1}0";
 
+        public const string recentMarket = _market + "recent/";
+
         //================================ Consts ======================= End ===============================================
 
         public event eventDelegate delegMessage;
@@ -308,6 +310,20 @@ namespace SCMBot
             [JsonProperty("success")]
             public int Success { get; set; }
         }
+
+
+        public class ResentInfo
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+            [JsonProperty("results_html")]
+            public string HtmlRes { get; set; }
+
+            //Not useful
+            //[JsonProperty("listinginfo")]
+            //public IDictionary<string, ListingInfo> Listing { get; set; }
+        }
+
 
 
         //End JSON
@@ -581,7 +597,7 @@ namespace SCMBot
             return output;
         }
 
-        public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst)
+        public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
         {
             lst.Clear();
 
@@ -601,6 +617,9 @@ namespace SCMBot
                     string currmatch = match.Groups[1].Value;
 
                     string itName = Regex.Match(currmatch, "(?<=;\">)(.*)(?=</span>)").ToString();
+
+                    if (full)
+                        itName = Regex.Match(itName, "(?<=\">)(.*)(?=</a>)").ToString();
 
                     //Чистим результат от тегов
                     //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
@@ -632,6 +651,7 @@ namespace SCMBot
                     lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
 
                     //Remove this to parse all 10 items
+                    if (!full)
                     return;
                 }
             }
@@ -775,6 +795,28 @@ namespace SCMBot
         }
 
 
+        public int ParseResent(string content)
+        {
+            lotList.Clear();
+
+            try
+            {
+                var recentJS = JsonConvert.DeserializeObject<ResentInfo>(content);
+
+                if (recentJS.Success)
+                {
+                    //Now, careful Derpy
+                    ParseLotList(recentJS.HtmlRes, lotList, currencies, true);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Main.AddtoLog(e.Message);
+            }
+
+            return lotList.Count;
+        }
 
     }
 }
