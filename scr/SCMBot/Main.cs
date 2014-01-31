@@ -207,6 +207,7 @@ namespace SCMBot
         private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy, int resellType)
         {
             string tabName = string.Empty;
+            bool notset = true;
 
             if (tabId == string.Empty)
             {
@@ -215,6 +216,7 @@ namespace SCMBot
             else
             {
                 tabName = tabId;
+                notset = false;
             }
 
             tabControl1.TabPages.Add(tabName);
@@ -233,6 +235,7 @@ namespace SCMBot
             scanIt.delayValue = Delay.ToString();
             scanIt.tobuyQuant = BuyQnt;
             scanIt.tobuyValue = ToBuy;
+            scanIt.NotSetHead = notset;
 
             scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
             ScanItLst.Add(scanIt);
@@ -339,7 +342,10 @@ namespace SCMBot
                 case flag.Rep_progress:
                     ProgressBar1.Value = Convert.ToInt32(message);
                     break;
-
+                case flag.SetTabName:
+                    tabControl1.TabPages[searchId].Text = message;
+                    break;
+                    
                 case flag.Scan_progress:
                     StatusLabel1.Text = Strings.ScanPrice;
                     break;
@@ -367,7 +373,7 @@ namespace SCMBot
                     StatusLabel1.Text = string.Format("Item \"{0}\" resold!", message);
                     break;
                 case flag.InvPrice:
-                    string sweet = message.Insert(message.Length - 2, ",");
+                    string sweet = SteamSite.DoFracture(message);
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
                     textBox1.Text = sweet;
                     textBox1.ReadOnly = false;
@@ -680,11 +686,12 @@ namespace SCMBot
                         steam.toBuy = scanItem.tobuyValue;
                         steam.BuyQuant = scanItem.tobuyQuant;
                         steam.scanID = tabControl1.SelectedIndex;
-                        steam.scanName = tabControl1.SelectedTab.Text;
+                        steam.scanName = scanItem.ItemName;
                         steam.scanPage = scanItem.scanPage;
                         steam.scanRecent = scanItem.scanRecent;
                         steam.currency = steam_srch.currency;
                         steam.currencies.Current = steam_srch.currencies.Current;
+                        steam.NotSetHead = scanItem.NotSetHead;
                         steam.ScanPrices();
 
                         StatusLabel1.Text = Strings.ScanPrice;

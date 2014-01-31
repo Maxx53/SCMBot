@@ -14,6 +14,7 @@ namespace SCMBot
         string imgLinkVal = string.Empty;
 
         public string ItemName { set; get; }
+        public bool NotSetHead { get; set; }
 
         public string linkValue
         {
@@ -149,11 +150,6 @@ namespace SCMBot
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
                 resellPriceBox.Enabled = Convert.ToBoolean(comboBox1.SelectedIndex);
-
-        }
-
-        private void ScanItem_Load(object sender, EventArgs e)
-        {
 
         }
 

@@ -130,10 +130,10 @@
             // 
             // ExtraGroup
             // 
+            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Controls.Add(this.resellPriceBox);
             this.ExtraGroup.Controls.Add(this.label2);
             this.ExtraGroup.Controls.Add(this.comboBox1);
-            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Name = "ExtraGroup";
             this.ExtraGroup.TabStop = false;
             // 
@@ -149,13 +149,13 @@
             // 
             // comboBox1
             // 
+            resources.ApplyResources(this.comboBox1, "comboBox1");
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             resources.GetString("comboBox1.Items"),
             resources.GetString("comboBox1.Items1"),
             resources.GetString("comboBox1.Items2")});
-            resources.ApplyResources(this.comboBox1, "comboBox1");
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -200,7 +200,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Name = "ScanItem";
-            this.Load += new System.EventHandler(this.ScanItem_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ExtraGroup.ResumeLayout(false);

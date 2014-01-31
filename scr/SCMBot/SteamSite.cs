@@ -45,6 +45,7 @@ namespace SCMBot
 
         public bool scanRecent { get; set; }
         public bool scanPage { get; set; }
+        public bool NotSetHead { get; set; }
 
         public string scanName { get; set; }
 
@@ -203,9 +204,10 @@ namespace SCMBot
             {
                 
                 var tempLst = new List<ScanItem>();
-                ParseLotList(SendGet(_lists + GetUrlApp(invApp, false).App + "/" + ItName, cookieCont), tempLst, currencies, false);
+                var url = _lists + GetUrlApp(invApp, false).App + "/" + ItName + "/render/";
+                ParseLotList(SendGet(url, cookieCont), tempLst, currencies, false);
                 if (tempLst.Count != 0)
-                    doMessage(flag.InvPrice, pos, tempLst[0].Price);
+                    doMessage(flag.InvPrice, pos, tempLst[0].Price.ToString());
             };
             Thread pTh = new Thread(threadStart);
             pTh.IsBackground = true;
@@ -472,24 +474,26 @@ namespace SCMBot
         }
 
 
+
         public void BuyLogic(int wished, string sessid, ScanItem ourItem)
         {
-            string total = ourItem.Price;
-            int current = Convert.ToInt32(total);
-            string prtoTxt = total.Insert(total.Length - 2, ",");
+            int total = ourItem.Price + ourItem.Fee;
+            string totalStr = total.ToString();
+            
+            string prtoTxt = DoFracture(totalStr);
 
-            if (current < wished)
+            if (total < wished)
             {
                 if (toBuy)
                 {
-                    var buyresp = BuyItem(cookieCont, sessid, ourItem.SellerId, pageLink, ourItem.Price, ourItem.SubTotal, currency);
+                    var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, pageLink, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr, currency);
 
                     if (buyresp.Succsess)
                     {
                         //Resell 
                         if (ResellType != 0)
                         {
-                            StartResellThread(ourItem.Price, ResellPrice, ourItem.Type, ourItem.ItemName);
+                            StartResellThread(totalStr, ResellPrice, ourItem.Type, ourItem.ItemName);
                         }
 
                         doMessage(flag.Success_buy, scanID, buyresp.Mess);
@@ -515,15 +519,49 @@ namespace SCMBot
         }
 
 
+        public bool fillLotList(string link, bool full)
+        {
+            lotList.Clear();
+
+            string resp = SendGet(link, cookieCont);
+            byte ret = ParseLotList(resp, lotList, currencies, full);
+
+
+            if (lotList.Count == 0)
+            {
+                if (ret == 3)
+                    doMessage(flag.Error_scan, scanID, resp);
+                else
+                    //TODO: Valid Error Info!
+                    doMessage(flag.Error_scan, scanID, "Error");
+
+                return false;
+            }
+            else return true;
+        }
+
+
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             string sessid = GetSessId(cookieCont);
 
+            string url = pageLink;
+            int fint = pageLink.IndexOf('?');
+            if (fint == -1)
+            {
+                url += "/render/";
+            }
+            else
+            {
+                url = url.Insert(fint, "/render/");
+            }
+
+
 
             if (BuyNow)
             {
-                string resp_now = SendGet(pageLink, cookieCont);
+                string resp_now = SendGet(url, cookieCont);
                 ParseLotList(resp_now, lotList, currencies, false);
 
                 if (lotList.Count == 0)
@@ -532,7 +570,9 @@ namespace SCMBot
                 }
                 else
                 {
-                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].SellerId, pageLink, lotList[0].Price, lotList[0].SubTotal, currency);
+                    string totalStr = Convert.ToString(lotList[0].Price + lotList[0].Fee);
+                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, pageLink, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr, currency);
+
                     BuyNow = false;
                     if (buyresp.Succsess)
                     {
@@ -563,43 +603,37 @@ namespace SCMBot
             {
                 if (scanPage)
                 {
-                    string resp = SendGet(pageLink, cookieCont);
-                    ParseLotList(resp, lotList, currencies, false);
 
-                    if (lotList.Count == 0)
-                    {
-                        doMessage(flag.Error_scan, scanID, resp);
-                        continue;
-                    }
-
-                    BuyLogic(wished, sessid, lotList[0]);
+                    if (!fillLotList(url, false))
+                        return;
+                    else
+                        BuyLogic(wished, sessid, lotList[0]);
                 }
 
                 if (scanRecent)
                 {
-                    ParseResent(SendGet(recentMarket, cookieCont));
 
-                    if (lotList.Count == 0)
+                    if (!fillLotList(recentMarket, true))
+                        return;
+                    else
                     {
-                        doMessage(flag.Error_scan, scanID, "err");
-                        continue;
-                    }
 
-                    bool found = false;
+                        bool found = false;
 
-                    for (int i = 0; i < lotList.Count; i++)
-                    {
-                        if (lotList[i].ItemName == scanName)
+                        for (int i = 0; i < lotList.Count; i++)
                         {
-                            BuyLogic(wished, sessid, lotList[i]);
-                            found = true;
-                            break;
+                            if (lotList[i].ItemName == scanName)
+                            {
+                                BuyLogic(wished, sessid, lotList[i]);
+                                found = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!found)
-                    {
-                        doMessage(flag.Price_text, scanID, "None");
+                        if (!found)
+                        {
+                            doMessage(flag.Price_text, scanID, "None");
+                        }
                     }
 
                 }

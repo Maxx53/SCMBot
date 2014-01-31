@@ -169,4 +169,16 @@
   <data name="comboBox1.Items2" xml:space="preserve">
     <value>Своя цена</value>
   </data>
+  <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 17</value>
+  </data>
+  <data name="checkBox2.Text" xml:space="preserve">
+    <value>Последние</value>
+  </data>
+  <data name="scanSourceGroup.Text" xml:space="preserve">
+    <value>Источник (тест)</value>
+  </data>
+  <data name="checkBox3.Text" xml:space="preserve">
+    <value>Страница</value>
+  </data>
 </root>

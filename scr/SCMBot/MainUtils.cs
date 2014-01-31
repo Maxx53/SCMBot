@@ -41,7 +41,8 @@ namespace SCMBot
         Error_scan = 19,
         Lang_Changed = 20,
         InvPrice = 21,
-        Resold = 22
+        Resold = 22,
+        SetTabName = 23
     }
 
     public partial class Main

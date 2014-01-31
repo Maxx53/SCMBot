@@ -32,7 +32,13 @@ namespace SCMBot
         const string _blist = _mainsiteS + "market/buylisting/";
 
         const string _lists = _market + "listings/";
+
+
+        //Todo: JSON
+        //public const string _search = _market + search/render/?query=&start=0&count=10
         public const string _search = _market + "search?q=";
+
+
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
         const string _refrcap = "https://steamcommunity.com/actions/RefreshCaptcha/?count=1";
 
@@ -72,18 +78,18 @@ namespace SCMBot
 
         public class ScanItem
         {
-            public ScanItem(string sellerId, string price, string subtotal, AppType appType, string itemName)
+            public ScanItem(string listringId, int price, int fee, AppType appType, string itemName)
             {
-                this.SellerId = sellerId;
+                this.ListringId = listringId;
                 this.Price = price;
-                this.SubTotal = subtotal;
+                this.Fee = fee;
                 this.Type = appType;
                 this.ItemName = itemName;
             }
 
-            public string SellerId { set; get; }
-            public string Price { set; get; }
-            public string SubTotal { set; get; }
+            public string ListringId { set; get; }
+            public int Price { set; get; }
+            public int Fee { set; get; }
             public AppType Type { set; get; }
             public string ItemName { set; get; }
         }
@@ -193,7 +199,6 @@ namespace SCMBot
             public string StartPrice { set; get; }
 
         }
-
 
 
         //JSON Stuff...
@@ -312,19 +317,76 @@ namespace SCMBot
         }
 
 
-        public class ResentInfo
+        public class PageBody
         {
             [JsonProperty("success")]
             public bool Success { get; set; }
             [JsonProperty("results_html")]
             public string HtmlRes { get; set; }
 
-            //Not useful
-            //[JsonProperty("listinginfo")]
-            //public IDictionary<string, ListingInfo> Listing { get; set; }
+            [JsonProperty("listinginfo")]
+            public IDictionary<string, ListingInfo> Listing { get; set; }
+
+            [JsonProperty("assets")]
+            public IDictionary<string, IDictionary<string, IDictionary<string, ItemInfo>>> Assets { get; set; }
         }
 
+  
+        public class ListingInfo
+        {
+            [JsonProperty("listingid")]
+            public string listingid { get; set; }
 
+            [JsonProperty("converted_price")]
+            public int price { get; set; }
+
+            [JsonProperty("converted_fee")]
+            public int fee { get; set; }
+
+            [JsonProperty("asset")]
+            public ItemAsset asset { get; set; }
+        }
+
+        public class ItemAsset
+        {
+            [JsonProperty("appid")]
+            public string appid { get; set; }
+
+            [JsonProperty("contextid")]
+            public string contextid { get; set; }
+
+            [JsonProperty("id")]
+            public string id { get; set; }
+        }
+
+        public class Assets
+        {
+            [JsonProperty("listinginfo")]
+            public IDictionary<string, ListingInfo> Listing { get; set; }
+
+            [JsonProperty("converted_fee")]
+            public string fee { get; set; }
+
+            [JsonProperty("asset")]
+            public ItemAsset asset { get; set; }
+        }
+
+        public class ItemInfo
+        {
+            [JsonProperty("name")]
+            public string name { get; set; }
+
+
+            //Not Useful Yet...
+            [JsonProperty("type")]
+            public string type { get; set; }
+
+            [JsonProperty("tradable")]
+            public bool tradable { get; set; }
+
+            [JsonProperty("icon_url")]
+            public string icon_url { get; set; }
+        }
 
         //End JSON
 
@@ -470,6 +532,18 @@ namespace SCMBot
             return res;
         }
 
+        public static string DoFracture(string input)
+        {
+            string prtoTxt = "0,";
+
+            if (input.Length > 2)
+                prtoTxt = input.Insert(input.Length - 2, ",");
+            else
+                prtoTxt += input;
+            return prtoTxt;
+        }
+
+
         public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
@@ -502,18 +576,6 @@ namespace SCMBot
         }
 
 
-        private static string prFormat(string input)
-        {
-            string result = input;
-
-            if (input.Length < 3)
-            {
-                result = input + "00";
-            }
-
-            return result;
-        }
-
 
         public static string GetSessId(CookieContainer coock)
         {
@@ -536,16 +598,10 @@ namespace SCMBot
 
 
 
-        private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string total, string subtotal, string currStr)
+        private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total, string currStr)
         {
-            //For test purpose
-            //return new BuyResponse(true, "100");
 
-            int int_total = Convert.ToInt32(prFormat(total));
-            int int_sub = Convert.ToInt32(prFormat(subtotal));
-            string fee = (int_total - int_sub).ToString();
-
-            string data = string.Format(buyReq, sessid, int_sub, fee, int_total, currStr);
+            string data = string.Format(buyReq, sessid, subtotal, fee, total, currStr);
 
             //buy
             //29.08.2013 Steam Update Issue!
@@ -579,82 +635,66 @@ namespace SCMBot
 
         }
 
-        private static string fixNotFracture(string input)
-        {
-            string output = input.Trim();
 
-            if (input.IndexOfAny(",.".ToCharArray()) == -1)
-            {
-                output = input + "00";
-            }
-
-            if (output.Contains(","))
-                output = output.Replace(",", string.Empty);
-            else
-            if (output.Contains("."))
-                output = output.Replace(".", string.Empty);
-
-            return output;
-        }
-
-        public static void ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
+        public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
         {
             lst.Clear();
 
-            //For testring purposes!
-            //content = File.ReadAllText(@"C:\dollars.html");
-
             if (content == string.Empty)
-                return;
-
-            MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_game_name", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
-
-            if (matches.Count != 0)
             {
-                //Парсим все лоты (авось пригодится в будущем), но использовать будем пока только первый.
-                foreach (Match match in matches)
+                //Content empty
+                return 0;
+            }
+            else if ((content.Length < 200) && ( content[0] == '{'))
+            {
+                //Json without data
+                return 1;
+            }
+             else if (content[0] == '<')
+            {
+                 //Json is not valid
+                return 2;
+            }
+            else if (content[0] != '{')
+            {
+                //Not Json at all
+                return 3;
+            } 
+
+            var pageJS = JsonConvert.DeserializeObject<PageBody>(content);
+
+            if (pageJS.Listing.Count != 0 && pageJS.Success == true)
+            {
+                foreach (ListingInfo ourItem in pageJS.Listing.Values)
                 {
-                    string currmatch = match.Groups[1].Value;
+                    var ourItemInfo = pageJS.Assets[ourItem.asset.appid][ourItem.asset.contextid][ourItem.asset.id];
+                    bool isNull = false;
 
-                    string itName = Regex.Match(currmatch, "(?<=;\">)(.*)(?=</span>)").ToString();
+                    if (ourItem.price != 0)
+                    {
+                        //Damn, Mr.Crowley... WTF!?
+                        if (NotSetHead && !full)
+                        {
+                            doMessage(flag.SetTabName, scanID, ourItemInfo.name);
+                            NotSetHead = false;
+                        }
+                        
+                        lst.Add(new ScanItem(ourItem.listingid, ourItem.price, ourItem.fee, new AppType(ourItem.asset.appid, ourItem.asset.contextid), ourItemInfo.name));
+                        isNull = false;
+                    }
+                    else
+                    {
+                        isNull = true;
+                    }
 
-                    if (full)
-                        itName = Regex.Match(itName, "(?<=\">)(.*)(?=</a>)").ToString();
 
-                    //Чистим результат от тегов
-                    //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
-                    currmatch = Regex.Replace(currmatch, "<[^>]+>", string.Empty).Trim();
-
-                    //Удаляем ascii кода нашей текущей валюты
-                    currmatch = Regex.Replace(currmatch, currLst[currLst.Current].AsciiName, string.Empty);
-
-                    currmatch = Regex.Replace(currmatch, @"[^\.\,\d\ ]+", string.Empty);
-
-                    //Отделяем номер лота
-                    string sellid = currmatch.Substring(2, 19);
-                    
-                    //Отделяем тип приложения
-                    string appDirty = currmatch.Substring(23, 30);
-
-                    string[] app = Regex.Split(appDirty, ", ");
-                    var appRes = new AppType(app[0], app[1]);
-                    
-                    //Отделяем строку, содержащую цены
-                    string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
-
-                    string[] parts = Regex.Split(amount, " +");
- 
-                    string _price = fixNotFracture(parts[0]);
-                    string _subtot = fixNotFracture(parts[1]);
-
-                    //Заполняем список лотов
-                    lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
-
-                    //Remove this to parse all 10 items
-                    if (!full)
-                    return;
+                    if (!full && !isNull)
+                    return 3;
                 }
             }
+            else return 1;
+            //Fine!
+            return 4;
             
         }
 
@@ -662,6 +702,7 @@ namespace SCMBot
         public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)
         {
             lst.Clear();
+
             string totalfind = "0";
 
             //content = File.ReadAllText(@"C:\dollar2.html");
@@ -792,30 +833,6 @@ namespace SCMBot
             MessageBox.Show(Strings.OnSaleErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return matches.Count;
-        }
-
-
-        public int ParseResent(string content)
-        {
-            lotList.Clear();
-
-            try
-            {
-                var recentJS = JsonConvert.DeserializeObject<ResentInfo>(content);
-
-                if (recentJS.Success)
-                {
-                    //Now, careful Derpy
-                    ParseLotList(recentJS.HtmlRes, lotList, currencies, true);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Main.AddtoLog(e.Message);
-            }
-
-            return lotList.Count;
         }
 
     }
