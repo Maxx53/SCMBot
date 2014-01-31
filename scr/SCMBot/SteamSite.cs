@@ -604,18 +604,20 @@ namespace SCMBot
                 if (scanPage)
                 {
 
-                    if (!fillLotList(url, false))
-                        return;
-                    else
+                    //if (!fillLotList(url, false))
+                       // return;
+                    //else
+                    if (fillLotList(url, false))
                         BuyLogic(wished, sessid, lotList[0]);
                 }
 
                 if (scanRecent)
                 {
 
-                    if (!fillLotList(recentMarket, true))
-                        return;
-                    else
+                    //if (!fillLotList(recentMarket, true))
+                    //    return;
+                   // else
+                    if (fillLotList(recentMarket, true))
                     {
 
                         bool found = false;
