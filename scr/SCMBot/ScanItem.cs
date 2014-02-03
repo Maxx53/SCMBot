@@ -76,6 +76,12 @@ namespace SCMBot
             set { button4.Text = value; }
         }
 
+        public bool ButtonEnabled
+        {
+            get { return button4.Enabled; }
+            set { button4.Enabled = value; }
+        }
+
         public string ImgLink
         {
             get { return imgLinkVal; }

@@ -157,11 +157,38 @@
   <data name="label7.Text" xml:space="preserve">
     <value>Язык:</value>
   </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 359</value>
+  </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 124</value>
+  </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Интерфейс</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 47</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>на стр.</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 13</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Результ-в поиска:</value>
+  </data>
+  <data name="searchResBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>113, 44</value>
+  </data>
+  <data name="searchResBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 20</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -170,7 +197,7 @@
     <value>Язык:</value>
   </data>
   <data name="intLangComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>49, 68</value>
+    <value>49, 94</value>
   </data>
   <data name="intLangComboBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 21</value>
@@ -199,11 +226,17 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Очищать лог после:</value>
   </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 343</value>
+  </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 13</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>* Требуется перезапуск программы</value>
+  </data>
+  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 292</value>
   </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Сеть</value>
@@ -213,6 +246,9 @@
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>Параллельных запросов:</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>231, 395</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Настройки</value>

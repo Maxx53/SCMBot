@@ -25,7 +25,6 @@ namespace SCMBot
 
         public string currency { set; get; }
 
-        public string reqTxt { set; get; }
         public string linkTxt { set; get; }
    
         public bool Logged { set; get; }
@@ -313,7 +312,8 @@ namespace SCMBot
 
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt + reqTxt, cookieCont), searchList, currencies));
+
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont), searchList, currencies));
         }
 
 
@@ -523,18 +523,11 @@ namespace SCMBot
         {
             lotList.Clear();
 
-            string resp = SendGet(link, cookieCont);
-            byte ret = ParseLotList(resp, lotList, currencies, full);
+            byte ret = ParseLotList(SendGet(link, cookieCont), lotList, currencies, full);
 
-
-            if (lotList.Count == 0)
+            if (ret != 5)
             {
-                if (ret == 3)
-                    doMessage(flag.Error_scan, scanID, resp);
-                else
-                    //TODO: Valid Error Info!
-                    doMessage(flag.Error_scan, scanID, "Error");
-
+                doMessage(flag.Error_scan, scanID, ret.ToString());
                 return false;
             }
             else return true;
@@ -561,12 +554,11 @@ namespace SCMBot
 
             if (BuyNow)
             {
-                string resp_now = SendGet(url, cookieCont);
-                ParseLotList(resp_now, lotList, currencies, false);
+                ParseLotList(SendGet(url, cookieCont), lotList, currencies, false);
 
                 if (lotList.Count == 0)
                 {
-                    doMessage(flag.Error_scan, scanID, resp_now);
+                    doMessage(flag.Error_scan, scanID, "0");
                 }
                 else
                 {
@@ -604,9 +596,6 @@ namespace SCMBot
                 if (scanPage)
                 {
 
-                    //if (!fillLotList(url, false))
-                       // return;
-                    //else
                     if (fillLotList(url, false))
                         BuyLogic(wished, sessid, lotList[0]);
                 }
@@ -614,9 +603,6 @@ namespace SCMBot
                 if (scanRecent)
                 {
 
-                    //if (!fillLotList(recentMarket, true))
-                    //    return;
-                   // else
                     if (fillLotList(recentMarket, true))
                     {
 

@@ -106,6 +106,7 @@ namespace SCMBot
 
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
+            settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.numThreadsBox.Value = settings.numThreads;
             
 
@@ -149,7 +150,10 @@ namespace SCMBot
             settings.hideInvent = settingsForm.hideInventBox.Checked;
             settings.numThreads = (int)settingsForm.numThreadsBox.Value;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
+            settings.searchRes = settingsForm.searchResBox.Text;
+
             settings.InvType = comboBox3.SelectedIndex;
+
 
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
 
@@ -179,7 +183,7 @@ namespace SCMBot
                 for (int i = 0; i < lst.Count; i++)
                 {
                     var ourItem = lst[i];
-                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy, ourItem.ResellType);
+                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy, ourItem.ResellType, ourItem.ScanPage, ourItem.ScanRecent);
                 }
 
                 tabControl1.SelectedIndex = lst.Position;
@@ -194,7 +198,7 @@ namespace SCMBot
                 {
                     var ourItem = ScanItLst[i];
                     lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
-                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue, ourItem.ResellType));
+                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue, ourItem.ResellType, ourItem.scanPage, ourItem.scanRecent));
                 }
                 lst.Position = tabControl1.SelectedIndex;
             }
@@ -204,7 +208,7 @@ namespace SCMBot
 
 
 
-        private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy, int resellType)
+        private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy, int resellType, bool ScanPage, bool ScanRecent)
         {
             string tabName = string.Empty;
             bool notset = true;
@@ -235,6 +239,8 @@ namespace SCMBot
             scanIt.delayValue = Delay.ToString();
             scanIt.tobuyQuant = BuyQnt;
             scanIt.tobuyValue = ToBuy;
+            scanIt.scanPage = ScanPage;
+            scanIt.scanRecent = ScanRecent;
             scanIt.NotSetHead = notset;
 
             scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
@@ -363,10 +369,16 @@ namespace SCMBot
                     break;
                 case flag.Error_scan:
                     StatusLabel1.Text = Strings.ScanError;
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
+
+                    string mess = GetScanErrMess(message);
+                    AddtoLog(SteamLst[searchId].scanName + ": " + mess);
+                    ScanItLst[searchId].lboxAdd(GetPriceFormat(mess, false, string.Empty), 1, settings.logCount);
                     buyNowButton.Enabled = true;
                     break;
+
                 case flag.Scan_cancel:
+                    ScanItLst[searchId].ButtonEnabled = true;
+                    ScanItLst[searchId].ButtonText = Strings.Start;
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Resold:
@@ -402,14 +414,14 @@ namespace SCMBot
                     ProgressBar1.Value = Convert.ToInt32(message);
                     break;
                 case flag.Search_success:
-
+                    int searchLim = Convert.ToInt32(settings.searchRes);
                     StatusLabel1.Text = string.Format(Strings.FoundShown, message, steam_srch.searchList.Count.ToString());
 
                     if (sppos.CurrentPos == 1)
                     {
                         int found = Convert.ToInt32(message);
-                        sppos.PageCount = found / 10;
-                        if (found % 10 != 0)
+                        sppos.PageCount = found / searchLim;
+                        if (found % searchLim != 0)
                             sppos.PageCount++;
 
                     }
@@ -450,7 +462,7 @@ namespace SCMBot
                         for (int i = 0; i < steam_srch.searchList.Count; i++)
                         {
                             var currItem = steam_srch.searchList[i];
-                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0);
+                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0, true, false);
                         }
                         addonComplete = false;
                     }
@@ -555,7 +567,7 @@ namespace SCMBot
                 {
                     var viewName = FoundList.CheckedItems[i].SubItems[2].Text;
                     var ourItem = steam_srch.searchList.Find(item => item.Name == viewName);
-                    addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink, 3000, 1, false, 0);
+                    addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink, 3000, 1, false, 0, true, false);
                     tabControl1.SelectedIndex = tabControl1.TabCount - 1;
                 }
 
@@ -567,7 +579,7 @@ namespace SCMBot
 
         private void emptyTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty, 3000, 1, false, 0);
+            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty, 3000, 1, false, 0, true, false);
         }
 
 
@@ -593,9 +605,9 @@ namespace SCMBot
                 default:
                     break;
             }
-
-            steam_srch.reqTxt = string.Format(SteamSite.searchPageReq, lastSrch, sppos.CurrentPos - 1);
-            steam_srch.linkTxt = SteamSite._search;
+            
+            //search/render/?query={0}&start={1}&count={2}
+            steam_srch.linkTxt = string.Format(SteamSite._search, lastSrch, sppos.CurrentPos - 1, settings.searchRes);
             steam_srch.reqLoad();
         }
 
@@ -707,7 +719,8 @@ namespace SCMBot
                 else
                 {
                     steam.CancelScan();
-                    scanItem.ButtonText = Strings.Start;
+                    scanItem.ButtonEnabled = false;
+                    scanItem.ButtonText = Strings.Wait;
                 }
             }
             else MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);

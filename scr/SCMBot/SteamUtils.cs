@@ -35,8 +35,8 @@ namespace SCMBot
 
 
         //Todo: JSON
-        //public const string _search = _market + search/render/?query=&start=0&count=10
-        public const string _search = _market + "search?q=";
+        public const string _search = _market + "search/render/?query={0}&start={1}&count={2}";
+        //public const string _search = _market + "search?q=";
 
 
         const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
@@ -388,6 +388,17 @@ namespace SCMBot
             public string icon_url { get; set; }
         }
 
+        public class SearchBody
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+            [JsonProperty("results_html")]
+            public string HtmlRes { get; set; }
+            [JsonProperty("total_count")]
+            public string TotalCount { get; set; }
+        }
+
+
         //End JSON
 
         protected void doMessage(flag myflag, int searchId, string message)
@@ -536,10 +547,21 @@ namespace SCMBot
         {
             string prtoTxt = "0,";
 
-            if (input.Length > 2)
-                prtoTxt = input.Insert(input.Length - 2, ",");
-            else
-                prtoTxt += input;
+            switch (input.Length)
+            {
+                case 0:
+                    prtoTxt = "0";
+                    break;
+                case 1:
+                    prtoTxt += "0" + input;
+                    break;
+                case 2:
+                    prtoTxt += input;
+                    break;
+                default:
+                    prtoTxt = input.Insert(input.Length - 2, ",");
+                    break;
+            }
             return prtoTxt;
         }
 
@@ -608,8 +630,6 @@ namespace SCMBot
             //FIX: using SSL - https:// in url
             string buyres = SendPost(data, _blist + itemId, link, true);
 
-           
-
             if (buyres.Contains("message"))
             {
                 //Already buyed!
@@ -645,56 +665,63 @@ namespace SCMBot
                 //Content empty
                 return 0;
             }
-            else if ((content.Length < 200) && ( content[0] == '{'))
+            else if ((content.Length < 200) && (content[0] == '{'))
             {
                 //Json without data
                 return 1;
             }
-             else if (content[0] == '<')
-            {
-                 //Json is not valid
-                return 2;
-            }
             else if (content[0] != '{')
             {
-                //Not Json at all
-                return 3;
-            } 
-
-            var pageJS = JsonConvert.DeserializeObject<PageBody>(content);
-
-            if (pageJS.Listing.Count != 0 && pageJS.Success == true)
-            {
-                foreach (ListingInfo ourItem in pageJS.Listing.Values)
-                {
-                    var ourItemInfo = pageJS.Assets[ourItem.asset.appid][ourItem.asset.contextid][ourItem.asset.id];
-                    bool isNull = false;
-
-                    if (ourItem.price != 0)
-                    {
-                        //Damn, Mr.Crowley... WTF!?
-                        if (NotSetHead && !full)
-                        {
-                            doMessage(flag.SetTabName, scanID, ourItemInfo.name);
-                            NotSetHead = false;
-                        }
-                        
-                        lst.Add(new ScanItem(ourItem.listingid, ourItem.price, ourItem.fee, new AppType(ourItem.asset.appid, ourItem.asset.contextid), ourItemInfo.name));
-                        isNull = false;
-                    }
-                    else
-                    {
-                        isNull = true;
-                    }
-
-
-                    if (!full && !isNull)
-                    return 3;
-                }
+                //Json is not valid
+                return 2;
             }
-            else return 1;
+
+            try
+            {
+                var pageJS = JsonConvert.DeserializeObject<PageBody>(content);
+
+                if (pageJS.Listing.Count != 0 && pageJS.Success == true)
+                {
+                    foreach (ListingInfo ourItem in pageJS.Listing.Values)
+                    {
+                        var ourItemInfo = pageJS.Assets[ourItem.asset.appid][ourItem.asset.contextid][ourItem.asset.id];
+                        bool isNull = false;
+
+                        if (ourItem.price != 0)
+                        {
+                            //Damn, Mr.Crowley... WTF!?
+                            if (NotSetHead && !full)
+                            {
+                                doMessage(flag.SetTabName, scanID, ourItemInfo.name);
+                                NotSetHead = false;
+                            }
+
+                            lst.Add(new ScanItem(ourItem.listingid, ourItem.price, ourItem.fee, new AppType(ourItem.asset.appid, ourItem.asset.contextid), ourItemInfo.name));
+                            isNull = false;
+                        }
+                        else
+                        {
+                            isNull = true;
+                        }
+
+                        //If we load 1st lot and it's not null
+                        if (!full && !isNull)
+                            //Fine!
+                            return 5;
+                    }
+                }
+                else return 1;
+
+            }
+            catch(Exception e)
+            {
+                //Parsing fail
+                Main.AddtoLog(e.Message);
+                return 3;
+            }
+
             //Fine!
-            return 4;
+            return 5;
             
         }
 
@@ -702,58 +729,71 @@ namespace SCMBot
         public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)
         {
             lst.Clear();
+            string totalFind = "0";
 
-            string totalfind = "0";
-
-            //content = File.ReadAllText(@"C:\dollar2.html");
-            MatchCollection matches = Regex.Matches(content, "(?<=market_listing_row_link\" href)(.*?)(?<=</a>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
-            if (matches.Count != 0)
+            try
             {
+                var searchJS = JsonConvert.DeserializeObject<SearchBody>(content);
 
-                foreach (Match match in matches)
+                if (searchJS.Success)
                 {
-                    string currmatch = match.Groups[1].Value;
+                    totalFind = searchJS.TotalCount;
 
-                    string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\">)").ToString();
-
-                    string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
-
-
-                    string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
-                   
-                    //Удаляем ascii кода нашей текущей валюты
-                    if (currLst.NotSet)
+                    //content = File.ReadAllText(@"C:\dollar2.html");
+                    MatchCollection matches = Regex.Matches(searchJS.HtmlRes, "(?<=market_listing_row_link\" href)(.*?)(?<=</a>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
+                    if (matches.Count != 0)
                     {
-                        //If not loggen in then
-                        GetCurrencyType(ItemPrice, currLst);
-                        ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
-                        currLst.NotSet = true;
+
+                        foreach (Match match in matches)
+                        {
+                            string currmatch = match.Groups[1].Value;
+
+                            string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\">)").ToString();
+
+                            string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
+
+
+                            string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
+
+                            //Удаляем ascii кода нашей текущей валюты
+                            if (currLst.NotSet)
+                            {
+                                //If not loggen in then
+                                GetCurrencyType(ItemPrice, currLst);
+                                ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+                                currLst.NotSet = true;
+                            }
+                            else
+                            {
+                                ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+
+                            }
+
+                            ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,\.]+", string.Empty);
+
+                            string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
+                            ItemName = ItemName.Remove(0, ItemName.IndexOf(">") + 1);
+
+                            string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
+
+                            string ItemImg = Regex.Match(currmatch, "(?<=com/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
+
+                            //Заполняем список 
+                            lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
+                        }
+
                     }
                     else
-                    {
-                        ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
-
-                    }
-
-                    ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,\.]+", string.Empty);
-
-                    string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
-                    ItemName = ItemName.Remove(0, ItemName.IndexOf(">") + 1);
-
-                    string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
-
-                    string ItemImg = Regex.Match(currmatch, "(?<=com/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
-
-                    //Заполняем список 
-                    lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
+                        MessageBox.Show(Strings.SearchErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                totalfind = Regex.Match(content, "(?<=searchResults_total\">)(.*)(?=</span>)").ToString();
             }
-            else
-                MessageBox.Show(Strings.SearchErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception e)
+            {
+                Main.AddtoLog(e.Message);
+                MessageBox.Show("Error parsing search results.", Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            return totalfind;
+            return totalFind;
         }
 
 

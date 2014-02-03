@@ -265,6 +265,7 @@ namespace SCMBot
 
                     request.CookieContainer = cookie;
                     request.Method = "POST";
+                    request.Timeout = 10000;
                     request.Referer = refer;
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = requestData.Length;
@@ -320,6 +321,7 @@ namespace SCMBot
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = "GET";
+                    request.Timeout = 10000;
                     request.Accept = "application/json";
                     request.CookieContainer = cookie;
 
@@ -341,7 +343,25 @@ namespace SCMBot
 
         }
 
+        private string GetScanErrMess(string message)
+        {
+            string mess = string.Empty;
 
+            switch (message)
+            {
+                case "0": mess = "Content empty";
+                    break;
+                case "1": mess = "Json without data";
+                    break;
+                case "2": mess = "Json is not valid";
+                    break;
+                case "3": mess = "Parsing fail";
+                    break;
+                default: mess = "Unknown error";
+                    break;
+            }
+            return mess;
+        }
 
         static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
         {
@@ -423,7 +443,7 @@ namespace SCMBot
     [Serializable]
     public class saveTab
     {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType)
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, bool scanPage, bool scanRecent)
         {
             this.Name = name;
             this.Price = price;
@@ -433,6 +453,8 @@ namespace SCMBot
             this.BuyQnt = buyQnt;
             this.ToBuy = toBuy;
             this.ResellType = resellType;
+            this.ScanPage = scanPage;
+            this.ScanRecent = scanRecent;
         }
 
         public string Name { set; get; }
@@ -443,6 +465,8 @@ namespace SCMBot
         public int Delay { set; get; }
         public bool ToBuy { set; get; }
         public int ResellType { get; set; }
+        public bool ScanPage { get; set; }
+        public bool ScanRecent { get; set; }
     }
 
 

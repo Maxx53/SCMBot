@@ -264,4 +264,7 @@ You can find it in system tray anytime.</value>
   <data name="None" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Wait...</value>
+  </data>
 </root>

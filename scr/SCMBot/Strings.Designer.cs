@@ -481,6 +481,15 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Wait....
+        /// </summary>
+        internal static string Wait {
+            get {
+                return ResourceManager.GetString("Wait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Price format is invalid!.
         /// </summary>
         internal static string WrongPrice {
