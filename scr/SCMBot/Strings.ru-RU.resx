@@ -196,7 +196,7 @@ Copyright © 2013 Maxx53
     <value>Начать</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Остановить</value>
+    <value>Стоп</value>
   </data>
   <data name="tryLogin" xml:space="preserve">
     <value>Попытка входа...</value>

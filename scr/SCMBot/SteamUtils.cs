@@ -345,6 +345,9 @@ namespace SCMBot
 
             [JsonProperty("asset")]
             public ItemAsset asset { get; set; }
+
+            [JsonProperty("steamid_lister")]
+            public string userId { get; set; }
         }
 
         public class ItemAsset
@@ -373,9 +376,11 @@ namespace SCMBot
 
         public class ItemInfo
         {
-            [JsonProperty("name")]
+            [JsonProperty("market_name")]
             public string name { get; set; }
 
+            [JsonProperty(PropertyName = "fraudwarnings", Required = Required.Default)]
+            public object warnings { get; set; }
 
             //Not Useful Yet...
             [JsonProperty("type")]
@@ -584,7 +589,7 @@ namespace SCMBot
 
             //accName = parseName;
             //Set profileId for old Url format
-            accName = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
+            myUserId = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
 
             string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*)(?=<div id=\"global_action_menu\">)", RegexOptions.Singleline).ToString();
             parseImg = parseImg.Substring(0, parseImg.Length - 46);
@@ -687,12 +692,23 @@ namespace SCMBot
                         var ourItemInfo = pageJS.Assets[ourItem.asset.appid][ourItem.asset.contextid][ourItem.asset.id];
                         bool isNull = false;
 
+
+                        if (ourItem.userId == myUserId)
+                           continue;
+
+                        if (ourItemInfo.warnings != null)
+                        {
+                            //Renamed Item or Descriprtion
+                            Main.AddtoLog(string.Format("{0}: {1}", ourItemInfo.name, ourItemInfo.warnings.ToString()));
+                            continue;
+                        }
+
                         if (ourItem.price != 0)
                         {
                             //Damn, Mr.Crowley... WTF!?
                             if (NotSetHead && !full)
                             {
-                                doMessage(flag.SetTabName, scanID, ourItemInfo.name);
+                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name);
                                 NotSetHead = false;
                             }
 

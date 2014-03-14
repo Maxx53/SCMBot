@@ -32,7 +32,36 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.linkTextBox = new System.Windows.Forms.TextBox();
+            this.scanButton = new System.Windows.Forms.Button();
+            this.delayTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.scanSourceGroup = new System.Windows.Forms.GroupBox();
+            this.pageCheckBox = new System.Windows.Forms.CheckBox();
+            this.recentCheckBox = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buyCheckBox = new System.Windows.Forms.CheckBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.ExtraGroup = new System.Windows.Forms.GroupBox();
+            this.resellPriceBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.resellComboBox = new System.Windows.Forms.ComboBox();
+            this.wishpriceBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.buyUpDown = new System.Windows.Forms.NumericUpDown();
+            this.scanGroupBox = new System.Windows.Forms.GroupBox();
+            this.logListBox = new System.Windows.Forms.ListBox();
+            this.scanListView = new System.Windows.Forms.ListView();
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.FoundList = new System.Windows.Forms.ListView();
@@ -50,7 +79,6 @@
             this.prevButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.nextButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -68,6 +96,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nextButton = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -85,8 +114,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loginButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.loginButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -95,6 +124,13 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.scanSourceGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.ExtraGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buyUpDown)).BeginInit();
+            this.scanGroupBox.SuspendLayout();
+            this.contextMenuStrip3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -114,10 +150,12 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
@@ -130,20 +168,244 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.tabControl1);
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
+            this.splitContainer2.Panel1.Controls.Add(this.panel1);
+            this.splitContainer2.Panel1.Controls.Add(this.scanGroupBox);
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
-            // tabControl1
+            // panel1
             // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.MinimumSize = new System.Drawing.Size(300, 191);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.label14);
+            this.panel1.Controls.Add(this.linkTextBox);
+            this.panel1.Controls.Add(this.scanButton);
+            this.panel1.Controls.Add(this.delayTextBox);
+            this.panel1.Controls.Add(this.scanSourceGroup);
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.buyCheckBox);
+            this.panel1.Controls.Add(this.pictureBox4);
+            this.panel1.Controls.Add(this.ExtraGroup);
+            this.panel1.Controls.Add(this.wishpriceBox);
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.buyUpDown);
+            this.panel1.Name = "panel1";
+            // 
+            // label14
+            // 
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // linkTextBox
+            // 
+            resources.ApplyResources(this.linkTextBox, "linkTextBox");
+            this.linkTextBox.Name = "linkTextBox";
+            // 
+            // scanButton
+            // 
+            resources.ApplyResources(this.scanButton, "scanButton");
+            this.scanButton.Name = "scanButton";
+            this.scanButton.UseVisualStyleBackColor = true;
+            this.scanButton.Click += new System.EventHandler(this.scanButton_Click);
+            // 
+            // delayTextBox
+            // 
+            resources.ApplyResources(this.delayTextBox, "delayTextBox");
+            this.delayTextBox.Name = "delayTextBox";
+            this.delayTextBox.TabStop = false;
+            // 
+            // scanSourceGroup
+            // 
+            resources.ApplyResources(this.scanSourceGroup, "scanSourceGroup");
+            this.scanSourceGroup.Controls.Add(this.pageCheckBox);
+            this.scanSourceGroup.Controls.Add(this.recentCheckBox);
+            this.scanSourceGroup.Name = "scanSourceGroup";
+            this.scanSourceGroup.TabStop = false;
+            // 
+            // pageCheckBox
+            // 
+            resources.ApplyResources(this.pageCheckBox, "pageCheckBox");
+            this.pageCheckBox.Checked = true;
+            this.pageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.pageCheckBox.Name = "pageCheckBox";
+            this.pageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // recentCheckBox
+            // 
+            resources.ApplyResources(this.recentCheckBox, "recentCheckBox");
+            this.recentCheckBox.Name = "recentCheckBox";
+            this.recentCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // buyCheckBox
+            // 
+            resources.ApplyResources(this.buyCheckBox, "buyCheckBox");
+            this.buyCheckBox.Name = "buyCheckBox";
+            this.buyCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox4
+            // 
+            resources.ApplyResources(this.pictureBox4, "pictureBox4");
+            this.pictureBox4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.TabStop = false;
+            // 
+            // ExtraGroup
+            // 
+            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
+            this.ExtraGroup.Controls.Add(this.resellPriceBox);
+            this.ExtraGroup.Controls.Add(this.label7);
+            this.ExtraGroup.Controls.Add(this.resellComboBox);
+            this.ExtraGroup.Name = "ExtraGroup";
+            this.ExtraGroup.TabStop = false;
+            // 
+            // resellPriceBox
+            // 
+            resources.ApplyResources(this.resellPriceBox, "resellPriceBox");
+            this.resellPriceBox.Name = "resellPriceBox";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // resellComboBox
+            // 
+            resources.ApplyResources(this.resellComboBox, "resellComboBox");
+            this.resellComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.resellComboBox.FormattingEnabled = true;
+            this.resellComboBox.Items.AddRange(new object[] {
+            resources.GetString("resellComboBox.Items"),
+            resources.GetString("resellComboBox.Items1"),
+            resources.GetString("resellComboBox.Items2")});
+            this.resellComboBox.Name = "resellComboBox";
+            // 
+            // wishpriceBox
+            // 
+            resources.ApplyResources(this.wishpriceBox, "wishpriceBox");
+            this.wishpriceBox.Name = "wishpriceBox";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // buyUpDown
+            // 
+            resources.ApplyResources(this.buyUpDown, "buyUpDown");
+            this.buyUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.buyUpDown.Name = "buyUpDown";
+            this.buyUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // scanGroupBox
+            // 
+            resources.ApplyResources(this.scanGroupBox, "scanGroupBox");
+            this.scanGroupBox.Controls.Add(this.logListBox);
+            this.scanGroupBox.Controls.Add(this.scanListView);
+            this.scanGroupBox.Name = "scanGroupBox";
+            this.scanGroupBox.TabStop = false;
+            // 
+            // logListBox
+            // 
+            resources.ApplyResources(this.logListBox, "logListBox");
+            this.logListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.logListBox.FormattingEnabled = true;
+            this.logListBox.Name = "logListBox";
+            this.logListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.logListBox_DrawItem);
+            // 
+            // scanListView
+            // 
+            resources.ApplyResources(this.scanListView, "scanListView");
+            this.scanListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12});
+            this.scanListView.ContextMenuStrip = this.contextMenuStrip3;
+            this.scanListView.FullRowSelect = true;
+            this.scanListView.GridLines = true;
+            this.scanListView.HideSelection = false;
+            this.scanListView.Name = "scanListView";
+            this.scanListView.UseCompatibleStateImageBehavior = false;
+            this.scanListView.View = System.Windows.Forms.View.Details;
+            this.scanListView.Click += new System.EventHandler(this.scanListView_Click);
+            this.scanListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scanListView_KeyDown);
+            this.scanListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.scanListView_MouseClick);
+            this.scanListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scanListView_MouseUp);
+            // 
+            // columnHeader10
+            // 
+            resources.ApplyResources(this.columnHeader10, "columnHeader10");
+            // 
+            // columnHeader11
+            // 
+            resources.ApplyResources(this.columnHeader11, "columnHeader11");
+            // 
+            // columnHeader12
+            // 
+            resources.ApplyResources(this.columnHeader12, "columnHeader12");
+            // 
+            // contextMenuStrip3
+            // 
+            resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteMenuItem,
+            this.startSelectedMenuItem,
+            this.stopSelectedMenuItem,
+            this.startAllMenuItem,
+            this.stopAllMenuItem});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            // 
+            // deleteMenuItem
+            // 
+            resources.ApplyResources(this.deleteMenuItem, "deleteMenuItem");
+            this.deleteMenuItem.Image = global::SCMBot.Properties.Resources.cancel;
+            this.deleteMenuItem.Name = "deleteMenuItem";
+            this.deleteMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+            // 
+            // startSelectedMenuItem
+            // 
+            resources.ApplyResources(this.startSelectedMenuItem, "startSelectedMenuItem");
+            this.startSelectedMenuItem.Image = global::SCMBot.Properties.Resources.selected;
+            this.startSelectedMenuItem.Name = "startSelectedMenuItem";
+            this.startSelectedMenuItem.Click += new System.EventHandler(this.startSelectedToolStripMenuItem_Click);
+            // 
+            // stopSelectedMenuItem
+            // 
+            resources.ApplyResources(this.stopSelectedMenuItem, "stopSelectedMenuItem");
+            this.stopSelectedMenuItem.Image = global::SCMBot.Properties.Resources.stop;
+            this.stopSelectedMenuItem.Name = "stopSelectedMenuItem";
+            this.stopSelectedMenuItem.Click += new System.EventHandler(this.stopSelectedToolStripMenuItem_Click);
+            // 
+            // startAllMenuItem
+            // 
+            resources.ApplyResources(this.startAllMenuItem, "startAllMenuItem");
+            this.startAllMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
+            this.startAllMenuItem.Name = "startAllMenuItem";
+            this.startAllMenuItem.Click += new System.EventHandler(this.startAllToolStripMenuItem_Click);
+            // 
+            // stopAllMenuItem
+            // 
+            resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
+            this.stopAllMenuItem.Image = global::SCMBot.Properties.Resources.stop;
+            this.stopAllMenuItem.Name = "stopAllMenuItem";
+            this.stopAllMenuItem.Click += new System.EventHandler(this.stopAllToolStripMenuItem_Click);
             // 
             // groupBox4
             // 
@@ -155,7 +417,6 @@
             this.groupBox4.Controls.Add(this.prevButton);
             this.groupBox4.Controls.Add(this.label13);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Controls.Add(this.nextButton);
             this.groupBox4.Controls.Add(this.pictureBox1);
             this.groupBox4.Controls.Add(this.searchButton);
             this.groupBox4.MinimumSize = new System.Drawing.Size(300, 109);
@@ -227,32 +488,32 @@
             // 
             // contextMenuStrip1
             // 
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectedItemToolStripMenuItem,
             this.fullSetToolStripMenuItem,
             this.emptyTabToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             // 
             // selectedItemToolStripMenuItem
             // 
+            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
-            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
             // 
             // fullSetToolStripMenuItem
             // 
+            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
-            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
             // 
             // emptyTabToolStripMenuItem
             // 
+            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Image = global::SCMBot.Properties.Resources.blank;
             this.emptyTabToolStripMenuItem.Name = "emptyTabToolStripMenuItem";
-            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Click += new System.EventHandler(this.emptyTabToolStripMenuItem_Click);
             // 
             // prevButton
@@ -271,13 +532,6 @@
             // 
             resources.ApplyResources(this.label11, "label11");
             this.label11.Name = "label11";
-            // 
-            // nextButton
-            // 
-            resources.ApplyResources(this.nextButton, "nextButton");
-            this.nextButton.Name = "nextButton";
-            this.nextButton.UseVisualStyleBackColor = true;
-            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
             // 
             // pictureBox1
             // 
@@ -375,6 +629,7 @@
             // 
             // comboBox3
             // 
+            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
@@ -383,7 +638,6 @@
             resources.GetString("comboBox3.Items2"),
             resources.GetString("comboBox3.Items3"),
             resources.GetString("comboBox3.Items4")});
-            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -411,6 +665,11 @@
             // 
             resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
+            // 
+            // nextButton
+            // 
+            resources.ApplyResources(this.nextButton, "nextButton");
+            this.nextButton.Name = "nextButton";
             // 
             // label10
             // 
@@ -445,13 +704,13 @@
             // 
             // StatusLabel1
             // 
-            this.StatusLabel1.Name = "StatusLabel1";
             resources.ApplyResources(this.StatusLabel1, "StatusLabel1");
+            this.StatusLabel1.Name = "StatusLabel1";
             // 
             // ProgressBar1
             // 
-            this.ProgressBar1.Name = "ProgressBar1";
             resources.ApplyResources(this.ProgressBar1, "ProgressBar1");
+            this.ProgressBar1.Name = "ProgressBar1";
             // 
             // groupBox2
             // 
@@ -471,21 +730,22 @@
             // 
             // pictureBox2
             // 
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // contextMenuStrip2
             // 
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.minimizeOnClosingToolStripMenuItem,
             this.settingsToolStripMenuItem,
@@ -493,64 +753,63 @@
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             // 
             // minimizeOnClosingToolStripMenuItem
             // 
+            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             this.minimizeOnClosingToolStripMenuItem.Checked = true;
             this.minimizeOnClosingToolStripMenuItem.CheckOnClick = true;
             this.minimizeOnClosingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeOnClosingToolStripMenuItem.Name = "minimizeOnClosingToolStripMenuItem";
-            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             // 
             // settingsToolStripMenuItem
             // 
+            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Image = global::SCMBot.Properties.Resources.settings;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Image = global::SCMBot.Properties.Resources.help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Image = global::SCMBot.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Image = global::SCMBot.Properties.Resources.logout;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // loginButton
-            // 
-            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
-            resources.ApplyResources(this.loginButton, "loginButton");
-            this.loginButton.Name = "loginButton";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
+            // loginButton
+            // 
+            resources.ApplyResources(this.loginButton, "loginButton");
+            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
+            this.loginButton.Name = "loginButton";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            // 
             // Main
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.groupBox2);
             this.Name = "Main";
@@ -565,6 +824,16 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.scanSourceGroup.ResumeLayout(false);
+            this.scanSourceGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.ExtraGroup.ResumeLayout(false);
+            this.ExtraGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buyUpDown)).EndInit();
+            this.scanGroupBox.ResumeLayout(false);
+            this.contextMenuStrip3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -596,11 +865,9 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button nextButton;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button prevButton;
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.Button addtoScan;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buyNowButton;
@@ -642,6 +909,37 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox scanGroupBox;
+        private System.Windows.Forms.ListView scanListView;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.GroupBox scanSourceGroup;
+        private System.Windows.Forms.CheckBox pageCheckBox;
+        private System.Windows.Forms.CheckBox recentCheckBox;
+        private System.Windows.Forms.CheckBox buyCheckBox;
+        private System.Windows.Forms.GroupBox ExtraGroup;
+        private System.Windows.Forms.TextBox resellPriceBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox resellComboBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown buyUpDown;
+        private System.Windows.Forms.TextBox wishpriceBox;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.MaskedTextBox delayTextBox;
+        private System.Windows.Forms.TextBox linkTextBox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
+        private System.Windows.Forms.ToolStripMenuItem deleteMenuItem;
+        private System.Windows.Forms.ListBox logListBox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button nextButton;
+        private System.Windows.Forms.Button scanButton;
+        private System.Windows.Forms.ToolStripMenuItem startSelectedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopSelectedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopAllMenuItem;
     }
 }
 

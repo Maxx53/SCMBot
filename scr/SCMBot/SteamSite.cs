@@ -48,7 +48,7 @@ namespace SCMBot
 
         public string scanName { get; set; }
 
-        public static string accName;
+        public static string myUserId;
 
         public int buyCounter = 0;
 
@@ -254,7 +254,7 @@ namespace SCMBot
             int invCount = 0;
             if (!LoadOnSale)
             {
-                invCount = ParseInventory(SendGet(string.Format(_jsonInv, accName, GetUrlApp(invApp, true).App),
+                invCount = ParseInventory(SendGet(string.Format(_jsonInv, myUserId, GetUrlApp(invApp, true).App),
               cookieCont));
             }
             else
@@ -653,7 +653,7 @@ namespace SCMBot
                 }
 
                 //You get the point!
-                ParseInventory(SendGet(string.Format(_jsonInv, accName, appType.App + "/" + appType.Context), cookieCont));
+                ParseInventory(SendGet(string.Format(_jsonInv, myUserId, appType.App + "/" + appType.Context), cookieCont));
 
                 var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.Name == markName).AssetId, sellPrice.ToString());
 

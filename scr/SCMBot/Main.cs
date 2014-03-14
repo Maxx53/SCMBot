@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
@@ -28,19 +27,30 @@ namespace SCMBot
 
         static public Semaphore reqPool;
 
-        List<ScanItem> ScanItLst = new List<ScanItem>();
-        SteamSiteLst SteamLst = new SteamSiteLst();
+        ScanItemList scanItems = new ScanItemList();
+
         Settings settingsForm = new Settings();
         Properties.Settings settings = Properties.Settings.Default;
+
+        ImageList StatImgLst;
+
 
         public Main()
         {
 
             InitializeComponent();
+
+            StatImgLst = new ImageList();
+            StatImgLst.Images.Add("Img1", Properties.Resources.ready);
+            StatImgLst.Images.Add("Img2", Properties.Resources.warning);
+            StatImgLst.Images.Add("Img3", Properties.Resources.clock);
+            StatImgLst.ColorDepth = ColorDepth.Depth32Bit;
+            scanListView.SmallImageList = StatImgLst;
+
             steam_srch.delegMessage += new eventDelegate(Event_Message);
          }
 
-
+ 
         private void Main_Load(object sender, EventArgs e)
         {
 
@@ -183,74 +193,56 @@ namespace SCMBot
                 for (int i = 0; i < lst.Count; i++)
                 {
                     var ourItem = lst[i];
-                    addTabItem(ourItem.Link, ourItem.Price, ourItem.Name, ourItem.ImgLink, ourItem.Delay, ourItem.BuyQnt, ourItem.ToBuy, ourItem.ResellType, ourItem.ScanPage, ourItem.ScanRecent);
+
+
+                      string[] row = {string.Empty, ourItem.Name, ourItem.Price };
+                      var lstItem = new ListViewItem(row);
+
+                      scanListView.Items.Add(lstItem);
+                      var scanItem = new ScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message));
+
+                      if (isScanValid(ourItem))
+                      {
+                          scanItem.StatId = 0;
+                          setStatImg(i, 0);
+                      }
+                      else
+                      {
+                          scanItem.StatId = 1;
+                          setStatImg(i, 1);
+                      }
+
+
+                    //new
+                     scanItems.Add(scanItem);
+
+                
                 }
 
-                tabControl1.SelectedIndex = lst.Position;
+                scanListView.Items[lst.Position].Selected = true;
+                BindToControls();
             }
         }
 
         private void SaveTabs(saveTabLst lst)
         {
-            if (ScanItLst.Count != 0)
-            {
-                for (int i = 0; i < ScanItLst.Count; i++)
+            if (scanItems.Count != 0)
+          {
+               for (int i = 0; i < scanItems.Count; i++)
                 {
-                    var ourItem = ScanItLst[i];
-                    lst.Add(new saveTab(ourItem.ItemName, ourItem.linkValue, ourItem.ImgLink, ourItem.wishedValue,
-                                               Convert.ToInt32(ourItem.delayValue), ourItem.tobuyQuant, ourItem.tobuyValue, ourItem.ResellType, ourItem.scanPage, ourItem.scanRecent));
-                }
-                lst.Position = tabControl1.SelectedIndex;
+                        lst.Add(scanItems[i].ScanParams);
+               }
+
+               if (scanListView.SelectedIndices.Count != 0)
+                   lst.Position = scanListView.SelectedIndices[0];
+               else lst.Position = 0;
+
             }
         }
 
 //=================================================== Settings Stuff ====================== End ==============================
 
 
-
-        private void addTabItem(string link, string price, string tabId, string imgLink, int Delay, int BuyQnt, bool ToBuy, int resellType, bool ScanPage, bool ScanRecent)
-        {
-            string tabName = string.Empty;
-            bool notset = true;
-
-            if (tabId == string.Empty)
-            {
-                tabName = Strings.Item + (tabControl1.TabCount + 1).ToString();
-            }
-            else
-            {
-                tabName = tabId;
-                notset = false;
-            }
-
-            tabControl1.TabPages.Add(tabName);
-
-            ScanItem scanIt = new ScanItem();
-            scanIt.ItemName = tabName;
-            scanIt.Height = tabControl1.Height - 20;
-            scanIt.Width = tabControl1.Width - 5;
-            scanIt.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
-            tabControl1.TabPages[tabControl1.TabCount - 1].Controls.Add(scanIt);
-            scanIt.linkValue = link;
-            scanIt.wishedValue = price;
-            scanIt.resellPriceVal = price;
-            scanIt.ResellType = resellType;
-            scanIt.ImgLink = imgLink;
-            scanIt.delayValue = Delay.ToString();
-            scanIt.tobuyQuant = BuyQnt;
-            scanIt.tobuyValue = ToBuy;
-            scanIt.scanPage = ScanPage;
-            scanIt.scanRecent = ScanRecent;
-            scanIt.NotSetHead = notset;
-
-            scanIt.ButtonClick += new EventHandler(ScanItemButton_Click);
-            ScanItLst.Add(scanIt);
-
-            SteamSite ScanSite = new SteamSite();
-            ScanSite.delegMessage += new eventDelegate(Event_Message);
-            ScanSite.cookieCont = steam_srch.cookieCont;
-            SteamLst.Add(ScanSite);
-        }
 
 
         public void GetAccInfo(string mess)
@@ -266,7 +258,7 @@ namespace SCMBot
                 SetButton(loginButton, Strings.Logout, 2);
                 buyNowButton.Enabled = true;
                 addtoScan.Enabled = true;
-                SteamLst.CurrencyName = steam_srch.currencies.GetCurrentName();
+                scanItems.CurrencyName = steam_srch.currencies.GetCurrentName();
                 setNotifyText(Strings.NotLogged);
             }
             else
@@ -283,7 +275,7 @@ namespace SCMBot
         }
         
 
-        private void Event_Message(object sender, string message, int searchId, flag myflag)
+        public void Event_Message(object sender, string message, int searchId, flag myflag)
         {
             switch (myflag)
             {
@@ -319,10 +311,10 @@ namespace SCMBot
                     break;
 
                 case flag.Send_cancel:
-                    var scanItem = ScanItLst[searchId];
-                    var steam = SteamLst[searchId];
-                    steam.CancelScan();
-                    scanItem.ButtonText = Strings.Start ;
+
+                    var scanItem = scanItems[searchId];
+                    scanItem.Steam.CancelScan();
+                    //scanItem.ButtonText = Strings.Start ;
                     break;
                 case flag.StripImg:
                     if (searchId == 0)
@@ -336,20 +328,29 @@ namespace SCMBot
                     break;
 
                 case flag.Price_htext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, true, scanItems.CurrencyName)));
+
+                    //scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
+                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
                     break;
                 case flag.Price_btext:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(2, GetPriceFormat(message, true, scanItems.CurrencyName)));
+                   // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
+                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
                     break;
                 case flag.Price_text:
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(0, GetPriceFormat(message, true, scanItems.CurrencyName)));
+                   // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
+                   // ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
                     break;
 
                 case flag.Rep_progress:
                     ProgressBar1.Value = Convert.ToInt32(message);
                     break;
-                case flag.SetTabName:
-                    tabControl1.TabPages[searchId].Text = message;
+                case flag.SetHeadName:
+                    scanListView.Items[searchId].SubItems[1].Text = message;
+                    //tabControl1.TabPages[searchId].Text = message;
+                    SetColumnWidths(scanListView, true);
                     break;
                     
                 case flag.Scan_progress:
@@ -364,21 +365,22 @@ namespace SCMBot
 
                 case flag.Error_buy:
                     StatusLabel1.Text = Strings.BuyError;
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
+                    //scanItem.LogCont.Add();
+                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Error_scan:
                     StatusLabel1.Text = Strings.ScanError;
 
                     string mess = GetScanErrMess(message);
-                    AddtoLog(SteamLst[searchId].scanName + ": " + mess);
-                    ScanItLst[searchId].lboxAdd(GetPriceFormat(mess, false, string.Empty), 1, settings.logCount);
+                    AddtoLog(scanItems[searchId].Steam.scanName + ": " + mess);
+                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(mess, false, string.Empty), 1, settings.logCount);
                     buyNowButton.Enabled = true;
                     break;
 
                 case flag.Scan_cancel:
-                    ScanItLst[searchId].ButtonEnabled = true;
-                    ScanItLst[searchId].ButtonText = Strings.Start;
+                    //ScanItLst[searchId].ButtonEnabled = true;
+                   // ScanItLst[searchId].ButtonText = Strings.Start;
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Resold:
@@ -443,7 +445,7 @@ namespace SCMBot
                     string curr = steam_srch.currencies.GetCurrentName();
                     if (steam_srch.currencies.NotSet)
                     {
-                        SteamLst.CurrencyName = curr;
+                        scanItems.CurrencyName = curr;
                     }
 
                     FoundList.Items.Clear();
@@ -462,7 +464,7 @@ namespace SCMBot
                         for (int i = 0; i < steam_srch.searchList.Count; i++)
                         {
                             var currItem = steam_srch.searchList[i];
-                            addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0, true, false);
+    //                        //addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0, true, false);
                         }
                         addonComplete = false;
                     }
@@ -562,13 +564,12 @@ namespace SCMBot
             if (searchRight())
             {
 
-
                 for (int i = 0; i < FoundList.CheckedItems.Count; i++)
                 {
                     var viewName = FoundList.CheckedItems[i].SubItems[2].Text;
                     var ourItem = steam_srch.searchList.Find(item => item.Name == viewName);
-                    addTabItem(ourItem.Link, ourItem.StartPrice, ourItem.Name, ourItem.ImgLink, 3000, 1, false, 0, true, false);
-                    tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+
+                    addScanItem(ourItem, 3000, 0, false, 0, true, false);
                 }
 
             }
@@ -576,10 +577,22 @@ namespace SCMBot
                 searchFirstMess();
         }
 
+        private void addScanItem(SteamSite.SearchItem ourItem, int delay, int buyQuant, bool tobuy, int resellType, bool scanPage, bool scanRecent)
+        {
+            string[] row = { string.Empty, ourItem.Name, ourItem.StartPrice };
+            var lstItem = new ListViewItem(row);
+            scanListView.Items.Add(lstItem);
+            var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delay, buyQuant, tobuy, resellType, ourItem.StartPrice, scanPage, scanRecent);
+            scanItems.Add(new ScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message)));
+            setStatImg(scanListView.Items.Count - 1, Convert.ToByte(!isScanValid(ourTab)));
+            SetColumnWidths(scanListView, true);
+        }
+
 
         private void emptyTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addTabItem(string.Empty, string.Empty, string.Empty, string.Empty, 3000, 1, false, 0, true, false);
+            addScanItem(new SteamSite.SearchItem(string.Empty, string.Empty, string.Empty, "1", "0", string.Empty), 3000, 0, false, 0, true, false);
+        
         }
 
 
@@ -677,57 +690,6 @@ namespace SCMBot
         }
 
 
-        public void ScanItemButton_Click(object sender, EventArgs e)
-        {
-            if (steam_srch.Logged)
-            {
-                var scanItem = ScanItLst[tabControl1.SelectedIndex];
-                var steam = SteamLst[tabControl1.SelectedIndex];
-
-                if (!steam.scaninProg)
-                {
-                    int num;
-
-                    if (Int32.TryParse(scanItem.delayValue, out num) && scanItem.wishedValue != string.Empty && scanItem.linkValue.Contains(SteamSite._market) && (scanItem.scanPage | scanItem.scanRecent))
-                    {
-                        steam.ResellType = scanItem.ResellType;
-                        steam.ResellPrice = scanItem.resellPriceVal;
-                        steam.scanDelay = scanItem.delayValue;
-                        steam.wishedPrice = scanItem.wishedValue;
-                        steam.pageLink = scanItem.linkValue;
-                        steam.toBuy = scanItem.tobuyValue;
-                        steam.BuyQuant = scanItem.tobuyQuant;
-                        steam.scanID = tabControl1.SelectedIndex;
-                        steam.scanName = scanItem.ItemName;
-                        steam.scanPage = scanItem.scanPage;
-                        steam.scanRecent = scanItem.scanRecent;
-                        steam.currency = steam_srch.currency;
-                        steam.currencies.Current = steam_srch.currencies.Current;
-                        steam.NotSetHead = scanItem.NotSetHead;
-                        steam.ScanPrices();
-
-                        StatusLabel1.Text = Strings.ScanPrice;
-                        scanItem.ButtonText = Strings.Stop;
-                    }
-                    else
-                    {
-                        MessageBox.Show(Strings.CheckVal, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-
-                }
-
-                else
-                {
-                    steam.CancelScan();
-                    scanItem.ButtonEnabled = false;
-                    scanItem.ButtonText = Strings.Wait;
-                }
-            }
-            else MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-        }
-        
-
         public void AddToFormTxt(string acc)
         {
             this.Text += string.Format(" ({0})", acc);
@@ -744,37 +706,6 @@ namespace SCMBot
             if (searchRight()) 
             StartCmdLine(steam_srch.searchList[1].Link, string.Empty, false);
 
-        }
-
-
-        private void tabControl1_MouseDown(object sender, MouseEventArgs e)
-        {
-            var tabControl = sender as TabControl;
-            TabPage tabPageCurrent = null;
-            if (e.Button == MouseButtons.Middle)
-            {
-                for (var i = 0; i < tabControl.TabCount; i++)
-                {
-                    if (!tabControl.GetTabRect(i).Contains(e.Location))
-                        continue;
-                    tabPageCurrent = tabControl.TabPages[i];
-                    break;
-                }
-                if (tabPageCurrent != null)
-                {
-                    var k = tabControl.TabPages.IndexOf(tabPageCurrent);
-                    SteamLst[k].CancelScan();
-                    SteamLst.RemoveAt(k);
-                    ScanItLst[k].Dispose();
-                    ScanItLst.RemoveAt(k);
-                    tabControl.TabPages.Remove(tabPageCurrent);
-                    //Update id's
-                    for (int i = 0; i < SteamLst.Count; i++)
-                    {
-                        SteamLst[i].scanID = i;
-                    }
-                }
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1017,5 +948,402 @@ namespace SCMBot
             
         }
 
+        private void setButtText(bool isScaning)
+        {
+            if (isScaning)
+            {
+                scanButton.Text = Strings.Stop;
+                scanButton.Image = Properties.Resources.stop;
+            }
+            else
+            {
+                scanButton.Text = Strings.Start;
+                scanButton.Image = Properties.Resources.start;
+            }
+        }
+
+
+
+
+        private void scanListView_Click(object sender, EventArgs e)
+        {
+         
+
+        }
+
+
+
+        private void linkBinding_BindingComplete(object sender, BindingCompleteEventArgs e)
+        {
+            //e.Binding.PropertyName;
+
+
+                var Item = scanItems[scanListView.SelectedIndices[0]];
+                var ourItem = Item.ScanParams;
+
+                scanListView.SelectedItems[0].SubItems[2].Text = ourItem.Price;
+
+
+                if (isScanValid(ourItem))
+                {
+                    Item.StatId = 0;
+                    setStatImg(scanListView.SelectedIndices[0], 0);
+                }
+                else
+                {
+                    Item.StatId = 1;
+                    setStatImg(scanListView.SelectedIndices[0], 1);
+                }
+        }	
+
+
+        private void scanButton_Click(object sender, EventArgs e)
+        {
+            //Nope. TODO: Clean this shit!
+
+                int id = scanListView.SelectedIndices[0];
+                var ourItem = scanItems[id];
+                var steamItem = ourItem.Steam;
+                var paramItem = ourItem.ScanParams;
+
+                if (!steamItem.scaninProg)
+                {
+
+                    if (isScanValid(paramItem))
+                    {
+
+                        startScan(false);
+
+                    }
+                    else
+                    {
+                        ourItem.StatId = 1;
+                        MessageBox.Show(Strings.CheckVal, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                }
+
+                else
+                {
+                    stopScan(false);
+                }
+
+                setButtText(steamItem.scaninProg);
+                setStatImg(id, ourItem.StatId);
+        }
+
+
+
+        private void startScan(bool all)
+        {
+
+            if (steam_srch.Logged)
+            {
+                if (all)
+                {
+                    DoSelect(true);
+                }
+
+                for (int i = 0; i < scanListView.SelectedIndices.Count; i++)
+                {
+                    int id = scanListView.SelectedIndices[i];
+                    var ourItem = scanItems[id];
+                    var steamItem = ourItem.Steam;
+                    var paramItem = ourItem.ScanParams;
+
+                    if (steamItem.scaninProg)
+                        continue;
+
+                    if (ourItem.StatId == 0)
+                    {
+
+                        // steam.ResellPrice = scanItem.resellPriceVal;
+
+                        // steam.NotSetHead = scanItem.NotSetHead;
+                        ourItem.ReadParams();
+
+                        steamItem.scanID = id;
+
+                        //wat>!
+                        steamItem.currency = steam_srch.currency;
+                        steamItem.currencies.Current = steam_srch.currencies.Current;
+
+                        steamItem.ScanPrices();
+
+                        ourItem.StatId = 2;
+                        setStatImg(id, 2);
+                    }
+                }
+                StatusLabel1.Text = Strings.ScanPrice;
+
+                if (all)
+                {
+                    DoSelect(false);
+                }
+
+            }
+            else MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+        }
+
+
+        private void stopScan(bool all)
+        {
+
+            if (steam_srch.Logged)
+            {
+                if (all)
+                {
+                    DoSelect(true);
+                }
+
+
+                for (int i = 0; i < scanListView.SelectedIndices.Count; i++)
+                {
+                    int id = scanListView.SelectedIndices[i];
+                    var ourItem = scanItems[id];
+                    var steamItem = ourItem.Steam;
+                    var paramItem = ourItem.ScanParams;
+
+                    if (!steamItem.scaninProg)
+                        continue;
+
+                    if (ourItem.StatId == 2)
+                    {
+                        steamItem.CancelScan();
+                        ourItem.StatId = 0;
+                        setStatImg(id, 0);
+                    }
+                }
+
+                if (all)
+                {
+                    DoSelect(false);
+                }
+
+            }
+            else MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+
+
+        private void setStatImg(int id, byte p)
+        {
+            scanListView.Items[id].ImageIndex = p;
+        }
+
+        private void logListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (scanListView.SelectedIndices.Count == 0)
+                return;
+
+            var logItem = scanItems[scanListView.SelectedIndices[0]].LogCont;
+
+            if (logItem.Count == 0)
+                return;
+
+             e.DrawBackground();
+
+            Brush myBrush = Brushes.Black;
+
+
+
+                switch (logItem[e.Index].Id)
+                {
+                    case 0:
+                        myBrush = Brushes.Black;
+                        break;
+                    case 1:
+                        myBrush = Brushes.Red;
+                        break;
+                    case 2:
+                        myBrush = Brushes.Green;
+                        break;
+                }
+
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
+                e.DrawFocusRectangle();
+        }
+
+        private void logListBox_ItemsChanged(object sender, EventArgs e)
+        {
+            logListBox.SelectedIndex = logListBox.Items.Count - 1;
+            logListBox.SelectedIndex = -1;
+        }
+
+
+        private void deleteSelected()
+        {
+            if (scanListView.SelectedItems.Count != 0)
+            {
+                for (int i = 0; i < scanListView.Items.Count; i++)
+                {
+                    if (scanListView.Items[i].Selected)
+                    {
+                        var Item = scanItems[i];
+
+                        if (Item.Steam.scaninProg)
+                            Item.Steam.CancelScan();
+
+                        scanItems.RemoveAt(i);
+                        scanListView.Items[i].Remove();
+                        i--;
+                    }
+                }
+                
+                //TODO - Select last standing Item
+                BindToControls();
+                SetColumnWidths(scanListView, true);
+            }
+        }
+
+        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            deleteSelected();
+
+        }
+
+        private void DoSelect(bool p)
+        {
+            foreach (ListViewItem item in scanListView.Items)
+            {
+                item.Selected = p;
+            }
+
+        }
+
+        private void scanListView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                deleteSelected();
+                e.Handled = true;
+            }
+        }
+
+ 
+        private void startSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            startScan(false);
+        }
+
+        private void startAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            startScan(true);
+        }
+
+        private void stopSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            stopScan(false);
+        }
+
+        private void stopAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            stopScan(true);
+        }
+
+
+        private void BindToControls()
+        {
+            if (scanListView.SelectedIndices.Count == 1)
+            {
+
+                panel1.Enabled = true;
+
+                var Item = scanItems[scanListView.SelectedIndices[0]];
+                var ourItem = Item.ScanParams;
+                var logItem = Item.LogCont;
+
+                //Add event for all controls? I don't sure..
+
+                linkTextBox.DataBindings.Clear();
+                Binding linkBinding = linkTextBox.DataBindings.Add("Text", ourItem, "Link", true, DataSourceUpdateMode.OnPropertyChanged);
+                linkBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
+
+                wishpriceBox.DataBindings.Clear();
+                Binding wishedBinding = wishpriceBox.DataBindings.Add("Text", ourItem, "Price", true, DataSourceUpdateMode.OnPropertyChanged);
+                wishedBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
+
+
+                delayTextBox.DataBindings.Clear();
+                delayTextBox.DataBindings.Add("Text", ourItem, "Delay");
+
+                buyCheckBox.DataBindings.Clear();
+                buyCheckBox.DataBindings.Add("Checked", ourItem, "ToBuy");
+
+                buyUpDown.DataBindings.Clear();
+                buyUpDown.DataBindings.Add("Value", ourItem, "BuyQnt");
+
+                pageCheckBox.DataBindings.Clear();
+                pageCheckBox.DataBindings.Add("Checked", ourItem, "ScanPage");
+
+                recentCheckBox.DataBindings.Clear();
+                recentCheckBox.DataBindings.Add("Checked", ourItem, "ScanRecent");
+
+                resellComboBox.DataBindings.Clear();
+                resellComboBox.DataBindings.Add("SelectedIndex", ourItem, "ResellType");
+
+                resellPriceBox.DataBindings.Clear();
+                resellPriceBox.DataBindings.Add("Text", ourItem, "ResellPrice");
+
+                logListBox.DataSource = logItem;
+                logListBox.DisplayMember = "Text";
+
+                if (ourItem.ImgLink != string.Empty)
+                    StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox4);
+                else
+                    pictureBox4.Image = null;
+
+                setButtText(Item.Steam.scaninProg);
+
+                // linkTextBox.Text = ourItem.Link;
+                // wishpriceBox.Text = ourItem.Price;
+                // delayTextBox.Text = ourItem.Delay.ToString();
+                // buyCheckBox.Checked = ourItem.ToBuy;
+                // buyUpDown.Value = ourItem.BuyQnt;
+                // pageCheckBox.Checked = ourItem.ScanPage;
+                // recentCheckBox.Checked = ourItem.ScanRecent;
+                // resellComboBox.SelectedIndex = ourItem.ResellType;
+                // resellPriceBox.Text = ourItem.ResellVal;
+            }
+            else panel1.Enabled = false;
+        }
+
+        private void scanListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            BindToControls();
+        }
+
+        private void scanListView_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                bool block = !(scanListView.SelectedIndices.Count == 0);
+
+                startSelectedMenuItem.Enabled = block;
+                stopSelectedMenuItem.Enabled = block;
+                deleteMenuItem.Enabled = block;
+
+                if (scanListView.Items.Count == 0)
+                {
+                    startAllMenuItem.Enabled = false;
+                    stopAllMenuItem.Enabled = false;
+                }
+                else
+                {
+                    startAllMenuItem.Enabled = true;
+                    stopAllMenuItem.Enabled = true;
+                }
+            }
+            else
+                if (scanListView.SelectedIndices.Count == 0)
+                    panel1.Enabled = false;
+                else
+                    panel1.Enabled = true;
+           
+        }
+
+  
    }
 }

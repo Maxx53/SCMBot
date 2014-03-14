@@ -10,12 +10,13 @@ using System.Drawing;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Threading;
+using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace SCMBot
 {
     public delegate void eventDelegate(object sender, string message, int searchId, flag myflag);
-
-
+    
     [Flags]
     public enum flag : byte
     {
@@ -42,8 +43,9 @@ namespace SCMBot
         Lang_Changed = 20,
         InvPrice = 21,
         Resold = 22,
-        SetTabName = 23
+        SetHeadName = 23
     }
+
 
     public partial class Main
     {
@@ -63,7 +65,7 @@ namespace SCMBot
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
 
-
+            
         private void setNotifyText(string mess)
         {
             notifyIcon1.Text = string.Format(notifTxt, appName, settingsForm.loginBox.Text, mess);
@@ -101,6 +103,36 @@ namespace SCMBot
                 pTh.Start();
             }
         }
+
+        static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
+        {
+            if (imgurl == string.Empty)
+                return;
+
+            if (drawtext)
+            {
+                picbox.Image = Properties.Resources.working;
+            }
+
+            try
+            {
+                WebClient wClient = new WebClient();
+                byte[] imageByte = wClient.DownloadData(imgurl);
+                using (MemoryStream ms = new MemoryStream(imageByte, 0, imageByte.Length))
+                {
+                    ms.Write(imageByte, 0, imageByte.Length);
+                    var resimg = Image.FromStream(ms, true);
+                    picbox.BackColor = backColor(resimg, doWhite);
+                    picbox.Image = resimg;
+                }
+            }
+            catch (Exception)
+            {
+
+               // throw;
+            }
+        }
+
 
 
         public class SearchPagePos
@@ -363,27 +395,10 @@ namespace SCMBot
             return mess;
         }
 
-        static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
+        static bool isScanValid(saveTab item)
         {
-            if (imgurl == string.Empty)
-                return;
-
-            if (drawtext)
-            {
-              picbox.Image = Properties.Resources.working;
-            }
-
-            WebClient wClient = new WebClient();
-            byte[] imageByte = wClient.DownloadData(imgurl);
-            using (MemoryStream ms = new MemoryStream(imageByte, 0, imageByte.Length))
-            {
-                ms.Write(imageByte, 0, imageByte.Length);
-                var resimg = Image.FromStream(ms, true);
-                picbox.BackColor = backColor(resimg, doWhite);
-                picbox.Image = resimg;
-            }
+            return (item.Price != string.Empty && item.Link.Contains(SteamSite._market) && (item.ScanPage | item.ScanRecent));
         }
-
 
 
         public static string Encrypt(string plainText)
@@ -443,7 +458,7 @@ namespace SCMBot
     [Serializable]
     public class saveTab
     {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, bool scanPage, bool scanRecent)
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice, bool scanPage, bool scanRecent)
         {
             this.Name = name;
             this.Price = price;
@@ -453,6 +468,7 @@ namespace SCMBot
             this.BuyQnt = buyQnt;
             this.ToBuy = toBuy;
             this.ResellType = resellType;
+            this.ResellPrice = resellPrice;
             this.ScanPage = scanPage;
             this.ScanRecent = scanRecent;
         }
@@ -465,9 +481,74 @@ namespace SCMBot
         public int Delay { set; get; }
         public bool ToBuy { set; get; }
         public int ResellType { get; set; }
+        public string ResellPrice { get; set; }
         public bool ScanPage { get; set; }
         public bool ScanRecent { get; set; }
+        public bool HeadSet { get; set; }
+
     }
 
+
+
+    public class ScanItemList : List<ScanItem>
+    {
+        public int Position { set; get; }
+        public string CurrencyName { set; get; }
+    }
+
+
+    public class ScanItem
+    {
+        public SteamSite Steam = new SteamSite();
+        public BindingList<LogItem> LogCont = new BindingList<LogItem>();
+
+        public class LogItem
+        {
+            public LogItem(int id, string text)
+            {
+                this.Id = id;
+                this.Text = text;
+            }
+
+            public override string ToString()
+            {
+                return this.Text;
+            }
+
+            public int Id { get; set; }
+            public string Text { get; set; }
+        }
+
+        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg)
+        {
+            this.ScanParams = scanParams;
+            Steam.delegMessage += deleg;
+            Steam.cookieCont = cookie;
+        }
+
+        public void ReadParams()
+        {
+
+            Steam.ResellType = ScanParams.ResellType;
+            Steam.ResellPrice = ScanParams.ResellPrice;
+            Steam.scanDelay = ScanParams.Delay.ToString();
+            Steam.wishedPrice = ScanParams.Price;
+            Steam.pageLink = ScanParams.Link;
+            Steam.toBuy = ScanParams.ToBuy;
+            Steam.BuyQuant = ScanParams.BuyQnt;
+
+            Steam.NotSetHead = (ScanParams.Name == string.Empty);
+          
+            Steam.scanPage = ScanParams.ScanPage;
+            Steam.scanRecent = ScanParams.ScanRecent;
+            //Steam.currency = ScanParams.currency;
+            //Steam.currencies.Current = steam_srch.currencies.Current;
+
+        }
+
+        public saveTab ScanParams { set; get; }
+        public byte StatId { get; set; }
+  
+    }
 
 }
