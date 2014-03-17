@@ -219,8 +219,16 @@ namespace SCMBot
                 
                 }
 
-                scanListView.Items[lst.Position].Selected = true;
-                BindToControls();
+                if (scanListView.Items.Count != 0)
+                {
+                    if (scanListView.Items.Count > lst.Position)
+                    {
+                        scanListView.Items[lst.Position].Selected = true;
+                        BindToControls();
+                    }
+                    scanItems.UpdateIds();
+                }
+                else panel1.Enabled = false;
             }
         }
 
@@ -328,19 +336,22 @@ namespace SCMBot
                     break;
 
                 case flag.Price_htext:
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);
                     scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, true, scanItems.CurrencyName)));
 
                     //scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
                     break;
                 case flag.Price_btext:
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);
                     scanItems[searchId].LogCont.Add(new ScanItem.LogItem(2, GetPriceFormat(message, true, scanItems.CurrencyName)));
                    // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
                     break;
                 case flag.Price_text:
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);   
                     scanItems[searchId].LogCont.Add(new ScanItem.LogItem(0, GetPriceFormat(message, true, scanItems.CurrencyName)));
-                   // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
+                // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                    // ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
                     break;
 
@@ -367,14 +378,17 @@ namespace SCMBot
                     StatusLabel1.Text = Strings.BuyError;
                     //scanItem.LogCont.Add();
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, false, string.Empty)));
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Error_scan:
                     StatusLabel1.Text = Strings.ScanError;
-
                     string mess = GetScanErrMess(message);
                     AddtoLog(scanItems[searchId].Steam.scanName + ": " + mess);
-                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(mess, false, string.Empty), 1, settings.logCount);
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(mess, false, string.Empty)));
+
                     buyNowButton.Enabled = true;
                     break;
 
@@ -513,6 +527,14 @@ namespace SCMBot
 
         }
 
+        private void cutLog(System.ComponentModel.BindingList<ScanItem.LogItem> bindingList, int limit)
+        {
+            if (bindingList.Count > limit)
+            {
+                bindingList.Clear();
+            }
+        }
+
 
         private void addtoScan_Click(object sender, EventArgs e)
         {
@@ -571,6 +593,7 @@ namespace SCMBot
 
                     addScanItem(ourItem, 3000, 0, false, 0, true, false);
                 }
+                scanItems.UpdateIds();
 
             }
             else
@@ -1191,7 +1214,9 @@ namespace SCMBot
                         i--;
                     }
                 }
-                
+
+                scanItems.UpdateIds();
+
                 //TODO - Select last standing Item
                 BindToControls();
                 SetColumnWidths(scanListView, true);

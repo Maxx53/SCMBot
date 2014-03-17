@@ -494,7 +494,21 @@ namespace SCMBot
     {
         public int Position { set; get; }
         public string CurrencyName { set; get; }
+
+
+        public void UpdateIds()
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                this[i].Steam.scanID = i;
+            }
+
+        }
     }
+
+
+
+
 
 
     public class ScanItem
@@ -538,7 +552,7 @@ namespace SCMBot
             Steam.BuyQuant = ScanParams.BuyQnt;
 
             Steam.NotSetHead = (ScanParams.Name == string.Empty);
-          
+            Steam.scanName = ScanParams.Name;
             Steam.scanPage = ScanParams.ScanPage;
             Steam.scanRecent = ScanParams.ScanRecent;
             //Steam.currency = ScanParams.currency;

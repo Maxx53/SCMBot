@@ -524,7 +524,6 @@ namespace SCMBot
             lotList.Clear();
 
             byte ret = ParseLotList(SendGet(link, cookieCont), lotList, currencies, full);
-
             if (ret != 5)
             {
                 doMessage(flag.Error_scan, scanID, ret.ToString());

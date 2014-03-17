@@ -683,6 +683,7 @@ namespace SCMBot
 
             try
             {
+
                 var pageJS = JsonConvert.DeserializeObject<PageBody>(content);
 
                 if (pageJS.Listing.Count != 0 && pageJS.Success == true)
@@ -694,7 +695,9 @@ namespace SCMBot
 
 
                         if (ourItem.userId == myUserId)
-                           continue;
+                        {
+                            continue;
+                        }
 
                         if (ourItemInfo.warnings != null)
                         {
@@ -709,6 +712,7 @@ namespace SCMBot
                             if (NotSetHead && !full)
                             {
                                 doMessage(flag.SetHeadName, scanID, ourItemInfo.name);
+                                scanName = ourItemInfo.name;
                                 NotSetHead = false;
                             }
 
@@ -736,9 +740,11 @@ namespace SCMBot
                 return 3;
             }
 
-            //Fine!
-            return 5;
-            
+            if (lst.Count == 0)
+                return 0;
+            else
+                //Fine!
+                return 5;
         }
 
 
