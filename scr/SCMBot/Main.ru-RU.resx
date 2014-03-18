@@ -226,6 +226,9 @@
   <data name="scanGroupBox.Text" xml:space="preserve">
     <value>Предметы для сканирования</value>
   </data>
+  <data name="nextButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>129, 45</value>
+  </data>
   <data name="columnHeader6.Text" xml:space="preserve">
     <value>Тип</value>
   </data>
@@ -328,13 +331,6 @@
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Мой инвентарь (тест)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="nextButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="nextButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 45</value>
-  </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>106, 21</value>
   </data>
@@ -358,12 +354,6 @@
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Нет</value>
-  </data>
-  <data name="StatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 17</value>
-  </data>
-  <data name="StatusLabel1.Text" xml:space="preserve">
-    <value>Готов</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 13</value>
@@ -543,8 +533,20 @@
         AAAAAAAAAAAAAIABAACAAQAAwAMAAPAPAAA=
 </value>
   </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 13</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>Понравилось?</value>
+  </data>
   <data name="loginButton.Text" xml:space="preserve">
     <value>Логин</value>
+  </data>
+  <data name="StatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 17</value>
+  </data>
+  <data name="StatusLabel1.Text" xml:space="preserve">
+    <value>Готов</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

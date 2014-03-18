@@ -57,6 +57,7 @@ namespace SCMBot
 
         const string homePage = "https://github.com/Maxx53/SteamCMBot";
         const string helpPage = homePage + "/wiki";
+        const string donateLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=demmaxx@gmail.com&lc=RU&item_name=SteamCMBot%20Donate&currency_code=RUB&bn=PP-DonationsBF";
 
         const string cockPath = "coockies.dat";
         
@@ -489,13 +490,8 @@ namespace SCMBot
     }
 
 
-
     public class ScanItemList : List<ScanItem>
     {
-        public int Position { set; get; }
-        public string CurrencyName { set; get; }
-
-
         public void UpdateIds()
         {
             for (int i = 0; i < this.Count; i++)
@@ -505,10 +501,6 @@ namespace SCMBot
 
         }
     }
-
-
-
-
 
 
     public class ScanItem
@@ -533,11 +525,12 @@ namespace SCMBot
             public string Text { get; set; }
         }
 
-        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg)
+        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency)
         {
             this.ScanParams = scanParams;
             Steam.delegMessage += deleg;
             Steam.cookieCont = cookie;
+            Steam.currencies.Current = currency;
         }
 
         public void ReadParams()
@@ -555,9 +548,6 @@ namespace SCMBot
             Steam.scanName = ScanParams.Name;
             Steam.scanPage = ScanParams.ScanPage;
             Steam.scanRecent = ScanParams.ScanRecent;
-            //Steam.currency = ScanParams.currency;
-            //Steam.currencies.Current = steam_srch.currencies.Current;
-
         }
 
         public saveTab ScanParams { set; get; }

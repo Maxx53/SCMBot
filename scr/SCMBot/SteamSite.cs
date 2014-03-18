@@ -10,7 +10,7 @@ namespace SCMBot
 {
     public class SteamSiteLst : List<SteamSite>
     {
-        public string CurrencyName { set; get; }
+        //public string CurrencyName { set; get; }
     }
 
     partial class SteamSite
@@ -22,8 +22,6 @@ namespace SCMBot
         public string scanDelay { set; get; }
         public string pageLink { set; get; }
         public int scanID { set; get; }
-
-        public string currency { set; get; }
 
         public string linkTxt { set; get; }
    
@@ -486,7 +484,7 @@ namespace SCMBot
             {
                 if (toBuy)
                 {
-                    var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, pageLink, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr, currency);
+                    var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, pageLink, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr);
 
                     if (buyresp.Succsess)
                     {
@@ -562,7 +560,7 @@ namespace SCMBot
                 else
                 {
                     string totalStr = Convert.ToString(lotList[0].Price + lotList[0].Fee);
-                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, pageLink, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr, currency);
+                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, pageLink, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr);
 
                     BuyNow = false;
                     if (buyresp.Succsess)

@@ -163,7 +163,7 @@ namespace SCMBot
             settings.searchRes = settingsForm.searchResBox.Text;
 
             settings.InvType = comboBox3.SelectedIndex;
-
+            settings.LastCurr = steam_srch.currencies.Current;
 
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
 
@@ -199,7 +199,7 @@ namespace SCMBot
                       var lstItem = new ListViewItem(row);
 
                       scanListView.Items.Add(lstItem);
-                      var scanItem = new ScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message));
+                      var scanItem = new ScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr);
 
                       if (isScanValid(ourItem))
                       {
@@ -227,6 +227,7 @@ namespace SCMBot
                         BindToControls();
                     }
                     scanItems.UpdateIds();
+                    SetColumnWidths(scanListView, true);
                 }
                 else panel1.Enabled = false;
             }
@@ -261,17 +262,26 @@ namespace SCMBot
                 StartLoadImgTread(accinfo[2], pictureBox2);
                 label5.Text = accinfo[1];
                 label10.Text = accinfo[0];
-                steam_srch.currency = accinfo[3];
                 ProgressBar1.Visible = false;
                 SetButton(loginButton, Strings.Logout, 2);
                 buyNowButton.Enabled = true;
                 addtoScan.Enabled = true;
-                scanItems.CurrencyName = steam_srch.currencies.GetCurrentName();
+
                 setNotifyText(Strings.NotLogged);
+
+                UpdateScanCurrs();
             }
             else
                 MessageBox.Show(Strings.ErrAccInfo, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+        }
+
+        private void UpdateScanCurrs()
+        {
+            for (int i = 0; i < scanItems.Count; i++)
+            {
+                scanItems[i].Steam.currencies.Current = steam_srch.currencies.Current;
+            } 
         }
 
         public string GetPriceFormat(string mess, bool addcurr, string currName)
@@ -337,23 +347,28 @@ namespace SCMBot
 
                 case flag.Price_htext:
                     cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, true, scanItems.CurrencyName)));
-
-                    //scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
+                   
+                    ScrollLbox(searchId);
+                
+                //scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
                     break;
                 case flag.Price_btext:
                     cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(2, GetPriceFormat(message, true, scanItems.CurrencyName)));
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(2, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
                    // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
+
+                    ScrollLbox(searchId);
                     break;
                 case flag.Price_text:
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);   
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(0, GetPriceFormat(message, true, scanItems.CurrencyName)));
+                    cutLog(scanItems[searchId].LogCont, settings.logCount);
+                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(0, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
                 // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
                    // ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
-                    break;
+                    ScrollLbox(searchId);
+                   break;
 
                 case flag.Rep_progress:
                     ProgressBar1.Value = Convert.ToInt32(message);
@@ -380,6 +395,7 @@ namespace SCMBot
                     //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
                     cutLog(scanItems[searchId].LogCont, settings.logCount);
                     scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, false, string.Empty)));
+                    ScrollLbox(searchId);
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Error_scan:
@@ -388,7 +404,7 @@ namespace SCMBot
                     AddtoLog(scanItems[searchId].Steam.scanName + ": " + mess);
                     cutLog(scanItems[searchId].LogCont, settings.logCount);
                     scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(mess, false, string.Empty)));
-
+                    ScrollLbox(searchId);
                     buyNowButton.Enabled = true;
                     break;
 
@@ -455,20 +471,14 @@ namespace SCMBot
                         nextButton.Enabled = false;
                     }
 
-
-                    string curr = steam_srch.currencies.GetCurrentName();
-                    if (steam_srch.currencies.NotSet)
-                    {
-                        scanItems.CurrencyName = curr;
-                    }
-
+                   
                     FoundList.Items.Clear();
 
                     for (int i = 0; i < steam_srch.searchList.Count; i++)
                     {
                         var ourItem = steam_srch.searchList[i];
 
-                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + curr, ourItem.Quant };
+                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + steam_srch.currencies.GetName(), ourItem.Quant };
                         var lstItem = new ListViewItem(row);
                         FoundList.Items.Add(lstItem);
                     }
@@ -525,6 +535,18 @@ namespace SCMBot
                     break;
             }
 
+        }
+
+        public void ScrollLbox(int input)
+        {
+            if (scanListView.SelectedIndices.Count != 0)
+            {
+                if (scanListView.SelectedIndices[0] == input)
+                {
+                    logListBox.SelectedIndex = logListBox.Items.Count - 1;
+                    logListBox.SelectedIndex = -1;
+                }
+            }
         }
 
         private void cutLog(System.ComponentModel.BindingList<ScanItem.LogItem> bindingList, int limit)
@@ -606,7 +628,7 @@ namespace SCMBot
             var lstItem = new ListViewItem(row);
             scanListView.Items.Add(lstItem);
             var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delay, buyQuant, tobuy, resellType, ourItem.StartPrice, scanPage, scanRecent);
-            scanItems.Add(new ScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message)));
+            scanItems.Add(new ScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current));
             setStatImg(scanListView.Items.Count - 1, Convert.ToByte(!isScanValid(ourTab)));
             SetColumnWidths(scanListView, true);
         }
@@ -891,10 +913,27 @@ namespace SCMBot
                 int x1 = 5;
                 int x2 = s.Width - 5;
                 int y1 = s.SplitterDistance;
+                int y2 = y1 + 3;
                 e.Graphics.DrawLine(Pens.Silver, x1, y1, x2, y1);
-                e.Graphics.DrawLine(Pens.Silver, x1, y1 + 3, x2, y1 + 3);
+                e.Graphics.DrawLine(Pens.Silver, x1, y2, x2, y2);
             }
         }
+
+
+        private void splitContainer3_Paint(object sender, PaintEventArgs e)
+        {
+            SplitContainer s = sender as SplitContainer;
+            if (s != null)
+            {
+                int x1 = 5;
+                int x2 = s.Height - 5;
+                int y1 = s.SplitterDistance;
+                int y2 = y1 + 3;
+                e.Graphics.DrawLine(Pens.Silver, y1, x1, y1, x2);
+                e.Graphics.DrawLine(Pens.Silver, y2, x1, y2, x2);
+            }
+        }
+
 
         private void FoundList_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
@@ -1080,23 +1119,14 @@ namespace SCMBot
                     if (ourItem.StatId == 0)
                     {
 
-                        // steam.ResellPrice = scanItem.resellPriceVal;
-
-                        // steam.NotSetHead = scanItem.NotSetHead;
                         ourItem.ReadParams();
-
-                        steamItem.scanID = id;
-
-                        //wat>!
-                        steamItem.currency = steam_srch.currency;
-                        steamItem.currencies.Current = steam_srch.currencies.Current;
-
                         steamItem.ScanPrices();
 
                         ourItem.StatId = 2;
                         setStatImg(id, 2);
                     }
                 }
+
                 StatusLabel1.Text = Strings.ScanPrice;
 
                 if (all)
@@ -1158,35 +1188,47 @@ namespace SCMBot
 
         private void logListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (scanListView.SelectedIndices.Count == 0)
-                return;
-
-            var logItem = scanItems[scanListView.SelectedIndices[0]].LogCont;
-
-            if (logItem.Count == 0)
-                return;
-
-             e.DrawBackground();
-
-            Brush myBrush = Brushes.Black;
+            try
+            {
+                if ((scanListView.SelectedIndices.Count == 0) | (e.Index < 0))
+                    return;
 
 
+                var logItem = scanItems[scanListView.SelectedIndices[0]].LogCont;
 
-                switch (logItem[e.Index].Id)
+                if (logItem.Count == 0)
+                    return;
+
+
+                e.DrawBackground();
+                Brush myBrush = Brushes.Black;
+
+                if (e.Index < logItem.Count)
                 {
-                    case 0:
-                        myBrush = Brushes.Black;
-                        break;
-                    case 1:
-                        myBrush = Brushes.Red;
-                        break;
-                    case 2:
-                        myBrush = Brushes.Green;
-                        break;
+
+                    switch (logItem[e.Index].Id)
+                    {
+                        case 0:
+                            myBrush = Brushes.Black;
+                            break;
+                        case 1:
+                            myBrush = Brushes.Red;
+                            break;
+                        case 2:
+                            myBrush = Brushes.Green;
+                            break;
+                    }
+
+                    e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
+                    e.DrawFocusRectangle();
                 }
 
-                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
-                e.DrawFocusRectangle();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         private void logListBox_ItemsChanged(object sender, EventArgs e)
@@ -1315,6 +1357,12 @@ namespace SCMBot
                 logListBox.DataSource = logItem;
                 logListBox.DisplayMember = "Text";
 
+                if (logListBox.Items.Count != 0)
+                {
+                    logListBox.SelectedIndex = logListBox.Items.Count - 1;
+                    logListBox.SelectedIndex = -1;
+                }
+
                 if (ourItem.ImgLink != string.Empty)
                     StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox4);
                 else
@@ -1367,6 +1415,16 @@ namespace SCMBot
                 else
                     panel1.Enabled = true;
            
+        }
+
+        private void splitContainer3_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            SetColumnWidths(scanListView, true);
+        }
+
+        private void DonateBox_Click(object sender, EventArgs e)
+        {
+            StartCmdLine(donateLink, string.Empty, false);
         }
 
   

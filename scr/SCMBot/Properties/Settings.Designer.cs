@@ -185,5 +185,20 @@ namespace SCMBot.Properties {
                 this["minOnClose"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastCurr
+        {
+            get
+            {
+                return ((int)(this["lastCurr"]));
+            }
+            set
+            {
+                this["lastCurr"] = value;
+            }
+        }
     }
 }

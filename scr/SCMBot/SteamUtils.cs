@@ -165,15 +165,43 @@ namespace SCMBot
                 this.Add(new CurrencyInfo("R&#36;", "R$", "4"));
                
                 this.Current = 0;
-                this.NotSet = true;
             }
 
             public int Current { set; get; }
             public bool NotSet { set; get; }
             
-            public string GetCurrentName()
+            public string GetName()
             {
-                return this[this.Current].TrueName;
+                return this[Current].TrueName;
+            }
+
+            public string GetCode()
+            {
+                return this[Current].Index;
+            }
+
+            public string GetAscii()
+            {
+                return this[Current].AsciiName;
+            }
+
+            public void GetType(string input)
+            {
+                for (int i = 0; i < this.Count; i++)
+                {
+                    if (input.Contains(this[i].AsciiName))
+                    {
+                        Current = i;
+                        NotSet = false;
+                        break;
+                    }
+                }
+            }
+
+
+            public string ReplaceAscii(string parseAmount)
+            {
+                return parseAmount.Replace(GetAscii(), GetName());
             }
         }
 
@@ -532,22 +560,6 @@ namespace SCMBot
 
         //steam utils
 
-        private static string GetCurrencyType(string input, CurrInfoLst currLst)
-        {
-            string res = "0";
-            for (int i = 0; i < currLst.Count; i++)
-            {
-                if (input.Contains(currLst[i].AsciiName))
-                {
-                    currLst.Current = i;
-                    currLst.NotSet = false;
-                    res = currLst[i].Index;
-                    break;
-                }
-            }
-            return res;
-        }
-
         public static string DoFracture(string input)
         {
             string prtoTxt = "0,";
@@ -596,10 +608,11 @@ namespace SCMBot
 
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
-            string curInd = GetCurrencyType(parseAmount, currLst);
-            parseAmount = parseAmount.Replace(currLst[currLst.Current].AsciiName, currLst[currLst.Current].TrueName);
+            currLst.GetType(parseAmount);
 
-            return string.Format("{0}|{1}|{2}|{3}", parseName, parseAmount, parseImg, curInd);
+            parseAmount = currLst.ReplaceAscii(parseAmount);
+
+            return string.Format("{0}|{1}|{2}", parseName, parseAmount, parseImg);
         }
 
 
@@ -625,10 +638,10 @@ namespace SCMBot
 
 
 
-        private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total, string currStr)
+        private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total)
         {
 
-            string data = string.Format(buyReq, sessid, subtotal, fee, total, currStr);
+            string data = string.Format(buyReq, sessid, subtotal, fee, total, currencies.GetCode());
 
             //buy
             //29.08.2013 Steam Update Issue!
@@ -780,14 +793,14 @@ namespace SCMBot
                             //Удаляем ascii кода нашей текущей валюты
                             if (currLst.NotSet)
                             {
+                                currLst.GetType(ItemPrice);
                                 //If not loggen in then
-                                GetCurrencyType(ItemPrice, currLst);
-                                ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+                                ItemPrice = Regex.Replace(ItemPrice, currLst.GetAscii(), string.Empty);
                                 currLst.NotSet = true;
                             }
                             else
                             {
-                                ItemPrice = Regex.Replace(ItemPrice, currLst[currLst.Current].AsciiName, string.Empty);
+                                ItemPrice = Regex.Replace(ItemPrice, currLst.GetAscii(), string.Empty);
 
                             }
 
@@ -878,7 +891,7 @@ namespace SCMBot
 
                     string captainPrice = Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim();
 
-                    captainPrice = Regex.Replace(captainPrice, currLst[currLst.Current].AsciiName, string.Empty);
+                    captainPrice = Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty);
 
 
                     string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
