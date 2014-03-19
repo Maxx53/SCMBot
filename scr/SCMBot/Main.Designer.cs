@@ -531,9 +531,9 @@
             // 
             // fullSetToolStripMenuItem
             // 
-            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
+            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
             // 
             // emptyTabToolStripMenuItem

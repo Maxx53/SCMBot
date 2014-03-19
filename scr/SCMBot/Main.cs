@@ -118,7 +118,7 @@ namespace SCMBot
             settingsForm.logCountBox.Text = settings.logCount.ToString();
             settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.numThreadsBox.Value = settings.numThreads;
-            
+            settingsForm.ignoreBox.Checked = settings.ignoreWarn;
 
 
             comboBox3.SelectedIndex = settings.InvType;
@@ -161,6 +161,7 @@ namespace SCMBot
             settings.numThreads = (int)settingsForm.numThreadsBox.Value;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
             settings.searchRes = settingsForm.searchResBox.Text;
+            settings.ignoreWarn = settingsForm.ignoreBox.Checked;
 
             settings.InvType = comboBox3.SelectedIndex;
             settings.LastCurr = steam_srch.currencies.Current;
@@ -199,7 +200,7 @@ namespace SCMBot
                       var lstItem = new ListViewItem(row);
 
                       scanListView.Items.Add(lstItem);
-                      var scanItem = new ScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr);
+                      var scanItem = new ScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr, settings.ignoreWarn);
 
                       if (isScanValid(ourItem))
                       {
@@ -291,7 +292,15 @@ namespace SCMBot
                 curr = currName;
             return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, curr);
         }
-        
+
+
+        private void AddToScanLog(string message, int scanId, byte color, bool addcurr)
+        {
+            cutLog(scanItems[scanId].LogCont, settings.logCount);
+            scanItems[scanId].LogCont.Add(new ScanItem.LogItem(color, GetPriceFormat(message, addcurr, steam_srch.currencies.GetName())));
+            ScrollLbox(scanId);
+        }
+
 
         public void Event_Message(object sender, string message, int searchId, flag myflag)
         {
@@ -332,8 +341,8 @@ namespace SCMBot
 
                     var scanItem = scanItems[searchId];
                     scanItem.Steam.CancelScan();
-                    //scanItem.ButtonText = Strings.Start ;
                     break;
+
                 case flag.StripImg:
                     if (searchId == 0)
                         toolStripImage.Image = Properties.Resources.working;
@@ -346,28 +355,15 @@ namespace SCMBot
                     break;
 
                 case flag.Price_htext:
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
-                   
-                    ScrollLbox(searchId);
-                
-                //scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
-                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 1, settings.logCount);
+                    AddToScanLog(message, searchId, 1, true);
                     break;
-                case flag.Price_btext:
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(2, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
-                   // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
-                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 2, settings.logCount);
 
-                    ScrollLbox(searchId);
+                case flag.Price_btext:
+                    AddToScanLog(message, searchId, 2, true);
                     break;
+
                 case flag.Price_text:
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(0, GetPriceFormat(message, true, steam_srch.currencies.GetName())));
-                // scanItems[searchId].LogCont.Add(GetPriceFormat(message, true, scanItems.CurrencyName));
-                   // ScanItLst[searchId].lboxAdd(GetPriceFormat(message, true, SteamLst.CurrencyName), 0, settings.logCount);
-                    ScrollLbox(searchId);
+                    AddToScanLog(message, searchId, 0, true);
                    break;
 
                 case flag.Rep_progress:
@@ -375,7 +371,6 @@ namespace SCMBot
                     break;
                 case flag.SetHeadName:
                     scanListView.Items[searchId].SubItems[1].Text = message;
-                    //tabControl1.TabPages[searchId].Text = message;
                     SetColumnWidths(scanListView, true);
                     break;
                     
@@ -391,26 +386,19 @@ namespace SCMBot
 
                 case flag.Error_buy:
                     StatusLabel1.Text = Strings.BuyError;
-                    //scanItem.LogCont.Add();
-                    //ScanItLst[searchId].lboxAdd(GetPriceFormat(message, false, string.Empty), 1, settings.logCount);
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(message, false, string.Empty)));
-                    ScrollLbox(searchId);
+                    AddToScanLog(message, searchId, 1, false);
+
                     buyNowButton.Enabled = true;
                     break;
                 case flag.Error_scan:
                     StatusLabel1.Text = Strings.ScanError;
                     string mess = GetScanErrMess(message);
                     AddtoLog(scanItems[searchId].Steam.scanName + ": " + mess);
-                    cutLog(scanItems[searchId].LogCont, settings.logCount);
-                    scanItems[searchId].LogCont.Add(new ScanItem.LogItem(1, GetPriceFormat(mess, false, string.Empty)));
-                    ScrollLbox(searchId);
+                    AddToScanLog(mess, searchId, 1, false);
                     buyNowButton.Enabled = true;
                     break;
 
                 case flag.Scan_cancel:
-                    //ScanItLst[searchId].ButtonEnabled = true;
-                   // ScanItLst[searchId].ButtonText = Strings.Start;
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Resold:
@@ -421,7 +409,6 @@ namespace SCMBot
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
                     textBox1.Text = sweet;
                     textBox1.ReadOnly = false;
-                    //StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Items_Sold:
                     if (searchId != 1)
@@ -488,8 +475,9 @@ namespace SCMBot
                         for (int i = 0; i < steam_srch.searchList.Count; i++)
                         {
                             var currItem = steam_srch.searchList[i];
-    //                        //addTabItem(currItem.Link, currItem.StartPrice, currItem.Name, currItem.ImgLink, 3000, 1, false, 0, true, false);
+                            addScanItem(currItem, 3000, 0, false, 0, true, false);
                         }
+                        scanItems.UpdateIds();
                         addonComplete = false;
                     }
                     else
@@ -578,10 +566,13 @@ namespace SCMBot
 
             if (searchRight())
             {
-                searchBox.Text = string.Format("\"{0}\"", steam_srch.searchList[FoundList.SelectedItems[0].Index].Game);
-                searchButton.PerformClick();
+                if (FoundList.SelectedIndices.Count != 0)
+                {
+                    searchBox.Text = string.Format("\"{0}\"", steam_srch.searchList[FoundList.SelectedItems[0].Index].Game);
+                    searchButton.PerformClick();
 
-                addonComplete = true;
+                    addonComplete = true;
+                }
             }
             else
                 searchFirstMess();
@@ -591,12 +582,15 @@ namespace SCMBot
         {
             if (searchRight())
             {
-                var ourItem = steam_srch.searchList[FoundList.SelectedItems[0].Index];
-                steam_srch.BuyNow = true;
-                steam_srch.pageLink = ourItem.Link;
-                steam_srch.ScanPrices();
-                buyNowButton.Enabled = false;
-                StatusLabel1.Text = string.Format(Strings.buyingProc, ourItem.Name);
+                if (FoundList.SelectedIndices.Count != 0)
+                {
+                    var ourItem = steam_srch.searchList[FoundList.SelectedItems[0].Index];
+                    steam_srch.BuyNow = true;
+                    steam_srch.pageLink = ourItem.Link;
+                    steam_srch.ScanPrices();
+                    buyNowButton.Enabled = false;
+                    StatusLabel1.Text = string.Format(Strings.buyingProc, ourItem.Name);
+                }
             }
             else 
                 searchFirstMess(); 
@@ -628,7 +622,7 @@ namespace SCMBot
             var lstItem = new ListViewItem(row);
             scanListView.Items.Add(lstItem);
             var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delay, buyQuant, tobuy, resellType, ourItem.StartPrice, scanPage, scanRecent);
-            scanItems.Add(new ScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current));
+            scanItems.Add(new ScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn));
             setStatImg(scanListView.Items.Count - 1, Convert.ToByte(!isScanValid(ourTab)));
             SetColumnWidths(scanListView, true);
         }
@@ -637,7 +631,7 @@ namespace SCMBot
         private void emptyTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addScanItem(new SteamSite.SearchItem(string.Empty, string.Empty, string.Empty, "1", "0", string.Empty), 3000, 0, false, 0, true, false);
-        
+            scanItems.UpdateIds();
         }
 
 

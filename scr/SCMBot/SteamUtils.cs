@@ -712,7 +712,7 @@ namespace SCMBot
                             continue;
                         }
 
-                        if (ourItemInfo.warnings != null)
+                        if ((IgnoreWarn) && (ourItemInfo.warnings != null))
                         {
                             //Renamed Item or Descriprtion
                             Main.AddtoLog(string.Format("{0}: {1}", ourItemInfo.name, ourItemInfo.warnings.ToString()));

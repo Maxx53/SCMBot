@@ -525,12 +525,13 @@ namespace SCMBot
             public string Text { get; set; }
         }
 
-        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency)
+        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn)
         {
             this.ScanParams = scanParams;
             Steam.delegMessage += deleg;
             Steam.cookieCont = cookie;
             Steam.currencies.Current = currency;
+            Steam.IgnoreWarn = ignoreWarn;
         }
 
         public void ReadParams()

@@ -148,8 +148,17 @@
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Торговая площадка</value>
   </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>193, 45</value>
+  </data>
+  <data name="ignoreBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 17</value>
+  </data>
+  <data name="ignoreBox.Text" xml:space="preserve">
+    <value>Игнор. предметы с предупрежд.</value>
+  </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 22</value>
+    <value>6, 21</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -157,14 +166,17 @@
   <data name="label7.Text" xml:space="preserve">
     <value>Язык:</value>
   </data>
+  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>49, 18</value>
+  </data>
+  <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 21</value>
+  </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 359</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Сохранить</value>
-  </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 124</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Интерфейс</value>

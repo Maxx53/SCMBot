@@ -33,6 +33,8 @@ namespace SCMBot
         public bool LoadOnSale { get; set; }
         public bool isRemove { get; set; }
 
+        public bool IgnoreWarn { get; set; }
+
         public int BuyQuant { get; set; }
 
         public int ResellType { get; set; }
@@ -522,6 +524,7 @@ namespace SCMBot
             lotList.Clear();
 
             byte ret = ParseLotList(SendGet(link, cookieCont), lotList, currencies, full);
+           
             if (ret != 5)
             {
                 doMessage(flag.Error_scan, scanID, ret.ToString());
@@ -599,7 +602,6 @@ namespace SCMBot
 
                 if (scanRecent)
                 {
-
                     if (fillLotList(recentMarket, true))
                     {
 
