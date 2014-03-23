@@ -786,6 +786,23 @@ section {
   margin: 20px 0;
   margin-top: 70px;
 }
+
+section #lang {
+  border: 0;
+  outline: none;
+  margin: 0 0 10px 0;
+  padding: 0 0 5px 0;
+}
+
+section #lang .caption {
+  font-size: 11px;
+  font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: #696969;
+  margin-top: -10px;
+  float: right;
+}
+
 section #title {
   border: 0;
   outline: none;
@@ -801,7 +818,7 @@ section #title h1 {
 }
 section #title p {
   color: #d7cfbe;
-  font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 18px;
   text-align: center;
