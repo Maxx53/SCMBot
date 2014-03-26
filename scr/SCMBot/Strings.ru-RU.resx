@@ -261,4 +261,7 @@ Copyright © 2013-2014 Maxx53
   <data name="None" xml:space="preserve">
     <value>Нет</value>
   </data>
+  <data name="Relogin" xml:space="preserve">
+    <value>Перелогинимся...</value>
+  </data>
 </root>

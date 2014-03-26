@@ -138,6 +138,57 @@
     <value>Horizontal</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="NameLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="NameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="NameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>33, 12</value>
+  </data>
+  <data name="NameLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 13</value>
+  </data>
+  <data name="NameLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="NameLabel.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="&gt;&gt;NameLabel.Name" xml:space="preserve">
+    <value>NameLabel</value>
+  </data>
+  <data name="&gt;&gt;NameLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;NameLabel.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;NameLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 9</value>
+  </data>
+  <data name="nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 20</value>
+  </data>
+  <data name="nameTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="&gt;&gt;nameTextBox.Name" xml:space="preserve">
+    <value>nameTextBox</value>
+  </data>
+  <data name="&gt;&gt;nameTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nameTextBox.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;nameTextBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -145,7 +196,7 @@
     <value>NoControl</value>
   </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 6</value>
+    <value>9, 36</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 13</value>
@@ -166,10 +217,10 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="linkTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 3</value>
+    <value>84, 33</value>
   </data>
   <data name="linkTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 20</value>
@@ -187,7 +238,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;linkTextBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="scanButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -217,10 +268,10 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;scanButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="delayTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 51</value>
+    <value>84, 81</value>
   </data>
   <data name="delayTextBox.Mask" xml:space="preserve">
     <value>0000000</value>
@@ -247,91 +298,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;delayTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="pageCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pageCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pageCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 21</value>
-  </data>
-  <data name="pageCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 17</value>
-  </data>
-  <data name="pageCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
-  </data>
-  <data name="pageCheckBox.Text" xml:space="preserve">
-    <value>Item Page</value>
-  </data>
-  <data name="&gt;&gt;pageCheckBox.Name" xml:space="preserve">
-    <value>pageCheckBox</value>
-  </data>
-  <data name="&gt;&gt;pageCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pageCheckBox.Parent" xml:space="preserve">
-    <value>scanSourceGroup</value>
-  </data>
-  <data name="&gt;&gt;pageCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="recentCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="recentCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="recentCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 48</value>
-  </data>
-  <data name="recentCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 17</value>
-  </data>
-  <data name="recentCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
-  </data>
-  <data name="recentCheckBox.Text" xml:space="preserve">
-    <value>Recent</value>
-  </data>
-  <data name="&gt;&gt;recentCheckBox.Name" xml:space="preserve">
-    <value>recentCheckBox</value>
-  </data>
-  <data name="&gt;&gt;recentCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;recentCheckBox.Parent" xml:space="preserve">
-    <value>scanSourceGroup</value>
-  </data>
-  <data name="&gt;&gt;recentCheckBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scanSourceGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 106</value>
-  </data>
-  <data name="scanSourceGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 74</value>
-  </data>
-  <data name="scanSourceGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>62</value>
-  </data>
-  <data name="scanSourceGroup.Text" xml:space="preserve">
-    <value>Scan source</value>
-  </data>
-  <data name="&gt;&gt;scanSourceGroup.Name" xml:space="preserve">
-    <value>scanSourceGroup</value>
-  </data>
-  <data name="&gt;&gt;scanSourceGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scanSourceGroup.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;scanSourceGroup.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +307,7 @@
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 30</value>
+    <value>2, 60</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
@@ -361,7 +328,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="buyCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -370,7 +337,7 @@
     <value>NoControl</value>
   </data>
   <data name="buyCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 77</value>
+    <value>11, 107</value>
   </data>
   <data name="buyCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 17</value>
@@ -391,13 +358,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;buyCheckBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="pictureBox4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="pictureBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 27</value>
+    <value>145, 57</value>
   </data>
   <data name="pictureBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 64</value>
@@ -418,10 +385,10 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;pictureBox4.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="resellPriceBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>42, 46</value>
+    <value>137, 19</value>
   </data>
   <data name="resellPriceBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 20</value>
@@ -448,7 +415,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
+    <value>102, 22</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -502,10 +469,10 @@
     <value>2</value>
   </data>
   <data name="ExtraGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 106</value>
+    <value>10, 130</value>
   </data>
   <data name="ExtraGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 74</value>
+    <value>198, 46</value>
   </data>
   <data name="ExtraGroup.TabIndex" type="System.Int32, mscorlib">
     <value>61</value>
@@ -523,10 +490,10 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;ExtraGroup.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="wishpriceBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 27</value>
+    <value>84, 57</value>
   </data>
   <data name="wishpriceBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 20</value>
@@ -544,7 +511,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;wishpriceBox.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -553,7 +520,7 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>33, 54</value>
+    <value>33, 84</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 13</value>
@@ -574,10 +541,10 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="buyUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 75</value>
+    <value>84, 105</value>
   </data>
   <data name="buyUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 20</value>
@@ -595,7 +562,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;buyUpDown.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 15</value>
@@ -626,6 +593,9 @@
   </data>
   <data name="splitContainer3.Location" type="System.Drawing.Point, System.Drawing">
     <value>218, 14</value>
+  </data>
+  <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="scanListView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -694,7 +664,7 @@
     <value>0, 0</value>
   </data>
   <data name="scanListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>389, 210</value>
+    <value>383, 183</value>
   </data>
   <data name="scanListView.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
@@ -706,9 +676,126 @@
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;scanListView.Parent" xml:space="preserve">
-    <value>splitContainer3.Panel1</value>
+    <value>tabPage1</value>
   </data>
   <data name="&gt;&gt;scanListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>384, 183</value>
+  </data>
+  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Item Page</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="recentListView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="columnHeader13.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="columnHeader13.Width" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="columnHeader14.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="columnHeader14.Width" type="System.Int32, mscorlib">
+    <value>116</value>
+  </data>
+  <data name="columnHeader15.Text" xml:space="preserve">
+    <value>Wished Price</value>
+  </data>
+  <data name="columnHeader15.Width" type="System.Int32, mscorlib">
+    <value>123</value>
+  </data>
+  <data name="recentListView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="recentListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>383, 183</value>
+  </data>
+  <data name="recentListView.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;recentListView.Name" xml:space="preserve">
+    <value>recentListView</value>
+  </data>
+  <data name="&gt;&gt;recentListView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;recentListView.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;recentListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>384, 183</value>
+  </data>
+  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Newly Listed</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 1</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 209</value>
+  </data>
+  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>splitContainer3.Panel1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel1.Name" xml:space="preserve">
@@ -982,25 +1069,31 @@
     <value>127, 17</value>
   </metadata>
   <data name="selectedItemToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="selectedItemToolStripMenuItem.Text" xml:space="preserve">
-    <value>Checked Items</value>
+    <value>Checked to Selected Tab</value>
+  </data>
+  <data name="checkedToBothSourcesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 22</value>
+  </data>
+  <data name="checkedToBothSourcesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Checked to Both Tabs</value>
   </data>
   <data name="fullSetToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="fullSetToolStripMenuItem.Text" xml:space="preserve">
     <value>Full Set</value>
   </data>
   <data name="emptyTabToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="emptyTabToolStripMenuItem.Text" xml:space="preserve">
     <value>EmptyTab</value>
   </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 70</value>
+    <value>205, 92</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
     <value>contextMenuStrip1</value>
@@ -2071,6 +2164,9 @@
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="DonateBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="DonateBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -2384,6 +2480,24 @@
   <data name="&gt;&gt;stopAllMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;columnHeader13.Name" xml:space="preserve">
+    <value>columnHeader13</value>
+  </data>
+  <data name="&gt;&gt;columnHeader13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader14.Name" xml:space="preserve">
+    <value>columnHeader14</value>
+  </data>
+  <data name="&gt;&gt;columnHeader14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader15.Name" xml:space="preserve">
+    <value>columnHeader15</value>
+  </data>
+  <data name="&gt;&gt;columnHeader15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;columnHeader5.Name" xml:space="preserve">
     <value>columnHeader5</value>
   </data>
@@ -2418,6 +2532,12 @@
     <value>selectedItemToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;selectedItemToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkedToBothSourcesToolStripMenuItem.Name" xml:space="preserve">
+    <value>checkedToBothSourcesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;checkedToBothSourcesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;fullSetToolStripMenuItem.Name" xml:space="preserve">

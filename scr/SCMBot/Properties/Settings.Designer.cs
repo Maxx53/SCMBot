@@ -86,7 +86,24 @@ namespace SCMBot.Properties {
                 this["saveTabs"] = value;
             }
         }
-        
+
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //Fucking important!
+        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
+        public global::SCMBot.saveTabLst saveRecent
+        {
+            get
+            {
+                return ((global::SCMBot.saveTabLst)(this["saveRecent"]));
+            }
+            set
+            {
+                this["saveRecent"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]

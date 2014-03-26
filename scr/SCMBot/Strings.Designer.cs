@@ -355,6 +355,15 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Try to relogin....
+        /// </summary>
+        internal static string Relogin {
+            get {
+                return ResourceManager.GetString("Relogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Remove Sell.
         /// </summary>
         internal static string RemSell {

@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 
 namespace SCMBot
 {
-    public delegate void eventDelegate(object sender, string message, int searchId, flag myflag);
+    public delegate void eventDelegate(object sender, string message, int searchId, flag myflag, bool isMain);
     
     [Flags]
     public enum flag : byte
@@ -43,7 +43,8 @@ namespace SCMBot
         Lang_Changed = 20,
         InvPrice = 21,
         Resold = 22,
-        SetHeadName = 23
+        SetHeadName = 23,
+        ReLogin = 24
     }
 
 
@@ -367,11 +368,19 @@ namespace SCMBot
 
                 }
 
-                catch (Exception e)
+                catch (WebException e)
                 {
-                    content = e.Message;
-                    AddtoLog(e.Message);
+                    if (e.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        WebResponse resp = e.Response;
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            content = sr.ReadToEnd();
+                        }
+                    }
+
                 }
+
                 return content;
 
         }
@@ -390,15 +399,20 @@ namespace SCMBot
                     break;
                 case "3": mess = "Parsing fail";
                     break;
+                case "4": mess = "Wait to Relogin";
+                    break;
                 default: mess = "Unknown error";
                     break;
             }
             return mess;
         }
 
-        static bool isScanValid(saveTab item)
+        static bool isScanValid(saveTab item, bool isMain)
         {
-            return (item.Price != string.Empty && item.Link.Contains(SteamSite._market) && (item.ScanPage | item.ScanRecent));
+            if (isMain)
+                return (item.Price != string.Empty && item.Link.Contains(SteamSite._market) && item.Name != string.Empty);
+            else
+                return (item.Price != string.Empty && item.Name != string.Empty);
         }
 
 
@@ -459,7 +473,7 @@ namespace SCMBot
     [Serializable]
     public class saveTab
     {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice, bool scanPage, bool scanRecent)
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice)
         {
             this.Name = name;
             this.Price = price;
@@ -470,8 +484,6 @@ namespace SCMBot
             this.ToBuy = toBuy;
             this.ResellType = resellType;
             this.ResellPrice = resellPrice;
-            this.ScanPage = scanPage;
-            this.ScanRecent = scanRecent;
         }
 
         public string Name { set; get; }
@@ -483,14 +495,12 @@ namespace SCMBot
         public bool ToBuy { set; get; }
         public int ResellType { get; set; }
         public string ResellPrice { get; set; }
-        public bool ScanPage { get; set; }
-        public bool ScanRecent { get; set; }
         public bool HeadSet { get; set; }
 
     }
 
 
-    public class ScanItemList : List<ScanItem>
+    public class ScanItemList : List<MainScanItem>
     {
         public void UpdateIds()
         {
@@ -503,7 +513,7 @@ namespace SCMBot
     }
 
 
-    public class ScanItem
+    public class MainScanItem
     {
         public SteamSite Steam = new SteamSite();
         public BindingList<LogItem> LogCont = new BindingList<LogItem>();
@@ -525,33 +535,16 @@ namespace SCMBot
             public string Text { get; set; }
         }
 
-        public ScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn)
+        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn)
         {
-            this.ScanParams = scanParams;
+            Steam.scanInput = scanParams;
+            Steam.NotSetHead = (scanParams.Name == string.Empty);
             Steam.delegMessage += deleg;
             Steam.cookieCont = cookie;
             Steam.currencies.Current = currency;
             Steam.IgnoreWarn = ignoreWarn;
         }
 
-        public void ReadParams()
-        {
-
-            Steam.ResellType = ScanParams.ResellType;
-            Steam.ResellPrice = ScanParams.ResellPrice;
-            Steam.scanDelay = ScanParams.Delay.ToString();
-            Steam.wishedPrice = ScanParams.Price;
-            Steam.pageLink = ScanParams.Link;
-            Steam.toBuy = ScanParams.ToBuy;
-            Steam.BuyQuant = ScanParams.BuyQnt;
-
-            Steam.NotSetHead = (ScanParams.Name == string.Empty);
-            Steam.scanName = ScanParams.Name;
-            Steam.scanPage = ScanParams.ScanPage;
-            Steam.scanRecent = ScanParams.ScanRecent;
-        }
-
-        public saveTab ScanParams { set; get; }
         public byte StatId { get; set; }
   
     }

@@ -154,15 +154,15 @@ namespace SCMBot
         {
             public CurrInfoLst()
             {
-                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB
+                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL
 
                 this.Add(new CurrencyInfo("&#36;", "$", "1"));
                 this.Add(new CurrencyInfo("p&#1091;&#1073;.", "руб.", "5"));
                 this.Add(new CurrencyInfo("&#163;", "£", "2"));
                 this.Add(new CurrencyInfo("&#8364;", "€", "3"));
                 
-                //Brasilian Real? I guess...
-                this.Add(new CurrencyInfo("R&#36;", "R$", "4"));
+                //Fixed, thanks to Brasilian guy.
+                this.Add(new CurrencyInfo("&#82;&#36;", "R$", "7"));
                
                 this.Current = 0;
             }
@@ -434,21 +434,29 @@ namespace SCMBot
 
         //End JSON
 
-        protected void doMessage(flag myflag, int searchId, string message)
+        protected void doMessage(flag myflag, int searchId, string message, bool isMain)
         {
-
-            if (delegMessage != null)
+            try
             {
-                Control target = delegMessage.Target as Control;
 
-                if (target != null && target.InvokeRequired)
+                if (delegMessage != null)
                 {
-                    target.Invoke(delegMessage, new object[] { this, message, searchId, myflag });
+                    Control target = delegMessage.Target as Control;
+
+                    if (target != null && target.InvokeRequired)
+                    {
+                        target.Invoke(delegMessage, new object[] { this, message, searchId, myflag, isMain });
+                    }
+                    else
+                    {
+                        delegMessage(this, message, searchId, myflag, isMain);
+                    }
                 }
-                else
-                {
-                    delegMessage(this, message, searchId, myflag);
-                }
+
+            }
+            catch (Exception e)
+            {
+                Main.AddtoLog(e.Message);
             }
         }
 
@@ -456,9 +464,9 @@ namespace SCMBot
         {
             Main.reqPool.WaitOne();
 
-            doMessage(flag.StripImg, 0, string.Empty);
+            doMessage(flag.StripImg, 0, string.Empty, true);
             var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
-            doMessage(flag.StripImg, 1, string.Empty);
+            doMessage(flag.StripImg, 1, string.Empty, true);
             
             Main.reqPool.Release();
 
@@ -470,9 +478,9 @@ namespace SCMBot
         {
             Main.reqPool.WaitOne();
 
-            doMessage(flag.StripImg, 0, string.Empty);
+            doMessage(flag.StripImg, 0, string.Empty, true);
             var res = Main.GetRequest(url, cookieCont);
-            doMessage(flag.StripImg, 1, string.Empty);
+            doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
 
@@ -640,39 +648,60 @@ namespace SCMBot
 
         private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total)
         {
-
             string data = string.Format(buyReq, sessid, subtotal, fee, total, currencies.GetCode());
 
             //buy
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
             string buyres = SendPost(data, _blist + itemId, link, true);
-
-            if (buyres.Contains("message"))
-            {
-                //Already buyed!
-                var ErrBuy = JsonConvert.DeserializeObject<InfoMessage>(buyres);
-                return new BuyResponse(false, ErrBuy.Message);
-            }
-            else
             
-            if (buyres != string.Empty)
+            //testing purposes
+            //string buyres = File.ReadAllText(@"C:\x.txt");
+            
+            try
             {
-                var AfterBuy = JsonConvert.DeserializeObject<WalletInfo>(buyres);
-
-                if (AfterBuy.WalletRes.Success == 1)
+                if (buyres.Contains("message"))
                 {
-                    string balance = AfterBuy.WalletRes.Balance;
-                    balance = balance.Insert(balance.Length - 2, ",");
-                    return new BuyResponse(true, balance);
-
+                    //Already buyed!
+                    var ErrBuy = JsonConvert.DeserializeObject<InfoMessage>(buyres);
+                    return new BuyResponse(false, ErrBuy.Message);
                 }
-                else return new BuyResponse(false, Strings.UnknownErr);
+                else
+
+                    if (buyres != string.Empty)
+                    {
+                        var AfterBuy = JsonConvert.DeserializeObject<WalletInfo>(buyres);
+
+                        if (AfterBuy.WalletRes.Success == 1)
+                        {
+                            string balance = AfterBuy.WalletRes.Balance;
+                            balance = balance.Insert(balance.Length - 2, ",");
+                            return new BuyResponse(true, balance);
+                        }
+                        else return new BuyResponse(false, Strings.UnknownErr);
+                    }
+                    else return new BuyResponse(false, Strings.UnknownErr);
             }
-            else return new BuyResponse(false, Strings.UnknownErr);
+            catch (Exception)
+            {
+                return new BuyResponse(false, Strings.UnknownErr);
+            }
 
         }
 
+        private static bool isStillLogged(CookieContainer cook)
+        {
+            var stcook = cook.GetCookies(new Uri(_mainsite));
+
+            for (int i = 0; i < stcook.Count; i++)
+            {
+                if (stcook[i].Name.Contains("steamLogin"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
         {
@@ -724,8 +753,8 @@ namespace SCMBot
                             //Damn, Mr.Crowley... WTF!?
                             if (NotSetHead && !full)
                             {
-                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name);
-                                scanName = ourItemInfo.name;
+                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name, true);
+                                scanInput.Name = ourItemInfo.name;
                                 NotSetHead = false;
                             }
 

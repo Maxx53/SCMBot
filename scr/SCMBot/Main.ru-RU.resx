@@ -118,8 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="NameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 12</value>
+  </data>
+  <data name="NameLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="NameLabel.Text" xml:space="preserve">
+    <value>Название</value>
+  </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 6</value>
+    <value>33, 36</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -130,20 +139,8 @@
   <data name="scanButton.Text" xml:space="preserve">
     <value>Старт</value>
   </data>
-  <data name="pageCheckBox.Text" xml:space="preserve">
-    <value>Страница</value>
-  </data>
-  <data name="recentCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 17</value>
-  </data>
-  <data name="recentCheckBox.Text" xml:space="preserve">
-    <value>Новые</value>
-  </data>
-  <data name="scanSourceGroup.Text" xml:space="preserve">
-    <value>Источник</value>
-  </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 30</value>
+    <value>18, 60</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 13</value>
@@ -173,7 +170,7 @@
     <value>Перепродать</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 54</value>
+    <value>20, 84</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
@@ -223,6 +220,12 @@
   <data name="contextMenuStrip3.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 114</value>
   </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Страница предмета</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Новые поступления</value>
+  </data>
   <data name="scanGroupBox.Text" xml:space="preserve">
     <value>Предметы для сканирования</value>
   </data>
@@ -245,25 +248,31 @@
     <value>Купить</value>
   </data>
   <data name="selectedItemToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>255, 22</value>
   </data>
   <data name="selectedItemToolStripMenuItem.Text" xml:space="preserve">
-    <value>Отмеченные предметы</value>
+    <value>Отмеченные в текущую вкладку</value>
+  </data>
+  <data name="checkedToBothSourcesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>255, 22</value>
+  </data>
+  <data name="checkedToBothSourcesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Отмеченные в обе вкладки</value>
   </data>
   <data name="fullSetToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>255, 22</value>
   </data>
   <data name="fullSetToolStripMenuItem.Text" xml:space="preserve">
     <value>Полный набор</value>
   </data>
   <data name="emptyTabToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>255, 22</value>
   </data>
   <data name="emptyTabToolStripMenuItem.Text" xml:space="preserve">
     <value>Пустая вкладка</value>
   </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 70</value>
+    <value>256, 92</value>
   </data>
   <data name="addtoScan.Text" xml:space="preserve">
     <value>Сканер</value>

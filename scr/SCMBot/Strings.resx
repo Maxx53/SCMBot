@@ -267,4 +267,7 @@ You can find it in system tray anytime.</value>
   <data name="Wait" xml:space="preserve">
     <value>Wait...</value>
   </data>
+  <data name="Relogin" xml:space="preserve">
+    <value>Try to relogin...</value>
+  </data>
 </root>

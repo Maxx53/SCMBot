@@ -33,13 +33,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.NameLabel = new System.Windows.Forms.Label();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.linkTextBox = new System.Windows.Forms.TextBox();
             this.scanButton = new System.Windows.Forms.Button();
             this.delayTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.scanSourceGroup = new System.Windows.Forms.GroupBox();
-            this.pageCheckBox = new System.Windows.Forms.CheckBox();
-            this.recentCheckBox = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.buyCheckBox = new System.Windows.Forms.CheckBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
@@ -52,6 +51,8 @@
             this.buyUpDown = new System.Windows.Forms.NumericUpDown();
             this.scanGroupBox = new System.Windows.Forms.GroupBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.scanListView = new System.Windows.Forms.ListView();
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -62,6 +63,11 @@
             this.stopSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.recentListView = new System.Windows.Forms.ListView();
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.logListBox = new System.Windows.Forms.ListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.nextButton = new System.Windows.Forms.Button();
@@ -76,6 +82,7 @@
             this.addtoScan = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectedItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkedToBothSourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emptyTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prevButton = new System.Windows.Forms.Button();
@@ -128,7 +135,6 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.scanSourceGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.ExtraGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buyUpDown)).BeginInit();
@@ -137,7 +143,10 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -184,11 +193,12 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.NameLabel);
+            this.panel1.Controls.Add(this.nameTextBox);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.linkTextBox);
             this.panel1.Controls.Add(this.scanButton);
             this.panel1.Controls.Add(this.delayTextBox);
-            this.panel1.Controls.Add(this.scanSourceGroup);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.buyCheckBox);
             this.panel1.Controls.Add(this.pictureBox4);
@@ -198,6 +208,16 @@
             this.panel1.Controls.Add(this.buyUpDown);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // NameLabel
+            // 
+            resources.ApplyResources(this.NameLabel, "NameLabel");
+            this.NameLabel.Name = "NameLabel";
+            // 
+            // nameTextBox
+            // 
+            resources.ApplyResources(this.nameTextBox, "nameTextBox");
+            this.nameTextBox.Name = "nameTextBox";
             // 
             // label14
             // 
@@ -222,28 +242,6 @@
             this.delayTextBox.Name = "delayTextBox";
             this.delayTextBox.TabStop = false;
             // 
-            // scanSourceGroup
-            // 
-            this.scanSourceGroup.Controls.Add(this.pageCheckBox);
-            this.scanSourceGroup.Controls.Add(this.recentCheckBox);
-            resources.ApplyResources(this.scanSourceGroup, "scanSourceGroup");
-            this.scanSourceGroup.Name = "scanSourceGroup";
-            this.scanSourceGroup.TabStop = false;
-            // 
-            // pageCheckBox
-            // 
-            resources.ApplyResources(this.pageCheckBox, "pageCheckBox");
-            this.pageCheckBox.Checked = true;
-            this.pageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.pageCheckBox.Name = "pageCheckBox";
-            this.pageCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // recentCheckBox
-            // 
-            resources.ApplyResources(this.recentCheckBox, "recentCheckBox");
-            this.recentCheckBox.Name = "recentCheckBox";
-            this.recentCheckBox.UseVisualStyleBackColor = true;
-            // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
@@ -262,6 +260,7 @@
             resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // ExtraGroup
             // 
@@ -332,13 +331,29 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.scanListView);
+            this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.logListBox);
             this.splitContainer3.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer3_SplitterMoved);
             this.splitContainer3.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer3_Paint);
+            // 
+            // tabControl1
+            // 
+            resources.ApplyResources(this.tabControl1, "tabControl1");
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.scanListView);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // scanListView
             // 
@@ -354,7 +369,6 @@
             this.scanListView.Name = "scanListView";
             this.scanListView.UseCompatibleStateImageBehavior = false;
             this.scanListView.View = System.Windows.Forms.View.Details;
-            this.scanListView.Click += new System.EventHandler(this.scanListView_Click);
             this.scanListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scanListView_KeyDown);
             this.scanListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.scanListView_MouseClick);
             this.scanListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scanListView_MouseUp);
@@ -416,6 +430,43 @@
             this.stopAllMenuItem.Name = "stopAllMenuItem";
             resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Click += new System.EventHandler(this.stopAllToolStripMenuItem_Click);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.recentListView);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // recentListView
+            // 
+            resources.ApplyResources(this.recentListView, "recentListView");
+            this.recentListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader13,
+            this.columnHeader14,
+            this.columnHeader15});
+            this.recentListView.ContextMenuStrip = this.contextMenuStrip3;
+            this.recentListView.FullRowSelect = true;
+            this.recentListView.GridLines = true;
+            this.recentListView.HideSelection = false;
+            this.recentListView.Name = "recentListView";
+            this.recentListView.UseCompatibleStateImageBehavior = false;
+            this.recentListView.View = System.Windows.Forms.View.Details;
+            this.recentListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scanListView_KeyDown);
+            this.recentListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.scanListView_MouseClick);
+            this.recentListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.recentListView_MouseUp);
+            // 
+            // columnHeader13
+            // 
+            resources.ApplyResources(this.columnHeader13, "columnHeader13");
+            // 
+            // columnHeader14
+            // 
+            resources.ApplyResources(this.columnHeader14, "columnHeader14");
+            // 
+            // columnHeader15
+            // 
+            resources.ApplyResources(this.columnHeader15, "columnHeader15");
             // 
             // logListBox
             // 
@@ -517,6 +568,7 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectedItemToolStripMenuItem,
+            this.checkedToBothSourcesToolStripMenuItem,
             this.fullSetToolStripMenuItem,
             this.emptyTabToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -528,6 +580,13 @@
             this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
             resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
+            // 
+            // checkedToBothSourcesToolStripMenuItem
+            // 
+            this.checkedToBothSourcesToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
+            this.checkedToBothSourcesToolStripMenuItem.Name = "checkedToBothSourcesToolStripMenuItem";
+            resources.ApplyResources(this.checkedToBothSourcesToolStripMenuItem, "checkedToBothSourcesToolStripMenuItem");
+            this.checkedToBothSourcesToolStripMenuItem.Click += new System.EventHandler(this.checkedToBothSourcesToolStripMenuItem_Click);
             // 
             // fullSetToolStripMenuItem
             // 
@@ -798,9 +857,9 @@
             // 
             // DonateBox
             // 
+            resources.ApplyResources(this.DonateBox, "DonateBox");
             this.DonateBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DonateBox.Image = global::SCMBot.Properties.Resources.btn_donate;
-            resources.ApplyResources(this.DonateBox, "DonateBox");
             this.DonateBox.Name = "DonateBox";
             this.DonateBox.TabStop = false;
             this.DonateBox.Click += new System.EventHandler(this.DonateBox_Click);
@@ -864,8 +923,6 @@
             this.splitContainer2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.scanSourceGroup.ResumeLayout(false);
-            this.scanSourceGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ExtraGroup.ResumeLayout(false);
             this.ExtraGroup.PerformLayout();
@@ -875,7 +932,10 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.contextMenuStrip3.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -954,9 +1014,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.GroupBox scanSourceGroup;
-        private System.Windows.Forms.CheckBox pageCheckBox;
-        private System.Windows.Forms.CheckBox recentCheckBox;
         private System.Windows.Forms.CheckBox buyCheckBox;
         private System.Windows.Forms.GroupBox ExtraGroup;
         private System.Windows.Forms.TextBox resellPriceBox;
@@ -986,6 +1043,16 @@
         public System.Windows.Forms.ToolStripStatusLabel toolStripImage;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar ProgressBar1;
+        private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ListView recentListView;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ToolStripMenuItem checkedToBothSourcesToolStripMenuItem;
     }
 }
 
