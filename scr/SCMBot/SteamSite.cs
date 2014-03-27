@@ -501,36 +501,37 @@ namespace SCMBot
                 if (Input.ToBuy)
                 {
 
-                    if (buyCont < Input.BuyQnt)
+                    var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, Input.Link, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr);
+
+                    if (buyresp.Succsess)
                     {
-                        var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, Input.Link, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr);
-
-                        if (buyresp.Succsess)
+                        //Resell 
+                        if (Input.ResellType != 0)
                         {
-                            //Resell 
-                            if (Input.ResellType != 0)
-                            {
-                                StartResellThread(totalStr, Input.ResellPrice, ourItem.Type, ourItem.ItemName, Input.ResellType);
-                            }
-
-                            doMessage(flag.Success_buy, scanID, buyresp.Mess, ismain);
-                            doMessage(flag.Price_btext, scanID, prtoTxt, ismain);
-
-                            buyCont++;
-
-                            return buyCont;
+                            StartResellThread(totalStr, Input.ResellPrice, ourItem.Type, ourItem.ItemName, Input.ResellType);
                         }
-                        else
+
+                        doMessage(flag.Success_buy, scanID, buyresp.Mess, ismain);
+                        doMessage(flag.Price_btext, scanID, prtoTxt, ismain);
+
+                        buyCont++;
+
+                        //Bloody hell, you're fuckin' genious!
+                        if (buyCont == Input.BuyQnt)
                         {
-                            doMessage(flag.Error_buy, scanID, buyresp.Mess, ismain);
+                            Input.ToBuy = false;
+                            doMessage(flag.Send_cancel, scanID, string.Empty, ismain);
                         }
+
+                        return buyCont;
+
                     }
+
                     else
                     {
-                        Input.ToBuy = false;
-                        doMessage(flag.Send_cancel, scanID, string.Empty, ismain);
-                        doMessage(flag.Price_htext, scanID, prtoTxt, ismain);
+                        doMessage(flag.Error_buy, scanID, buyresp.Mess, ismain);
                     }
+ 
 
                 }
                 else doMessage(flag.Price_htext, scanID, prtoTxt, ismain);

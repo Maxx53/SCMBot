@@ -82,7 +82,6 @@ namespace SCMBot
                 loginButton.PerformClick();
 
             setNotifyText(Strings.NotLogged);
-
        }
 
         private void Main_Shown(object sender, EventArgs e)
@@ -517,6 +516,7 @@ namespace SCMBot
                 case flag.InvPrice:
                     string sweet = SteamSite.DoFracture(message);
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
+                    steam_srch.inventList[searchId].Price = message;
                     textBox1.Text = sweet;
                     textBox1.ReadOnly = false;
                     break;
@@ -920,8 +920,8 @@ namespace SCMBot
         
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            if (searchRight()) 
-            StartCmdLine(steam_srch.searchList[1].Link, string.Empty, false);
+            if (searchRight() && (steam_srch.searchList.Count == FoundList.Items.Count) && (FoundList.SelectedIndices.Count !=0)) 
+            StartCmdLine(steam_srch.searchList[FoundList.SelectedIndices[0]].Link, string.Empty, false);
 
         }
 
@@ -1172,7 +1172,7 @@ namespace SCMBot
             }
               
             
-            for (int i = 0; i < InventoryList.SelectedItems.Count; i++)
+            for (int i = 0; i < InventoryList.SelectedIndices.Count; i++)
             {
                 var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[i]];
                 ourItem.Price = truePrice;
@@ -1242,17 +1242,16 @@ namespace SCMBot
         {
             if (isFirstTab)
             {
-
                 var Item = scanItems[scanListView.SelectedIndices[0]];
                 var ourItem = Item.Steam.scanInput;
-
                 scanListView.SelectedItems[0].SubItems[1].Text = ourItem.Name;
+                SetColumnWidths(scanListView, true);
             }
             else
             {
                 var Item = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
                 recentListView.SelectedItems[0].SubItems[1].Text = Item.Name;
-
+                SetColumnWidths(recentListView, true);
             }
 
         }	
@@ -1295,37 +1294,50 @@ namespace SCMBot
             }
             else
             {
-                if (!steam_srch.scaninProg)
+
+
+                if (steam_srch.Logged)
                 {
-                    if (steam_srch.recentInputList.Count != 0)
+
+
+                    if (!steam_srch.scaninProg)
                     {
-                        bool faultcheck = true;
-
-                        for (int i = 0; i < steam_srch.recentInputList.Count; i++)
+                        if (steam_srch.recentInputList.Count != 0)
                         {
-                            if (!isScanValid(steam_srch.recentInputList[i], false))
+                            bool faultcheck = true;
+
+                            for (int i = 0; i < steam_srch.recentInputList.Count; i++)
                             {
-                                faultcheck = false;
+                                if (!isScanValid(steam_srch.recentInputList[i], false))
+                                {
+                                    faultcheck = false;
+                                }
                             }
-                        }
 
-                        if (faultcheck)
-                        {
-                            setRecentStatImg(2);
-                            steam_srch.ScanNewListed();
-                        }
-                        else MessageBox.Show(Strings.CheckVal, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            if (faultcheck)
+                            {
+                                setRecentStatImg(2);
+                                steam_srch.ScanNewListed();
+                            }
+                            else MessageBox.Show(Strings.CheckVal, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
+                        }
+                        else MessageBox.Show("Add some Items to list.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    else MessageBox.Show("Add some Items to list.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    else
+                    {
+                        steam_srch.CancelListed();
+                        setRecentStatImg(0);
+                    }
+
+                    setButtText(steam_srch.scaninProg);
+
+
                 }
                 else
-                {
-                    steam_srch.CancelListed();
-                    setRecentStatImg(0);
-                }
+                    MessageBox.Show(Strings.LoginFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                setButtText(steam_srch.scaninProg);
+
             }
         }
 

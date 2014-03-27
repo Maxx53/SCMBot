@@ -6,8 +6,6 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using System.Threading;
-using System.IO;
 
 
 namespace SCMBot
@@ -163,7 +161,7 @@ namespace SCMBot
                 
                 //Fixed, thanks to Brasilian guy.
                 this.Add(new CurrencyInfo("&#82;&#36;", "R$", "7"));
-               
+                this.NotSet = true;
                 this.Current = 0;
             }
 
@@ -193,7 +191,7 @@ namespace SCMBot
                     {
                         Current = i;
                         NotSet = false;
-                        break;
+                        //break;
                     }
                 }
             }
@@ -619,7 +617,6 @@ namespace SCMBot
             currLst.GetType(parseAmount);
 
             parseAmount = currLst.ReplaceAscii(parseAmount);
-
             return string.Format("{0}|{1}|{2}", parseName, parseAmount, parseImg);
         }
 
@@ -816,8 +813,8 @@ namespace SCMBot
 
                             string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
 
-
-                            string ItemPrice = Regex.Match(currmatch, "(?<=<br/>)(.*)(?=<div class=\"market_listing)", RegexOptions.Singleline).ToString();
+                            //Fix fot Steam update 3/26/14 4:00 PM PST
+                            string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:)(.*)(?=<div class=\"market_listing_right_cell)", RegexOptions.Singleline).ToString();
 
                             //Удаляем ascii кода нашей текущей валюты
                             if (currLst.NotSet)
@@ -825,7 +822,7 @@ namespace SCMBot
                                 currLst.GetType(ItemPrice);
                                 //If not loggen in then
                                 ItemPrice = Regex.Replace(ItemPrice, currLst.GetAscii(), string.Empty);
-                                currLst.NotSet = true;
+                                //currLst.NotSet = true;
                             }
                             else
                             {
@@ -835,7 +832,8 @@ namespace SCMBot
 
                             ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,\.]+", string.Empty);
 
-                            string ItemName = Regex.Match(currmatch, "(?<=style=\"color:)(.*)(?=</span>)").ToString();
+                            //Fix fot Steam update 3/26/14 4:00 PM PST
+                            string ItemName = Regex.Match(currmatch, "(?<=listing_item_name\" style=\"color:)(.*)(?=</span>)").ToString();
                             ItemName = ItemName.Remove(0, ItemName.IndexOf(">") + 1);
 
                             string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
