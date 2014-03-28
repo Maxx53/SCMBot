@@ -305,7 +305,8 @@ namespace SCMBot
 
         public class ItemDescr
         {
-            [JsonProperty("name")]
+            //Fix for Resell feature
+            [JsonProperty("market_name")]
             public string Name { get; set; }
 
             [JsonProperty("icon_url")]

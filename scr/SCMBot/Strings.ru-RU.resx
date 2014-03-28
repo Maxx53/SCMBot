@@ -264,4 +264,7 @@ Copyright © 2013-2014 Maxx53
   <data name="Relogin" xml:space="preserve">
     <value>Перелогинимся...</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
 </root>

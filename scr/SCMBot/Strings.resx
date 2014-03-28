@@ -270,4 +270,7 @@ You can find it in system tray anytime.</value>
   <data name="Relogin" xml:space="preserve">
     <value>Try to relogin...</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

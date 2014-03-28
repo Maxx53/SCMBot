@@ -36,6 +36,8 @@
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.resDelayBox = new System.Windows.Forms.MaskedTextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.ignoreBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -104,12 +106,25 @@
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.resDelayBox);
+            this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.ignoreBox);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.comboBox2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // resDelayBox
+            // 
+            resources.ApplyResources(this.resDelayBox, "resDelayBox");
+            this.resDelayBox.Name = "resDelayBox";
+            this.resDelayBox.ValidatingType = typeof(int);
+            // 
+            // label14
+            // 
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
             // 
             // label13
             // 
@@ -327,5 +342,7 @@
         private System.Windows.Forms.Label label12;
         public System.Windows.Forms.CheckBox ignoreBox;
         private System.Windows.Forms.Label label13;
+        public System.Windows.Forms.MaskedTextBox resDelayBox;
+        private System.Windows.Forms.Label label14;
     }
 }

@@ -223,6 +223,15 @@
   <data name="tabPage1.Text" xml:space="preserve">
     <value>Страница предмета</value>
   </data>
+  <data name="columnHeader13.Text" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="columnHeader14.Text" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="columnHeader15.Text" xml:space="preserve">
+    <value>Ваша цена</value>
+  </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Новые поступления</value>
   </data>
@@ -325,6 +334,9 @@
   <data name="comboBox3.Items" xml:space="preserve">
     <value>Карточки</value>
   </data>
+  <data name="comboBox3.Items4" xml:space="preserve">
+    <value>В продаже</value>
+  </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Загрузить</value>
   </data>
@@ -338,7 +350,7 @@
     <value>Нет</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
-    <value>Мой инвентарь (тест)</value>
+    <value>Мой инвентарь</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>106, 21</value>

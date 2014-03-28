@@ -58,7 +58,22 @@ namespace SCMBot.Properties {
                 this["delayVal"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int sellDelay
+        {
+            get
+            {
+                return ((int)(this["sellDelay"]));
+            }
+            set
+            {
+                this["sellDelay"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Password")]

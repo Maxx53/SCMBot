@@ -44,7 +44,17 @@ namespace SCMBot
         InvPrice = 21,
         Resold = 22,
         SetHeadName = 23,
-        ReLogin = 24
+        ReLogin = 24,
+        ResellErr = 25
+    }
+
+
+    [Flags]
+    public enum status : byte
+    {
+        Ready = 0,
+        Warning = 1,
+        InProcess = 2,
     }
 
 
@@ -473,7 +483,7 @@ namespace SCMBot
     [Serializable]
     public class saveTab
     {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice)
+        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice, status statId)
         {
             this.Name = name;
             this.Price = price;
@@ -484,6 +494,7 @@ namespace SCMBot
             this.ToBuy = toBuy;
             this.ResellType = resellType;
             this.ResellPrice = resellPrice;
+            this.StatId = statId;
         }
 
         public string Name { set; get; }
@@ -496,7 +507,7 @@ namespace SCMBot
         public int ResellType { get; set; }
         public string ResellPrice { get; set; }
         public bool HeadSet { get; set; }
-
+        public status StatId { get; set; }
     }
 
 
@@ -535,7 +546,7 @@ namespace SCMBot
             public string Text { get; set; }
         }
 
-        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn)
+        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn, int resDel)
         {
             Steam.scanInput = scanParams;
             Steam.NotSetHead = (scanParams.Name == string.Empty);
@@ -543,9 +554,10 @@ namespace SCMBot
             Steam.cookieCont = cookie;
             Steam.currencies.Current = currency;
             Steam.IgnoreWarn = ignoreWarn;
+            Steam.resellDelay = resDel;
         }
 
-        public byte StatId { get; set; }
+       // public byte StatId { get; set; }
   
     }
 

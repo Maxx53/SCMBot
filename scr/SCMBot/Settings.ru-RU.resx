@@ -148,6 +148,15 @@
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Торговая площадка</value>
   </data>
+  <data name="resDelayBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 71</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 13</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>Задержка перепродажи:</value>
+  </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>193, 45</value>
   </data>
@@ -173,7 +182,7 @@
     <value>136, 21</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 359</value>
+    <value>115, 406</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Сохранить</value>
@@ -239,7 +248,7 @@
     <value>Очищать лог после:</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 343</value>
+    <value>18, 390</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 13</value>
@@ -248,7 +257,7 @@
     <value>* Требуется перезапуск программы</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 292</value>
+    <value>12, 339</value>
   </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Сеть</value>
@@ -260,7 +269,7 @@
     <value>Параллельных запросов:</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>231, 395</value>
+    <value>231, 441</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Настройки</value>

@@ -167,10 +167,12 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
@@ -183,16 +185,19 @@
             // 
             // splitContainer2.Panel1
             // 
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.panel1);
             this.splitContainer2.Panel1.Controls.Add(this.scanGroupBox);
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.NameLabel);
             this.panel1.Controls.Add(this.nameTextBox);
             this.panel1.Controls.Add(this.label14);
@@ -206,7 +211,6 @@
             this.panel1.Controls.Add(this.wishpriceBox);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.buyUpDown);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // NameLabel
@@ -255,19 +259,19 @@
             // 
             // pictureBox4
             // 
+            resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // ExtraGroup
             // 
+            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Controls.Add(this.resellPriceBox);
             this.ExtraGroup.Controls.Add(this.label7);
             this.ExtraGroup.Controls.Add(this.resellComboBox);
-            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Name = "ExtraGroup";
             this.ExtraGroup.TabStop = false;
             // 
@@ -283,13 +287,13 @@
             // 
             // resellComboBox
             // 
+            resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resellComboBox.FormattingEnabled = true;
             this.resellComboBox.Items.AddRange(new object[] {
             resources.GetString("resellComboBox.Items"),
             resources.GetString("resellComboBox.Items1"),
             resources.GetString("resellComboBox.Items2")});
-            resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.Name = "resellComboBox";
             // 
             // wishpriceBox
@@ -331,10 +335,12 @@
             // 
             // splitContainer3.Panel1
             // 
+            resources.ApplyResources(this.splitContainer3.Panel1, "splitContainer3.Panel1");
             this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
             // 
             // splitContainer3.Panel2
             // 
+            resources.ApplyResources(this.splitContainer3.Panel2, "splitContainer3.Panel2");
             this.splitContainer3.Panel2.Controls.Add(this.logListBox);
             this.splitContainer3.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer3_SplitterMoved);
             this.splitContainer3.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer3_Paint);
@@ -350,8 +356,8 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.scanListView);
             resources.ApplyResources(this.tabPage1, "tabPage1");
+            this.tabPage1.Controls.Add(this.scanListView);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -387,6 +393,7 @@
             // 
             // contextMenuStrip3
             // 
+            resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
             this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteMenuItem,
             this.startSelectedMenuItem,
@@ -394,47 +401,46 @@
             this.startAllMenuItem,
             this.stopAllMenuItem});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
             // 
             // deleteMenuItem
             // 
+            resources.ApplyResources(this.deleteMenuItem, "deleteMenuItem");
             this.deleteMenuItem.Image = global::SCMBot.Properties.Resources.cancel;
             this.deleteMenuItem.Name = "deleteMenuItem";
-            resources.ApplyResources(this.deleteMenuItem, "deleteMenuItem");
             this.deleteMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
             // startSelectedMenuItem
             // 
+            resources.ApplyResources(this.startSelectedMenuItem, "startSelectedMenuItem");
             this.startSelectedMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.startSelectedMenuItem.Name = "startSelectedMenuItem";
-            resources.ApplyResources(this.startSelectedMenuItem, "startSelectedMenuItem");
             this.startSelectedMenuItem.Click += new System.EventHandler(this.startSelectedToolStripMenuItem_Click);
             // 
             // stopSelectedMenuItem
             // 
+            resources.ApplyResources(this.stopSelectedMenuItem, "stopSelectedMenuItem");
             this.stopSelectedMenuItem.Image = global::SCMBot.Properties.Resources.stop;
             this.stopSelectedMenuItem.Name = "stopSelectedMenuItem";
-            resources.ApplyResources(this.stopSelectedMenuItem, "stopSelectedMenuItem");
             this.stopSelectedMenuItem.Click += new System.EventHandler(this.stopSelectedToolStripMenuItem_Click);
             // 
             // startAllMenuItem
             // 
+            resources.ApplyResources(this.startAllMenuItem, "startAllMenuItem");
             this.startAllMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.startAllMenuItem.Name = "startAllMenuItem";
-            resources.ApplyResources(this.startAllMenuItem, "startAllMenuItem");
             this.startAllMenuItem.Click += new System.EventHandler(this.startAllToolStripMenuItem_Click);
             // 
             // stopAllMenuItem
             // 
+            resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Image = global::SCMBot.Properties.Resources.stop;
             this.stopAllMenuItem.Name = "stopAllMenuItem";
-            resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Click += new System.EventHandler(this.stopAllToolStripMenuItem_Click);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.recentListView);
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.recentListView);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
@@ -566,40 +572,40 @@
             // 
             // contextMenuStrip1
             // 
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectedItemToolStripMenuItem,
             this.checkedToBothSourcesToolStripMenuItem,
             this.fullSetToolStripMenuItem,
             this.emptyTabToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             // 
             // selectedItemToolStripMenuItem
             // 
+            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
-            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
             // 
             // checkedToBothSourcesToolStripMenuItem
             // 
+            resources.ApplyResources(this.checkedToBothSourcesToolStripMenuItem, "checkedToBothSourcesToolStripMenuItem");
             this.checkedToBothSourcesToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.checkedToBothSourcesToolStripMenuItem.Name = "checkedToBothSourcesToolStripMenuItem";
-            resources.ApplyResources(this.checkedToBothSourcesToolStripMenuItem, "checkedToBothSourcesToolStripMenuItem");
             this.checkedToBothSourcesToolStripMenuItem.Click += new System.EventHandler(this.checkedToBothSourcesToolStripMenuItem_Click);
             // 
             // fullSetToolStripMenuItem
             // 
+            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
-            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
             // 
             // emptyTabToolStripMenuItem
             // 
+            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Image = global::SCMBot.Properties.Resources.blank;
             this.emptyTabToolStripMenuItem.Name = "emptyTabToolStripMenuItem";
-            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Click += new System.EventHandler(this.emptyTabToolStripMenuItem_Click);
             // 
             // prevButton
@@ -715,6 +721,7 @@
             // 
             // comboBox3
             // 
+            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
@@ -723,7 +730,6 @@
             resources.GetString("comboBox3.Items2"),
             resources.GetString("comboBox3.Items3"),
             resources.GetString("comboBox3.Items4")});
-            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -785,21 +791,22 @@
             // 
             // pictureBox2
             // 
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // contextMenuStrip2
             // 
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.minimizeOnClosingToolStripMenuItem,
             this.settingsToolStripMenuItem,
@@ -807,42 +814,41 @@
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             // 
             // minimizeOnClosingToolStripMenuItem
             // 
+            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             this.minimizeOnClosingToolStripMenuItem.Checked = true;
             this.minimizeOnClosingToolStripMenuItem.CheckOnClick = true;
             this.minimizeOnClosingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeOnClosingToolStripMenuItem.Name = "minimizeOnClosingToolStripMenuItem";
-            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             // 
             // settingsToolStripMenuItem
             // 
+            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Image = global::SCMBot.Properties.Resources.settings;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Image = global::SCMBot.Properties.Resources.help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Image = global::SCMBot.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Image = global::SCMBot.Properties.Resources.logout;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // label3
@@ -866,8 +872,8 @@
             // 
             // loginButton
             // 
-            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             resources.ApplyResources(this.loginButton, "loginButton");
+            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             this.loginButton.Name = "loginButton";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
@@ -890,13 +896,13 @@
             // 
             // StatusLabel1
             // 
-            this.StatusLabel1.Name = "StatusLabel1";
             resources.ApplyResources(this.StatusLabel1, "StatusLabel1");
+            this.StatusLabel1.Name = "StatusLabel1";
             // 
             // ProgressBar1
             // 
-            this.ProgressBar1.Name = "ProgressBar1";
             resources.ApplyResources(this.ProgressBar1, "ProgressBar1");
+            this.ProgressBar1.Name = "ProgressBar1";
             // 
             // Main
             // 

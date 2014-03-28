@@ -15,7 +15,7 @@ namespace SCMBot
 
         public int scanID { set; get; }
         public int mainDelay { get; set; }
-
+        public int resellDelay { get; set; }
 
         public string linkTxt { set; get; }
    
@@ -668,11 +668,15 @@ namespace SCMBot
                         {
                             for (int k = 0; k < recentInputList.Count; k++)
                             {
-                                if (lotList[i].ItemName == recentInputList[k].Name)
+                                if (recentInputList[k].StatId == status.InProcess)
                                 {
-                                    found = true;
-                                    buyCounter[k] = BuyLogic(Convert.ToInt32(GetSweetPrice(recentInputList[k].Price)), sessid, lotList[i], recentInputList[k], buyCounter[k], false);
-                                    continue;
+                                    if (lotList[i].ItemName == recentInputList[k].Name)
+                                    {
+                                        found = true;
+                                        scanID = k;
+                                        buyCounter[k] = BuyLogic(Convert.ToInt32(GetSweetPrice(recentInputList[k].Price)), sessid, lotList[i], recentInputList[k], buyCounter[k], false);
+                                        continue;
+                                    }
                                 }
                             }
 
@@ -688,7 +692,7 @@ namespace SCMBot
                 {
                     if (!found)
                         doMessage(flag.Price_text, 1, "Not found", false);
-
+                    doMessage(flag.Scan_progress, scanID, string.Empty, false);
                     Sem.WaitOne(mainDelay);
                 }
 
@@ -704,6 +708,9 @@ namespace SCMBot
             {
                 try
                 {
+                    if (resellDelay > 0)
+                        Thread.Sleep(resellDelay);
+
                     int sellPrice = Convert.ToInt32(lotPrice);
                     int resell = Convert.ToInt32(GetSweetPrice(resellPrice));
 
@@ -725,9 +732,9 @@ namespace SCMBot
                 }
                 catch (Exception exc)
                 {
-                    Main.AddtoLog(exc.Message);
+                    Main.AddtoLog("Resell error: "+ exc.Message);
                     //To Error
-                    //doMessage(flag.ErrResell, 0, markName, true);
+                    doMessage(flag.ResellErr, 0, markName, true);
                 }
 
             };
