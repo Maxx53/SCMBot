@@ -211,6 +211,10 @@
     <None Include="Resources\warning.png" />
     <None Include="Resources\clock.png" />
     <None Include="Resources\btn_donate.gif" />
+    <None Include="Resources\error2.wav" />
+    <None Include="Resources\error.wav" />
+    <None Include="Resources\success.wav" />
+    <None Include="Resources\ding.wav" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

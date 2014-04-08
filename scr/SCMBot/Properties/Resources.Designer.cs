@@ -102,6 +102,24 @@ namespace SCMBot.Properties {
             }
         }
         
+        internal static System.IO.UnmanagedMemoryStream ding {
+            get {
+                return ResourceManager.GetStream("ding", resourceCulture);
+            }
+        }
+        
+        internal static System.IO.UnmanagedMemoryStream error {
+            get {
+                return ResourceManager.GetStream("error", resourceCulture);
+            }
+        }
+        
+        internal static System.IO.UnmanagedMemoryStream error2 {
+            get {
+                return ResourceManager.GetStream("error2", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap fullset {
             get {
                 object obj = ResourceManager.GetObject("fullset", resourceCulture);
@@ -176,6 +194,12 @@ namespace SCMBot.Properties {
             get {
                 object obj = ResourceManager.GetObject("stop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.IO.UnmanagedMemoryStream success {
+            get {
+                return ResourceManager.GetStream("success", resourceCulture);
             }
         }
         

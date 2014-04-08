@@ -71,7 +71,7 @@ namespace SCMBot
             steam_srch.cookieCont = ReadCookiesFromDisk(cockPath);
             steam_srch.scanID = 0;
 
-            InventoryList.ListViewItemSorter = itemComparer;
+            //InventoryList.ListViewItemSorter = itemComparer;
             
             //Add sorter?
             //FounList.ListViewItemSorter = itemComparer;
@@ -126,6 +126,7 @@ namespace SCMBot
             settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.numThreadsBox.Value = settings.numThreads;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
+            settingsForm.playSndCheckBox.Checked = settings.playSnd;
 
             settingsForm.resDelayBox.Text = settings.sellDelay.ToString();
 
@@ -178,6 +179,7 @@ namespace SCMBot
             settings.sellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
             settings.searchRes = settingsForm.searchResBox.Text;
             settings.ignoreWarn = settingsForm.ignoreBox.Checked;
+            settings.playSnd = settingsForm.playSndCheckBox.Checked;
 
             settings.delayVal = steam_srch.mainDelay;
 
@@ -497,12 +499,14 @@ namespace SCMBot
                     break;
 
                 case flag.Success_buy:
+                    PlaySound(0, settings.playSnd);
                     StatusLabel1.Text = Strings.Bought;
                     label5.Text = message;
                     buyNowButton.Enabled = true;
                     break;
 
                 case flag.Error_buy:
+                    PlaySound(1, settings.playSnd);
                     StatusLabel1.Text = Strings.BuyError;
                     AddToScanLog(message, searchId, 1, false, isMain);
 
@@ -525,10 +529,12 @@ namespace SCMBot
                     StatusLabel1.Text = Strings.ScanCancel;
                     break;
                 case flag.Resold:
+                    PlaySound(2, settings.playSnd);
                     StatusLabel1.Text = string.Format("Item \"{0}\" resold!", message);
                     break;
 
                 case flag.ResellErr:
+                    PlaySound(3, settings.playSnd);
                     StatusLabel1.Text = string.Format("Resell Error, Item: \"{0}\"", message);
                     break;
 
@@ -1022,6 +1028,8 @@ namespace SCMBot
 
         private void InventoryList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            
+
             itemComparer.ColumnIndex = e.Column;
             ((ListView)sender).Sort();
         }

@@ -12,6 +12,7 @@ using System.Collections;
 using System.Threading;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using System.Media;
 
 namespace SCMBot
 {
@@ -294,6 +295,43 @@ namespace SCMBot
             return back;
         }
 
+
+        private static void PlaySound(byte num, bool yes)
+        {
+            if (yes)
+            {
+                try
+                {
+                    SoundPlayer sp = new SoundPlayer();
+                    switch (num)
+                    {
+                        case 0:
+                            //for byuing
+                            sp.Stream = Properties.Resources.ding;
+                            break;
+                        case 1:
+                            // for error buying
+                            sp.Stream = Properties.Resources.error;
+                            break;
+                        case 2:
+                            //for resell
+                            sp.Stream = Properties.Resources.success;
+                            break;
+                        case 3:
+                            //for resell error
+                            sp.Stream = Properties.Resources.error2;
+                            break;
+                    }
+
+                    sp.Play();
+                    sp.Dispose();
+                }
+                catch (Exception e)
+                {
+                    AddtoLog(e.Message);
+                }
+            }
+        }
 
 
         public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)

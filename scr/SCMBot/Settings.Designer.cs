@@ -44,6 +44,7 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.playSndCheckBox = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.searchResBox = new System.Windows.Forms.MaskedTextBox();
@@ -186,6 +187,7 @@
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.playSndCheckBox);
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.searchResBox);
@@ -198,6 +200,12 @@
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // checkBox1
+            // 
+            resources.ApplyResources(this.playSndCheckBox, "checkBox1");
+            this.playSndCheckBox.Name = "checkBox1";
+            this.playSndCheckBox.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
@@ -344,5 +352,6 @@
         private System.Windows.Forms.Label label13;
         public System.Windows.Forms.MaskedTextBox resDelayBox;
         private System.Windows.Forms.Label label14;
+        public System.Windows.Forms.CheckBox playSndCheckBox;
     }
 }
