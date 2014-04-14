@@ -72,6 +72,7 @@ namespace SCMBot
         const string donateLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=demmaxx@gmail.com&lc=RU&item_name=SteamCMBot%20Donate&currency_code=RUB&bn=PP-DonationsBF";
 
         const string cockPath = "coockies.dat";
+        const string chromeUA = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
         
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
@@ -347,7 +348,16 @@ namespace SCMBot
 
                     request.CookieContainer = cookie;
                     request.Method = "POST";
-                    request.Timeout = 10000;
+                    
+                    //New
+                    request.Proxy = null;
+                    request.Timeout = 30000;
+                    //KeepAlive is True by default
+                    //request.KeepAlive = true;
+
+                    //LOL, really?
+                    request.UserAgent = chromeUA;
+
                     request.Referer = refer;
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = requestData.Length;
@@ -383,14 +393,6 @@ namespace SCMBot
                 }
 
                 return content;
-       
-            //catch (Exception e)
-            //{
-            //     MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //      Main.AddtoLog(e.GetType() + ". " + e.Message);
-            //     return content;
-            //  }
-
         }
 
 
@@ -403,7 +405,16 @@ namespace SCMBot
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = "GET";
-                    request.Timeout = 10000;
+
+                    //New
+                    request.Proxy = null;
+                    request.Timeout = 30000;
+                    //KeepAlive is True by default
+                    //request.KeepAlive = true;
+
+                    //LOL, really?
+                    request.UserAgent = chromeUA;
+
                     request.Accept = "application/json";
                     request.CookieContainer = cookie;
 

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
+using System.Net;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -53,6 +54,11 @@ namespace SCMBot
             recentListView.SmallImageList = StatImgLst;
 
             steam_srch.delegMessage += new eventDelegate(Event_Message);
+           
+            //Some WebRequest optimizations
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = 1000;
          }
 
  
