@@ -63,6 +63,7 @@ namespace SCMBot {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Opensource Project
         ///Note: Program may contain critical bugs, for testing purposes only!
+        ///Website: http://scmbot.ru
         ///Copyright © 2013-2014 Maxx53
         ///
         ///

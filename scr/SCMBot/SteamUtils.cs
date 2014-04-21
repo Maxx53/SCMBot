@@ -29,7 +29,7 @@ namespace SCMBot
 
         const string _blist = _mainsiteS + "market/buylisting/";
 
-        const string _lists = _market + "listings/";
+        public const string _lists = _market + "listings/";
 
 
         //Todo: JSON
@@ -95,7 +95,7 @@ namespace SCMBot
 
         public class InventItem
         {
-            public InventItem(string assetid, string name, string type, string price, string imglink, string marketName, bool onSale, bool marketable)
+            public InventItem(string assetid, string name, string type, string price, string imglink, string marketName, bool onSale, bool marketable, string pageLink)
             {
                 this.Name = name;
                 this.AssetId = assetid;
@@ -104,7 +104,7 @@ namespace SCMBot
                 this.ImgLink = imglink;
                 this.OnSale = onSale;
                 this.MarketName = marketName;
-
+                this.PageLnk = pageLink;
                 //Dummy
                 this.Marketable = marketable;
             }
@@ -116,6 +116,7 @@ namespace SCMBot
             public string AssetId { set; get; }
             public string MarketName { set; get; }
             public bool OnSale { set; get; }
+            public string PageLnk { set; get; }
 
             //Dummy
             public bool Marketable { set; get; }
@@ -320,6 +321,10 @@ namespace SCMBot
 
             [JsonProperty("marketable")]
             public bool Marketable { get; set; }
+
+            //new
+            [JsonProperty("appid")]
+            public string AppId { get; set; }
             
         }
 
@@ -751,7 +756,7 @@ namespace SCMBot
                             //Damn, Mr.Crowley... WTF!?
                             if (NotSetHead && !full)
                             {
-                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name, true);
+                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name + ";" + ourItemInfo.icon_url, true);
                                 scanInput.Name = ourItemInfo.name;
                                 NotSetHead = false;
                             }
@@ -864,6 +869,7 @@ namespace SCMBot
         public int ParseInventory(string content)
         {
             inventList.Clear();
+
             try
             {
                 var rgDescr = JsonConvert.DeserializeObject<InventoryData>(content);
@@ -884,8 +890,9 @@ namespace SCMBot
                     //ParseLotList(cont, tempLst, currencies);
                     //if (tempLst.Count != 0)
                     //  price = tempLst[0].Price;
+                    string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, ourItem.MarketName);
 
-                    inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false, ourItem.Marketable));
+                    inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false, ourItem.Marketable, pageLnk));
                 }
             }
             catch (Exception e)
@@ -917,6 +924,9 @@ namespace SCMBot
 
                     string listId = Regex.Match(currmatch, "(?<=mylisting_)(.*)(?=_image\" src=)").ToString();
 
+                    string appidRaw = Regex.Match(currmatch, "(?<=market_listing_item_name_link)(.*)(?=</a></span>)").ToString();
+                    string pageLnk = Regex.Match(appidRaw, "(?<=href=\")(.*)(?=\">)").ToString();
+               
                     string captainPrice = Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim();
 
                     captainPrice = Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty);
@@ -926,7 +936,7 @@ namespace SCMBot
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
 
-                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true, true));
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true, true, pageLnk));
 
                 }
 

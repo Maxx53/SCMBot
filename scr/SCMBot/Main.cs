@@ -496,8 +496,22 @@ namespace SCMBot
                     ProgressBar1.Value = Convert.ToInt32(message);
                     break;
                 case flag.SetHeadName:
-                    scanListView.Items[searchId].SubItems[1].Text = message;
-                    SetColumnWidths(scanListView, true);
+
+                    string[] newInfo = message.Split(';');
+
+                        var item = scanItems[searchId].Steam.scanInput;
+                        item.Name = newInfo[0];
+                        item.ImgLink = newInfo[1];
+
+
+                        scanListView.Items[searchId].SubItems[1].Text = newInfo[0];
+                        SetColumnWidths(scanListView, true);
+
+                        if (scanListView.SelectedIndices[0] == searchId)
+                        {
+                            BindToControls(scanListView);
+                        }
+
                     break;
                     
                 case flag.Scan_progress:
@@ -565,7 +579,7 @@ namespace SCMBot
                         steam_srch.loadInventory();
                     }
                     else
-                        StatusLabel1.Text = "Nothing to sell!";
+                        StatusLabel1.Text = "Set prices before Selling!";
 
                     ProgressBar1.Visible = false;
                     break;
@@ -654,7 +668,9 @@ namespace SCMBot
                         }
                         SetColumnWidths(InventoryList, true);
                         SellButton.Enabled = true;
+                        if (comboBox3.SelectedIndex != 4)
                         button2.Enabled = true;
+                        else button2.Enabled = false;
                     }
                     else
                     {
@@ -1014,7 +1030,7 @@ namespace SCMBot
             for (int i = 0; i < InventoryList.CheckedItems.Count; i++)
             {
                 var ouritem = steam_srch.inventList[InventoryList.CheckedItems[i].Index];
-                if (ouritem.Marketable)
+                if ((ouritem.Marketable) && (ouritem.Price != "0"))
                 steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
             }
 
@@ -1042,34 +1058,7 @@ namespace SCMBot
 
         private void InventoryList_Click(object sender, EventArgs e)
         {
-            if (InventoryList.SelectedIndices.Count != 0)
-            {
-
-                var lit = InventoryList.SelectedItems[0];
-
-                if (lastSelec != lit.Index)
-                {
-                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
-                    StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox3);
-
-                        var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
-
-                        if (currPr == Strings.None)
-                        {
-                            steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
-                            textBox1.Text = Strings.Loading;
-                            textBox1.ReadOnly = true;
-                        }
-                        else
-                            if (currPr == Strings.NFS)
-                                textBox1.ReadOnly = true;
-                        else
-                            textBox1.Text = currPr;
-
-                    lastSelec = lit.Index;
-                }
-                
-            }
+            
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1154,11 +1143,7 @@ namespace SCMBot
 
         private void FoundList_Click(object sender, EventArgs e)
         {
-            if (FoundList.SelectedIndices.Count != 0)
-            {
-                var ourItem = steam_srch.searchList[FoundList.SelectedIndices[0]];
-                StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox1);
-            }
+
         }
 
         private void searchBox_KeyUp(object sender, KeyEventArgs e)
@@ -1169,6 +1154,8 @@ namespace SCMBot
                 searchButton.PerformClick();
             }
         }
+
+
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1186,36 +1173,40 @@ namespace SCMBot
                 steam_srch.isRemove = false;
                 textBox1.ReadOnly = false;
             }
+
             SellButton.Enabled = false;
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string truePrice = string.Empty;
-            if (textBox1.Text == string.Empty)
+            if (comboBox3.SelectedIndex != 4)
             {
-                MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            else
-            {
-                truePrice = SteamSite.GetSweetPrice(textBox1.Text);
-                if (truePrice == string.Empty)
+                string truePrice = string.Empty;
+                if (textBox1.Text == string.Empty)
                 {
                     MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-            }
-              
-            
-            for (int i = 0; i < InventoryList.SelectedIndices.Count; i++)
-            {
-                var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[i]];
-                ourItem.Price = truePrice;
-                InventoryList.SelectedItems[i].SubItems[3].Text = textBox1.Text;
-            }
+                else
+                {
+                    truePrice = SteamSite.GetSweetPrice(textBox1.Text);
+                    if (truePrice == string.Empty)
+                    {
+                        MessageBox.Show(Strings.WrongPrice, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
 
-            
+
+                for (int i = 0; i < InventoryList.SelectedIndices.Count; i++)
+                {
+                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[i]];
+                    ourItem.Price = truePrice;
+                    InventoryList.SelectedItems[i].SubItems[3].Text = textBox1.Text;
+                }
+
+            }
         }
 
         private void setButtText(status stat)
@@ -1840,11 +1831,6 @@ namespace SCMBot
 
         }
 
-        private void scanListView_MouseClick(object sender, MouseEventArgs e)
-        {
-            BindToControls((ListView)sender);
-        }
-
         private void scanListView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1937,6 +1923,67 @@ namespace SCMBot
             }
            
         }
+
+        private void scanListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindToControls((ListView)sender);
+        }
+
+        private void FoundList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FoundList.SelectedItems.Count == 1)
+            {
+                var ourItem = steam_srch.searchList[FoundList.SelectedIndices[0]];
+                StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox1);
+            }
+            else
+                pictureBox1.Image = null;
+        }
+
+        private void InventoryList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (InventoryList.SelectedItems.Count == 1)
+            {
+
+                var lit = InventoryList.SelectedItems[0];
+
+                if (lastSelec != lit.Index)
+                {
+                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
+                    StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox3);
+
+                    var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
+
+                    if (currPr == Strings.None)
+                    {
+                        steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
+                        textBox1.Text = Strings.Loading;
+                        textBox1.ReadOnly = true;
+                    }
+                    else
+                        if (currPr == Strings.NFS)
+                            textBox1.ReadOnly = true;
+                        else
+                            textBox1.Text = currPr;
+
+                    lastSelec = lit.Index;
+                }
+
+            }
+            else pictureBox3.Image = null;
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            if ((steam_srch.inventList.Count != 0) && (InventoryList.SelectedIndices.Count != 0))
+            {
+                var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
+                StartCmdLine(ourItem.PageLnk, string.Empty, false);
+            }
+           
+
+        }
+
 
    }
 }

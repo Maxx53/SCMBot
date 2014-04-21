@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Maxx53")]
 [assembly: AssemblyProduct("Steam Community Market Bot")]
-[assembly: AssemblyCopyright("Copyright © Maxx53, 2013")]
+[assembly: AssemblyCopyright("Copyright © Maxx53, 2013-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
