@@ -145,9 +145,6 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Учетная запись</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Торговая площадка</value>
-  </data>
   <data name="resDelayBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>142, 71</value>
   </data>
@@ -181,22 +178,19 @@
   <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 21</value>
   </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Торговая площадка</value>
+  </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 423</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Сохранить</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Интерфейс</value>
-  </data>
-  <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 121</value>
-  </data>
-  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="playSndCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 17</value>
   </data>
-  <data name="checkBox1.Text" xml:space="preserve">
+  <data name="playSndCheckBox.Text" xml:space="preserve">
     <value>Проигрывать звуки</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
@@ -256,6 +250,9 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Очищать лог после:</value>
   </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Интерфейс</value>
+  </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 407</value>
   </data>
@@ -265,14 +262,14 @@
   <data name="label6.Text" xml:space="preserve">
     <value>* Требуется перезапуск программы</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Сеть</value>
-  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 13</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>Параллельных запросов:</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Сеть</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Настройки</value>

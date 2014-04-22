@@ -125,14 +125,8 @@
   <data name="logCountBox.PromptChar" type="System.Char, mscorlib" xml:space="preserve">
     <value> </value>
   </data>
-  <data name="&gt;&gt;logCountBox.Name" xml:space="preserve">
-    <value>logCountBox</value>
-  </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>Search results:</value>
@@ -143,8 +137,8 @@
   <data name="&gt;&gt;intLangComboBox.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 207</value>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -152,14 +146,17 @@
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="intLangComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 21</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;label5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -174,23 +171,23 @@
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Interface</value>
   </data>
-  <data name="&gt;&gt;ignoreBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox2.Items20" xml:space="preserve">
+    <value>spanish</value>
   </data>
-  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 47</value>
-  </data>
-  <data name="comboBox2.Items22" xml:space="preserve">
-    <value>tchinese</value>
+  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
   </data>
   <data name="&gt;&gt;intLangComboBox.Name" xml:space="preserve">
     <value>intLangComboBox</value>
   </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 143</value>
+  <data name="&gt;&gt;searchResBox.Name" xml:space="preserve">
+    <value>searchResBox</value>
   </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>59</value>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>* Restart needed to take effect</value>
@@ -219,8 +216,8 @@
   <data name="comboBox2.Items11" xml:space="preserve">
     <value>italian</value>
   </data>
-  <data name="&gt;&gt;hideInventBox.Name" xml:space="preserve">
-    <value>hideInventBox</value>
+  <data name="comboBox2.Items10" xml:space="preserve">
+    <value>hungarian</value>
   </data>
   <data name="comboBox2.Items13" xml:space="preserve">
     <value>koreana</value>
@@ -234,8 +231,8 @@
   <data name="comboBox2.Items14" xml:space="preserve">
     <value>norwegian</value>
   </data>
-  <data name="comboBox2.Items17" xml:space="preserve">
-    <value>brazilian</value>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="comboBox2.Items4" xml:space="preserve">
     <value>czech</value>
@@ -249,11 +246,8 @@
   <data name="passwordBox.Text" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>57</value>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
   </data>
   <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -261,8 +255,8 @@
   <data name="ignoreBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 45</value>
   </data>
-  <data name="logCountBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;searchResBox.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -276,14 +270,20 @@
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Settings</value>
+  <data name="&gt;&gt;numThreadsBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Save and Close</value>
   </data>
-  <data name="checkBox1.Text" xml:space="preserve">
-    <value>Play sounds</value>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -294,44 +294,53 @@
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>13, 13</value>
+  </data>
+  <data name="&gt;&gt;numThreadsBox.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="intLangComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 21</value>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Network</value>
+  <data name="&gt;&gt;checkBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;hideInventBox.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
   </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>*</value>
+  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 27</value>
+  <data name="&gt;&gt;loginBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Market</value>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="comboBox2.Items6" xml:space="preserve">
     <value>dutch</value>
   </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Password</value>
   </data>
-  <data name="numThreadsBox.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="hideInventBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 71</value>
   </data>
   <data name="&gt;&gt;resDelayBox.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -357,8 +366,11 @@
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;passwordBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 97</value>
+  </data>
+  <data name="&gt;&gt;label9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="checkBox2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -366,29 +378,32 @@
   <data name="&gt;&gt;label12.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
   <data name="loginBox.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="loginBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 17</value>
+  <data name="&gt;&gt;loginBox.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;resDelayBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="ignoreBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 17</value>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>61</value>
   </data>
-  <data name="comboBox2.Items24" xml:space="preserve">
-    <value>turkish</value>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
   </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="logCountBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Network</value>
   </data>
   <data name="&gt;&gt;passwordBox.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -402,8 +417,8 @@
   <data name="&gt;&gt;resDelayBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 143</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>per page</value>
@@ -414,47 +429,35 @@
   <data name="passwordBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>72, 43</value>
   </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 13</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
-  </data>
-  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="loginBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 20</value>
+  </data>
+  <data name="&gt;&gt;ignoreBox.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;logCountBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;logCountBox.Name" xml:space="preserve">
+    <value>logCountBox</value>
   </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 19</value>
+  <data name="searchResBox.Mask" xml:space="preserve">
+    <value>00000</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="hideInventBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
+  <data name="comboBox2.Items8" xml:space="preserve">
+    <value>french</value>
   </data>
   <data name="comboBox2.Items1" xml:space="preserve">
     <value>english</value>
@@ -465,8 +468,11 @@
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -474,14 +480,23 @@
   <data name="comboBox2.Items3" xml:space="preserve">
     <value>bulgarian</value>
   </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>188, 97</value>
+  </data>
+  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 356</value>
+  </data>
   <data name="passwordBox.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
     <value>*</value>
   </data>
-  <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
+  <data name="numThreadsBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 19</value>
   </data>
   <data name="comboBox2.Items5" xml:space="preserve">
     <value>danish</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
@@ -491,6 +506,9 @@
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;hideInventBox.Name" xml:space="preserve">
+    <value>hideInventBox</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -504,14 +522,14 @@
   <data name="&gt;&gt;label7.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 207</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
-    <value>checkBox1</value>
+  <data name="logCountBox.Mask" xml:space="preserve">
+    <value>00000</value>
   </data>
-  <data name="&gt;&gt;numThreadsBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -522,14 +540,20 @@
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 13</value>
+  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
+  </data>
+  <data name="playSndCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 121</value>
   </data>
   <data name="&gt;&gt;checkBox2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>188, 97</value>
+  <data name="loginBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>72, 17</value>
   </data>
   <data name="ignoreBox.Text" xml:space="preserve">
     <value>Ignore Items with warnings</value>
@@ -537,11 +561,14 @@
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 21</value>
   </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 97</value>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="hideInventBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 17</value>
+  </data>
+  <data name="passwordBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 20</value>
   </data>
   <data name="resDelayBox.Text" xml:space="preserve">
     <value>100</value>
@@ -558,8 +585,8 @@
   <data name="ignoreBox.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
   </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
+  <data name="&gt;&gt;playSndCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;label14.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -579,11 +606,11 @@
   <data name="resDelayBox.PromptChar" type="System.Char, mscorlib" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="comboBox2.Items17" xml:space="preserve">
+    <value>brazilian</value>
+  </data>
   <data name="comboBox2.Items16" xml:space="preserve">
     <value>portuguese</value>
-  </data>
-  <data name="comboBox2.Items20" xml:space="preserve">
-    <value>spanish</value>
   </data>
   <data name="passwordBox.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -594,14 +621,14 @@
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 3</value>
   </data>
-  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="checkBox2.Text" xml:space="preserve">
+    <value>Login at start</value>
   </data>
   <data name="&gt;&gt;label8.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="resDelayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 71</value>
+  <data name="&gt;&gt;playSndCheckBox.Name" xml:space="preserve">
+    <value>playSndCheckBox</value>
   </data>
   <data name="checkBox2.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -618,8 +645,11 @@
   <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
     <value>groupBox4</value>
   </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 13</value>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 13</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -627,14 +657,14 @@
   <data name="&gt;&gt;comboBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;searchResBox.Name" xml:space="preserve">
-    <value>searchResBox</value>
-  </data>
   <data name="&gt;&gt;label12.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="numThreadsBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>146, 19</value>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="&gt;&gt;playSndCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;comboBox2.Name" xml:space="preserve">
     <value>comboBox2</value>
@@ -648,17 +678,17 @@
   <data name="&gt;&gt;hideInventBox.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>64</value>
+  <data name="&gt;&gt;ignoreBox.Name" xml:space="preserve">
+    <value>ignoreBox</value>
   </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="logCountBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 19</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 46</value>
@@ -669,11 +699,8 @@
   <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>60</value>
-  </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 27</value>
   </data>
   <data name="&gt;&gt;numThreadsBox.Name" xml:space="preserve">
     <value>numThreadsBox</value>
@@ -681,8 +708,8 @@
   <data name="searchResBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 20</value>
   </data>
-  <data name="logCountBox.Mask" xml:space="preserve">
-    <value>00000</value>
+  <data name="label10.Text" xml:space="preserve">
+    <value>*</value>
   </data>
   <data name="resDelayBox.TabIndex" type="System.Int32, mscorlib">
     <value>67</value>
@@ -690,8 +717,8 @@
   <data name="&gt;&gt;ignoreBox.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;checkBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="numThreadsBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 20</value>
@@ -699,14 +726,17 @@
   <data name="&gt;&gt;intLangComboBox.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label13.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Number of parallel threads:</value>
   </data>
   <data name="logCountBox.Text" xml:space="preserve">
     <value>100</value>
@@ -720,8 +750,8 @@
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="button1.TabIndex" type="System.Int32, mscorlib">
-    <value>58</value>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>57</value>
   </data>
   <data name="&gt;&gt;logCountBox.Parent" xml:space="preserve">
     <value>groupBox3</value>
@@ -729,8 +759,8 @@
   <data name="&gt;&gt;logCountBox.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 17</value>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -738,8 +768,8 @@
   <data name="&gt;&gt;label13.Name" xml:space="preserve">
     <value>label13</value>
   </data>
-  <data name="logCountBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 19</value>
+  <data name="hideInventBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -747,11 +777,11 @@
   <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>57</value>
   </data>
-  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="numThreadsBox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -765,14 +795,11 @@
   <data name="label2.Text" xml:space="preserve">
     <value>User</value>
   </data>
-  <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 121</value>
+  <data name="&gt;&gt;playSndCheckBox.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Language:</value>
-  </data>
-  <data name="checkBox2.Text" xml:space="preserve">
-    <value>Login at start</value>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -786,32 +813,29 @@
   <data name="&gt;&gt;numThreadsBox.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;numThreadsBox.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>Resell delay:</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Password</value>
+  <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 17</value>
   </data>
-  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>60</value>
+  <data name="ignoreBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 17</value>
+  </data>
+  <data name="playSndCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 17</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>59</value>
+  <data name="&gt;&gt;ignoreBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ignoreBox.Name" xml:space="preserve">
-    <value>ignoreBox</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+  <data name="&gt;&gt;passwordBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 102</value>
@@ -819,17 +843,23 @@
   <data name="searchResBox.TabIndex" type="System.Int32, mscorlib">
     <value>62</value>
   </data>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="hideInventBox.Text" xml:space="preserve">
     <value>Hide "My Inventory" panel</value>
   </data>
-  <data name="comboBox2.Items21" xml:space="preserve">
-    <value>swedish</value>
+  <data name="&gt;&gt;searchResBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="comboBox2.Items2" xml:space="preserve">
-    <value>german</value>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="playSndCheckBox.Text" xml:space="preserve">
+    <value>Play sounds</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 47</value>
   </data>
   <data name="comboBox2.Items" xml:space="preserve">
     <value>russian</value>
@@ -837,20 +867,20 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Clear log after:</value>
   </data>
-  <data name="&gt;&gt;loginBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="comboBox2.Items21" xml:space="preserve">
+    <value>swedish</value>
   </data>
-  <data name="&gt;&gt;loginBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="comboBox2.Items23" xml:space="preserve">
     <value>thai</value>
   </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>61</value>
+  <data name="comboBox2.Items22" xml:space="preserve">
+    <value>tchinese</value>
   </data>
-  <data name="checkBox1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="comboBox2.Items24" xml:space="preserve">
+    <value>turkish</value>
   </data>
   <data name="&gt;&gt;loginBox.Name" xml:space="preserve">
     <value>loginBox</value>
@@ -861,9 +891,6 @@
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 13</value>
   </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>57</value>
-  </data>
   <data name="&gt;&gt;label10.Parent" xml:space="preserve">
     <value>groupBox4</value>
   </data>
@@ -873,14 +900,11 @@
   <data name="loginBox.Text" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 13</value>
   </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>*</value>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;button1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -888,14 +912,20 @@
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
-  <data name="&gt;&gt;searchResBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>231, 461</value>
+  </data>
+  <data name="resDelayBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 71</value>
   </data>
   <data name="searchResBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>84, 44</value>
   </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
+  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="playSndCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 20</value>
@@ -903,8 +933,8 @@
   <data name="ignoreBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>231, 461</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Login</value>
   </data>
   <data name="resDelayBox.Mask" xml:space="preserve">
     <value>0000000</value>
@@ -912,11 +942,14 @@
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>13, 13</value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>groupBox4</value>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
   </data>
   <data name="&gt;&gt;passwordBox.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -924,11 +957,8 @@
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 93</value>
   </data>
-  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 19</value>
-  </data>
-  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 356</value>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>58</value>
   </data>
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
@@ -942,11 +972,11 @@
   <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="searchResBox.Mask" xml:space="preserve">
-    <value>00000</value>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 13</value>
   </data>
-  <data name="hideInventBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -957,53 +987,26 @@
   <data name="&gt;&gt;intLangComboBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="passwordBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 20</value>
-  </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>188, 45</value>
   </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>*</value>
-  </data>
-  <data name="&gt;&gt;label12.Name" xml:space="preserve">
-    <value>label12</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>13, 13</value>
-  </data>
-  <data name="&gt;&gt;searchResBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ignoreBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="hideInventBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 71</value>
-  </data>
-  <data name="comboBox2.Items10" xml:space="preserve">
-    <value>hungarian</value>
-  </data>
-  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+  <data name="playSndCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>72, 19</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Market</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 99</value>
-  </data>
-  <data name="comboBox2.Items8" xml:space="preserve">
-    <value>french</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Login</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>groupBox3</value>
@@ -1011,26 +1014,23 @@
   <data name="comboBox2.Items18" xml:space="preserve">
     <value>romanian</value>
   </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox2.Items2" xml:space="preserve">
+    <value>german</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 407</value>
   </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>records</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Language:</value>
-  </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Number of parallel threads:</value>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 22</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
 using System.Net;
+using System.IO;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -127,6 +128,8 @@ namespace SCMBot
             settingsForm.loginBox.Text = settings.lastLogin;
             label3.Text = string.Format("({0})", settings.lastLogin);
 
+            label3Stretch();
+
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
             settingsForm.searchResBox.Text = settings.searchRes;
@@ -172,6 +175,21 @@ namespace SCMBot
             }
         }
 
+        private void label3Stretch()
+        {
+            int xValue = 97;
+            int widthValue = 590;
+
+            if (label3.Size.Width > 70)
+            {
+                xValue += label3.Size.Width - 70;
+                widthValue -= label3.Size.Width - 70;
+            }
+
+            groupBox2.Location = new Point(xValue, groupBox3.Location.Y);
+            groupBox2.Size = new System.Drawing.Size(widthValue, groupBox2.Size.Height);
+        }
+
 
 
         private void SaveSettings(bool savetabs)
@@ -196,6 +214,8 @@ namespace SCMBot
 
             splitContainer1.Panel2Collapsed = settings.hideInvent;
             label3.Text = string.Format("({0})", settings.lastLogin);
+
+            label3Stretch();
 
             //If you need password crypting
             //settings.lastPass = Encrypt(passwordBox.Text);
@@ -645,6 +665,7 @@ namespace SCMBot
 
                 case flag.Inventory_Loaded:
                     InventoryList.Items.Clear();
+                  
                     label4.Text = steam_srch.inventList.Count.ToString();
                     button1.Enabled = true;
 
@@ -664,6 +685,7 @@ namespace SCMBot
 
                             string[] row = { string.Empty, ourItem.Type, ourItem.Name, priceRes };
                             var lstItem = new ListViewItem(row);
+                            lstItem.Text = ourItem.Name;
                             InventoryList.Items.Add(lstItem);
                         }
                         SetColumnWidths(InventoryList, true);
@@ -761,7 +783,7 @@ namespace SCMBot
                 {
                     var ourItem = steam_srch.searchList[FoundList.SelectedItems[0].Index];
                     steam_srch.BuyNow = true;
-                    steam_srch.scanInput.Link = ourItem.Link;
+                    steam_srch.scanInput = new saveTab(ourItem.Link);
                     steam_srch.ScanPrices();
                     buyNowButton.Enabled = false;
                     StatusLabel1.Text = string.Format(Strings.buyingProc, ourItem.Name);
@@ -1982,6 +2004,11 @@ namespace SCMBot
             }
            
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            InventoryList.View = View.LargeIcon;
         }
 
 

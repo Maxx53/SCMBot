@@ -201,10 +201,10 @@
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
-            // checkBox1
+            // playSndCheckBox
             // 
-            resources.ApplyResources(this.playSndCheckBox, "checkBox1");
-            this.playSndCheckBox.Name = "checkBox1";
+            resources.ApplyResources(this.playSndCheckBox, "playSndCheckBox");
+            this.playSndCheckBox.Name = "playSndCheckBox";
             this.playSndCheckBox.UseVisualStyleBackColor = true;
             // 
             // label12

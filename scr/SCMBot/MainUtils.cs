@@ -546,6 +546,11 @@ namespace SCMBot
             this.StatId = statId;
         }
 
+        public saveTab(string link)
+        {
+            this.Link = link;
+        }
+
         public string Name { set; get; }
         public string ImgLink { set; get; }
         public string Link { set; get; }
