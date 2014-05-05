@@ -20,7 +20,7 @@ namespace SCMBot
 {
     public partial class Main : Form
     {
-        SteamSite steam_srch = new SteamSite();
+        public static SteamSite steam_srch = new SteamSite();
         SearchPagePos sppos;
         string lastSrch;
         int lastSelec = -1;
@@ -34,7 +34,7 @@ namespace SCMBot
 
         ScanItemList scanItems = new ScanItemList();
 
-        Settings settingsForm = new Settings();
+        SettingsFrm settingsForm = new SettingsFrm();
         Properties.Settings settings = Properties.Settings.Default;
 
         ImageList StatImgLst;
@@ -1109,6 +1109,7 @@ namespace SCMBot
         {
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
+
                 string lang = settingsForm.comboBox2.Text;
                 if (lang != string.Empty && settingsForm.isLangChg)
                 {
@@ -1122,6 +1123,7 @@ namespace SCMBot
             {
                 LoadSettings(false);
             }
+
         }
 
         private void splitContainer2_Paint(object sender, PaintEventArgs e)
@@ -2006,9 +2008,36 @@ namespace SCMBot
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+
+        private void button3_Click_1(object sender, EventArgs e)
         {
-            InventoryList.View = View.LargeIcon;
+            //Buggy!
+            var sel = scanListView.SelectedIndices[0];
+
+            if (isFirstTab)
+            {
+                var tocopy = scanItems[sel];
+                scanItems.Insert(sel, tocopy);
+                scanListView.Items.Insert(sel, (ListViewItem)scanListView.Items[sel].Clone());
+
+                scanItems.UpdateIds();
+
+                BindToControls(scanListView);
+
+                
+            }
+            else
+            {
+
+                var tocopy = steam_srch.recentInputList[sel];
+                steam_srch.recentInputList.Insert(sel, tocopy);
+                recentListView.Items.Insert(sel, (ListViewItem)recentListView.Items[sel].Clone());
+               
+                BindToControls(recentListView);
+
+
+            }
+
         }
 
 

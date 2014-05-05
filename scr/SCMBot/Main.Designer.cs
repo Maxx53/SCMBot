@@ -34,6 +34,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.NameLabel = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.linkTextBox = new System.Windows.Forms.TextBox();
@@ -194,6 +195,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.NameLabel);
+            this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.nameTextBox);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.linkTextBox);
@@ -213,6 +215,13 @@
             // 
             resources.ApplyResources(this.NameLabel, "NameLabel");
             this.NameLabel.Name = "NameLabel";
+            // 
+            // button3
+            // 
+            resources.ApplyResources(this.button3, "button3");
+            this.button3.Name = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // nameTextBox
             // 
@@ -1059,6 +1068,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ToolStripMenuItem checkedToBothSourcesToolStripMenuItem;
+        private System.Windows.Forms.Button button3;
     }
 }
 

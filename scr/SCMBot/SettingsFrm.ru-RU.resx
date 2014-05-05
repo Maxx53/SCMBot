@@ -125,7 +125,7 @@
     <value>Автологин</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 46</value>
+    <value>17, 44</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 13</value>
@@ -134,7 +134,7 @@
     <value>Пароль</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 20</value>
+    <value>20, 18</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -142,11 +142,11 @@
   <data name="label2.Text" xml:space="preserve">
     <value>Логин</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Учетная запись</value>
-  </data>
   <data name="resDelayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 71</value>
+    <value>160, 66</value>
+  </data>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 69</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 13</value>
@@ -155,16 +155,19 @@
     <value>Задержка перепродажи:</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>193, 45</value>
+    <value>282, 43</value>
+  </data>
+  <data name="ignoreBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 43</value>
   </data>
   <data name="ignoreBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 17</value>
+    <value>263, 17</value>
   </data>
   <data name="ignoreBox.Text" xml:space="preserve">
-    <value>Игнор. предметы с предупрежд.</value>
+    <value>Игнорировать предметы с предупреждениями</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 21</value>
+    <value>19, 19</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -173,19 +176,19 @@
     <value>Язык:</value>
   </data>
   <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>49, 18</value>
+    <value>62, 16</value>
   </data>
   <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 21</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Торговая площадка</value>
+    <value>150, 21</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 423</value>
+    <value>236, 209</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Сохранить</value>
+  </data>
+  <data name="playSndCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 118</value>
   </data>
   <data name="playSndCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 17</value>
@@ -194,25 +197,22 @@
     <value>Проигрывать звуки</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 47</value>
+    <value>199, 44</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>69, 13</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
-    <value>на стр.</value>
+    <value>на странице</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 13</value>
+    <value>114, 13</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>Результ-в поиска:</value>
+    <value>Результатов поиска:</value>
   </data>
   <data name="searchResBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>113, 44</value>
-  </data>
-  <data name="searchResBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 20</value>
+    <value>135, 41</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -221,13 +221,13 @@
     <value>Язык:</value>
   </data>
   <data name="intLangComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>49, 94</value>
+    <value>57, 91</value>
   </data>
   <data name="intLangComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 21</value>
+    <value>178, 21</value>
   </data>
   <data name="logCountBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>113, 19</value>
+    <value>135, 16</value>
   </data>
   <data name="hideInventBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 17</value>
@@ -236,7 +236,7 @@
     <value>Спрятать "Мой инвентарь"</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 22</value>
+    <value>199, 19</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 13</value>
@@ -250,12 +250,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Очищать лог после:</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Интерфейс</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 407</value>
-  </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 13</value>
   </data>
@@ -268,8 +262,23 @@
   <data name="label9.Text" xml:space="preserve">
     <value>Параллельных запросов:</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>Импорт куки</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Площадка</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>Интерфейс</value>
+  </data>
+  <data name="tabPage4.Text" xml:space="preserve">
     <value>Сеть</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>347, 248</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Настройки</value>

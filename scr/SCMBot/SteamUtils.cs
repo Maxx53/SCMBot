@@ -356,7 +356,7 @@ namespace SCMBot
             [JsonProperty("results_html")]
             public string HtmlRes { get; set; }
 
-            [JsonProperty("listinginfo")]
+            [JsonProperty(PropertyName = "listinginfo", Required = Required.Default)]
             public IDictionary<string, ListingInfo> Listing { get; set; }
 
             [JsonProperty("assets")]
@@ -396,7 +396,7 @@ namespace SCMBot
 
         public class Assets
         {
-            [JsonProperty("listinginfo")]
+            [JsonProperty(PropertyName = "listinginfo", Required = Required.Default)]
             public IDictionary<string, ListingInfo> Listing { get; set; }
 
             [JsonProperty("converted_fee")]
@@ -781,7 +781,7 @@ namespace SCMBot
             catch(Exception e)
             {
                 //Parsing fail
-                Main.AddtoLog(e.Message);
+                Main.AddtoLog("Err Source: " + e.Source);
                 return 3;
             }
 
@@ -815,11 +815,12 @@ namespace SCMBot
                         {
                             string currmatch = match.Groups[1].Value;
 
-                            string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\">)").ToString();
+                            //Fix for Steam update 5/01/14 4:00 PM PST
+                            string ItemUrl = Regex.Match(currmatch, "(?<==\")(.*)(?=\" id)").ToString();
 
                             string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
 
-                            //Fix fot Steam update 3/26/14 4:00 PM PST
+                            //Fix for Steam update 3/26/14 4:00 PM PST
                             string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:)(.*)(?=<div class=\"market_listing_right_cell)", RegexOptions.Singleline).ToString();
 
                             //Удаляем ascii кода нашей текущей валюты

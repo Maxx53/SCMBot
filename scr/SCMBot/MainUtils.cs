@@ -71,7 +71,7 @@ namespace SCMBot
         const string helpPage = homePage + "/wiki";
         const string donateLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=demmaxx@gmail.com&lc=RU&item_name=SteamCMBot%20Donate&currency_code=RUB&bn=PP-DonationsBF";
 
-        const string cockPath = "coockies.dat";
+        public const string cockPath = "coockies.dat";
         const string chromeUA = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
         
         //Just put here your random values
@@ -242,7 +242,7 @@ namespace SCMBot
             log.Close();
         }
 
-        static void WriteCookiesToDisk(string file, CookieContainer cookieJar)
+        public static void WriteCookiesToDisk(string file, CookieContainer cookieJar)
         {
             using (Stream stream = File.Create(file))
             {
