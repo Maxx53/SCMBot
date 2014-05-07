@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
 using System.Net;
-using System.IO;
+using System.Windows.Forms.DataVisualization.Charting;
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -35,6 +35,8 @@ namespace SCMBot
         ScanItemList scanItems = new ScanItemList();
 
         SettingsFrm settingsForm = new SettingsFrm();
+        GraphFrm graphFrm = new GraphFrm();
+
         Properties.Settings settings = Properties.Settings.Default;
 
         ImageList StatImgLst;
@@ -377,22 +379,15 @@ namespace SCMBot
             } 
         }
 
-        public string GetPriceFormat(string mess, bool addcurr, string currName)
-        {
-            string curr = string.Empty;
-            if (addcurr)
-                curr = currName;
-            return string.Format("{0} {1} {2}", DateTime.Now.ToString("HH:mm:ss"), mess, curr);
-        }
+
 
 
         private void AddToScanLog(string message, int scanId, byte color, bool addcurr, bool ismain)
         {
-
             if (ismain)
             {
                 cutLog(scanItems[scanId].LogCont, settings.logCount);
-                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, GetPriceFormat(message, addcurr, steam_srch.currencies.GetName())));
+                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
                 ScrollLbox(scanId, scanListView, true);
             }
             else
@@ -400,7 +395,7 @@ namespace SCMBot
                 cutLog(steam_srch.logContainer, settings.logCount);
                 if (scanId != 0)
                     addcurr = false;
-                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, GetPriceFormat(message, addcurr, steam_srch.currencies.GetName())));
+                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
                 ScrollLbox(scanId, recentListView, false);
             }
 
@@ -579,7 +574,7 @@ namespace SCMBot
                     break;
 
                 case flag.InvPrice:
-                    string sweet = SteamSite.DoFracture(message);
+                    string sweet = MainScanItem.LogItem.DoFracture(message);
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
                     steam_srch.inventList[searchId].Price = message;
                     textBox1.Text = sweet;
@@ -1256,6 +1251,11 @@ namespace SCMBot
 
         }
 
+        private void ShowToolTip()
+        {
+            toolTip1.RemoveAll();
+            toolTip1.Show(Strings.MustStop, pictureBox4, pictureBox4.Location.X - 140, pictureBox4.Location.Y - 50);
+        }
 
 
         private void linkBinding_BindingComplete(object sender, BindingCompleteEventArgs e)
@@ -1266,6 +1266,12 @@ namespace SCMBot
 
                 var Item = scanItems[scanListView.SelectedIndices[0]];
                 var ourItem = Item.Steam.scanInput;
+
+                if (Item.Steam.scaninProg)
+                {
+                    ShowToolTip();
+                    return;
+                }
 
                 scanListView.SelectedItems[0].SubItems[2].Text = ourItem.Price;
 
@@ -1285,6 +1291,11 @@ namespace SCMBot
             }
             else
             {
+                if (steam_srch.scaninProg)
+                {
+                    ShowToolTip();
+                    return;
+                }
                 var Item = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
 
                 recentListView.SelectedItems[0].SubItems[2].Text = Item.Price;
@@ -1309,11 +1320,23 @@ namespace SCMBot
             {
                 var Item = scanItems[scanListView.SelectedIndices[0]];
                 var ourItem = Item.Steam.scanInput;
+
+                if (Item.Steam.scaninProg)
+                {
+                    ShowToolTip();
+                    return;
+                }
+
                 scanListView.SelectedItems[0].SubItems[1].Text = ourItem.Name;
                 SetColumnWidths(scanListView, true);
             }
             else
             {
+                if (steam_srch.scaninProg)
+                {
+                    ShowToolTip();
+                    return;
+                }
                 var Item = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
                 recentListView.SelectedItems[0].SubItems[1].Text = Item.Name;
                 SetColumnWidths(recentListView, true);
@@ -1914,13 +1937,19 @@ namespace SCMBot
             {
                 scanListView.Focus();
                 BindToControls(scanListView);
+
+                button4.Visible = true;
+                logListBox.Height -= 20;
             }
             else
             {
                 recentListView.Focus();
                 BindToControls(recentListView);
-            }
 
+                button4.Visible = false;
+                logListBox.Height += 20;
+            }
+            logListBox.Refresh();
         }
 
         private void recentListView_MouseUp(object sender, MouseEventArgs e)
@@ -2038,6 +2067,82 @@ namespace SCMBot
 
             }
 
+        }
+
+
+        private void ClearGraph()
+        {
+            graphFrm.chart1.Series.Clear();
+            graphFrm.chart1.ChartAreas.Clear();
+
+            graphFrm.chart1.Series.Add("line");
+            graphFrm.chart1.Series[0].ChartType = SeriesChartType.Line;
+
+            graphFrm.chart1.ChartAreas.Add("back");
+
+            graphFrm.chart1.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
+            graphFrm.chart1.ChartAreas[0].AxisX.Interval = 0;
+            graphFrm.chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Seconds;
+
+            graphFrm.chart1.ChartAreas[0].AxisY.LabelStyle.Format = "customY";
+
+            graphFrm.chart1.Series[0].BorderWidth = 2;
+            graphFrm.chart1.Series[0].MarkerStyle = MarkerStyle.Circle;
+
+            graphFrm.currency = steam_srch.currencies.GetName();
+        }
+
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (isFirstTab)
+            {
+                ClearGraph();
+
+                var sel = scanListView.SelectedIndices[0];
+                var logLst = scanItems[sel].LogCont;
+
+                if (logLst.Count == 0)
+                {
+                    MessageBox.Show(Strings.LogEmpty, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+                graphFrm.Text = string.Format(Strings.GraphFor, scanItems[sel].Steam.scanInput.Name);
+
+                for (int i = 0; i < logLst.Count; i++)
+                {
+                    if (logLst[i].AddCurr)
+                        graphFrm.chart1.Series[0].Points.AddXY(logLst[i].Time, logLst[i].RawPrice);
+                }
+
+                graphFrm.chart1.ChartAreas[0].RecalculateAxesScale();
+
+                int wished = Convert.ToInt32(SteamSite.GetSweetPrice(scanItems[sel].Steam.scanInput.Price));
+
+                if (graphFrm.chart1.ChartAreas[0].AxisY.Maximum > wished)
+                {
+                    StripLine stripOut = new StripLine();
+                    stripOut.IntervalOffset = wished;
+                    stripOut.StripWidth = graphFrm.chart1.ChartAreas[0].AxisY.Maximum - wished;
+                    stripOut.BackColor = Color.FromArgb(64, Color.Red);
+                    graphFrm.chart1.ChartAreas[0].AxisY.StripLines.Add(stripOut);
+                }
+                else
+                {
+                    graphFrm.chart1.ChartAreas[0].AxisY.Maximum = wished;
+                }
+
+                StripLine stripWished = new StripLine();
+                stripWished.IntervalOffset = 0;
+                stripWished.StripWidth = wished;
+                stripWished.BackColor = Color.FromArgb(64, Color.Green);
+
+                graphFrm.chart1.ChartAreas[0].AxisY.StripLines.Add(stripWished);
+
+                graphFrm.Show();
+            }
         }
 
 

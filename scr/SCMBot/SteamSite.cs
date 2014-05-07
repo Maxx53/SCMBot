@@ -493,8 +493,6 @@ namespace SCMBot
         {
             int total = ourItem.Price + ourItem.Fee;
             string totalStr = total.ToString();
-            
-            string prtoTxt = DoFracture(totalStr);
 
             if (total <= wished)
             {
@@ -512,7 +510,7 @@ namespace SCMBot
                         }
 
                         doMessage(flag.Success_buy, scanID, buyresp.Mess, ismain);
-                        doMessage(flag.Price_btext, scanID, prtoTxt, ismain);
+                        doMessage(flag.Price_btext, scanID, totalStr, ismain);
 
                         buyCont++;
 
@@ -534,10 +532,10 @@ namespace SCMBot
  
 
                 }
-                else doMessage(flag.Price_htext, scanID, prtoTxt, ismain);
+                else doMessage(flag.Price_htext, scanID, totalStr, ismain);
             }
             else
-                doMessage(flag.Price_text, scanID, prtoTxt, ismain);
+                doMessage(flag.Price_text, scanID, totalStr, ismain);
 
             return buyCont;
         }

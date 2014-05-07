@@ -57,6 +57,11 @@ namespace SCMBot
 
         }
 
+        private void SettingsFrm_Load(object sender, EventArgs e)
+        {
+            this.Icon = Icon.FromHandle(Properties.Resources.settings.GetHicon());
+        }
+
 
     }
 }

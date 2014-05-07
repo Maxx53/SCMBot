@@ -11,7 +11,6 @@ using System.Security.Cryptography;
 using System.Collections;
 using System.Threading;
 using System.ComponentModel;
-using System.Collections.Specialized;
 using System.Media;
 
 namespace SCMBot
@@ -520,6 +519,7 @@ namespace SCMBot
             if (wait)
                 p.WaitForExit();
         }
+
     }
 
 
@@ -585,10 +585,18 @@ namespace SCMBot
 
         public class LogItem
         {
-            public LogItem(int id, string text)
+            public LogItem(int id, string rawPrice, DateTime time, bool addcur, string curr)
             {
                 this.Id = id;
-                this.Text = text;
+
+                this.RawPrice = rawPrice;
+                this.Time = time;
+                this.AddCurr = addcur;
+
+                if (addcur)
+                    this.Text = string.Format("{0} {1} {2}", time.ToString("HH:mm:ss"), DoFracture(rawPrice), curr);
+                else
+                    this.Text = string.Format("{0} {1}", time.ToString("HH:mm:ss"), rawPrice); 
             }
 
             public override string ToString()
@@ -596,8 +604,37 @@ namespace SCMBot
                 return this.Text;
             }
 
+
+            public static string DoFracture(string input)
+            {
+                string prtoTxt = "0,";
+
+                switch (input.Length)
+                {
+                    case 0:
+                        prtoTxt = "0";
+                        break;
+                    case 1:
+                        prtoTxt += "0" + input;
+                        break;
+                    case 2:
+                        prtoTxt += input;
+                        break;
+                    default:
+                        prtoTxt = input.Insert(input.Length - 2, ",");
+                        break;
+                }
+                return prtoTxt;
+            }
+
+
+
             public int Id { get; set; }
             public string Text { get; set; }
+
+            public string RawPrice { get; set; }
+            public DateTime Time { get; set; }
+            public bool AddCurr { get; set; }
         }
 
         public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn, int resDel)

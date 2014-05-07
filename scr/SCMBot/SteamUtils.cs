@@ -572,29 +572,6 @@ namespace SCMBot
 
         //steam utils
 
-        public static string DoFracture(string input)
-        {
-            string prtoTxt = "0,";
-
-            switch (input.Length)
-            {
-                case 0:
-                    prtoTxt = "0";
-                    break;
-                case 1:
-                    prtoTxt += "0" + input;
-                    break;
-                case 2:
-                    prtoTxt += input;
-                    break;
-                default:
-                    prtoTxt = input.Insert(input.Length - 2, ",");
-                    break;
-            }
-            return prtoTxt;
-        }
-
-
         public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");

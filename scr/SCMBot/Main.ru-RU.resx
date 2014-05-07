@@ -187,6 +187,9 @@
   <data name="label12.Text" xml:space="preserve">
     <value>Задержка</value>
   </data>
+  <data name="button4.Text" xml:space="preserve">
+    <value>Смотреть график</value>
+  </data>
   <data name="tabPage1.Text" xml:space="preserve">
     <value>Страница предмета</value>
   </data>

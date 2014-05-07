@@ -69,6 +69,7 @@
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button4 = new System.Windows.Forms.Button();
             this.logListBox = new System.Windows.Forms.ListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.nextButton = new System.Windows.Forms.Button();
@@ -127,6 +128,7 @@
             this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.DonateBox = new System.Windows.Forms.PictureBox();
             this.loginButton = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -168,11 +170,16 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.toolTip1.SetToolTip(this.splitContainer1.Panel1, resources.GetString("splitContainer1.Panel1.ToolTip"));
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
+            this.toolTip1.SetToolTip(this.splitContainer1.Panel2, resources.GetString("splitContainer1.Panel2.ToolTip"));
+            this.toolTip1.SetToolTip(this.splitContainer1, resources.GetString("splitContainer1.ToolTip"));
             this.splitContainer1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
             // splitContainer2
@@ -184,16 +191,22 @@
             // 
             // splitContainer2.Panel1
             // 
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.panel1);
             this.splitContainer2.Panel1.Controls.Add(this.scanGroupBox);
+            this.toolTip1.SetToolTip(this.splitContainer2.Panel1, resources.GetString("splitContainer2.Panel1.ToolTip"));
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
+            this.toolTip1.SetToolTip(this.splitContainer2.Panel2, resources.GetString("splitContainer2.Panel2.ToolTip"));
+            this.toolTip1.SetToolTip(this.splitContainer2, resources.GetString("splitContainer2.ToolTip"));
             this.splitContainer2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.NameLabel);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.nameTextBox);
@@ -208,18 +221,20 @@
             this.panel1.Controls.Add(this.wishpriceBox);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.buyUpDown);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            this.toolTip1.SetToolTip(this.panel1, resources.GetString("panel1.ToolTip"));
             // 
             // NameLabel
             // 
             resources.ApplyResources(this.NameLabel, "NameLabel");
             this.NameLabel.Name = "NameLabel";
+            this.toolTip1.SetToolTip(this.NameLabel, resources.GetString("NameLabel.ToolTip"));
             // 
             // button3
             // 
             resources.ApplyResources(this.button3, "button3");
             this.button3.Name = "button3";
+            this.toolTip1.SetToolTip(this.button3, resources.GetString("button3.ToolTip"));
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
@@ -227,21 +242,25 @@
             // 
             resources.ApplyResources(this.nameTextBox, "nameTextBox");
             this.nameTextBox.Name = "nameTextBox";
+            this.toolTip1.SetToolTip(this.nameTextBox, resources.GetString("nameTextBox.ToolTip"));
             // 
             // label14
             // 
             resources.ApplyResources(this.label14, "label14");
             this.label14.Name = "label14";
+            this.toolTip1.SetToolTip(this.label14, resources.GetString("label14.ToolTip"));
             // 
             // linkTextBox
             // 
             resources.ApplyResources(this.linkTextBox, "linkTextBox");
             this.linkTextBox.Name = "linkTextBox";
+            this.toolTip1.SetToolTip(this.linkTextBox, resources.GetString("linkTextBox.ToolTip"));
             // 
             // scanButton
             // 
             resources.ApplyResources(this.scanButton, "scanButton");
             this.scanButton.Name = "scanButton";
+            this.toolTip1.SetToolTip(this.scanButton, resources.GetString("scanButton.ToolTip"));
             this.scanButton.UseVisualStyleBackColor = true;
             this.scanButton.Click += new System.EventHandler(this.scanButton_Click);
             // 
@@ -250,66 +269,76 @@
             resources.ApplyResources(this.delayTextBox, "delayTextBox");
             this.delayTextBox.Name = "delayTextBox";
             this.delayTextBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.delayTextBox, resources.GetString("delayTextBox.ToolTip"));
             // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
+            this.toolTip1.SetToolTip(this.label9, resources.GetString("label9.ToolTip"));
             // 
             // buyCheckBox
             // 
             resources.ApplyResources(this.buyCheckBox, "buyCheckBox");
             this.buyCheckBox.Name = "buyCheckBox";
+            this.toolTip1.SetToolTip(this.buyCheckBox, resources.GetString("buyCheckBox.ToolTip"));
             this.buyCheckBox.UseVisualStyleBackColor = true;
             // 
             // pictureBox4
             // 
+            resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox4, resources.GetString("pictureBox4.ToolTip"));
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // ExtraGroup
             // 
+            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Controls.Add(this.resellPriceBox);
             this.ExtraGroup.Controls.Add(this.label7);
             this.ExtraGroup.Controls.Add(this.resellComboBox);
-            resources.ApplyResources(this.ExtraGroup, "ExtraGroup");
             this.ExtraGroup.Name = "ExtraGroup";
             this.ExtraGroup.TabStop = false;
+            this.toolTip1.SetToolTip(this.ExtraGroup, resources.GetString("ExtraGroup.ToolTip"));
             // 
             // resellPriceBox
             // 
             resources.ApplyResources(this.resellPriceBox, "resellPriceBox");
             this.resellPriceBox.Name = "resellPriceBox";
+            this.toolTip1.SetToolTip(this.resellPriceBox, resources.GetString("resellPriceBox.ToolTip"));
             // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
+            this.toolTip1.SetToolTip(this.label7, resources.GetString("label7.ToolTip"));
             // 
             // resellComboBox
             // 
+            resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resellComboBox.FormattingEnabled = true;
             this.resellComboBox.Items.AddRange(new object[] {
             resources.GetString("resellComboBox.Items"),
             resources.GetString("resellComboBox.Items1"),
             resources.GetString("resellComboBox.Items2")});
-            resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.Name = "resellComboBox";
+            this.toolTip1.SetToolTip(this.resellComboBox, resources.GetString("resellComboBox.ToolTip"));
             // 
             // wishpriceBox
             // 
             resources.ApplyResources(this.wishpriceBox, "wishpriceBox");
             this.wishpriceBox.Name = "wishpriceBox";
+            this.toolTip1.SetToolTip(this.wishpriceBox, resources.GetString("wishpriceBox.ToolTip"));
             // 
             // label12
             // 
             resources.ApplyResources(this.label12, "label12");
             this.label12.Name = "label12";
+            this.toolTip1.SetToolTip(this.label12, resources.GetString("label12.ToolTip"));
             // 
             // buyUpDown
             // 
@@ -320,6 +349,7 @@
             0,
             0});
             this.buyUpDown.Name = "buyUpDown";
+            this.toolTip1.SetToolTip(this.buyUpDown, resources.GetString("buyUpDown.ToolTip"));
             this.buyUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -332,6 +362,7 @@
             this.scanGroupBox.Controls.Add(this.splitContainer3);
             this.scanGroupBox.Name = "scanGroupBox";
             this.scanGroupBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.scanGroupBox, resources.GetString("scanGroupBox.ToolTip"));
             // 
             // splitContainer3
             // 
@@ -340,11 +371,17 @@
             // 
             // splitContainer3.Panel1
             // 
+            resources.ApplyResources(this.splitContainer3.Panel1, "splitContainer3.Panel1");
             this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
+            this.toolTip1.SetToolTip(this.splitContainer3.Panel1, resources.GetString("splitContainer3.Panel1.ToolTip"));
             // 
             // splitContainer3.Panel2
             // 
+            resources.ApplyResources(this.splitContainer3.Panel2, "splitContainer3.Panel2");
+            this.splitContainer3.Panel2.Controls.Add(this.button4);
             this.splitContainer3.Panel2.Controls.Add(this.logListBox);
+            this.toolTip1.SetToolTip(this.splitContainer3.Panel2, resources.GetString("splitContainer3.Panel2.ToolTip"));
+            this.toolTip1.SetToolTip(this.splitContainer3, resources.GetString("splitContainer3.ToolTip"));
             this.splitContainer3.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer3_SplitterMoved);
             this.splitContainer3.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer3_Paint);
             // 
@@ -355,13 +392,15 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
+            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.scanListView);
             resources.ApplyResources(this.tabPage1, "tabPage1");
+            this.tabPage1.Controls.Add(this.scanListView);
             this.tabPage1.Name = "tabPage1";
+            this.toolTip1.SetToolTip(this.tabPage1, resources.GetString("tabPage1.ToolTip"));
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // scanListView
@@ -376,6 +415,7 @@
             this.scanListView.GridLines = true;
             this.scanListView.HideSelection = false;
             this.scanListView.Name = "scanListView";
+            this.toolTip1.SetToolTip(this.scanListView, resources.GetString("scanListView.ToolTip"));
             this.scanListView.UseCompatibleStateImageBehavior = false;
             this.scanListView.View = System.Windows.Forms.View.Details;
             this.scanListView.SelectedIndexChanged += new System.EventHandler(this.scanListView_SelectedIndexChanged);
@@ -396,6 +436,7 @@
             // 
             // contextMenuStrip3
             // 
+            resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
             this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteMenuItem,
             this.startSelectedMenuItem,
@@ -403,48 +444,49 @@
             this.startAllMenuItem,
             this.stopAllMenuItem});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
+            this.toolTip1.SetToolTip(this.contextMenuStrip3, resources.GetString("contextMenuStrip3.ToolTip"));
             // 
             // deleteMenuItem
             // 
+            resources.ApplyResources(this.deleteMenuItem, "deleteMenuItem");
             this.deleteMenuItem.Image = global::SCMBot.Properties.Resources.cancel;
             this.deleteMenuItem.Name = "deleteMenuItem";
-            resources.ApplyResources(this.deleteMenuItem, "deleteMenuItem");
             this.deleteMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
             // startSelectedMenuItem
             // 
+            resources.ApplyResources(this.startSelectedMenuItem, "startSelectedMenuItem");
             this.startSelectedMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.startSelectedMenuItem.Name = "startSelectedMenuItem";
-            resources.ApplyResources(this.startSelectedMenuItem, "startSelectedMenuItem");
             this.startSelectedMenuItem.Click += new System.EventHandler(this.startSelectedToolStripMenuItem_Click);
             // 
             // stopSelectedMenuItem
             // 
+            resources.ApplyResources(this.stopSelectedMenuItem, "stopSelectedMenuItem");
             this.stopSelectedMenuItem.Image = global::SCMBot.Properties.Resources.stop;
             this.stopSelectedMenuItem.Name = "stopSelectedMenuItem";
-            resources.ApplyResources(this.stopSelectedMenuItem, "stopSelectedMenuItem");
             this.stopSelectedMenuItem.Click += new System.EventHandler(this.stopSelectedToolStripMenuItem_Click);
             // 
             // startAllMenuItem
             // 
+            resources.ApplyResources(this.startAllMenuItem, "startAllMenuItem");
             this.startAllMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.startAllMenuItem.Name = "startAllMenuItem";
-            resources.ApplyResources(this.startAllMenuItem, "startAllMenuItem");
             this.startAllMenuItem.Click += new System.EventHandler(this.startAllToolStripMenuItem_Click);
             // 
             // stopAllMenuItem
             // 
+            resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Image = global::SCMBot.Properties.Resources.stop;
             this.stopAllMenuItem.Name = "stopAllMenuItem";
-            resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Click += new System.EventHandler(this.stopAllToolStripMenuItem_Click);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.recentListView);
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.recentListView);
             this.tabPage2.Name = "tabPage2";
+            this.toolTip1.SetToolTip(this.tabPage2, resources.GetString("tabPage2.ToolTip"));
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // recentListView
@@ -459,6 +501,7 @@
             this.recentListView.GridLines = true;
             this.recentListView.HideSelection = false;
             this.recentListView.Name = "recentListView";
+            this.toolTip1.SetToolTip(this.recentListView, resources.GetString("recentListView.ToolTip"));
             this.recentListView.UseCompatibleStateImageBehavior = false;
             this.recentListView.View = System.Windows.Forms.View.Details;
             this.recentListView.SelectedIndexChanged += new System.EventHandler(this.scanListView_SelectedIndexChanged);
@@ -477,6 +520,15 @@
             // 
             resources.ApplyResources(this.columnHeader15, "columnHeader15");
             // 
+            // button4
+            // 
+            resources.ApplyResources(this.button4, "button4");
+            this.button4.Image = global::SCMBot.Properties.Resources.graph;
+            this.button4.Name = "button4";
+            this.toolTip1.SetToolTip(this.button4, resources.GetString("button4.ToolTip"));
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // logListBox
             // 
             resources.ApplyResources(this.logListBox, "logListBox");
@@ -484,6 +536,7 @@
             this.logListBox.FormattingEnabled = true;
             this.logListBox.MinimumSize = new System.Drawing.Size(100, 4);
             this.logListBox.Name = "logListBox";
+            this.toolTip1.SetToolTip(this.logListBox, resources.GetString("logListBox.ToolTip"));
             this.logListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.logListBox_DrawItem);
             // 
             // groupBox4
@@ -502,11 +555,13 @@
             this.groupBox4.MinimumSize = new System.Drawing.Size(300, 109);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox4, resources.GetString("groupBox4.ToolTip"));
             // 
             // nextButton
             // 
             resources.ApplyResources(this.nextButton, "nextButton");
             this.nextButton.Name = "nextButton";
+            this.toolTip1.SetToolTip(this.nextButton, resources.GetString("nextButton.ToolTip"));
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
             // 
@@ -514,6 +569,7 @@
             // 
             resources.ApplyResources(this.searchBox, "searchBox");
             this.searchBox.Name = "searchBox";
+            this.toolTip1.SetToolTip(this.searchBox, resources.GetString("searchBox.ToolTip"));
             this.searchBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchBox_KeyUp);
             // 
             // FoundList
@@ -530,6 +586,7 @@
             this.FoundList.GridLines = true;
             this.FoundList.HideSelection = false;
             this.FoundList.Name = "FoundList";
+            this.toolTip1.SetToolTip(this.FoundList, resources.GetString("FoundList.ToolTip"));
             this.FoundList.UseCompatibleStateImageBehavior = false;
             this.FoundList.View = System.Windows.Forms.View.Details;
             this.FoundList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.InventoryList_ColumnClick);
@@ -562,6 +619,7 @@
             resources.ApplyResources(this.buyNowButton, "buyNowButton");
             this.buyNowButton.Image = global::SCMBot.Properties.Resources.buy_now;
             this.buyNowButton.Name = "buyNowButton";
+            this.toolTip1.SetToolTip(this.buyNowButton, resources.GetString("buyNowButton.ToolTip"));
             this.buyNowButton.UseVisualStyleBackColor = true;
             this.buyNowButton.Click += new System.EventHandler(this.buyNowButton_Click);
             // 
@@ -571,51 +629,54 @@
             this.addtoScan.ContextMenuStrip = this.contextMenuStrip1;
             this.addtoScan.Image = global::SCMBot.Properties.Resources.add;
             this.addtoScan.Name = "addtoScan";
+            this.toolTip1.SetToolTip(this.addtoScan, resources.GetString("addtoScan.ToolTip"));
             this.addtoScan.UseVisualStyleBackColor = true;
             this.addtoScan.Click += new System.EventHandler(this.addtoScan_Click);
             // 
             // contextMenuStrip1
             // 
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectedItemToolStripMenuItem,
             this.checkedToBothSourcesToolStripMenuItem,
             this.fullSetToolStripMenuItem,
             this.emptyTabToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            this.toolTip1.SetToolTip(this.contextMenuStrip1, resources.GetString("contextMenuStrip1.ToolTip"));
             // 
             // selectedItemToolStripMenuItem
             // 
+            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
-            resources.ApplyResources(this.selectedItemToolStripMenuItem, "selectedItemToolStripMenuItem");
             this.selectedItemToolStripMenuItem.Click += new System.EventHandler(this.selectedItemToolStripMenuItem_Click);
             // 
             // checkedToBothSourcesToolStripMenuItem
             // 
+            resources.ApplyResources(this.checkedToBothSourcesToolStripMenuItem, "checkedToBothSourcesToolStripMenuItem");
             this.checkedToBothSourcesToolStripMenuItem.Image = global::SCMBot.Properties.Resources.selected;
             this.checkedToBothSourcesToolStripMenuItem.Name = "checkedToBothSourcesToolStripMenuItem";
-            resources.ApplyResources(this.checkedToBothSourcesToolStripMenuItem, "checkedToBothSourcesToolStripMenuItem");
             this.checkedToBothSourcesToolStripMenuItem.Click += new System.EventHandler(this.checkedToBothSourcesToolStripMenuItem_Click);
             // 
             // fullSetToolStripMenuItem
             // 
+            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Image = global::SCMBot.Properties.Resources.fullset;
             this.fullSetToolStripMenuItem.Name = "fullSetToolStripMenuItem";
-            resources.ApplyResources(this.fullSetToolStripMenuItem, "fullSetToolStripMenuItem");
             this.fullSetToolStripMenuItem.Click += new System.EventHandler(this.fullSetToolStripMenuItem_Click);
             // 
             // emptyTabToolStripMenuItem
             // 
+            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Image = global::SCMBot.Properties.Resources.blank;
             this.emptyTabToolStripMenuItem.Name = "emptyTabToolStripMenuItem";
-            resources.ApplyResources(this.emptyTabToolStripMenuItem, "emptyTabToolStripMenuItem");
             this.emptyTabToolStripMenuItem.Click += new System.EventHandler(this.emptyTabToolStripMenuItem_Click);
             // 
             // prevButton
             // 
             resources.ApplyResources(this.prevButton, "prevButton");
             this.prevButton.Name = "prevButton";
+            this.toolTip1.SetToolTip(this.prevButton, resources.GetString("prevButton.ToolTip"));
             this.prevButton.UseVisualStyleBackColor = true;
             this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
             // 
@@ -623,11 +684,13 @@
             // 
             resources.ApplyResources(this.label13, "label13");
             this.label13.Name = "label13";
+            this.toolTip1.SetToolTip(this.label13, resources.GetString("label13.ToolTip"));
             // 
             // label11
             // 
             resources.ApplyResources(this.label11, "label11");
             this.label11.Name = "label11";
+            this.toolTip1.SetToolTip(this.label11, resources.GetString("label11.ToolTip"));
             // 
             // pictureBox1
             // 
@@ -636,6 +699,7 @@
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // searchButton
@@ -643,6 +707,7 @@
             resources.ApplyResources(this.searchButton, "searchButton");
             this.searchButton.Image = global::SCMBot.Properties.Resources.search;
             this.searchButton.Name = "searchButton";
+            this.toolTip1.SetToolTip(this.searchButton, resources.GetString("searchButton.ToolTip"));
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
@@ -662,17 +727,20 @@
             this.groupBox3.MinimumSize = new System.Drawing.Size(300, 150);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox3, resources.GetString("groupBox3.ToolTip"));
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // button2
             // 
             resources.ApplyResources(this.button2, "button2");
             this.button2.Image = global::SCMBot.Properties.Resources.accept;
             this.button2.Name = "button2";
+            this.toolTip1.SetToolTip(this.button2, resources.GetString("button2.ToolTip"));
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -690,6 +758,7 @@
             this.InventoryList.HideSelection = false;
             this.InventoryList.Name = "InventoryList";
             this.InventoryList.ShowGroups = false;
+            this.toolTip1.SetToolTip(this.InventoryList, resources.GetString("InventoryList.ToolTip"));
             this.InventoryList.UseCompatibleStateImageBehavior = false;
             this.InventoryList.View = System.Windows.Forms.View.Details;
             this.InventoryList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.InventoryList_ColumnClick);
@@ -717,17 +786,20 @@
             // 
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
+            this.toolTip1.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
             // SellButton
             // 
-            this.SellButton.Image = global::SCMBot.Properties.Resources.coins;
             resources.ApplyResources(this.SellButton, "SellButton");
+            this.SellButton.Image = global::SCMBot.Properties.Resources.coins;
             this.SellButton.Name = "SellButton";
+            this.toolTip1.SetToolTip(this.SellButton, resources.GetString("SellButton.ToolTip"));
             this.SellButton.UseVisualStyleBackColor = true;
             this.SellButton.Click += new System.EventHandler(this.SellButton_Click);
             // 
             // comboBox3
             // 
+            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
@@ -736,15 +808,16 @@
             resources.GetString("comboBox3.Items2"),
             resources.GetString("comboBox3.Items3"),
             resources.GetString("comboBox3.Items4")});
-            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.Name = "comboBox3";
+            this.toolTip1.SetToolTip(this.comboBox3, resources.GetString("comboBox3.ToolTip"));
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // button1
             // 
-            this.button1.Image = global::SCMBot.Properties.Resources.box;
             resources.ApplyResources(this.button1, "button1");
+            this.button1.Image = global::SCMBot.Properties.Resources.box;
             this.button1.Name = "button1";
+            this.toolTip1.SetToolTip(this.button1, resources.GetString("button1.ToolTip"));
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -752,6 +825,7 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
+            this.toolTip1.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // pictureBox3
             // 
@@ -760,27 +834,32 @@
             this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox3, resources.GetString("pictureBox3.ToolTip"));
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // textBox1
             // 
             resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
+            this.toolTip1.SetToolTip(this.textBox1, resources.GetString("textBox1.ToolTip"));
             // 
             // label10
             // 
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
+            this.toolTip1.SetToolTip(this.label10, resources.GetString("label10.ToolTip"));
             // 
             // label8
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
+            this.toolTip1.SetToolTip(this.label8, resources.GetString("label8.ToolTip"));
             // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
+            this.toolTip1.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // groupBox2
             // 
@@ -792,29 +871,33 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
+            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // pictureBox2
             // 
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox2, resources.GetString("pictureBox2.ToolTip"));
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // contextMenuStrip2
             // 
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.minimizeOnClosingToolStripMenuItem,
             this.settingsToolStripMenuItem,
@@ -822,53 +905,55 @@
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
+            this.toolTip1.SetToolTip(this.contextMenuStrip2, resources.GetString("contextMenuStrip2.ToolTip"));
             // 
             // minimizeOnClosingToolStripMenuItem
             // 
+            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             this.minimizeOnClosingToolStripMenuItem.Checked = true;
             this.minimizeOnClosingToolStripMenuItem.CheckOnClick = true;
             this.minimizeOnClosingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeOnClosingToolStripMenuItem.Name = "minimizeOnClosingToolStripMenuItem";
-            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             // 
             // settingsToolStripMenuItem
             // 
+            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Image = global::SCMBot.Properties.Resources.settings;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Image = global::SCMBot.Properties.Resources.help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Image = global::SCMBot.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Image = global::SCMBot.Properties.Resources.logout;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // label15
             // 
             resources.ApplyResources(this.label15, "label15");
             this.label15.Name = "label15";
+            this.toolTip1.SetToolTip(this.label15, resources.GetString("label15.ToolTip"));
             // 
             // statusStrip1
             // 
@@ -879,6 +964,7 @@
             this.ProgressBar1});
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.SizingGrip = false;
+            this.toolTip1.SetToolTip(this.statusStrip1, resources.GetString("statusStrip1.ToolTip"));
             // 
             // toolStripImage
             // 
@@ -888,13 +974,13 @@
             // 
             // StatusLabel1
             // 
-            this.StatusLabel1.Name = "StatusLabel1";
             resources.ApplyResources(this.StatusLabel1, "StatusLabel1");
+            this.StatusLabel1.Name = "StatusLabel1";
             // 
             // ProgressBar1
             // 
-            this.ProgressBar1.Name = "ProgressBar1";
             resources.ApplyResources(this.ProgressBar1, "ProgressBar1");
+            this.ProgressBar1.Name = "ProgressBar1";
             // 
             // DonateBox
             // 
@@ -903,13 +989,15 @@
             this.DonateBox.Image = global::SCMBot.Properties.Resources.btn_donate;
             this.DonateBox.Name = "DonateBox";
             this.DonateBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.DonateBox, resources.GetString("DonateBox.ToolTip"));
             this.DonateBox.Click += new System.EventHandler(this.DonateBox_Click);
             // 
             // loginButton
             // 
-            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             resources.ApplyResources(this.loginButton, "loginButton");
+            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             this.loginButton.Name = "loginButton";
+            this.toolTip1.SetToolTip(this.loginButton, resources.GetString("loginButton.ToolTip"));
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
@@ -925,6 +1013,7 @@
             this.Controls.Add(this.label15);
             this.Controls.Add(this.DonateBox);
             this.Name = "Main";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
@@ -1069,6 +1158,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ToolStripMenuItem checkedToBothSourcesToolStripMenuItem;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

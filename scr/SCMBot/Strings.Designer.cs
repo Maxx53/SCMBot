@@ -221,6 +221,25 @@ namespace SCMBot {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Price Graph for {0}.
+        /// </summary>
+        internal static string GraphFor {
+            get {
+                return ResourceManager.GetString("GraphFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Time: {0}
+        ///Price: {1} {2}.
+        /// </summary>
+        internal static string GraphTip {
+            get {
+                return ResourceManager.GetString("GraphTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на In Inventory ({0}).
         /// </summary>
         internal static string inInventory {
@@ -253,6 +272,15 @@ namespace SCMBot {
         internal static string LoadInvFirst {
             get {
                 return ResourceManager.GetString("LoadInvFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Log for this Item is Empty..
+        /// </summary>
+        internal static string LogEmpty {
+            get {
+                return ResourceManager.GetString("LogEmpty", resourceCulture);
             }
         }
         
@@ -298,6 +326,15 @@ namespace SCMBot {
         internal static string Logouted {
             get {
                 return ResourceManager.GetString("Logouted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You must stop scan to change values..
+        /// </summary>
+        internal static string MustStop {
+            get {
+                return ResourceManager.GetString("MustStop", resourceCulture);
             }
         }
         
