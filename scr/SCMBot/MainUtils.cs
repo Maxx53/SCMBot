@@ -551,6 +551,21 @@ namespace SCMBot
             this.Link = link;
         }
 
+        //copy constructor
+        public saveTab(saveTab tocopy)
+        {
+            this.Name = tocopy.Name;
+            this.Price = tocopy.Price;
+            this.Link = tocopy.Link;
+            this.ImgLink = tocopy.ImgLink;
+            this.Delay = tocopy.Delay;
+            this.BuyQnt = tocopy.BuyQnt;
+            this.ToBuy = tocopy.ToBuy;
+            this.ResellType = tocopy.ResellType;
+            this.ResellPrice = tocopy.ResellPrice;
+            this.StatId = tocopy.StatId;
+        }
+
         public string Name { set; get; }
         public string ImgLink { set; get; }
         public string Link { set; get; }

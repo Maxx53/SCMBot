@@ -241,6 +241,7 @@
     <None Include="Resources\box.png" />
     <None Include="Resources\accept.png" />
     <None Include="Resources\graph.png" />
+    <None Include="Resources\copy.png" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

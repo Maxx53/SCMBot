@@ -28,7 +28,8 @@ namespace SCMBot
         bool isExit = false;
         bool isFirstTab = true;
         bool relog = false;
-        ItemComparer itemComparer = new ItemComparer();
+
+        //ItemComparer itemComparer = new ItemComparer();
 
         static public Semaphore reqPool;
 
@@ -1067,10 +1068,8 @@ namespace SCMBot
 
         private void InventoryList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            
-
-            itemComparer.ColumnIndex = e.Column;
-            ((ListView)sender).Sort();
+            //itemComparer.ColumnIndex = e.Column;
+            //((ListView)sender).Sort();
         }
 
         private void InventoryList_Click(object sender, EventArgs e)
@@ -1251,12 +1250,6 @@ namespace SCMBot
 
         }
 
-        private void ShowToolTip()
-        {
-            toolTip1.RemoveAll();
-            toolTip1.Show(Strings.MustStop, pictureBox4, pictureBox4.Location.X - 140, pictureBox4.Location.Y - 50);
-        }
-
 
         private void linkBinding_BindingComplete(object sender, BindingCompleteEventArgs e)
         {
@@ -1265,16 +1258,15 @@ namespace SCMBot
             {
 
                 var Item = scanItems[scanListView.SelectedIndices[0]];
-                var ourItem = Item.Steam.scanInput;
 
-                if (Item.Steam.scaninProg)
-                {
-                    ShowToolTip();
-                    return;
-                }
+                var ourItem = Item.Steam.scanInput;
 
                 scanListView.SelectedItems[0].SubItems[2].Text = ourItem.Price;
 
+                if (Item.Steam.scaninProg)
+                {
+                    return;
+                }
 
                 if (isScanValid(ourItem, true))
                 {
@@ -1291,14 +1283,14 @@ namespace SCMBot
             }
             else
             {
-                if (steam_srch.scaninProg)
-                {
-                    ShowToolTip();
-                    return;
-                }
                 var Item = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
 
                 recentListView.SelectedItems[0].SubItems[2].Text = Item.Price;
+
+                if (steam_srch.scaninProg)
+                {
+                    return;
+                }
 
                 if (isScanValid(Item, false))
                 {
@@ -1319,24 +1311,14 @@ namespace SCMBot
             if (isFirstTab)
             {
                 var Item = scanItems[scanListView.SelectedIndices[0]];
-                var ourItem = Item.Steam.scanInput;
 
-                if (Item.Steam.scaninProg)
-                {
-                    ShowToolTip();
-                    return;
-                }
+                var ourItem = Item.Steam.scanInput;
 
                 scanListView.SelectedItems[0].SubItems[1].Text = ourItem.Name;
                 SetColumnWidths(scanListView, true);
             }
             else
             {
-                if (steam_srch.scaninProg)
-                {
-                    ShowToolTip();
-                    return;
-                }
                 var Item = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
                 recentListView.SelectedItems[0].SubItems[1].Text = Item.Name;
                 SetColumnWidths(recentListView, true);
@@ -1797,75 +1779,88 @@ namespace SCMBot
 
             if (lst.SelectedIndices.Count == 1)
             {
-                panel1.Enabled = true;
 
-                saveTab ourItem;
-                logListBox.DataBindings.Clear();
-
-                if (isFirstTab)
+                try
                 {
-                    var Item = scanItems[scanListView.SelectedIndices[0]];
-                    ourItem = Item.Steam.scanInput;
 
-                    logListBox.DataSource = Item.LogCont;
-                    logListBox.DisplayMember = "Text";
 
-                    delayTextBox.DataBindings.Clear();
-                    delayTextBox.DataBindings.Add("Text", ourItem, "Delay");
 
-                    setButtText(Item.Steam.scanInput.StatId);
+                    panel1.Enabled = true;
+
+                    saveTab ourItem;
+                    logListBox.DataBindings.Clear();
+
+                    if (isFirstTab)
+                    {
+                        var Item = scanItems[scanListView.SelectedIndices[0]];
+                        ourItem = Item.Steam.scanInput;
+
+                        logListBox.DataSource = Item.LogCont;
+                        logListBox.DisplayMember = "Text";
+
+                        delayTextBox.DataBindings.Clear();
+                        delayTextBox.DataBindings.Add("Text", ourItem, "Delay");
+
+                        setButtText(Item.Steam.scanInput.StatId);
+
+                    }
+                    else
+                    {
+                        ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
+
+                        logListBox.DataSource = steam_srch.logContainer;
+                        logListBox.DisplayMember = "Text";
+
+                        delayTextBox.DataBindings.Clear();
+                        delayTextBox.DataBindings.Add("Text", steam_srch, "mainDelay");
+
+                        setButtText(ourItem.StatId);
+                    }
+
+                    //Add event for all controls? I don't sure..
+
+                    linkTextBox.DataBindings.Clear();
+                    Binding linkBinding = linkTextBox.DataBindings.Add("Text", ourItem, "Link", true, DataSourceUpdateMode.OnPropertyChanged);
+                    linkBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
+
+                    wishpriceBox.DataBindings.Clear();
+                    Binding wishedBinding = wishpriceBox.DataBindings.Add("Text", ourItem, "Price", true, DataSourceUpdateMode.OnPropertyChanged);
+                    wishedBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
+
+                    nameTextBox.DataBindings.Clear();
+                    Binding nameBinding = nameTextBox.DataBindings.Add("Text", ourItem, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+                    nameBinding.BindingComplete += new BindingCompleteEventHandler(nameBinding_BindingComplete);
+
+                    buyCheckBox.DataBindings.Clear();
+                    buyCheckBox.DataBindings.Add("Checked", ourItem, "ToBuy");
+
+                    buyUpDown.DataBindings.Clear();
+                    buyUpDown.DataBindings.Add("Value", ourItem, "BuyQnt");
+
+                    resellComboBox.DataBindings.Clear();
+                    resellComboBox.DataBindings.Add("SelectedIndex", ourItem, "ResellType");
+
+                    resellPriceBox.DataBindings.Clear();
+                    resellPriceBox.DataBindings.Add("Text", ourItem, "ResellPrice");
+
+
+
+                    if (logListBox.Items.Count != 0)
+                    {
+                        GetDownLbox(logListBox);
+                    }
+
+                    if (ourItem.ImgLink != string.Empty)
+                        StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox4);
+                    else
+                        pictureBox4.Image = null;
 
                 }
-                else
+                catch (Exception)
                 {
-                    ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
-
-                    logListBox.DataSource = steam_srch.logContainer;
-                    logListBox.DisplayMember = "Text";
-
-                    delayTextBox.DataBindings.Clear();
-                    delayTextBox.DataBindings.Add("Text", steam_srch, "mainDelay");
-
-                    setButtText(ourItem.StatId);
+                    //dummy
+                   // throw;
                 }
-
-                //Add event for all controls? I don't sure..
-
-                linkTextBox.DataBindings.Clear();
-                Binding linkBinding = linkTextBox.DataBindings.Add("Text", ourItem, "Link", true, DataSourceUpdateMode.OnPropertyChanged);
-                linkBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
-
-                wishpriceBox.DataBindings.Clear();
-                Binding wishedBinding = wishpriceBox.DataBindings.Add("Text", ourItem, "Price", true, DataSourceUpdateMode.OnPropertyChanged);
-                wishedBinding.BindingComplete += new BindingCompleteEventHandler(linkBinding_BindingComplete);
-
-                nameTextBox.DataBindings.Clear();
-                Binding nameBinding = nameTextBox.DataBindings.Add("Text", ourItem, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
-                nameBinding.BindingComplete += new BindingCompleteEventHandler(nameBinding_BindingComplete);
-
-                buyCheckBox.DataBindings.Clear();
-                buyCheckBox.DataBindings.Add("Checked", ourItem, "ToBuy");
-
-                buyUpDown.DataBindings.Clear();
-                buyUpDown.DataBindings.Add("Value", ourItem, "BuyQnt");
-
-                resellComboBox.DataBindings.Clear();
-                resellComboBox.DataBindings.Add("SelectedIndex", ourItem, "ResellType");
-
-                resellPriceBox.DataBindings.Clear();
-                resellPriceBox.DataBindings.Add("Text", ourItem, "ResellPrice");
-
-
-
-                if (logListBox.Items.Count != 0)
-                {
-                    GetDownLbox(logListBox);
-                }
-
-                if (ourItem.ImgLink != string.Empty)
-                    StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox4);
-                else
-                    pictureBox4.Image = null;
 
             }
 
@@ -2040,31 +2035,36 @@ namespace SCMBot
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            //Buggy!
-            var sel = scanListView.SelectedIndices[0];
+            //Buggy?
+            int sel = 0;
 
             if (isFirstTab)
             {
-                var tocopy = scanItems[sel];
-                scanItems.Insert(sel, tocopy);
+                sel = scanListView.SelectedIndices[0];
+                var tocopy = new MainScanItem(new saveTab(scanItems[sel].Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.sellDelay);
+                tocopy.Steam.scanInput.Name += " Copy";
+                scanItems.Insert(sel + 1, tocopy);
+
                 scanListView.Items.Insert(sel, (ListViewItem)scanListView.Items[sel].Clone());
+                scanListView.Items[sel + 1].SubItems[1].Text = tocopy.Steam.scanInput.Name;
+                SetColumnWidths(scanListView, true);
 
                 scanItems.UpdateIds();
 
                 BindToControls(scanListView);
-
                 
             }
             else
             {
-
-                var tocopy = steam_srch.recentInputList[sel];
-                steam_srch.recentInputList.Insert(sel, tocopy);
+                sel = recentListView.SelectedIndices[0];
+                var tocopy = new saveTab(steam_srch.recentInputList[sel]);
+                tocopy.Name += " Copy";
+                steam_srch.recentInputList.Insert(sel + 1, tocopy);
                 recentListView.Items.Insert(sel, (ListViewItem)recentListView.Items[sel].Clone());
+                recentListView.Items[sel + 1].SubItems[1].Text = tocopy.Name;
+                SetColumnWidths(recentListView, true);
                
                 BindToControls(recentListView);
-
-
             }
 
         }

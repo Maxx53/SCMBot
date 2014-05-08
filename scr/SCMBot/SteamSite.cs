@@ -571,6 +571,7 @@ namespace SCMBot
 
             string url = scanInput.Link;
             int fint = url.IndexOf('?');
+
             if (fint == -1)
             {
                 url += "/render/";
@@ -608,9 +609,6 @@ namespace SCMBot
                 return;
             }
 
-            int wished = Convert.ToInt32(GetSweetPrice(scanInput.Price));
-
-            int delay = Convert.ToInt32(scanInput.Delay);
 
             int buyCounter = 0;
 
@@ -620,7 +618,7 @@ namespace SCMBot
                 try
                 {
                     if (fillLotList(url, false, true))
-                        buyCounter = BuyLogic(wished, sessid, lotList[0], scanInput, buyCounter, true);
+                        buyCounter = BuyLogic(Convert.ToInt32(GetSweetPrice(scanInput.Price)), sessid, lotList[0], scanInput, buyCounter, true);
 
                 }
                 catch (Exception exc)
@@ -630,7 +628,7 @@ namespace SCMBot
                 finally
                 {
                     doMessage(flag.Scan_progress, scanID, string.Empty, true);
-                    Sem.WaitOne(delay);
+                    Sem.WaitOne(scanInput.Delay);
                 }
             }
 

@@ -136,6 +136,9 @@
   <data name="NameLabel.Text" xml:space="preserve">
     <value>Название</value>
   </data>
+  <data name="button3.Text" xml:space="preserve">
+    <value>Копия</value>
+  </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 36</value>
   </data>

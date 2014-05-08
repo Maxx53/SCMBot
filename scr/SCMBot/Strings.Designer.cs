@@ -330,15 +330,6 @@ namespace SCMBot {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You must stop scan to change values..
-        /// </summary>
-        internal static string MustStop {
-            get {
-                return ResourceManager.GetString("MustStop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Not For Sale.
         /// </summary>
         internal static string NFS {

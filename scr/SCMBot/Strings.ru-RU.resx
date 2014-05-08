@@ -272,9 +272,6 @@ Copyright © 2013-2014 Maxx53
     <value>Время: {0}
 Цена: {1} {2}</value>
   </data>
-  <data name="MustStop" xml:space="preserve">
-    <value>Чтобы изменить значения, остановите сканирование.</value>
-  </data>
   <data name="GraphFor" xml:space="preserve">
     <value>График цен для предмета {0}</value>
   </data>

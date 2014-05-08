@@ -123,6 +123,13 @@ namespace SCMBot.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.IO.UnmanagedMemoryStream ding {
             get {
                 return ResourceManager.GetStream("ding", resourceCulture);

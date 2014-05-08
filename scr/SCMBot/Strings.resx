@@ -278,9 +278,6 @@ You can find it in system tray anytime.</value>
     <value>Time: {0}
 Price: {1} {2}</value>
   </data>
-  <data name="MustStop" xml:space="preserve">
-    <value>You must stop scan to change values.</value>
-  </data>
   <data name="GraphFor" xml:space="preserve">
     <value>Price Graph for {0}</value>
   </data>
