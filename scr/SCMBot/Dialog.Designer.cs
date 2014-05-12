@@ -53,11 +53,11 @@
             // 
             // codgroupBox
             // 
+            resources.ApplyResources(this.codgroupBox, "codgroupBox");
             this.codgroupBox.Controls.Add(this.label2);
             this.codgroupBox.Controls.Add(this.label1);
             this.codgroupBox.Controls.Add(this.guardBox);
             this.codgroupBox.Controls.Add(this.mailcodeBox);
-            resources.ApplyResources(this.codgroupBox, "codgroupBox");
             this.codgroupBox.Name = "codgroupBox";
             this.codgroupBox.TabStop = false;
             // 
@@ -83,10 +83,10 @@
             // 
             // capchgroupBox
             // 
+            resources.ApplyResources(this.capchgroupBox, "capchgroupBox");
             this.capchgroupBox.Controls.Add(this.label3);
             this.capchgroupBox.Controls.Add(this.capchaBox);
             this.capchgroupBox.Controls.Add(this.capchapicBox);
-            resources.ApplyResources(this.capchgroupBox, "capchgroupBox");
             this.capchgroupBox.Name = "capchgroupBox";
             this.capchgroupBox.TabStop = false;
             // 
@@ -102,8 +102,8 @@
             // 
             // capchapicBox
             // 
-            this.capchapicBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
             resources.ApplyResources(this.capchapicBox, "capchapicBox");
+            this.capchapicBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.capchapicBox.Name = "capchapicBox";
             this.capchapicBox.TabStop = false;
             // 

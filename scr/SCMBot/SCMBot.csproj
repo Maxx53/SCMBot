@@ -120,14 +120,29 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="CookieFrm.fr-FR.resx">
+      <DependentUpon>CookieFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CookieFrm.resx">
       <DependentUpon>CookieFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CookieFrm.ru-RU.resx">
       <DependentUpon>CookieFrm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialog.en-US.resx">
+      <DependentUpon>Dialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog.fr-FR.resx">
+      <DependentUpon>Dialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphFrm.fr-FR.resx">
+      <DependentUpon>GraphFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GraphFrm.resx">
       <DependentUpon>GraphFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.fr-FR.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -148,6 +163,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SettingsFrm.fr-FR.resx">
+      <DependentUpon>SettingsFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
     </EmbeddedResource>
