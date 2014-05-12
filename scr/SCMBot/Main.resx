@@ -131,6 +131,9 @@
   <data name="&gt;&gt;label11.Parent" xml:space="preserve">
     <value>groupBox4</value>
   </data>
+  <data name="&gt;&gt;buyNowButton.Name" xml:space="preserve">
+    <value>buyNowButton</value>
+  </data>
   <data name="&gt;&gt;InventoryList.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -156,17 +159,11 @@
   <data name="button3.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 26</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="splitContainer2.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
   </data>
   <data name="&gt;&gt;prevButton.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="columnHeader11.Width" type="System.Int32, mscorlib">
     <value>116</value>
@@ -176,9 +173,6 @@
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>Page: </value>
-  </data>
-  <data name="&gt;&gt;columnHeader3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 3</value>
@@ -200,6 +194,9 @@
   </data>
   <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
     <value>384, 183</value>
+  </data>
+  <data name="resellPriceBox.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -228,9 +225,6 @@
   <data name="DonateBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;button3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
@@ -242,6 +236,9 @@
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
     <value>ExtraGroup</value>
+  </data>
+  <data name="splitContainer3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
     <value>helpToolStripMenuItem</value>
@@ -261,11 +258,8 @@
   <data name="&gt;&gt;label13.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="NameLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>33, 12</value>
-  </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;nextButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pictureBox4.Name" xml:space="preserve">
     <value>pictureBox4</value>
@@ -351,26 +345,17 @@
   <data name="&gt;&gt;buyCheckBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="loginButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 0, 10, 0</value>
-  </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Your price:</value>
   </data>
   <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Type</value>
-  </data>
   <data name="&gt;&gt;splitContainer3.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;columnHeader11.Name" xml:space="preserve">
     <value>columnHeader11</value>
-  </data>
-  <data name="button1.Text" xml:space="preserve">
-    <value>Load</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>91, 40</value>
@@ -392,9 +377,6 @@
   </data>
   <data name="delayTextBox.PromptChar" type="System.Char, mscorlib" xml:space="preserve">
     <value> </value>
-  </data>
-  <data name="nextButton.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
   </data>
   <data name="pictureBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -429,9 +411,6 @@
   <data name="prevButton.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
   <data name="addtoScan.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -440,6 +419,9 @@
   </data>
   <data name="recentListView.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
+  </data>
+  <data name="scanGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>775, 234</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -459,8 +441,8 @@
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="InventoryList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>764, 159</value>
+  <data name="&gt;&gt;scanButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -483,17 +465,11 @@
   <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 789</value>
   </data>
-  <data name="NameLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>64</value>
-  </data>
   <data name="&gt;&gt;toolStripImage.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;columnHeader9.Name" xml:space="preserve">
     <value>columnHeader9</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="resellComboBox.Items2" xml:space="preserve">
     <value>Your price</value>
@@ -521,6 +497,9 @@
   </data>
   <data name="&gt;&gt;scanListView.Name" xml:space="preserve">
     <value>scanListView</value>
+  </data>
+  <data name="label15.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -552,8 +531,8 @@
   <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="pictureBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>59</value>
+  <data name="&gt;&gt;wishpriceBox.Name" xml:space="preserve">
+    <value>wishpriceBox</value>
   </data>
   <data name="nextButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 25</value>
@@ -575,6 +554,9 @@
   </data>
   <data name="comboBox3.Items3" xml:space="preserve">
     <value>CS:GO</value>
+  </data>
+  <data name="comboBox3.Items" xml:space="preserve">
+    <value>Trading Cards</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 209</value>
@@ -727,6 +709,9 @@
   <data name="&gt;&gt;delayTextBox.Parent" xml:space="preserve">
     <value>panel1</value>
   </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Wished Price</value>
+  </data>
   <data name="&gt;&gt;pictureBox3.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
@@ -784,6 +769,9 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
   </data>
+  <data name="comboBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>48</value>
+  </data>
   <data name="nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
   </data>
@@ -832,8 +820,8 @@
   <data name="NameLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;startSelectedMenuItem.Name" xml:space="preserve">
+    <value>startSelectedMenuItem</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -847,8 +835,8 @@
   <data name="pictureBox4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 21</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Find Item</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -859,14 +847,14 @@
   <data name="resellComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 19</value>
   </data>
-  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;NameLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;startAllMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;splitContainer2.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -913,9 +901,6 @@
   <data name="&gt;&gt;nextButton.Name" xml:space="preserve">
     <value>nextButton</value>
   </data>
-  <data name="searchButton.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
-  </data>
   <data name="&gt;&gt;statusStrip1.Name" xml:space="preserve">
     <value>statusStrip1</value>
   </data>
@@ -934,14 +919,17 @@
   <data name="DonateBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>693, 29</value>
   </data>
+  <data name="&gt;&gt;buyUpDown.Name" xml:space="preserve">
+    <value>buyUpDown</value>
+  </data>
   <data name="addtoScan.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
   <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>33, 84</value>
+  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -957,6 +945,9 @@
   </data>
   <data name="&gt;&gt;resellPriceBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="minimizeOnClosingToolStripMenuItem.Text" xml:space="preserve">
     <value>Minimize on close</value>
@@ -975,9 +966,6 @@
   </data>
   <data name="&gt;&gt;InventoryList.Name" xml:space="preserve">
     <value>InventoryList</value>
-  </data>
-  <data name="columnHeader8.Width" type="System.Int32, mscorlib">
-    <value>159</value>
   </data>
   <data name="&gt;&gt;ExtraGroup.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -1030,8 +1018,8 @@
   <data name="button3.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 186</value>
   </data>
-  <data name="splitContainer3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="NameLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
   </data>
   <data name="&gt;&gt;columnHeader8.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1042,6 +1030,9 @@
   <data name="&gt;&gt;scanGroupBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;buyNowButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;resellComboBox.Parent" xml:space="preserve">
     <value>ExtraGroup</value>
   </data>
@@ -1050,9 +1041,6 @@
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>UserName</value>
-  </data>
-  <data name="&gt;&gt;loginButton.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="&gt;&gt;minimizeOnClosingToolStripMenuItem.Name" xml:space="preserve">
     <value>minimizeOnClosingToolStripMenuItem</value>
@@ -1072,6 +1060,9 @@
   <data name="&gt;&gt;nameTextBox.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;logListBox.Name" xml:space="preserve">
+    <value>logListBox</value>
+  </data>
   <data name="buyNowButton.Text" xml:space="preserve">
     <value>Buy Now</value>
   </data>
@@ -1081,8 +1072,8 @@
   <data name="&gt;&gt;pictureBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="startAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 22</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -1098,9 +1089,6 @@
   </data>
   <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
-  </data>
-  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;startSelectedMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1135,9 +1123,6 @@
   <data name="&gt;&gt;NameLabel.Parent" xml:space="preserve">
     <value>panel1</value>
   </data>
-  <data name="&gt;&gt;StatusLabel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;label11.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1153,9 +1138,6 @@
   <data name="buyNowButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
   <data name="pictureBox3.Location" type="System.Drawing.Point, System.Drawing">
     <value>706, 11</value>
   </data>
@@ -1168,8 +1150,8 @@
   <data name="&gt;&gt;recentListView.Parent" xml:space="preserve">
     <value>tabPage2</value>
   </data>
-  <data name="resellPriceBox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="nextButton.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
   </data>
   <data name="&gt;&gt;button2.Name" xml:space="preserve">
     <value>button2</value>
@@ -1179,6 +1161,9 @@
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 13</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>213, 212</value>
@@ -1224,9 +1209,6 @@
   </data>
   <data name="button2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>776, 207</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1306,17 +1288,17 @@
   <data name="wishpriceBox.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
-  </data>
   <data name="&gt;&gt;scanGroupBox.Name" xml:space="preserve">
     <value>scanGroupBox</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Find Item</value>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="columnHeader14.Width" type="System.Int32, mscorlib">
     <value>116</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
+    <value>splitContainer1.Panel2</value>
   </data>
   <data name="&gt;&gt;fullSetToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1336,6 +1318,9 @@
   <data name="splitContainer2.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 459</value>
   </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>33, 84</value>
+  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
   </data>
@@ -1354,8 +1339,8 @@
   <data name="&gt;&gt;searchButton.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="comboBox3.Items" xml:space="preserve">
-    <value>Trading Cards</value>
+  <data name="deleteMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 22</value>
   </data>
   <data name="scanGroupBox.Text" xml:space="preserve">
     <value>Scan Items</value>
@@ -1423,8 +1408,8 @@
   <data name="nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 20</value>
   </data>
-  <data name="&gt;&gt;emptyTabToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;linkTextBox.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1438,8 +1423,8 @@
   <data name="DonateBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>Exit</value>
+  <data name="&gt;&gt;splitContainer2.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer2</value>
   </data>
   <data name="&gt;&gt;statusStrip1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1453,14 +1438,11 @@
   <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
   <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StatusLabel1.Name" xml:space="preserve">
     <value>StatusLabel1</value>
@@ -1495,9 +1477,6 @@
   <data name="pictureBox3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="columnHeader8.Text" xml:space="preserve">
-    <value>Start Price</value>
-  </data>
   <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
@@ -1510,14 +1489,17 @@
   <data name="minimizeOnClosingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>170, 22</value>
   </data>
+  <data name="buyNowButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="scanGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 1</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Parent" xml:space="preserve">
     <value>scanGroupBox</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Item Page</value>
+  <data name="buyUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 105</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1546,8 +1528,8 @@
   <data name="&gt;&gt;splitContainer2.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
   </data>
-  <data name="buyUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 105</value>
+  <data name="recentListView.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1582,8 +1564,11 @@
   <data name="SellButton.Text" xml:space="preserve">
     <value>Sell</value>
   </data>
-  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;buyCheckBox.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="statusStrip1.Text" xml:space="preserve">
     <value>statusStrip1</value>
@@ -1591,14 +1576,11 @@
   <data name="loginButton.Text" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox3.Items4" xml:space="preserve">
+    <value>On Sale</value>
   </data>
   <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="columnHeader9.Text" xml:space="preserve">
-    <value>Quantity</value>
   </data>
   <data name="delayTextBox.Text" xml:space="preserve">
     <value>3000</value>
@@ -1608,9 +1590,6 @@
   </data>
   <data name="&gt;&gt;logListBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="deleteMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 22</value>
   </data>
   <data name="&gt;&gt;buyNowButton.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -1639,17 +1618,11 @@
   <data name="&gt;&gt;pictureBox4.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;splitContainer2.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 13</value>
+  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;addtoScan.Parent" xml:space="preserve">
     <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;stopSelectedMenuItem.Name" xml:space="preserve">
-    <value>stopSelectedMenuItem</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -1657,17 +1630,23 @@
   <data name="buyNowButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Newly Listed</value>
+  </data>
   <data name="deleteMenuItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 13</value>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Load</value>
   </data>
   <data name="addtoScan.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 0, 5, 0</value>
   </data>
   <data name="&gt;&gt;columnHeader3.Name" xml:space="preserve">
     <value>columnHeader3</value>
+  </data>
+  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="buyUpDown.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -1696,9 +1675,6 @@
   <data name="recentListView.Size" type="System.Drawing.Size, System.Drawing">
     <value>383, 183</value>
   </data>
-  <data name="&gt;&gt;startSelectedMenuItem.Name" xml:space="preserve">
-    <value>startSelectedMenuItem</value>
-  </data>
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -1708,9 +1684,6 @@
   <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="scanButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 186</value>
   </data>
@@ -1719,6 +1692,9 @@
   </data>
   <data name="scanButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
+  </data>
+  <data name="NameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>33, 12</value>
   </data>
   <data name="&gt;&gt;label15.Name" xml:space="preserve">
     <value>label15</value>
@@ -1738,9 +1714,6 @@
   <data name="&gt;&gt;button2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="buyNowButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 0, 0, 0</value>
   </data>
@@ -1750,11 +1723,17 @@
   <data name="&gt;&gt;contextMenuStrip3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>106, 50</value>
   </data>
   <data name="scanListView.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
+  </data>
+  <data name="pictureBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 57</value>
   </data>
   <data name="&gt;&gt;notifyIcon1.Type" xml:space="preserve">
     <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1925,8 +1904,14 @@
   <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 13</value>
+  </data>
+  <data name="emptyTabToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 22</value>
   </data>
   <data name="pictureBox3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1940,8 +1925,8 @@
   <data name="DonateBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 27</value>
   </data>
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
   </data>
   <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -1957,9 +1942,6 @@
   </data>
   <data name="&gt;&gt;button4.Parent" xml:space="preserve">
     <value>splitContainer3.Panel2</value>
-  </data>
-  <data name="&gt;&gt;wishpriceBox.Name" xml:space="preserve">
-    <value>wishpriceBox</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -1979,17 +1961,14 @@
   <data name="splitContainer1.Panel1MinSize" type="System.Int32, mscorlib">
     <value>191</value>
   </data>
-  <data name="startAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 22</value>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;searchButton.Parent" xml:space="preserve">
     <value>groupBox4</value>
   </data>
   <data name="buyUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 20</value>
-  </data>
-  <data name="&gt;&gt;scanButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -2018,6 +1997,9 @@
   <data name="&gt;&gt;nextButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="addtoScan.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="&gt;&gt;InventoryList.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
@@ -2026,9 +2008,6 @@
   </data>
   <data name="columnHeader12.Width" type="System.Int32, mscorlib">
     <value>123</value>
-  </data>
-  <data name="nextButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 45</value>
   </data>
   <data name="&gt;&gt;stopAllMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2063,6 +2042,9 @@
   <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
   </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>54, 21</value>
+  </data>
   <data name="columnHeader13.Text" xml:space="preserve">
     <value>Status</value>
   </data>
@@ -2077,6 +2059,9 @@
   </data>
   <data name="prevButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 25</value>
+  </data>
+  <data name="pictureBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
   </data>
   <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
     <value>tabPage1</value>
@@ -2093,11 +2078,17 @@
   <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 21</value>
   </data>
+  <data name="searchBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 19</value>
+  </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>170, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>Exit</value>
   </data>
   <data name="&gt;&gt;columnHeader13.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2108,17 +2099,11 @@
   <data name="&gt;&gt;searchBox.Parent" xml:space="preserve">
     <value>groupBox4</value>
   </data>
-  <data name="recentListView.TabIndex" type="System.Int32, mscorlib">
-    <value>64</value>
-  </data>
   <data name="&gt;&gt;button4.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="splitContainer2.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
-    <value>Horizontal</value>
   </data>
   <data name="button2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2129,17 +2114,26 @@
   <data name="searchButton.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
+  <data name="columnHeader4.Width" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
   <data name="&gt;&gt;button1.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="pictureBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 57</value>
+  <data name="&gt;&gt;loginButton.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="searchButton.Text" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="InventoryList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>764, 159</value>
+  </data>
   <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Item Page</value>
   </data>
   <data name="columnHeader3.Text" xml:space="preserve">
     <value>Cost</value>
@@ -2171,14 +2165,14 @@
   <data name="stopSelectedMenuItem.Text" xml:space="preserve">
     <value>Stop Selected</value>
   </data>
-  <data name="label15.TabIndex" type="System.Int32, mscorlib">
-    <value>53</value>
+  <data name="&gt;&gt;stopSelectedMenuItem.Name" xml:space="preserve">
+    <value>stopSelectedMenuItem</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
-  <data name="&gt;&gt;nextButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;comboBox3.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;columnHeader6.Name" xml:space="preserve">
     <value>columnHeader6</value>
@@ -2204,26 +2198,17 @@
   <data name="&gt;&gt;recentListView.Name" xml:space="preserve">
     <value>recentListView</value>
   </data>
-  <data name="comboBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
     <value>$this</value>
-  </data>
-  <data name="&gt;&gt;splitContainer2.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer2</value>
   </data>
   <data name="&gt;&gt;columnHeader2.Name" xml:space="preserve">
     <value>columnHeader2</value>
   </data>
   <data name="&gt;&gt;button3.Parent" xml:space="preserve">
     <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;comboBox3.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.Name" xml:space="preserve">
     <value>splitContainer3.Panel2</value>
@@ -2312,6 +2297,9 @@
   <data name="button1.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
+  <data name="&gt;&gt;contextMenuStrip3.Name" xml:space="preserve">
+    <value>contextMenuStrip3</value>
+  </data>
   <data name="selectedItemToolStripMenuItem.Text" xml:space="preserve">
     <value>Checked to Selected Tab</value>
   </data>
@@ -2342,6 +2330,9 @@
   <data name="columnHeader10.Text" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="DonateBox.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
   </data>
@@ -2360,20 +2351,23 @@
   <data name="columnHeader2.Width" type="System.Int32, mscorlib">
     <value>155</value>
   </data>
+  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="button1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
   <data name="button2.Text" xml:space="preserve">
     <value>Set Price</value>
   </data>
-  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>778, 244</value>
   </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 13</value>
   </data>
   <data name="&gt;&gt;checkedToBothSourcesToolStripMenuItem.Name" xml:space="preserve">
     <value>checkedToBothSourcesToolStripMenuItem</value>
@@ -2381,32 +2375,35 @@
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 13</value>
   </data>
-  <data name="&gt;&gt;buyUpDown.Name" xml:space="preserve">
-    <value>buyUpDown</value>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
   </data>
-  <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="FoundList.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 78</value>
   </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;wishpriceBox.Parent" xml:space="preserve">
+    <value>panel1</value>
   </data>
-  <data name="&gt;&gt;buyNowButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;StatusLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>776, 207</value>
   </data>
   <data name="&gt;&gt;InventoryList.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="&gt;&gt;linkTextBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;columnHeader3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+  <data name="&gt;&gt;button3.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;comboBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2420,8 +2417,8 @@
   <data name="FoundList.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
   </data>
-  <data name="&gt;&gt;buyNowButton.Name" xml:space="preserve">
-    <value>buyNowButton</value>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;scanListView.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -2432,26 +2429,29 @@
   <data name="&gt;&gt;resellPriceBox.Name" xml:space="preserve">
     <value>resellPriceBox</value>
   </data>
+  <data name="&gt;&gt;splitContainer3.Panel1.Name" xml:space="preserve">
+    <value>splitContainer3.Panel1</value>
+  </data>
   <data name="&gt;&gt;label14.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="button3.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>Newly Listed</value>
+  <data name="columnHeader8.Text" xml:space="preserve">
+    <value>Start Price</value>
   </data>
-  <data name="scanGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>775, 234</value>
+  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="columnHeader4.Width" type="System.Int32, mscorlib">
-    <value>23</value>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;wishpriceBox.Parent" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="scanGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -2585,17 +2585,17 @@
   <data name="&gt;&gt;splitContainer3.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;splitContainer3.Panel1.Name" xml:space="preserve">
-    <value>splitContainer3.Panel1</value>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="comboBox3.Items4" xml:space="preserve">
-    <value>On Sale</value>
+  <data name="columnHeader8.Width" type="System.Int32, mscorlib">
+    <value>159</value>
   </data>
   <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>172, 47</value>
   </data>
-  <data name="searchBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 19</value>
+  <data name="loginButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 0, 10, 0</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>82, 51</value>
@@ -2606,8 +2606,8 @@
   <data name="&gt;&gt;columnHeader12.Name" xml:space="preserve">
     <value>columnHeader12</value>
   </data>
-  <data name="&gt;&gt;logListBox.Name" xml:space="preserve">
-    <value>logListBox</value>
+  <data name="&gt;&gt;emptyTabToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 64</value>
@@ -2618,14 +2618,14 @@
   <data name="buyCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="addtoScan.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="scanButton.Text" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="emptyTabToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 22</value>
+  <data name="searchButton.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
   </data>
   <data name="resellComboBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>91, 21</value>
@@ -2675,8 +2675,8 @@
   <data name="ExtraGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 130</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Wished Price</value>
+  <data name="splitContainer2.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
   </data>
   <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
     <value>groupBox3</value>
@@ -2684,11 +2684,11 @@
   <data name="wishpriceBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>84, 57</value>
   </data>
-  <data name="buyNowButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="columnHeader9.Text" xml:space="preserve">
+    <value>Quantity</value>
   </data>
-  <data name="&gt;&gt;buyCheckBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="nextButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>109, 45</value>
   </data>
   <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -2711,8 +2711,8 @@
   <data name="columnHeader5.Width" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;contextMenuStrip3.Name" xml:space="preserve">
-    <value>contextMenuStrip3</value>
+  <data name="&gt;&gt;startAllMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="loginButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 27</value>

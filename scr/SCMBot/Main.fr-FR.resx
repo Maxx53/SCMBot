@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="scanGroupBox.Text" xml:space="preserve">
+    <value>Analyse des objets</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Chercher un objet</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Mon inventaire</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="NameLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -157,20 +166,26 @@
   <data name="buyCheckBox.Text" xml:space="preserve">
     <value>qté. achat :</value>
   </data>
+  <data name="ExtraGroup.Text" xml:space="preserve">
+    <value>Revendre pour</value>
+  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Valeur</value>
   </data>
-  <data name="ExtraGroup.Text" xml:space="preserve">
-    <value>Revendre pour</value>
-  </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>Délai</value>
+  </data>
+  <data name="button4.Text" xml:space="preserve">
+    <value>Regarder le graphique</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Page d'objet</value>
   </data>
   <data name="columnHeader10.Text" xml:space="preserve">
     <value>Statut</value>
@@ -180,6 +195,9 @@
   </data>
   <data name="columnHeader12.Text" xml:space="preserve">
     <value>Prix souhaité</value>
+  </data>
+  <data name="contextMenuStrip3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 114</value>
   </data>
   <data name="deleteMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 22</value>
@@ -211,20 +229,8 @@
   <data name="stopAllMenuItem.Text" xml:space="preserve">
     <value>Tout arrêter</value>
   </data>
-  <data name="contextMenuStrip3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 114</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Page d'objet</value>
-  </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Nouvellement listé</value>
-  </data>
-  <data name="button4.Text" xml:space="preserve">
-    <value>Regarder le graphique</value>
-  </data>
-  <data name="scanGroupBox.Text" xml:space="preserve">
-    <value>Analyse des objets</value>
   </data>
   <data name="searchBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>372, 20</value>
@@ -250,6 +256,18 @@
   <data name="buyNowButton.Text" xml:space="preserve">
     <value>Achat immédiat</value>
   </data>
+  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>244, 92</value>
+  </data>
+  <data name="addtoScan.Location" type="System.Drawing.Point, System.Drawing">
+    <value>487, 16</value>
+  </data>
+  <data name="addtoScan.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 25</value>
+  </data>
+  <data name="addtoScan.Text" xml:space="preserve">
+    <value>Aux scans</value>
+  </data>
   <data name="selectedItemToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>243, 22</value>
   </data>
@@ -274,18 +292,6 @@
   <data name="emptyTabToolStripMenuItem.Text" xml:space="preserve">
     <value>Onglet vide</value>
   </data>
-  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 92</value>
-  </data>
-  <data name="addtoScan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>487, 16</value>
-  </data>
-  <data name="addtoScan.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 25</value>
-  </data>
-  <data name="addtoScan.Text" xml:space="preserve">
-    <value>Aux scans</value>
-  </data>
   <data name="searchButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>389, 16</value>
   </data>
@@ -294,9 +300,6 @@
   </data>
   <data name="searchButton.Text" xml:space="preserve">
     <value>Chercher</value>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Chercher un objet</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 13</value>
@@ -368,43 +371,13 @@
     <value>Nom :</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 3</value>
+    <value>119, 3</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>572, 64</value>
+    <value>568, 64</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Informations du compte</value>
-  </data>
-  <data name="minimizeOnClosingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="minimizeOnClosingToolStripMenuItem.Text" xml:space="preserve">
-    <value>Réduire à la fermeture</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Paramètres</value>
-  </data>
-  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>Aide</value>
-  </data>
-  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
-    <value>A propos</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>Quitter</value>
   </data>
   <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 114</value>
@@ -545,6 +518,36 @@
         AAAAAAAAAAAAAIABAACAAQAAwAMAAPAPAAA=
 </value>
   </data>
+  <data name="minimizeOnClosingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="minimizeOnClosingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Réduire à la fermeture</value>
+  </data>
+  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
+    <value>A propos</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
   </data>
@@ -566,8 +569,11 @@
   <data name="StatusLabel1.Text" xml:space="preserve">
     <value>Prêt</value>
   </data>
+  <data name="loginButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 17</value>
+  </data>
   <data name="loginButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 27</value>
+    <value>101, 27</value>
   </data>
   <data name="loginButton.Text" xml:space="preserve">
     <value>Connexion</value>
