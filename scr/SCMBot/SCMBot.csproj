@@ -105,6 +105,11 @@
     </Compile>
     <Compile Include="SteamSite.cs" />
     <Compile Include="SteamUtils.cs" />
+    <Compile Include="Strings.fr-FR.Designer.cs">
+      <DependentUpon>Strings.fr-FR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -148,6 +153,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.ru-RU.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
