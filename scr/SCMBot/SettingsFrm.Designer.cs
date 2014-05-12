@@ -209,6 +209,7 @@
             resources.ApplyResources(this.logCountBox, "logCountBox");
             this.logCountBox.Name = "logCountBox";
             this.logCountBox.ValidatingType = typeof(int);
+            this.logCountBox.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.logCountBox_MaskInputRejected);
             // 
             // hideInventBox
             // 
@@ -220,6 +221,7 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label1
             // 

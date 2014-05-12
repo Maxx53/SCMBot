@@ -62,6 +62,16 @@ namespace SCMBot
             this.Icon = Icon.FromHandle(Properties.Resources.settings.GetHicon());
         }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logCountBox_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
 
     }
 }
