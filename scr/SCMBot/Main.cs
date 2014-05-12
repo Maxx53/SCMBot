@@ -138,6 +138,8 @@ namespace SCMBot
             settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.numThreadsBox.Value = settings.numThreads;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
+            settingsForm.actualBox.Checked = settings.loadActual;
+
             settingsForm.playSndCheckBox.Checked = settings.playSnd;
 
             settingsForm.resDelayBox.Text = settings.sellDelay.ToString();
@@ -206,6 +208,8 @@ namespace SCMBot
             settings.sellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
             settings.searchRes = settingsForm.searchResBox.Text;
             settings.ignoreWarn = settingsForm.ignoreBox.Checked;
+            settings.loadActual = settingsForm.actualBox.Checked;
+
             settings.playSnd = settingsForm.playSndCheckBox.Checked;
 
             settings.delayVal = steam_srch.mainDelay;
@@ -581,6 +585,33 @@ namespace SCMBot
                     textBox1.Text = sweet;
                     textBox1.ReadOnly = false;
                     break;
+                case flag.ActPrice:
+                    string sweet2 = MainScanItem.LogItem.DoFracture(message);
+
+                    if (isFirstTab)
+                    {
+                        scanItems[searchId].Steam.scanInput.ResellPrice = sweet2;
+                        scanItems[searchId].Steam.scanInput.ResellType = 2;
+                        if (scanListView.SelectedIndices[0] == searchId)
+                        {
+                            BindToControls(scanListView);
+                       }
+                    }
+                    else
+                    {
+
+                        steam_srch.recentInputList[searchId].ResellPrice = sweet2;
+                        steam_srch.recentInputList[searchId].ResellType = 2;
+
+                       if (recentListView.SelectedIndices[0] == searchId)
+                        {
+                            BindToControls(recentListView);
+                        }
+    
+                    }
+
+                    break;
+
                 case flag.Items_Sold:
                     if (searchId != 1)
                     {
@@ -1072,10 +1103,6 @@ namespace SCMBot
             //((ListView)sender).Sort();
         }
 
-        private void InventoryList_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -2004,9 +2031,13 @@ namespace SCMBot
 
                     if (currPr == Strings.None)
                     {
-                        steam_srch.GetPriceTread(ourItem.MarketName, lit.Index);
-                        textBox1.Text = Strings.Loading;
-                        textBox1.ReadOnly = true;
+                        if (settings.loadActual)
+                        {
+                            var url = string.Format("{0}{1}/{2}/render/", SteamSite._lists, SteamSite.GetUrlApp(steam_srch.invApp, false).App, Uri.EscapeDataString(ourItem.MarketName));
+                            steam_srch.GetPriceTread(url, lit.Index, true);
+                            textBox1.Text = Strings.Loading;
+                            textBox1.ReadOnly = true;
+                        }
                     }
                     else
                         if (currPr == Strings.NFS)
@@ -2020,6 +2051,30 @@ namespace SCMBot
             }
             else pictureBox3.Image = null;
         }
+
+
+        private void resellComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (settings.loadActual)
+            {
+                if ((resellComboBox.SelectedIndex == 2) && (steam_srch.Logged))
+                {
+                    if (isFirstTab)
+                    {
+                        var ourItem = scanItems[scanListView.SelectedIndices[0]].Steam.scanInput;
+                        steam_srch.GetPriceTread(ourItem.Link, scanListView.SelectedIndices[0], false);
+                    }
+                    else
+                    {
+                        var ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
+                        steam_srch.GetPriceTread(ourItem.Link, recentListView.SelectedIndices[0], false);
+                    }
+
+                    resellPriceBox.Text = Strings.Loading;
+                }
+            }
+        }
+
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {

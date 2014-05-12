@@ -211,16 +211,25 @@ namespace SCMBot
         }
 
 
-        public void GetPriceTread(string ItName, int pos)
+        public void GetPriceTread(string url, int pos, bool isInv)
         {
             ThreadStart threadStart = delegate()
             {
                 
                 var tempLst = new List<ScanItem>();
-                var url = _lists + GetUrlApp(invApp, false).App + "/" + ItName + "/render/";
-                ParseLotList(SendGet(url, cookieCont), tempLst, currencies, false);
+
+                ParseLotList(SendGet(UrlForRender(url), cookieCont), tempLst, currencies, false);
+
+
                 if (tempLst.Count != 0)
-                    doMessage(flag.InvPrice, pos, tempLst[0].Price.ToString(), true);
+                {
+                    var fl = flag.ActPrice;
+
+                    if (isInv)
+                        fl = flag.InvPrice;
+
+                    doMessage(fl, pos, tempLst[0].Price.ToString(), true);
+                }
             };
             Thread pTh = new Thread(threadStart);
             pTh.IsBackground = true;
@@ -229,7 +238,7 @@ namespace SCMBot
         }
 
 
-        static AppType GetUrlApp(int appIndx, bool isGetInv)
+        public static AppType GetUrlApp(int appIndx, bool isGetInv)
         {
             string app = "753";
             string cont = "2";
@@ -255,7 +264,7 @@ namespace SCMBot
                     break;
             }
             if (isGetInv)
-            return new AppType(string.Format("{0}/{1}",app,cont),string.Empty);
+            return new AppType(string.Format("{0}/{1}",app,cont), string.Empty);
             else return new AppType( app, cont);
 
 
@@ -564,12 +573,10 @@ namespace SCMBot
         }
 
 
-        public void scanThread_DoWork(object sender, DoWorkEventArgs e)
+        public string UrlForRender(string input)
         {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            string sessid = GetSessId(cookieCont);
+            string url = input;
 
-            string url = scanInput.Link;
             int fint = url.IndexOf('?');
 
             if (fint == -1)
@@ -580,8 +587,15 @@ namespace SCMBot
             {
                 url = url.Insert(fint, "/render/");
             }
+            return url;
+        }
 
+        public void scanThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            string sessid = GetSessId(cookieCont);
 
+            string url = UrlForRender(scanInput.Link);
 
             if (BuyNow)
             {

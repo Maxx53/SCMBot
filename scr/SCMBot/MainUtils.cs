@@ -45,7 +45,8 @@ namespace SCMBot
         Resold = 22,
         SetHeadName = 23,
         ReLogin = 24,
-        ResellErr = 25
+        ResellErr = 25,
+        ActPrice = 26
     }
 
 

@@ -236,6 +236,21 @@ namespace SCMBot.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("true")]
+        public bool loadActual
+        {
+            get
+            {
+                return ((bool)(this["loadActual"]));
+            }
+            set
+            {
+                this["loadActual"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("true")]
         public bool playSnd
         {
             get

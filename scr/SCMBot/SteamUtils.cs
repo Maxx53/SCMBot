@@ -868,7 +868,9 @@ namespace SCMBot
                     //ParseLotList(cont, tempLst, currencies);
                     //if (tempLst.Count != 0)
                     //  price = tempLst[0].Price;
-                    string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, ourItem.MarketName);
+
+                    //fix for special symbols in Item Name
+                    string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, Uri.EscapeDataString(ourItem.MarketName));
 
                     inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false, ourItem.Marketable, pageLnk));
                 }

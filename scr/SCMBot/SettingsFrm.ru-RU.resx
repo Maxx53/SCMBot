@@ -271,6 +271,15 @@
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Площадка</value>
   </data>
+  <data name="actualBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 92</value>
+  </data>
+  <data name="actualBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 17</value>
+  </data>
+  <data name="actualBox.Text" xml:space="preserve">
+    <value>Загружать актуальную цену</value>
+  </data>
   <data name="tabPage3.Text" xml:space="preserve">
     <value>Интерфейс</value>
   </data>
