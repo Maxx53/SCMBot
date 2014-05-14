@@ -27,13 +27,13 @@ namespace SCMBot
         public bool codgroupEnab
         {
             get { return codgroupBox.Enabled; }
-            set { codgroupBox.Enabled = value; }
+            set { codgroupBox.Visible = value; }
         }
 
         public bool capchgroupEnab
         {
             get { return capchgroupBox.Enabled; }
-            set { capchgroupBox.Enabled = value; }
+            set { capchgroupBox.Visible = value; }
         }
 
          public PictureBox capchImg

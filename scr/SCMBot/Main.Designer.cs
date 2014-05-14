@@ -302,7 +302,6 @@
             resources.GetString("resellComboBox.Items2")});
             resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.Name = "resellComboBox";
-            this.resellComboBox.SelectedIndexChanged += new System.EventHandler(this.resellComboBox_SelectedIndexChanged);
             // 
             // wishpriceBox
             // 

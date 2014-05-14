@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="okButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 195</value>
+    <value>154, 111</value>
   </data>
   <data name="okButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 28</value>
@@ -336,7 +336,7 @@
     <value>2</value>
   </data>
   <data name="capchgroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 95</value>
+    <value>12, 12</value>
   </data>
   <data name="capchgroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>227, 93</value>
@@ -362,14 +362,11 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>en-US</value>
-  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>252, 228</value>
+    <value>252, 147</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">

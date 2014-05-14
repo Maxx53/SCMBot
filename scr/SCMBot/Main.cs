@@ -71,7 +71,8 @@ namespace SCMBot
             settingsForm.intLangComboBox.DataSource = new System.Globalization.CultureInfo[]
             {
               System.Globalization.CultureInfo.GetCultureInfo("ru-RU"),
-              System.Globalization.CultureInfo.GetCultureInfo("en-US")
+              System.Globalization.CultureInfo.GetCultureInfo("en-US"),
+              System.Globalization.CultureInfo.GetCultureInfo("fr-FR")
             };
 
 
@@ -385,8 +386,6 @@ namespace SCMBot
         }
 
 
-
-
         private void AddToScanLog(string message, int scanId, byte color, bool addcurr, bool ismain)
         {
             if (ismain)
@@ -398,7 +397,7 @@ namespace SCMBot
             else
             {
                 cutLog(steam_srch.logContainer, settings.logCount);
-                if (scanId != 0)
+                if (message == "Not found")
                     addcurr = false;
                 steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
                 ScrollLbox(scanId, recentListView, false);
@@ -433,7 +432,6 @@ namespace SCMBot
 
                     SetButton(loginButton, Strings.Login, 1);
                     ProgressBar1.Visible = false;
-                    label5.Text = message;
                     break;
 
                 case flag.Logout_:
@@ -2053,6 +2051,8 @@ namespace SCMBot
         }
 
 
+
+        //Not used temporary
         private void resellComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (settings.loadActual)

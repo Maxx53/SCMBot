@@ -340,15 +340,25 @@ namespace SCMBot
         }
 
 
+        private RespRSA GetRSA()
+        {
+           return JsonConvert.DeserializeObject<RespRSA>(SendPost("username=" + UserName, _getrsa, _ref, true));
+        }
+
+        private void LoginProgr(string value)
+        {
+            doMessage(flag.Rep_progress, 0, value, true);
+        }
+
+
         private void loginThread_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
             LoginProcess = true;
             Logged = false;
-            doMessage(flag.Rep_progress, 0, "20", true);
-            //if (worker.CancellationPending == true)
-            //  return;
+
+            LoginProgr("10");
 
             string accInfo = GetNameBalance(cookieCont, currencies);
 
@@ -361,43 +371,40 @@ namespace SCMBot
                 return;
             }
 
+            string mailCode = string.Empty;
+            string guardDesc = string.Empty;
+            string capchaId = string.Empty;
+            string capchaTxt = string.Empty;
+            string mailId = string.Empty;
 
 
-            string log_content = SendPost("username=" + UserName, _getrsa, _ref, true);
-            if (log_content == string.Empty)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            doMessage(flag.Rep_progress, 0, "40", true);
-            //  if (worker.CancellationPending == true)
-            //   return;
-
-            var rRSA = JsonConvert.DeserializeObject<RespRSA>(log_content);
-            string firstTry = string.Empty;
-            string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
-
+            //Login cycle
         begin:
 
-            if (rRSA.Success)
-            {
-                firstTry = SendPost(string.Format(loginReq, finalpass, UserName, string.Empty, string.Empty, string.Empty,
-                                                                string.Empty, string.Empty, rRSA.TimeStamp), _dologin, _ref, true);
-                doMessage(flag.Rep_progress, 0, "60", true);
-                // if (worker.CancellationPending == true)
-                //     return;
-            }
-            else
-            {
+
+            if (worker.CancellationPending == true)
                 return;
-                //el probleme, comondante
-            }
 
-            var rProcess = JsonConvert.DeserializeObject<RespProcess>(firstTry);
+            LoginProgr("20");
 
-            if (firstTry.Contains("message"))
+            var rRSA = GetRSA();
+
+            LoginProgr("40");
+
+            string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
+
+            string MainReq = string.Format(loginReq, finalpass, UserName, mailCode, guardDesc, capchaId,
+                                                                          capchaTxt, mailId, rRSA.TimeStamp);
+            string BodyResp = SendPost(MainReq, _dologin, _ref, true);
+
+            LoginProgr("60");
+
+            //Checking login problem
+            if (BodyResp.Contains("message"))
             {
+                var rProcess = JsonConvert.DeserializeObject<RespProcess>(BodyResp);
+
+                //Checking Incorrect Login
                 if (rProcess.Message == "Incorrect login")
                 {
                     Main.AddtoLog("Incorrect login");
@@ -406,91 +413,84 @@ namespace SCMBot
                     LoginProcess = false;
                     return;
                 }
-
-                Dialog guardCheckForm = new Dialog();
-
-                if (rProcess.isEmail)
+                else
                 {
-                    guardCheckForm.capchgroupEnab = false;
-                }
-                else if (rProcess.isCaptcha)
-                {
-                    string newcap = string.Empty;
-                    
-                  //  Not much, brb
-                  //  if (rProcess.isBadCap)
-                  //  {
-                  //      MessageBox.Show("cap is bad");
-                  //      newcap = GetRequest(_refrcap, cookieCont);
-                  //      newcap = _capcha + newcap.Substring(8, 20);
-                  //   }
-                  //   else
-                  //   {
-                            newcap =  _capcha + rProcess.Captcha_Id;
-                  //   }
+                    //Login correct, checking message type...
 
-                    guardCheckForm.codgroupEnab = false;
-                    Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
-                }
+                    Dialog guardCheckForm = new Dialog();
 
-                doMessage(flag.Rep_progress, 0, "80", true);
-                //    if (worker.CancellationPending == true)
-                //       return;
-
-                if (guardCheckForm.ShowDialog() == DialogResult.OK)
-                {
-
-                    string secondTry = SendPost(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
-                                                           guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp), _dologin, _ref, true);
-
-                   //What 'bout captcha problem?
-                   //MessageBox.Show(rProcess.Captcha_Id);
-                   // MessageBox.Show(string.Format(loginReq, finalpass, UserName, guardCheckForm.MailCode, guardCheckForm.GuardDesc, rProcess.Captcha_Id,
-                   //                                        guardCheckForm.capchaText, rProcess.Email_Id, rRSA.TimeStamp));
-                   // MessageBox.Show(guardCheckForm.capchaText);
-                    var rFinal = JsonConvert.DeserializeObject<RespFinal>(secondTry);
-
-                    if (rFinal.Success && rFinal.isComplete)
+                    if (rProcess.isCaptcha)
                     {
-                        string accInfo2 = GetNameBalance(cookieCont, currencies);
-                        doMessage(flag.Login_success, 0, accInfo2, true);
-                        doMessage(flag.Rep_progress, 0, "100", true);
-                        Logged = true;
-                        Main.AddtoLog("Login Success");
+                        //Verifying humanity, loading capcha
+                        guardCheckForm.capchgroupEnab = true;
+                        guardCheckForm.codgroupEnab = false;
+
+                        string newcap = _capcha + rProcess.Captcha_Id;
+                        Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
+                    }
+                    else
+                        if (rProcess.isEmail)
+                        {
+                            //Steam guard wants email code
+                            guardCheckForm.capchgroupEnab = false;
+                            guardCheckForm.codgroupEnab = true;
+                        }
+                        else
+                        {
+                            //Whoops!
+                            goto begin;
+                        }
+
+                    //Re-assign main request values
+                    if (guardCheckForm.ShowDialog() == DialogResult.OK)
+                    {
+                        mailCode = guardCheckForm.MailCode;
+                        guardDesc = guardCheckForm.GuardDesc;
+                        capchaId = rProcess.Captcha_Id;
+                        capchaTxt = guardCheckForm.capchaText;
+                        mailId = rProcess.Email_Id;
+                        guardCheckForm.Dispose();
                     }
                     else
                     {
-                        //TODO: Разобрать кашу, выкинуть goto
-                        goto begin;
+                        Main.AddtoLog("Dialog has been cancelled");
+                        doMessage(flag.Login_cancel, 0, "Dialog has been cancelled", true);
+                        e.Cancel = true;
+                        Logged = false;
+                        LoginProcess = false;
+                        guardCheckForm.Dispose();
+                        return;
+
                     }
 
-                }
-                else
-                {
-                    Main.AddtoLog("Login Guard Check Cancelled");
-                    doMessage(flag.Login_cancel, 0, "Login Cancelled", true);
-                    e.Cancel = true;
+                    goto begin;
                 }
 
-                guardCheckForm.Dispose();
-
-            }
-
-            else if (rProcess.Success)
-            {
-                string accInfo3 = GetNameBalance(cookieCont, currencies);
-
-                doMessage(flag.Login_success, 0, accInfo3, true);
-                doMessage(flag.Rep_progress, 0, "100", true);
-                Main.AddtoLog("Login Success");
-                Logged = true;
             }
             else
             {
-                Main.AddtoLog("Login Guard Check Cancelled");
-                doMessage(flag.Login_cancel, 0, string.Empty, true);
-                e.Cancel = true;
-                Logged = false;
+                //No Messages, Success!
+                var rFinal = JsonConvert.DeserializeObject<RespFinal>(BodyResp);
+
+                LoginProgr("80");
+
+                if (rFinal.Success && rFinal.isComplete)
+                {
+                    //Okay
+                    string accInfo2 = GetNameBalance(cookieCont, currencies);
+                    doMessage(flag.Login_success, 0, accInfo2, true);
+
+                    LoginProgr("100");
+
+                    Logged = true;
+                    Main.AddtoLog("Login Success");
+                }
+                else
+                {
+                    //Fail
+                    goto begin;
+                }
+
             }
 
             LoginProcess = false;
