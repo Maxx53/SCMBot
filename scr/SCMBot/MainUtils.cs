@@ -12,6 +12,7 @@ using System.Collections;
 using System.Threading;
 using System.ComponentModel;
 using System.Media;
+using System.Runtime.InteropServices;
 
 namespace SCMBot
 {
@@ -78,7 +79,6 @@ namespace SCMBot
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
-
             
         private void setNotifyText(string mess)
         {
@@ -120,16 +120,18 @@ namespace SCMBot
 
         static public void loadImg(string imgurl, PictureBox picbox, bool drawtext, bool doWhite)
         {
-            if (imgurl == string.Empty)
-                return;
-
-            if (drawtext)
-            {
-                picbox.Image = Properties.Resources.working;
-            }
-
             try
             {
+
+                if (imgurl == string.Empty)
+                    return;
+
+                if (drawtext)
+                {
+                    picbox.Image = Properties.Resources.working;
+                }
+
+
                 WebClient wClient = new WebClient();
                 byte[] imageByte = wClient.DownloadData(imgurl);
                 using (MemoryStream ms = new MemoryStream(imageByte, 0, imageByte.Length))
@@ -140,10 +142,9 @@ namespace SCMBot
                     picbox.Image = resimg;
                 }
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-
-               // throw;
+                Main.AddtoLog(exc.Message);
             }
         }
 
@@ -668,4 +669,50 @@ namespace SCMBot
   
     }
 
+
+    public static class FlashWindow
+    {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FLASHWINFO
+        {
+            public uint cbSize;
+            public IntPtr hwnd;
+            public uint dwFlags;
+            public uint uCount;
+            public uint dwTimeout;
+        }
+
+        public const uint FLASHW_ALL = 3;
+        public const uint FLASHW_TIMERNOFG = 12;
+  
+        public static bool Flash(System.Windows.Forms.Form form)
+        {
+            if (Win2000OrLater)
+            {
+                FLASHWINFO fi = Create_FLASHWINFO(form.Handle, FLASHW_ALL | FLASHW_TIMERNOFG, uint.MaxValue, 0);
+                return FlashWindowEx(ref fi);
+            }
+            return false;
+        }
+
+        private static FLASHWINFO Create_FLASHWINFO(IntPtr handle, uint flags, uint count, uint timeout)
+        {
+            FLASHWINFO fi = new FLASHWINFO();
+            fi.cbSize = Convert.ToUInt32(Marshal.SizeOf(fi));
+            fi.hwnd = handle;
+            fi.dwFlags = flags;
+            fi.uCount = count;
+            fi.dwTimeout = timeout;
+            return fi;
+        }
+
+        private static bool Win2000OrLater
+        {
+            get { return System.Environment.OSVersion.Version.Major >= 5; }
+        }
+    }
 }

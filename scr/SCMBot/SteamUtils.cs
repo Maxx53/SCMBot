@@ -310,6 +310,9 @@ namespace SCMBot
             [JsonProperty("market_name")]
             public string Name { get; set; }
 
+            [JsonProperty("name")]
+            public string SimpleName { get; set; }
+
             [JsonProperty("icon_url")]
             public string IconUrl { get; set; }
 
@@ -571,6 +574,55 @@ namespace SCMBot
 
 
         //steam utils
+
+
+        public static AppType GetUrlApp(int appIndx, bool isGetInv)
+        {
+            string app = "753";
+            string cont = "6";
+
+            switch (appIndx)
+            {
+                case 0: //Trading Cards
+                    app = "753";
+                    cont = "6";
+                    break;
+                case 1:  //TF2
+                    app = "440";
+                    cont = "2";
+                    break;
+                case 2:  //DOTA2
+                    app = "570";
+                    cont = "2";
+                    break;
+                case 3: //CS:GO
+                    app = "730";
+                    cont = "2";
+                    break;
+                case 4: //BattleBlock Theater
+                    app = "238460";
+                    cont = "2";
+                    break;
+                case 5: //Warframe
+                    app = "230410";
+                    cont = "2";
+                    break;
+                case 6: //Sins of a Dark Age
+                    app = "251970";
+                    cont = "1";
+                    break;
+                case 7: //Path of Exile
+                    app = "238960";
+                    cont = "1";
+                    break;
+            }
+            if (isGetInv)
+                return new AppType(string.Format("{0}/{1}", app, cont), string.Empty);
+            else return new AppType(app, cont);
+        }
+
+
+
 
         public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
@@ -870,7 +922,17 @@ namespace SCMBot
                     //  price = tempLst[0].Price;
 
                     //fix for special symbols in Item Name
-                    string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, Uri.EscapeDataString(ourItem.MarketName));
+                    string markname = string.Empty;
+
+                    //BattleBlock Theater Fix
+                    if ((ourItem.MarketName == null) && (ourItem.Name == string.Empty))
+                    {
+                        ourItem.Name = ourItem.SimpleName;
+                        ourItem.MarketName = ourItem.SimpleName;
+                    }
+
+                    markname = Uri.EscapeDataString(ourItem.MarketName);
+                    string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, markname);
 
                     inventList.Add(new InventItem(prop.assetid, ourItem.Name, ourItem.Type, price, ourItem.IconUrl, ourItem.MarketName, false, ourItem.Marketable, pageLnk));
                 }

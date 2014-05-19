@@ -238,38 +238,7 @@ namespace SCMBot
         }
 
 
-        public static AppType GetUrlApp(int appIndx, bool isGetInv)
-        {
-            string app = "753";
-            string cont = "2";
-
-            switch (appIndx)
-            {
-                case 0: 
-                    app = "753";
-                    cont = "6";
-                    break;
-                case 1: 
-                    app = "440";
-                    cont = "2";
-                    break;
-
-                case 2:
-                    app = "570";
-                    cont = "2";
-                    break;
-                case 3:
-                    app = "730";
-                    cont = "2";
-                    break;
-            }
-            if (isGetInv)
-            return new AppType(string.Format("{0}/{1}",app,cont), string.Empty);
-            else return new AppType( app, cont);
-
-
-        }
-
+ 
 
 
         private void getInventory_DoWork(object sender, DoWorkEventArgs e)
@@ -388,6 +357,16 @@ namespace SCMBot
             LoginProgr("20");
 
             var rRSA = GetRSA();
+
+            if (rRSA == null)
+            {
+                Main.AddtoLog("Network Problem");
+                doMessage(flag.Login_cancel, 0, "Network Problem", true);
+                e.Cancel = true;
+                LoginProcess = false;
+                return;
+            }
+
 
             LoginProgr("40");
 
@@ -592,61 +571,72 @@ namespace SCMBot
 
         public void scanThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            string sessid = GetSessId(cookieCont);
-
-            string url = UrlForRender(scanInput.Link);
-
-            if (BuyNow)
+            try
             {
-                ParseLotList(SendGet(url, cookieCont), lotList, currencies, false);
+                BackgroundWorker worker = sender as BackgroundWorker;
 
-                if (lotList.Count == 0)
-                {
-                    doMessage(flag.Error_scan, scanID, "0", true);
-                }
-                else
-                {
-                    string totalStr = Convert.ToString(lotList[0].Price + lotList[0].Fee);
-                    var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, scanInput.Link, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr);
+                string sessid = GetSessId(cookieCont);
+                string url = UrlForRender(scanInput.Link);
 
-                    BuyNow = false;
-                    if (buyresp.Succsess)
+                if (BuyNow)
+                {
+                    ParseLotList(SendGet(url, cookieCont), lotList, currencies, false);
+
+                    if (lotList.Count == 0)
                     {
-                        doMessage(flag.Success_buy, scanID, buyresp.Mess, true);
+                        doMessage(flag.Error_scan, scanID, "0", true);
                     }
                     else
                     {
-                        doMessage(flag.Error_buy, scanID, buyresp.Mess, true);
+                        string totalStr = Convert.ToString(lotList[0].Price + lotList[0].Fee);
+                        var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, scanInput.Link, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr);
+
+                        BuyNow = false;
+                        if (buyresp.Succsess)
+                        {
+                            doMessage(flag.Success_buy, scanID, buyresp.Mess, true);
+                        }
+                        else
+                        {
+                            doMessage(flag.Error_buy, scanID, buyresp.Mess, true);
+                        }
+                    }
+                    return;
+                }
+
+
+                int buyCounter = 0;
+
+                //Scan cycle
+                while (worker.CancellationPending == false)
+                {
+                    try
+                    {
+                        if (fillLotList(url, false, true))
+                            buyCounter = BuyLogic(Convert.ToInt32(GetSweetPrice(scanInput.Price)), sessid, lotList[0], scanInput, buyCounter, true);
+
+                    }
+                    catch (Exception exc)
+                    {
+                        Main.AddtoLog(exc.Message);
+                    }
+                    finally
+                    {
+                        doMessage(flag.Scan_progress, scanID, string.Empty, true);
+                        Sem.WaitOne(scanInput.Delay);
                     }
                 }
-                return;
             }
-
-
-            int buyCounter = 0;
-
-            //Scan cycle
-            while (worker.CancellationPending == false)
+            catch (Exception exc)
             {
-                try
-                {
-                    if (fillLotList(url, false, true))
-                        buyCounter = BuyLogic(Convert.ToInt32(GetSweetPrice(scanInput.Price)), sessid, lotList[0], scanInput, buyCounter, true);
-
-                }
-                catch (Exception exc)
-                {
-                    Main.AddtoLog(exc.Message);
-                }
-                finally
-                {
-                    doMessage(flag.Scan_progress, scanID, string.Empty, true);
-                    Sem.WaitOne(scanInput.Delay);
-                }
+                Main.AddtoLog(exc.Message);
             }
 
-            doMessage(flag.Scan_cancel, scanID, string.Empty, true);
+            finally
+            {
+                doMessage(flag.Scan_cancel, scanID, string.Empty, true);
+                CancelScan();
+            }
 
         }
 

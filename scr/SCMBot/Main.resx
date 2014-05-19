@@ -1642,6 +1642,18 @@
     <value>CS:GO</value>
   </data>
   <data name="comboBox3.Items4" xml:space="preserve">
+    <value>BattleBlock Theater</value>
+  </data>
+  <data name="comboBox3.Items5" xml:space="preserve">
+    <value>Warframe</value>
+  </data>
+  <data name="comboBox3.Items6" xml:space="preserve">
+    <value>Sins of a Dark Age</value>
+  </data>
+  <data name="comboBox3.Items7" xml:space="preserve">
+    <value>Path of Exile</value>
+  </data>
+  <data name="comboBox3.Items8" xml:space="preserve">
     <value>On Sale</value>
   </data>
   <data name="comboBox3.Location" type="System.Drawing.Point, System.Drawing">

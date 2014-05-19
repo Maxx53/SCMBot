@@ -538,6 +538,8 @@ namespace SCMBot
 
                 case flag.Success_buy:
                     PlaySound(0, settings.playSnd);
+                    FlashWindow.Flash(this);
+
                     StatusLabel1.Text = Strings.Bought;
                     label5.Text = message;
                     buyNowButton.Enabled = true;
@@ -568,6 +570,8 @@ namespace SCMBot
                     break;
                 case flag.Resold:
                     PlaySound(2, settings.playSnd);
+                    FlashWindow.Flash(this);
+
                     StatusLabel1.Text = string.Format("Item \"{0}\" resold!", message);
                     break;
 
@@ -708,14 +712,14 @@ namespace SCMBot
                             else
                                 priceRes = ourItem.Price;
 
-                            string[] row = { string.Empty, ourItem.Type, ourItem.Name, priceRes };
+                            string[] row = { "", ourItem.Type, ourItem.Name, priceRes };
+                            
                             var lstItem = new ListViewItem(row);
-                            lstItem.Text = ourItem.Name;
                             InventoryList.Items.Add(lstItem);
                         }
                         SetColumnWidths(InventoryList, true);
                         SellButton.Enabled = true;
-                        if (comboBox3.SelectedIndex != 4)
+                        if (comboBox3.SelectedIndex != 8)
                         button2.Enabled = true;
                         else button2.Enabled = false;
                     }
@@ -940,6 +944,8 @@ namespace SCMBot
 
         private void searchButton_Click(object sender, EventArgs e)
         {
+            FlashWindow.Flash(this);
+
             doSearch(0);
             searchButton.Enabled = false;
         }
@@ -1030,7 +1036,7 @@ namespace SCMBot
                 lastSelec = -1;
 
                 button1.Enabled = false;
-                if (comboBox3.SelectedIndex == 4)
+                if (comboBox3.SelectedIndex == 8)
                 {
                     steam_srch.LoadOnSale = true;
                 }
@@ -1202,7 +1208,7 @@ namespace SCMBot
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox3.SelectedIndex == 4)
+            if (comboBox3.SelectedIndex == 8)
             {
                 SellButton.Text = Strings.RemSell;
                 steam_srch.isRemove = true;
@@ -1223,7 +1229,7 @@ namespace SCMBot
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (comboBox3.SelectedIndex != 4)
+            if (comboBox3.SelectedIndex != 8)
             {
                 string truePrice = string.Empty;
                 if (textBox1.Text == string.Empty)

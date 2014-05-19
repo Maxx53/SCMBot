@@ -745,7 +745,11 @@
             resources.GetString("comboBox3.Items1"),
             resources.GetString("comboBox3.Items2"),
             resources.GetString("comboBox3.Items3"),
-            resources.GetString("comboBox3.Items4")});
+            resources.GetString("comboBox3.Items4"),
+            resources.GetString("comboBox3.Items5"),
+            resources.GetString("comboBox3.Items6"),
+            resources.GetString("comboBox3.Items7"),
+            resources.GetString("comboBox3.Items8")});
             resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
