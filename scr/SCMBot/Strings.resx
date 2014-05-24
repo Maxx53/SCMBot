@@ -284,4 +284,7 @@ Price: {1} {2}</value>
   <data name="LogEmpty" xml:space="preserve">
     <value>Log for this Item is Empty.</value>
   </data>
+  <data name="donateLink" xml:space="preserve">
+    <value>https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=demmaxx@gmail.com&amp;lc=EN&amp;item_name=SteamCMBot%20Donate&amp;currency_code=RUB&amp;bn=PP-DonationsBF</value>
+  </data>
 </root>

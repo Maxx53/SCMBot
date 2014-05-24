@@ -278,4 +278,7 @@ Copyright © 2013-2014 Maxx53
   <data name="LogEmpty" xml:space="preserve">
     <value>Лог для этого предмета пуст.</value>
   </data>
+  <data name="donateLink" xml:space="preserve">
+    <value>https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=demmaxx@gmail.com&amp;lc=RU&amp;item_name=SteamCMBot%20Donate&amp;currency_code=RUB&amp;bn=PP-DonationsBF</value>
+  </data>
 </root>

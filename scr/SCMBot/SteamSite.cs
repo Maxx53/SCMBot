@@ -33,6 +33,8 @@ namespace SCMBot
 
         public bool NotSetHead { get; set; }
 
+        public int sellDelay { get; set; }
+
         public static string myUserId;
 
         public CookieContainer cookieCont { set; get; }
@@ -272,8 +274,14 @@ namespace SCMBot
 
                 int incr = (100 / cunt);
 
+                bool isSleep = false;
+
+                if (cunt > 0)
+                    isSleep = true;
+
                 for (int i = 0; i < cunt; i++)
                 {
+
                     if (isRemove)
                     {
                         var req = "sessionid=" + GetSessId(cookieCont);
@@ -291,6 +299,9 @@ namespace SCMBot
                     }
 
                     doMessage(flag.Sell_progress, 0, (incr * (i + 1)).ToString(), true);
+
+                    if ((isSleep) && (i != cunt - 1))
+                        Thread.Sleep(sellDelay);
                 }
 
                 doMessage(flag.Items_Sold, 0, string.Empty, true);
@@ -732,7 +743,7 @@ namespace SCMBot
                 }
                 catch (Exception exc)
                 {
-                    Main.AddtoLog("Resell error: "+ exc.Message);
+                    Main.AddtoLog("Resell error: " + exc.Message);
                     //To Error
                     doMessage(flag.ResellErr, 0, markName, true);
                 }
@@ -743,9 +754,6 @@ namespace SCMBot
             pTh.Start();
 
         }
-
-
-
 
     }
 

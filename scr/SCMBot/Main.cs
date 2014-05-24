@@ -29,6 +29,8 @@ namespace SCMBot
         bool isFirstTab = true;
         bool relog = false;
 
+        static bool isLog = true;
+
         //ItemComparer itemComparer = new ItemComparer();
 
         static public Semaphore reqPool;
@@ -134,6 +136,9 @@ namespace SCMBot
 
             label3Stretch();
 
+            isLog = settings.keepLog;
+            settingsForm.keepLogBox.Checked = isLog;
+
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
             settingsForm.searchResBox.Text = settings.searchRes;
@@ -143,13 +148,13 @@ namespace SCMBot
 
             settingsForm.playSndCheckBox.Checked = settings.playSnd;
 
-            settingsForm.resDelayBox.Text = settings.sellDelay.ToString();
+            settingsForm.resDelayBox.Text = settings.resellDelay.ToString();
 
             steam_srch.mainDelay = settings.delayVal;
-            steam_srch.resellDelay = settings.sellDelay;
+            steam_srch.resellDelay = settings.resellDelay;
 
             comboBox3.SelectedIndex = settings.InvType;
-
+            sellDelayBox.Text = settings.sellDelay.ToString();
 
             settingsForm.hideInventBox.Checked = settings.hideInvent;
             splitContainer1.Panel2Collapsed = settings.hideInvent;
@@ -160,10 +165,9 @@ namespace SCMBot
                 settingsForm.intLangComboBox.SelectedValue = settings.Language;
             }
 
-            //If you need password crypting
-            //passwordBox.Text = Decrypt(settings.lastPass);
-            settingsForm.passwordBox.Text = settings.lastPass;
-
+            //You need password crypting
+            settingsForm.passwordBox.Text = Decrypt(settings.lastPass);
+           
             if (loadtabs)
             {
                 LoadTabs(settings.saveTabs);
@@ -206,7 +210,13 @@ namespace SCMBot
             settings.hideInvent = settingsForm.hideInventBox.Checked;
             settings.numThreads = (int)settingsForm.numThreadsBox.Value;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
-            settings.sellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
+            settings.resellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
+           
+            settings.sellDelay = Convert.ToInt32(sellDelayBox.Text);
+
+            isLog = settingsForm.keepLogBox.Checked;
+            settings.keepLog = isLog;
+
             settings.searchRes = settingsForm.searchResBox.Text;
             settings.ignoreWarn = settingsForm.ignoreBox.Checked;
             settings.loadActual = settingsForm.actualBox.Checked;
@@ -225,11 +235,8 @@ namespace SCMBot
 
             label3Stretch();
 
-            //If you need password crypting
-            //settings.lastPass = Encrypt(passwordBox.Text);
-            settings.lastPass = settingsForm.passwordBox.Text;
-
-
+            //You need password crypting
+            settings.lastPass = Encrypt(settingsForm.passwordBox.Text);
 
             if (savetabs)
             {
@@ -255,7 +262,7 @@ namespace SCMBot
                       var lstItem = new ListViewItem(row);
 
                       scanListView.Items.Add(lstItem);
-                      var scanItem = new MainScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr, settings.ignoreWarn, settings.sellDelay);
+                      var scanItem = new MainScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr, settings.ignoreWarn, settings.resellDelay);
 
                       if (isScanValid(ourItem, true))
                       {
@@ -881,7 +888,7 @@ namespace SCMBot
             scanListView.Items.Add(lstItem);
 
             var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delay, buyQuant, tobuy, resellType, ourItem.StartPrice, Stat);
-            scanItems.Add(new MainScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.sellDelay));
+            scanItems.Add(new MainScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay));
             setStatImg(scanListView.Items.Count - 1, (status)Convert.ToByte(!isScanValid(ourTab, true)), scanListView);
             SetColumnWidths(scanListView, true);
         }
@@ -992,7 +999,7 @@ namespace SCMBot
                 else
                 {
                     steam_srch.UserName = settings.lastLogin;
-                    steam_srch.Password = settings.lastPass;
+                    steam_srch.Password = Decrypt(settings.lastPass);
                     steam_srch.Login();
                     ProgressBar1.Visible = true;
                     StatusLabel1.Text = Strings.tryLogin;
@@ -1087,7 +1094,7 @@ namespace SCMBot
                 steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
             }
 
-
+            steam_srch.sellDelay = Convert.ToInt32(sellDelayBox.Text);
             steam_srch.ItemSell();
   
         }
@@ -1807,14 +1814,11 @@ namespace SCMBot
 
         private void BindToControls(ListView lst)
         {
-
             if (lst.SelectedIndices.Count == 1)
             {
 
                 try
                 {
-
-
 
                     panel1.Enabled = true;
 
@@ -1935,7 +1939,7 @@ namespace SCMBot
 
         private void DonateBox_Click(object sender, EventArgs e)
         {
-            StartCmdLine(donateLink, string.Empty, false);
+            StartCmdLine(Strings.donateLink, string.Empty, false);
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
@@ -2102,7 +2106,7 @@ namespace SCMBot
             if (isFirstTab)
             {
                 sel = scanListView.SelectedIndices[0];
-                var tocopy = new MainScanItem(new saveTab(scanItems[sel].Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.sellDelay);
+                var tocopy = new MainScanItem(new saveTab(scanItems[sel].Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay);
                 tocopy.Steam.scanInput.Name += " Copy";
                 scanItems.Insert(sel + 1, tocopy);
 

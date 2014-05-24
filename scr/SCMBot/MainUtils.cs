@@ -13,6 +13,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Media;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 
 namespace SCMBot
 {
@@ -70,7 +71,6 @@ namespace SCMBot
 
         const string homePage = "https://github.com/Maxx53/SteamCMBot";
         const string helpPage = homePage + "/wiki";
-        const string donateLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=demmaxx@gmail.com&lc=RU&item_name=SteamCMBot%20Donate&currency_code=RUB&bn=PP-DonationsBF";
 
         public const string cockPath = "coockies.dat";
         const string chromeUA = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
@@ -224,23 +224,33 @@ namespace SCMBot
         }
 
 
+        //Acync file access
         public static void AddtoLog(string logstr)
         {
-            StreamWriter log;
+            if (!isLog)
+                return;
 
-            if (!File.Exists(logPath))
+            try
             {
-                log = new StreamWriter(logPath);
+                using (FileStream fs = new FileStream(logPath, FileMode.OpenOrCreate, FileSystemRights.AppendData,
+                FileShare.Write, 4096, FileOptions.None))
+                {
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        writer.AutoFlush = true;
+                        writer.WriteLine(DateTime.Now);
+                        writer.WriteLine(logstr);
+                        writer.WriteLine();
+                        writer.Close();
+                    }
+                    fs.Close();
+                }
             }
-            else
+            catch (Exception)
             {
-                log = File.AppendText(logPath);
+                //dummy
             }
-
-            log.WriteLine(DateTime.Now);
-            log.WriteLine(logstr);
-            log.WriteLine();
-            log.Close();
+          
         }
 
         public static void WriteCookiesToDisk(string file, CookieContainer cookieJar)
@@ -497,20 +507,27 @@ namespace SCMBot
 
         public static string Decrypt(string cipherText)
         {
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-            byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
-            byte[] keyBytes = password.GetBytes(keysize / 8);
-            RijndaelManaged symmetricKey = new RijndaelManaged();
-            symmetricKey.Mode = CipherMode.CBC;
-            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
-            MemoryStream memoryStream = new MemoryStream(cipherTextBytes);
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-            int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-            memoryStream.Close();
-            cryptoStream.Close();
-            return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+            try
+            {
+                byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
+                byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
+                PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
+                byte[] keyBytes = password.GetBytes(keysize / 8);
+                RijndaelManaged symmetricKey = new RijndaelManaged();
+                symmetricKey.Mode = CipherMode.CBC;
+                ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
+                MemoryStream memoryStream = new MemoryStream(cipherTextBytes);
+                CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
+                byte[] plainTextBytes = new byte[cipherTextBytes.Length];
+                int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                memoryStream.Close();
+                cryptoStream.Close();
+                return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+            }
+            catch (Exception)
+            {
+                return "Password";
+            }
         }
 
         public void StartCmdLine(string process, string param, bool wait)

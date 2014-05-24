@@ -62,6 +62,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.actualBox = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.keepLogBox = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -300,6 +301,7 @@
             // tabPage3
             // 
             resources.ApplyResources(this.tabPage3, "tabPage3");
+            this.tabPage3.Controls.Add(this.keepLogBox);
             this.tabPage3.Controls.Add(this.playSndCheckBox);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.label12);
@@ -313,6 +315,12 @@
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // keepLogBox
+            // 
+            resources.ApplyResources(this.keepLogBox, "keepLogBox");
+            this.keepLogBox.Name = "keepLogBox";
+            this.keepLogBox.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
@@ -386,5 +394,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button2;
         public System.Windows.Forms.CheckBox actualBox;
+        public System.Windows.Forms.CheckBox keepLogBox;
     }
 }
