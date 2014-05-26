@@ -5,6 +5,9 @@ using System.Threading;
 using System.ComponentModel;
 using System.Net;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Collections.Generic;
+using System.Linq;
+
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
 // Код содержит множественные ошибки и костыли, бездумно копипастить не советую.
@@ -43,6 +46,7 @@ namespace SCMBot
         Properties.Settings settings = Properties.Settings.Default;
 
         ImageList StatImgLst;
+        List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
 
 
 
@@ -83,6 +87,7 @@ namespace SCMBot
 
             steam_srch.cookieCont = ReadCookiesFromDisk(cockPath);
             steam_srch.scanID = 0;
+            filterTypeBox.SelectedIndex = 1;
 
             //InventoryList.ListViewItemSorter = itemComparer;
             
@@ -590,7 +595,7 @@ namespace SCMBot
                 case flag.InvPrice:
                     string sweet = MainScanItem.LogItem.DoFracture(message);
                     InventoryList.Items[searchId].SubItems[3].Text = sweet;
-                    steam_srch.inventList[searchId].Price = message;
+                    filteredInvList[searchId].Price = message;
                     textBox1.Text = sweet;
                     textBox1.ReadOnly = false;
                     break;
@@ -701,30 +706,16 @@ namespace SCMBot
 
                 case flag.Inventory_Loaded:
                     InventoryList.Items.Clear();
-                  
-                    label4.Text = steam_srch.inventList.Count.ToString();
+                    filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+
+                    label4.Text = filteredInvList.Count.ToString();
                     button1.Enabled = true;
 
                     if (searchId == 0)
                     {
-                        for (int i = 0; i < steam_srch.inventList.Count; i++)
-                        {
-                            var ourItem = steam_srch.inventList[i];
-                            
-                            string priceRes;
-                            if (ourItem.Price == "0")
-                                priceRes = Strings.None;
-                            else if (ourItem.Price == "1")
-                                priceRes = Strings.NFS;
-                            else
-                                priceRes = ourItem.Price;
 
-                            string[] row = { "", ourItem.Type, ourItem.Name, priceRes };
-                            
-                            var lstItem = new ListViewItem(row);
-                            InventoryList.Items.Add(lstItem);
-                        }
-                        SetColumnWidths(InventoryList, true);
+                        FillInventoryList();
+
                         SellButton.Enabled = true;
                         if (comboBox3.SelectedIndex != 8)
                         button2.Enabled = true;
@@ -738,6 +729,28 @@ namespace SCMBot
                     break;
             }
 
+        }
+
+        private void FillInventoryList()
+        {
+            for (int i = 0; i < filteredInvList.Count; i++)
+            {
+                var ourItem = filteredInvList[i];
+
+                string priceRes;
+                if (ourItem.Price == "0")
+                    priceRes = Strings.None;
+                else if (ourItem.Price == "1")
+                    priceRes = Strings.NFS;
+                else
+                    priceRes = MainScanItem.LogItem.DoFracture(ourItem.Price);
+
+                string[] row = { "", ourItem.Type, ourItem.Name, priceRes };
+
+                var lstItem = new ListViewItem(row);
+                InventoryList.Items.Add(lstItem);
+            }
+            SetColumnWidths(InventoryList, true);
         }
 
 
@@ -1062,7 +1075,7 @@ namespace SCMBot
         private void SellButton_Click(object sender, EventArgs e)
         {
 
-            if (steam_srch.inventList.Count == 0)
+            if (filteredInvList.Count == 0)
             {
                 MessageBox.Show(Strings.LoadInvFirst, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -1089,7 +1102,7 @@ namespace SCMBot
 
             for (int i = 0; i < InventoryList.CheckedItems.Count; i++)
             {
-                var ouritem = steam_srch.inventList[InventoryList.CheckedItems[i].Index];
+                var ouritem = filteredInvList[InventoryList.CheckedItems[i].Index];
                 if ((ouritem.Marketable) && (ouritem.Price != "0"))
                 steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
             }
@@ -1257,7 +1270,7 @@ namespace SCMBot
 
                 for (int i = 0; i < InventoryList.SelectedIndices.Count; i++)
                 {
-                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[i]];
+                    var ourItem = filteredInvList[InventoryList.SelectedIndices[i]];
                     ourItem.Price = truePrice;
                     InventoryList.SelectedItems[i].SubItems[3].Text = textBox1.Text;
                 }
@@ -2032,7 +2045,7 @@ namespace SCMBot
 
                 if (lastSelec != lit.Index)
                 {
-                    var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
+                    var ourItem = filteredInvList[InventoryList.SelectedIndices[0]];
                     StartLoadImgTread(string.Format(SteamSite.fndImgUrl, ourItem.ImgLink), pictureBox3);
 
                     var currPr = InventoryList.SelectedItems[0].SubItems[3].Text;
@@ -2088,9 +2101,9 @@ namespace SCMBot
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            if ((steam_srch.inventList.Count != 0) && (InventoryList.SelectedIndices.Count != 0))
+            if ((filteredInvList.Count != 0) && (InventoryList.SelectedIndices.Count != 0))
             {
-                var ourItem = steam_srch.inventList[InventoryList.SelectedIndices[0]];
+                var ourItem = filteredInvList[InventoryList.SelectedIndices[0]];
                 StartCmdLine(ourItem.PageLnk, string.Empty, false);
             }
            
@@ -2210,6 +2223,179 @@ namespace SCMBot
             }
         }
 
+        private void scanListView_DragDrop(object sender, DragEventArgs e)
+        {
+            if (scanListView.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            Point cp = scanListView.PointToClient(new Point(e.X, e.Y));
+            ListViewItem dragToItem = scanListView.GetItemAt(cp.X, cp.Y);
+
+            if (dragToItem == null)
+            {
+                return;
+            }
+
+            int dragIndex = dragToItem.Index;
+
+            ListViewItem[] sel = new ListViewItem[scanListView.SelectedItems.Count];
+            MainScanItem[] vsel = new MainScanItem[scanListView.SelectedItems.Count];
+
+            for (int i = 0; i < scanListView.SelectedItems.Count; i++)
+            {
+                sel[i] = scanListView.SelectedItems[i];
+                vsel[i] = scanItems[scanListView.SelectedIndices[i]];
+            }
+
+            for (int i = 0; i < sel.GetLength(0); i++)
+            {
+                ListViewItem dragItem = sel[i];
+                MainScanItem vdragItem = vsel[i];
+
+                int itemIndex = dragIndex;
+
+                if (itemIndex == dragItem.Index)
+                {
+                    return;
+                }
+
+                bool isStart = false;
+                if (vdragItem.Steam.scaninProg)
+                {
+                    vdragItem.Steam.CancelScan();
+                    isStart = true;
+                }
+
+
+                if (dragItem.Index < itemIndex)
+                    itemIndex++;
+                else
+                    itemIndex = dragIndex + i;
+
+
+                MainScanItem insertVItem = new MainScanItem(new saveTab(vdragItem.Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay);
+                insertVItem.LogCont = vdragItem.LogCont;
+
+                if (isStart)
+                {
+                    insertVItem.Steam.ScanPrices();
+                }
+
+                scanItems.Insert(itemIndex, insertVItem);
+                scanItems.Remove(vdragItem);
+                scanItems.UpdateIds();
+
+                ListViewItem insertItem = (ListViewItem)dragItem.Clone();
+                scanListView.Items.Insert(itemIndex, insertItem);
+                scanListView.Items.Remove(dragItem);
+            }
+
+        }
+
+        private void scanListView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+           ((ListView)sender).DoDragDrop(((ListView)sender).SelectedItems, DragDropEffects.Move);
+        }
+
+        private void scanListView_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (steam_srch.Logged && steam_srch.inventList.Count != 0)
+            {
+                filteredInvList.Clear();
+                InventoryList.Items.Clear();
+
+                if (textBox2.Text == string.Empty)
+                {
+                    filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+                }
+                else
+                {
+                    switch (filterTypeBox.SelectedIndex)
+                    {
+                        case 0:
+                            filteredInvList = steam_srch.inventList.Where(x => (x.Type.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                            break;
+                        case 1:
+                            filteredInvList = steam_srch.inventList.Where(x => (x.Name.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                            break;
+                        case 2:
+                            filteredInvList = steam_srch.inventList.Where(x => (x.Price.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                            break;
+
+                        default:
+                            filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+                            break;
+                    }
+                }
+
+                FillInventoryList();
+
+            }
+        }
+
+        private void recentListView_DragDrop(object sender, DragEventArgs e)
+        {
+            if (recentListView.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            Point cp = recentListView.PointToClient(new Point(e.X, e.Y));
+            ListViewItem dragToItem = recentListView.GetItemAt(cp.X, cp.Y);
+
+            if (dragToItem == null)
+            {
+                return;
+            }
+
+            int dragIndex = dragToItem.Index;
+
+            ListViewItem[] sel = new ListViewItem[recentListView.SelectedItems.Count];
+            saveTab[] vsel = new saveTab[recentListView.SelectedItems.Count];
+
+            for (int i = 0; i < recentListView.SelectedItems.Count; i++)
+            {
+                sel[i] = recentListView.SelectedItems[i];
+                vsel[i] = steam_srch.recentInputList[recentListView.SelectedIndices[i]];
+            }
+
+            for (int i = 0; i < sel.GetLength(0); i++)
+            {
+                ListViewItem dragItem = sel[i];
+                saveTab vdragItem = vsel[i];
+
+                int itemIndex = dragIndex;
+
+                if (itemIndex == dragItem.Index)
+                {
+                    return;
+                }
+
+
+                if (dragItem.Index < itemIndex)
+                    itemIndex++;
+                else
+                    itemIndex = dragIndex + i;
+
+
+                saveTab insertVItem = new saveTab(vdragItem);
+
+                steam_srch.recentInputList.Insert(itemIndex, insertVItem);
+                steam_srch.recentInputList.Remove(vdragItem);
+
+                ListViewItem insertItem = (ListViewItem)dragItem.Clone();
+                recentListView.Items.Insert(itemIndex, insertItem);
+                recentListView.Items.Remove(dragItem);
+            }
+
+        }
 
    }
 }

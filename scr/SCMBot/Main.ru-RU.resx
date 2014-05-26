@@ -131,7 +131,7 @@
     <value>23, 12</value>
   </data>
   <data name="NameLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 13</value>
+    <value>55, 13</value>
   </data>
   <data name="NameLabel.Text" xml:space="preserve">
     <value>Название</value>
@@ -143,7 +143,7 @@
     <value>33, 36</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 13</value>
+    <value>45, 13</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>Ссылка</value>
@@ -155,22 +155,19 @@
     <value>18, 60</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
+    <value>60, 13</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>Ваша цена</value>
   </data>
   <data name="buyCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 17</value>
+    <value>67, 17</value>
   </data>
   <data name="buyCheckBox.Text" xml:space="preserve">
     <value>Купить:</value>
   </data>
   <data name="ExtraGroup.Text" xml:space="preserve">
     <value>Перепродать</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 13</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Цена</value>
@@ -308,7 +305,7 @@
     <value>103, 51</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
+    <value>63, 13</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>Страница: </value>
@@ -316,20 +313,44 @@
   <data name="searchButton.Text" xml:space="preserve">
     <value>Поиск</value>
   </data>
+  <data name="filterTypeBox.Items" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="filterTypeBox.Items1" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="filterTypeBox.Items2" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="filterTypeBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>406, 47</value>
+  </data>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 13</value>
+  </data>
+  <data name="label18.Text" xml:space="preserve">
+    <value>Фильтр по</value>
+  </data>
+  <data name="textBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>484, 48</value>
+  </data>
+  <data name="textBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 20</value>
+  </data>
   <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
-    <value>472, 22</value>
+    <value>484, 22</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>21, 13</value>
+    <value>18, 13</value>
   </data>
   <data name="label17.Text" xml:space="preserve">
     <value>мс</value>
   </data>
   <data name="sellDelayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>401, 19</value>
+    <value>406, 19</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>337, 22</value>
+    <value>342, 22</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
@@ -356,7 +377,7 @@
     <value>Цена</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+    <value>49, 13</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>Кол-во: </value>
@@ -367,7 +388,7 @@
   <data name="comboBox3.Items" xml:space="preserve">
     <value>Карточки</value>
   </data>
-  <data name="comboBox3.Items4" xml:space="preserve">
+  <data name="comboBox3.Items8" xml:space="preserve">
     <value>В продаже</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
@@ -392,7 +413,7 @@
     <value>Нет</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+    <value>46, 13</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>Баланс:</value>
@@ -410,7 +431,7 @@
     <value>Ваш аккаунт</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 13</value>
+    <value>30, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Имя:</value>
@@ -585,13 +606,13 @@
     <value>Выход</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 13</value>
+    <value>78, 13</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>Понравилось?</value>
   </data>
   <data name="StatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 17</value>
+    <value>37, 17</value>
   </data>
   <data name="StatusLabel1.Text" xml:space="preserve">
     <value>Готов</value>
