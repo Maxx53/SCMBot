@@ -7,6 +7,9 @@ using System.Net;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
@@ -50,6 +53,7 @@ namespace SCMBot
 
         private Size lastFrmSize;
         private Point lastFrmPos;
+        private bool ResComboClicked = false;
 
         public Main()
         {
@@ -86,7 +90,7 @@ namespace SCMBot
             settingsForm.intLangComboBox.DisplayMember = "NativeName";
             settingsForm.intLangComboBox.ValueMember = "Name";
 
-            steam_srch.cookieCont = ReadCookiesFromDisk(cockPath);
+            steam_srch.cookieCont = (CookieContainer)LoadBinary(cockPath);
             steam_srch.scanID = 0;
             filterTypeBox.SelectedIndex = 1;
 
@@ -101,6 +105,13 @@ namespace SCMBot
                 loginButton.PerformClick();
 
             setNotifyText(Strings.NotLogged);
+
+
+            openFileDialog1.FileName = "scmbot_list_";
+            string AppPath = Path.GetDirectoryName(Application.ExecutablePath);
+            openFileDialog1.InitialDirectory = AppPath;
+            saveFileDialog1.InitialDirectory = AppPath;
+
        }
 
         private void Main_Shown(object sender, EventArgs e)
@@ -165,6 +176,9 @@ namespace SCMBot
             settingsForm.hideInventBox.Checked = settings.hideInvent;
             splitContainer1.Panel2Collapsed = settings.hideInvent;
             minimizeOnClosingToolStripMenuItem.Checked = settings.minOnClose;
+
+            lastFrmPos = this.Location;
+            lastFrmSize = this.Size;
 
             if (settings.formParams == null)
             {
@@ -326,15 +340,15 @@ namespace SCMBot
         private void SaveTabs(saveTabLst lst)
         {
             if (scanItems.Count != 0)
-          {
-               for (int i = 0; i < scanItems.Count; i++)
+            {
+                for (int i = 0; i < scanItems.Count; i++)
                 {
-                        lst.Add(scanItems[i].Steam.scanInput);
-               }
+                    lst.Add(scanItems[i].Steam.scanInput);
+                }
 
-               if (scanListView.SelectedIndices.Count != 0)
-                   lst.Position = scanListView.SelectedIndices[0];
-               else lst.Position = 0;
+                if (scanListView.SelectedIndices.Count != 0)
+                    lst.Position = scanListView.SelectedIndices[0];
+                else lst.Position = 0;
 
             }
         }
@@ -554,7 +568,6 @@ namespace SCMBot
                         item.Name = info.P1;
                         item.ImgLink = info.P2;
 
-
                         scanListView.Items[searchId].SubItems[1].Text = info.P1;
                         SetColumnWidths(scanListView, true);
 
@@ -625,11 +638,12 @@ namespace SCMBot
 
                     break;
                 case flag.ActPrice:
-                    string sweet2 = MainScanItem.LogItem.DoFracture(message);
+                    var lowprice2 = ((StrParam)data).P1;
+                 
 
                     if (isFirstTab)
                     {
-                        scanItems[searchId].Steam.scanInput.ResellPrice = sweet2;
+                        scanItems[searchId].Steam.scanInput.ResellPrice = lowprice2;
                         scanItems[searchId].Steam.scanInput.ResellType = 2;
                         if (scanListView.SelectedIndices[0] == searchId)
                         {
@@ -639,7 +653,7 @@ namespace SCMBot
                     else
                     {
 
-                        steam_srch.recentInputList[searchId].ResellPrice = sweet2;
+                        steam_srch.recentInputList[searchId].ResellPrice = lowprice2;
                         steam_srch.recentInputList[searchId].ResellType = 2;
 
                        if (recentListView.SelectedIndices[0] == searchId)
@@ -1051,7 +1065,7 @@ namespace SCMBot
             }
             else
             {
-                WriteCookiesToDisk(cockPath, steam_srch.cookieCont);
+                SaveBinary(cockPath, steam_srch.cookieCont);
                 SaveSettings(true);
             }
         }
@@ -1787,7 +1801,7 @@ namespace SCMBot
             if (isFirstTab)
             {
 
-                if (scanListView.SelectedItems.Count != 0)
+                if ((scanListView.SelectedItems.Count != 0) && (scanItems.Count != 0))
                 {
                     for (int i = 0; i < scanListView.Items.Count; i++)
                     {
@@ -1989,16 +2003,11 @@ namespace SCMBot
                 stopSelectedMenuItem.Enabled = block;
                 deleteMenuItem.Enabled = block;
 
-                if (scanListView.Items.Count == 0)
-                {
-                    startAllMenuItem.Enabled = false;
-                    stopAllMenuItem.Enabled = false;
-                }
-                else
-                {
-                    startAllMenuItem.Enabled = true;
-                    stopAllMenuItem.Enabled = true;
-                }
+                bool block2 = !(scanListView.Items.Count == 0);
+
+                startAllMenuItem.Enabled = block2;
+                stopAllMenuItem.Enabled = block2;
+                exportListToolStripMenuItem.Enabled = block2;
             }
            
         }
@@ -2131,26 +2140,46 @@ namespace SCMBot
         }
 
 
+        public static StrParam GetFromLink(string url)
+        {
+            string markname = string.Empty;
 
-        //Not used temporary
+            string appId = Regex.Match(url, "(?<=listings/)(.*)(?=/)").ToString();
+
+            if (url.Contains('?'))
+                markname = Regex.Match(url, "(?<=" + appId + @"/)(.*)(?=\?)").ToString();
+            else
+                markname = url.Substring(url.IndexOf(appId) + 4);
+
+            return new StrParam(appId, markname);
+        }
+
+
         private void resellComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (settings.loadActual)
             {
-                if ((resellComboBox.SelectedIndex == 2) && (steam_srch.Logged))
+                if (ResComboClicked)
                 {
-                    if (isFirstTab)
-                    {
-                        var ourItem = scanItems[scanListView.SelectedIndices[0]].Steam.scanInput;
-                        //steam_srch.GetPriceTread(ourItem.Link, scanListView.SelectedIndices[0], false);
-                    }
-                    else
-                    {
-                        var ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
-                      //  steam_srch.GetPriceTread(ourItem.Link, recentListView.SelectedIndices[0], false);
-                    }
+                    ResComboClicked = false;
 
-                    resellPriceBox.Text = Strings.Loading;
+                    if ((resellComboBox.SelectedIndex == 2) && (steam_srch.Logged))
+                    {
+                        if (isFirstTab)
+                        {
+                            var ourItem = scanItems[scanListView.SelectedIndices[0]].Steam.scanInput;
+                            var param = GetFromLink(ourItem.Link);
+                            steam_srch.GetPriceTread(param.P1, param.P2, scanListView.SelectedIndices[0], false);
+                        }
+                        else
+                        {
+                            var ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
+                            var param = GetFromLink(ourItem.Link);
+                            steam_srch.GetPriceTread(param.P1, param.P2, recentListView.SelectedIndices[0], false);
+                        }
+
+                        resellPriceBox.Text = Strings.Loading;
+                    }
                 }
             }
         }
@@ -2230,7 +2259,7 @@ namespace SCMBot
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (isFirstTab)
+            if (isFirstTab && (scanListView.SelectedIndices.Count != 0))
             {
                 ClearGraph();
 
@@ -2277,6 +2306,7 @@ namespace SCMBot
                 graphFrm.chart1.ChartAreas[0].AxisY.StripLines.Add(stripWished);
 
                 graphFrm.Show();
+             
             }
         }
 
@@ -2347,6 +2377,7 @@ namespace SCMBot
                 ListViewItem insertItem = (ListViewItem)dragItem.Clone();
                 scanListView.Items.Insert(itemIndex, insertItem);
                 scanListView.Items.Remove(dragItem);
+                insertItem.Selected = true;
             }
 
         }
@@ -2423,6 +2454,7 @@ namespace SCMBot
                 ListViewItem insertItem = (ListViewItem)dragItem.Clone();
                 recentListView.Items.Insert(itemIndex, insertItem);
                 recentListView.Items.Remove(dragItem);
+                insertItem.Selected = true;
             }
 
         }
@@ -2455,6 +2487,66 @@ namespace SCMBot
             splitContainer3.Refresh();
         }
 
+        private void exportListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = "scmbot_list_" + DateTime.Now.ToString("dd_MM_yyyy");
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (isFirstTab)
+                {
+                    saveTabLst lst = new saveTabLst();
+                    SaveTabs(lst);
+                    SaveBinary(saveFileDialog1.FileName, lst);
+                }
+                else
+                {
+                    SaveBinary(saveFileDialog1.FileName, steam_srch.recentInputList);
+                }
+            }
+        }
+
+
+        private void importListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+
+                try
+                {
+                    saveTabLst lst = (saveTabLst)LoadBinary(openFileDialog1.FileName);
+                    if (lst != null)
+                    {
+
+                        if (isFirstTab)
+                        {
+                            scanItems.Clear();
+                            scanListView.Items.Clear();
+                            LoadTabs(lst);
+                        }
+                        else
+                        {
+                            recentListView.Items.Clear();
+                            steam_srch.recentInputList.Clear();
+                            steam_srch.recentInputList = lst;
+                            LoadRecent(steam_srch.recentInputList);
+                        }
+                    }
+                    else
+                        MessageBox.Show("Bin-file is not correct!", Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                catch (Exception)
+                {
+                    //dummy
+                }
+            }
+        }
+
+        private void resellComboBox_Click(object sender, EventArgs e)
+        {
+            ResComboClicked = true;
+        }
 
    }
 }

@@ -52,7 +52,7 @@ namespace SCMBot
                 hugeCock.Add(site, new Cookie(CookieFrm.stlog, cookieForm.textBox3.Text));
 
                 Main.steam_srch.cookieCont = hugeCock;
-                Main.WriteCookiesToDisk(Main.cockPath, Main.steam_srch.cookieCont);
+                Main.SaveBinary(Main.cockPath, Main.steam_srch.cookieCont);
             }
 
         }

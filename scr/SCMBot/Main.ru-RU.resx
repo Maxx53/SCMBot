@@ -206,37 +206,52 @@
     <value>Ваша цена</value>
   </data>
   <data name="contextMenuStrip3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 114</value>
+    <value>207, 164</value>
   </data>
   <data name="deleteMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>206, 22</value>
   </data>
   <data name="deleteMenuItem.Text" xml:space="preserve">
     <value>Удалить</value>
   </data>
   <data name="startSelectedMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>206, 22</value>
   </data>
   <data name="startSelectedMenuItem.Text" xml:space="preserve">
     <value>Старт выделенное</value>
   </data>
   <data name="stopSelectedMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>206, 22</value>
   </data>
   <data name="stopSelectedMenuItem.Text" xml:space="preserve">
     <value>Стоп выделенное</value>
   </data>
   <data name="startAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>206, 22</value>
   </data>
   <data name="startAllMenuItem.Text" xml:space="preserve">
     <value>Старт все</value>
   </data>
   <data name="stopAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>206, 22</value>
   </data>
   <data name="stopAllMenuItem.Text" xml:space="preserve">
     <value>Стоп все</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 6</value>
+  </data>
+  <data name="exportListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="exportListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Экспортировать список</value>
+  </data>
+  <data name="importListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="importListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Импортировать список</value>
   </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Новые поступления</value>
@@ -616,6 +631,18 @@
   </data>
   <data name="StatusLabel1.Text" xml:space="preserve">
     <value>Готов</value>
+  </data>
+  <data name="saveFileDialog1.Filter" xml:space="preserve">
+    <value>Бинарные файлы|*.bin</value>
+  </data>
+  <data name="saveFileDialog1.Title" xml:space="preserve">
+    <value>Экспортировать список</value>
+  </data>
+  <data name="openFileDialog1.Filter" xml:space="preserve">
+    <value>Бинарные файлы|*.bin</value>
+  </data>
+  <data name="openFileDialog1.Title" xml:space="preserve">
+    <value>Импортировать список</value>
   </data>
   <data name="loginButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

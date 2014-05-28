@@ -120,11 +120,11 @@
   <data name="aboutBody" xml:space="preserve">
     <value>Opensource Project
 Note: Program may contain critical bugs, for testing purposes only!
-Website: http://scmbot.ru
+Website: http://scmbot.com
 Copyright © 2013-2014 Maxx53
 
 
-Do you want to vist Github page?</value>
+Do you want to visit Github page?</value>
   </data>
   <data name="AlreadyLogged" xml:space="preserve">
     <value>Already Logged</value>

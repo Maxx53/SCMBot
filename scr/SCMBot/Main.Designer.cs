@@ -64,6 +64,9 @@
             this.stopSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exportListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.recentListView = new System.Windows.Forms.ListView();
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -132,6 +135,8 @@
             this.toolStripImage = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.DonateBox = new System.Windows.Forms.PictureBox();
             this.loginButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -308,6 +313,8 @@
             resources.GetString("resellComboBox.Items2")});
             resources.ApplyResources(this.resellComboBox, "resellComboBox");
             this.resellComboBox.Name = "resellComboBox";
+            this.resellComboBox.SelectedIndexChanged += new System.EventHandler(this.resellComboBox_SelectedIndexChanged);
+            this.resellComboBox.Click += new System.EventHandler(this.resellComboBox_Click);
             // 
             // wishpriceBox
             // 
@@ -415,7 +422,10 @@
             this.startSelectedMenuItem,
             this.stopSelectedMenuItem,
             this.startAllMenuItem,
-            this.stopAllMenuItem});
+            this.stopAllMenuItem,
+            this.toolStripMenuItem1,
+            this.exportListToolStripMenuItem,
+            this.importListToolStripMenuItem});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
             resources.ApplyResources(this.contextMenuStrip3, "contextMenuStrip3");
             // 
@@ -453,6 +463,25 @@
             this.stopAllMenuItem.Name = "stopAllMenuItem";
             resources.ApplyResources(this.stopAllMenuItem, "stopAllMenuItem");
             this.stopAllMenuItem.Click += new System.EventHandler(this.stopAllToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            // 
+            // exportListToolStripMenuItem
+            // 
+            this.exportListToolStripMenuItem.Image = global::SCMBot.Properties.Resources.export;
+            this.exportListToolStripMenuItem.Name = "exportListToolStripMenuItem";
+            resources.ApplyResources(this.exportListToolStripMenuItem, "exportListToolStripMenuItem");
+            this.exportListToolStripMenuItem.Click += new System.EventHandler(this.exportListToolStripMenuItem_Click);
+            // 
+            // importListToolStripMenuItem
+            // 
+            this.importListToolStripMenuItem.Image = global::SCMBot.Properties.Resources.import;
+            this.importListToolStripMenuItem.Name = "importListToolStripMenuItem";
+            resources.ApplyResources(this.importListToolStripMenuItem, "importListToolStripMenuItem");
+            this.importListToolStripMenuItem.Click += new System.EventHandler(this.importListToolStripMenuItem_Click);
             // 
             // tabPage2
             // 
@@ -970,6 +999,16 @@
             this.ProgressBar1.Name = "ProgressBar1";
             resources.ApplyResources(this.ProgressBar1, "ProgressBar1");
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "*.bin";
+            resources.ApplyResources(this.saveFileDialog1, "saveFileDialog1");
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "*.bin";
+            resources.ApplyResources(this.openFileDialog1, "openFileDialog1");
+            // 
             // DonateBox
             // 
             resources.ApplyResources(this.DonateBox, "DonateBox");
@@ -998,7 +1037,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.DonateBox);
-            this.DoubleBuffered = true;
             this.Name = "Main";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
@@ -1154,6 +1192,11 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.ComboBox filterTypeBox;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exportListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importListToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

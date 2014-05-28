@@ -69,7 +69,7 @@ namespace SCMBot
 
         string aboutApp = appName + "\r\n" + Strings.aboutBody;
 
-        const string homePage = "https://github.com/Maxx53/SteamCMBot";
+        const string homePage = "https://github.com/Maxx53/SCMBot";
         const string helpPage = homePage + "/wiki";
 
         public const string cockPath = "coockies.dat";
@@ -253,39 +253,45 @@ namespace SCMBot
           
         }
 
-        public static void WriteCookiesToDisk(string file, CookieContainer cookieJar)
+        public static void SaveBinary(string p, object o)
         {
-            using (Stream stream = File.Create(file))
-            {
-                try
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, cookieJar);
-                }
-                catch (Exception e)
-                {
-                    AddtoLog("Problem writing cookies to disk: " + e.GetType());
-                }
-            }
-        }
-
-        static CookieContainer ReadCookiesFromDisk(string file)
-        {
-
             try
             {
-                using (Stream stream = File.Open(file, FileMode.Open))
+                if (o != null)
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    return (CookieContainer)formatter.Deserialize(stream);
+                    using (Stream stream = File.Create(p))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        bin.Serialize(stream, o);
+                    }
                 }
             }
             catch (Exception e)
             {
-                AddtoLog("Problem reading cookies from disk: " + e.GetType());
-                return new CookieContainer();
+                AddtoLog("Saving Binary Exception: " + e.Message);
             }
         }
+
+
+
+        private static object LoadBinary(string p)
+        {
+            try
+            {
+                using (Stream stream = File.Open(p, FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    var res = bin.Deserialize(stream);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                AddtoLog("Error Opening " + p + ": " + e.Message);
+                return null;
+            }
+        }
+
 
 
         static private Color backColor(Image img, bool doWhite)
@@ -530,7 +536,7 @@ namespace SCMBot
             }
         }
 
-        public void StartCmdLine(string process, string param, bool wait)
+        public static void StartCmdLine(string process, string param, bool wait)
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo = new System.Diagnostics.ProcessStartInfo(process, param);
@@ -547,7 +553,7 @@ namespace SCMBot
         public StrParam(string p1, string p2)
         {
             this.P1 = p1;
-            this.P2 = p1;
+            this.P2 = p2;
         }
 
         public StrParam(string p1, string p2, string p3)

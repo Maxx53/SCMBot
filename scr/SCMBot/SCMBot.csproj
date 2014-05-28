@@ -288,6 +288,8 @@
     <None Include="Resources\accept.png" />
     <None Include="Resources\graph.png" />
     <None Include="Resources\copy.png" />
+    <None Include="Resources\export.png" />
+    <None Include="Resources\import.png" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
