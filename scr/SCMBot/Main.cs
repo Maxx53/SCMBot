@@ -24,7 +24,7 @@ namespace SCMBot
     public partial class Main : Form
     {
         public static SteamSite steam_srch = new SteamSite();
-        SearchPagePos sppos;
+        private SearchPagePos sppos;
         string lastSrch;
         int lastSelec = -1;
         bool addonComplete = false;
@@ -38,17 +38,18 @@ namespace SCMBot
 
         static public Semaphore reqPool;
 
-        ScanItemList scanItems = new ScanItemList();
+        private ScanItemList scanItems = new ScanItemList();
 
-        SettingsFrm settingsForm = new SettingsFrm();
-        GraphFrm graphFrm = new GraphFrm();
+        private SettingsFrm settingsForm = new SettingsFrm();
+        private GraphFrm graphFrm = new GraphFrm();
 
         Properties.Settings settings = Properties.Settings.Default;
 
-        ImageList StatImgLst;
-        List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
+        private ImageList StatImgLst;
+        private List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
 
-
+        private Size lastFrmSize;
+        private Point lastFrmPos;
 
         public Main()
         {
@@ -165,6 +166,21 @@ namespace SCMBot
             splitContainer1.Panel2Collapsed = settings.hideInvent;
             minimizeOnClosingToolStripMenuItem.Checked = settings.minOnClose;
 
+            if (settings.formParams == null)
+            {
+                settings.formParams = new MainFormParams(this.Size, this.Location, this.WindowState,
+                splitContainer1.SplitterDistance, splitContainer2.SplitterDistance, splitContainer3.SplitterDistance);
+            }
+            else
+            {
+                this.Size = settings.formParams.FrmSize;
+                this.Location = settings.formParams.Location;
+                this.WindowState = settings.formParams.FrmState;
+                splitContainer1.SplitterDistance = settings.formParams.Split1;
+                splitContainer2.SplitterDistance = settings.formParams.Split2;
+                splitContainer3.SplitterDistance = settings.formParams.Split3;
+            }
+
             if (!String.IsNullOrEmpty(settings.Language))
             {
                 settingsForm.intLangComboBox.SelectedValue = settings.Language;
@@ -234,6 +250,10 @@ namespace SCMBot
             settings.LastCurr = steam_srch.currencies.Current;
 
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
+
+            settings.formParams = new MainFormParams(lastFrmSize, lastFrmPos, this.WindowState, 
+            splitContainer1.SplitterDistance, splitContainer2.SplitterDistance, splitContainer3.SplitterDistance);
+
 
             splitContainer1.Panel2Collapsed = settings.hideInvent;
             label3.Text = string.Format("({0})", settings.lastLogin);
@@ -367,14 +387,13 @@ namespace SCMBot
 
 
 
-        public void GetAccInfo(string mess)
+        public void GetAccInfo(StrParam mess)
         {
-            if (mess != string.Empty)
+            if (mess != null)
             {
-                string[] accinfo = mess.Split('|');
-                StartLoadImgTread(accinfo[2], pictureBox2);
-                label5.Text = accinfo[1];
-                label10.Text = accinfo[0];
+                StartLoadImgTread(mess.P3, pictureBox2);
+                label5.Text = mess.P2;
+                label10.Text = mess.P1;
                 ProgressBar1.Visible = false;
                 SetButton(loginButton, Strings.Logout, 2);
                 buyNowButton.Enabled = true;
@@ -418,22 +437,24 @@ namespace SCMBot
         }
 
 
-        public void Event_Message(object sender, string message, int searchId, flag myflag, bool isMain)
+        public void Event_Message(object sender, object data, int searchId, flag myflag, bool isMain)
         {
+            string message = data.ToString();
+
             switch (myflag)
             {
                 case flag.Already_logged:
 
                     AddtoLog(Strings.AlreadyLogged);
                     StatusLabel1.Text = Strings.AlreadyLogged;
-                    GetAccInfo(message);
+                    GetAccInfo((StrParam)data);
                     break;
 
                 case flag.Login_success:
                     relog = false;
                     AddtoLog(Strings.LoginSucc);
                     StatusLabel1.Text = Strings.LoginSucc;
-                    GetAccInfo(message);
+                    GetAccInfo((StrParam)data);
                     break;
 
                 case flag.Login_cancel:
@@ -527,14 +548,14 @@ namespace SCMBot
                     break;
                 case flag.SetHeadName:
 
-                    string[] newInfo = message.Split(';');
+                    var info = (StrParam)data;
 
                         var item = scanItems[searchId].Steam.scanInput;
-                        item.Name = newInfo[0];
-                        item.ImgLink = newInfo[1];
+                        item.Name = info.P1;
+                        item.ImgLink = info.P2;
 
 
-                        scanListView.Items[searchId].SubItems[1].Text = newInfo[0];
+                        scanListView.Items[searchId].SubItems[1].Text = info.P1;
                         SetColumnWidths(scanListView, true);
 
                         if (scanListView.SelectedIndices[0] == searchId)
@@ -593,11 +614,15 @@ namespace SCMBot
                     break;
 
                 case flag.InvPrice:
-                    string sweet = MainScanItem.LogItem.DoFracture(message);
-                    InventoryList.Items[searchId].SubItems[3].Text = sweet;
-                    filteredInvList[searchId].Price = message;
-                    textBox1.Text = sweet;
+                    var lowprice = ((StrParam)data).P1;
+                    InventoryList.Items[searchId].SubItems[3].Text = lowprice;
+                    filteredInvList[searchId].Price = SteamSite.GetSweetPrice(lowprice);
+                    textBox1.Text = lowprice;
                     textBox1.ReadOnly = false;
+
+                    //sold in the last 24 hours
+                    //((StrParam)data).P2;
+
                     break;
                 case flag.ActPrice:
                     string sweet2 = MainScanItem.LogItem.DoFracture(message);
@@ -705,8 +730,9 @@ namespace SCMBot
                     break;
 
                 case flag.Inventory_Loaded:
-                    InventoryList.Items.Clear();
-                    filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+
+
+                    SetInvFilter();
 
                     label4.Text = filteredInvList.Count.ToString();
                     button1.Enabled = true;
@@ -733,6 +759,8 @@ namespace SCMBot
 
         private void FillInventoryList()
         {
+            InventoryList.Items.Clear();
+
             for (int i = 0; i < filteredInvList.Count; i++)
             {
                 var ourItem = filteredInvList[i];
@@ -751,6 +779,35 @@ namespace SCMBot
                 InventoryList.Items.Add(lstItem);
             }
             SetColumnWidths(InventoryList, true);
+        }
+
+        private void SetInvFilter()
+        {
+            filteredInvList.Clear();
+
+            if (textBox2.Text == string.Empty)
+            {
+                filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+            }
+            else
+            {
+                switch (filterTypeBox.SelectedIndex)
+                {
+                    case 0:
+                        filteredInvList = steam_srch.inventList.Where(x => (x.Type.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                        break;
+                    case 1:
+                        filteredInvList = steam_srch.inventList.Where(x => (x.Name.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                        break;
+                    case 2:
+                        filteredInvList = steam_srch.inventList.Where(x => (x.Price.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
+                        break;
+
+                    default:
+                        filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
+                        break;
+                }
+            }
         }
 
 
@@ -1179,9 +1236,9 @@ namespace SCMBot
                 int x1 = 5;
                 int x2 = s.Width - 5;
                 int y1 = s.SplitterDistance;
-                int y2 = y1 + 3;
-                e.Graphics.DrawLine(Pens.Silver, x1, y1, x2, y1);
-                e.Graphics.DrawLine(Pens.Silver, x1, y2, x2, y2);
+                Pen silverPen = new Pen(Color.Silver, 4);
+
+                e.Graphics.DrawLine(silverPen, x1, y1, x2, y1);
             }
         }
 
@@ -1194,9 +1251,10 @@ namespace SCMBot
                 int x1 = 5;
                 int x2 = s.Height - 5;
                 int y1 = s.SplitterDistance;
-                int y2 = y1 + 3;
-                e.Graphics.DrawLine(Pens.Silver, y1, x1, y1, x2);
-                e.Graphics.DrawLine(Pens.Silver, y2, x1, y2, x2);
+
+                Pen silverPen = new Pen(Color.Silver, 4);
+
+                e.Graphics.DrawLine(silverPen, y1, x1, y1, x2);
             }
         }
 
@@ -2054,8 +2112,7 @@ namespace SCMBot
                     {
                         if (settings.loadActual)
                         {
-                            var url = string.Format("{0}{1}/{2}/render/", SteamSite._lists, SteamSite.GetUrlApp(steam_srch.invApp, false).App, Uri.EscapeDataString(ourItem.MarketName));
-                            steam_srch.GetPriceTread(url, lit.Index, true);
+                            steam_srch.GetPriceTread(SteamSite.GetUrlApp(steam_srch.invApp, false).App, Uri.EscapeDataString(ourItem.MarketName), lit.Index, true);
                             textBox1.Text = Strings.Loading;
                             textBox1.ReadOnly = true;
                         }
@@ -2085,12 +2142,12 @@ namespace SCMBot
                     if (isFirstTab)
                     {
                         var ourItem = scanItems[scanListView.SelectedIndices[0]].Steam.scanInput;
-                        steam_srch.GetPriceTread(ourItem.Link, scanListView.SelectedIndices[0], false);
+                        //steam_srch.GetPriceTread(ourItem.Link, scanListView.SelectedIndices[0], false);
                     }
                     else
                     {
                         var ourItem = steam_srch.recentInputList[recentListView.SelectedIndices[0]];
-                        steam_srch.GetPriceTread(ourItem.Link, recentListView.SelectedIndices[0], false);
+                      //  steam_srch.GetPriceTread(ourItem.Link, recentListView.SelectedIndices[0], false);
                     }
 
                     resellPriceBox.Text = Strings.Loading;
@@ -2308,35 +2365,8 @@ namespace SCMBot
         {
             if (steam_srch.Logged && steam_srch.inventList.Count != 0)
             {
-                filteredInvList.Clear();
-                InventoryList.Items.Clear();
-
-                if (textBox2.Text == string.Empty)
-                {
-                    filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
-                }
-                else
-                {
-                    switch (filterTypeBox.SelectedIndex)
-                    {
-                        case 0:
-                            filteredInvList = steam_srch.inventList.Where(x => (x.Type.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
-                            break;
-                        case 1:
-                            filteredInvList = steam_srch.inventList.Where(x => (x.Name.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
-                            break;
-                        case 2:
-                            filteredInvList = steam_srch.inventList.Where(x => (x.Price.StartsWith(textBox2.Text, StringComparison.OrdinalIgnoreCase))).ToList();
-                            break;
-
-                        default:
-                            filteredInvList = new List<SteamSite.InventItem>(steam_srch.inventList);
-                            break;
-                    }
-                }
-
+                SetInvFilter();
                 FillInventoryList();
-
             }
         }
 
@@ -2396,6 +2426,35 @@ namespace SCMBot
             }
 
         }
+
+        private void filterTypeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox2_TextChanged(sender, e);
+        }
+
+        private void Main_LocationChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                lastFrmPos = this.Location;
+            }
+        }
+
+        private void Main_ResizeEnd(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                lastFrmSize = this.Size;
+            }
+        }
+
+        private void Main_Resize(object sender, EventArgs e)
+        {
+            splitContainer1.Refresh();
+            splitContainer2.Refresh();
+            splitContainer3.Refresh();
+        }
+
 
    }
 }

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SCMBot
 {
@@ -213,25 +214,32 @@ namespace SCMBot
         }
 
 
-        public void GetPriceTread(string url, int pos, bool isInv)
+        public void GetPriceTread(string appid, string markname, int pos, bool isInv)
         {
             ThreadStart threadStart = delegate()
             {
-                
-                var tempLst = new List<ScanItem>();
-
-                ParseLotList(SendGet(UrlForRender(url), cookieCont), tempLst, currencies, false);
-
-
-                if (tempLst.Count != 0)
+                try
                 {
-                    var fl = flag.ActPrice;
+                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, appid, markname), cookieCont));
 
-                    if (isInv)
-                        fl = flag.InvPrice;
+                    if (priceOver.Success)
+                    {
+                        var fl = flag.ActPrice;
 
-                    doMessage(fl, pos, tempLst[0].Price.ToString(), true);
+                        if (isInv)
+                            fl = flag.InvPrice;
+
+                        var low_clean = Regex.Replace(priceOver.Lowest, currencies.GetAscii(), string.Empty).Trim();
+
+                        doMessage(fl, pos, new StrParam(low_clean, priceOver.Volume), true);
+                    }
+
                 }
+                catch (Exception)
+                {
+                    Main.AddtoLog("Error loading price for: " + markname);
+                }
+
             };
             Thread pTh = new Thread(threadStart);
             pTh.IsBackground = true;
@@ -340,9 +348,9 @@ namespace SCMBot
 
             LoginProgr("10");
 
-            string accInfo = GetNameBalance(cookieCont, currencies);
+            var accInfo = GetNameBalance(cookieCont, currencies);
 
-            if (accInfo != string.Empty)
+            if (accInfo != null)
             {
                 doMessage(flag.Already_logged, 0, accInfo, true);
                 doMessage(flag.Rep_progress, 0, "100", true);
@@ -467,7 +475,8 @@ namespace SCMBot
                 if (rFinal.Success && rFinal.isComplete)
                 {
                     //Okay
-                    string accInfo2 = GetNameBalance(cookieCont, currencies);
+                    var accInfo2 = GetNameBalance(cookieCont, currencies);
+
                     doMessage(flag.Login_success, 0, accInfo2, true);
 
                     LoginProgr("100");

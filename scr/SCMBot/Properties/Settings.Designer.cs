@@ -144,6 +144,23 @@ namespace SCMBot.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //Fucking important!
+        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
+        public global::SCMBot.MainFormParams formParams
+        {
+            get
+            {
+                return ((global::SCMBot.MainFormParams)(this["formParams"]));
+            }
+            set
+            {
+                this["formParams"] = value;
+            }
+        }
+
+        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool keepLog {
             get {

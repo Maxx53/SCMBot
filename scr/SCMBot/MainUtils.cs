@@ -17,7 +17,7 @@ using System.Security.AccessControl;
 
 namespace SCMBot
 {
-    public delegate void eventDelegate(object sender, string message, int searchId, flag myflag, bool isMain);
+    public delegate void eventDelegate(object sender, object data, int searchId, flag myflag, bool isMain);
     
     [Flags]
     public enum flag : byte
@@ -541,6 +541,49 @@ namespace SCMBot
 
     }
 
+
+    public class StrParam
+    {
+        public StrParam(string p1, string p2)
+        {
+            this.P1 = p1;
+            this.P2 = p1;
+        }
+
+        public StrParam(string p1, string p2, string p3)
+        {
+            this.P1 = p1;
+            this.P2 = p2;
+            this.P3 = p3;
+        }
+
+        public string P1 { set; get; }
+        public string P2 { set; get; }
+        public string P3 { set; get; }
+    }
+
+    [Serializable]
+    public class MainFormParams
+    {
+        public MainFormParams(Size size, Point location, FormWindowState state, int split1, int split2, int split3)
+        {
+            this.FrmSize = size;
+            this.Location = location;
+            this.FrmState = state;
+
+            //Сплит - хуесос. Hello, Joyreactor!
+            this.Split1 = split1;
+            this.Split2 = split2;
+            this.Split3 = split3;
+        }
+
+        public Size FrmSize { set; get; }
+        public Point Location { set; get; }
+        public FormWindowState FrmState { set; get; }
+        public int Split1 { set; get; }
+        public int Split2 { set; get; }
+        public int Split3 { set; get; }
+    }
 
     [Serializable]
     public class saveTabLst : List<saveTab>

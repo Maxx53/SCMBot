@@ -64,6 +64,7 @@ namespace SCMBot
         public const string searchPageReq = "{0}&start={1}0";
 
         public const string recentMarket = _market + "recent/";
+        public const string priceOverview = _market + "priceoverview/?appid={0}&market_hash_name={1}";
 
         //================================ Consts ======================= End ===============================================
 
@@ -437,11 +438,23 @@ namespace SCMBot
             [JsonProperty("total_count")]
             public string TotalCount { get; set; }
         }
+        
+        public class PriceOverview
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
+            [JsonProperty("lowest_price")]
+            public string Lowest { get; set; }
+            [JsonProperty("volume")]
+            public string Volume { get; set; }
+            [JsonProperty("median_price")]
+            public string Median { get; set; }
+        }
 
 
         //End JSON
 
-        protected void doMessage(flag myflag, int searchId, string message, bool isMain)
+        protected void doMessage(flag myflag, int searchId, object message, bool isMain)
         {
             try
             {
@@ -624,7 +637,7 @@ namespace SCMBot
 
 
 
-        public string GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
+        public StrParam GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
             string markpage = SendGet(_market, cock);
@@ -637,7 +650,7 @@ namespace SCMBot
             
             if (parseName == "")
             {
-                return string.Empty;
+                return null;
             }
 
             //accName = parseName;
@@ -650,9 +663,9 @@ namespace SCMBot
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
             currLst.GetType(parseAmount);
-
             parseAmount = currLst.ReplaceAscii(parseAmount);
-            return string.Format("{0}|{1}|{2}", parseName, parseAmount, parseImg);
+
+            return new StrParam(parseName, parseAmount, parseImg);
         }
 
 
@@ -785,7 +798,7 @@ namespace SCMBot
                             //Damn, Mr.Crowley... WTF!?
                             if (NotSetHead && !full)
                             {
-                                doMessage(flag.SetHeadName, scanID, ourItemInfo.name + ";" + ourItemInfo.icon_url, true);
+                                doMessage(flag.SetHeadName, scanID, new StrParam(ourItemInfo.name, ourItemInfo.icon_url), true);
                                 scanInput.Name = ourItemInfo.name;
                                 NotSetHead = false;
                             }
@@ -914,23 +927,17 @@ namespace SCMBot
                     if (!ourItem.Marketable)
                         price = "1";
 
-                    //Careful, this action takes time!
-                    //string cont = GetRequest(_lists + GetUrlApp(invApp, false).App + "/" + ourItem.MarketName, cookieCont);
-                    //var tempLst = new List<ScanItem>();
-                    //ParseLotList(cont, tempLst, currencies);
-                    //if (tempLst.Count != 0)
-                    //  price = tempLst[0].Price;
-
                     //fix for special symbols in Item Name
                     string markname = string.Empty;
 
-                    //BattleBlock Theater Fix
+
                     if ((ourItem.MarketName == null) && (ourItem.Name == string.Empty))
                     {
                         ourItem.Name = ourItem.SimpleName;
                         ourItem.MarketName = ourItem.SimpleName;
                     }
 
+                    //BattleBlock Theater Fix
                     markname = Uri.EscapeDataString(ourItem.MarketName);
                     string pageLnk = string.Format("{0}/{1}/{2}", _lists, ourItem.AppId, markname);
 
@@ -969,7 +976,7 @@ namespace SCMBot
                     string appidRaw = Regex.Match(currmatch, "(?<=market_listing_item_name_link)(.*)(?=</a></span>)").ToString();
                     string pageLnk = Regex.Match(appidRaw, "(?<=href=\")(.*)(?=\">)").ToString();
                
-                    string captainPrice = GetSweetPrice(Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim());
+                    string captainPrice = Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim();
 
                     captainPrice = Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty);
 
@@ -978,7 +985,7 @@ namespace SCMBot
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
 
-                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true, true, pageLnk));
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, GetSweetPrice(captainPrice), ImgLink, string.Empty, true, true, pageLnk));
 
                 }
 

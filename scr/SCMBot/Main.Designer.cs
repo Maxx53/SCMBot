@@ -338,6 +338,7 @@
             // 
             resources.ApplyResources(this.scanGroupBox, "scanGroupBox");
             this.scanGroupBox.Controls.Add(this.splitContainer3);
+            this.scanGroupBox.MinimumSize = new System.Drawing.Size(0, 237);
             this.scanGroupBox.Name = "scanGroupBox";
             this.scanGroupBox.TabStop = false;
             // 
@@ -524,7 +525,7 @@
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.pictureBox1);
             this.groupBox4.Controls.Add(this.searchButton);
-            this.groupBox4.MinimumSize = new System.Drawing.Size(300, 109);
+            this.groupBox4.MinimumSize = new System.Drawing.Size(300, 50);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
             // 
@@ -690,7 +691,7 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.pictureBox3);
             this.groupBox3.Controls.Add(this.textBox1);
-            this.groupBox3.MinimumSize = new System.Drawing.Size(300, 150);
+            this.groupBox3.MinimumSize = new System.Drawing.Size(300, 50);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -704,6 +705,7 @@
             resources.GetString("filterTypeBox.Items2")});
             resources.ApplyResources(this.filterTypeBox, "filterTypeBox");
             this.filterTypeBox.Name = "filterTypeBox";
+            this.filterTypeBox.SelectedIndexChanged += new System.EventHandler(this.filterTypeBox_SelectedIndexChanged);
             // 
             // label18
             // 
@@ -996,10 +998,14 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.DonateBox);
+            this.DoubleBuffered = true;
             this.Name = "Main";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
+            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
+            this.LocationChanged += new System.EventHandler(this.Main_LocationChanged);
+            this.Resize += new System.EventHandler(this.Main_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
