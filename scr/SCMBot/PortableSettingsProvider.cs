@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.Windows.Forms;
 using System.Collections.Specialized;
@@ -13,8 +10,6 @@ namespace SCMBot
    public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
    {
       private const string _rootNodeName = "settings";
-      private const string _localSettingsNodeName = "localSettings";
-      private const string _globalSettingsNodeName = "globalSettings";
       private const string _className = "PortableSettingsProvider";
       private XmlDocument _xmlDocument;
 
@@ -24,28 +19,6 @@ namespace SCMBot
          {
             return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Settings.xml");
          }
-      }
-
-      private XmlNode _localSettingsNode
-      {
-         get
-         {
-            XmlNode settingsNode = GetSettingsNode(_localSettingsNodeName);
-            XmlNode machineNode = settingsNode.SelectSingleNode(Environment.MachineName.ToLowerInvariant());
-
-            if (machineNode == null)
-            {
-               machineNode = _rootDocument.CreateElement(Environment.MachineName.ToLowerInvariant());
-               settingsNode.AppendChild(machineNode);
-            }
-
-            return machineNode;
-         }
-      }
-
-      private XmlNode _globalSettingsNode
-      {
-         get { return GetSettingsNode(_globalSettingsNodeName); }
       }
 
       private XmlNode _rootNode
@@ -132,15 +105,12 @@ namespace SCMBot
 
       private void SetValue(SettingsPropertyValue propertyValue)
       {
-         XmlNode targetNode = IsGlobal(propertyValue.Property)
-            ? _globalSettingsNode
-            : _localSettingsNode;
 
-         XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
+          XmlNode settingNode = _rootNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
          if (settingNode != null)
          {
-             //Fix for binary serialiezed setting
+             //Fix for binary serialized setting
              if (propertyValue.SerializedValue is byte[])
                  settingNode.InnerText = Convert.ToBase64String((byte[])propertyValue.SerializedValue);
              else
@@ -157,30 +127,18 @@ namespace SCMBot
 
              settingNode.InnerText = propertyValue.SerializedValue.ToString();
 
-             targetNode.AppendChild(settingNode);
+             _rootNode.AppendChild(settingNode);
          }
       }
 
       private string GetValue(SettingsProperty property)
       {
-         XmlNode targetNode = IsGlobal(property) ? _globalSettingsNode : _localSettingsNode;
-         XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
+          XmlNode settingNode = _rootNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
 
          if (settingNode == null)
             return property.DefaultValue != null ? property.DefaultValue.ToString() : string.Empty;
 
          return settingNode.InnerText;
-      }
-
-      private bool IsGlobal(SettingsProperty property)
-      {
-         foreach (DictionaryEntry attribute in property.Attributes)
-         {
-            if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
-               return true;
-         }
-
-         return false;
       }
 
       private XmlNode GetSettingsNode(string name)
@@ -207,9 +165,6 @@ namespace SCMBot
 
       public void Reset(SettingsContext context)
       {
-         _localSettingsNode.RemoveAll();
-         _globalSettingsNode.RemoveAll();
-
          _xmlDocument.Save(_filePath);
       }
 
@@ -221,6 +176,7 @@ namespace SCMBot
 
       public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
       {
+          // do nothing
       }
    }
 }
