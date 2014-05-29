@@ -72,7 +72,7 @@ namespace SCMBot
         const string homePage = "https://github.com/Maxx53/SCMBot";
         const string helpPage = homePage + "/wiki";
 
-        public const string cockPath = "coockies.dat";
+        public const string cockPath = "cookies.dat";
         const string chromeUA = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
         
         //Just put here your random values
