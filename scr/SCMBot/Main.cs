@@ -90,7 +90,13 @@ namespace SCMBot
             settingsForm.intLangComboBox.DisplayMember = "NativeName";
             settingsForm.intLangComboBox.ValueMember = "Name";
 
-            steam_srch.cookieCont = (CookieContainer)LoadBinary(cockPath);
+            //Hotfix
+            var cook = (CookieContainer)LoadBinary(cockPath);
+
+            if (cook == null)
+                cook =  new CookieContainer();
+
+            steam_srch.cookieCont = cook;
             steam_srch.scanID = 0;
             filterTypeBox.SelectedIndex = 1;
 
@@ -745,7 +751,6 @@ namespace SCMBot
 
                 case flag.Inventory_Loaded:
 
-
                     SetInvFilter();
 
                     label4.Text = filteredInvList.Count.ToString();
@@ -753,7 +758,6 @@ namespace SCMBot
 
                     if (searchId == 0)
                     {
-
                         FillInventoryList();
 
                         SellButton.Enabled = true;
@@ -763,6 +767,7 @@ namespace SCMBot
                     }
                     else
                     {
+                        InventoryList.Items.Clear();
                         button2.Enabled = false;
                         MessageBox.Show("Inventory section is empty!", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
