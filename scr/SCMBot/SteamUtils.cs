@@ -494,12 +494,12 @@ namespace SCMBot
 
         }
 
-        private string SendGet(string url, CookieContainer cok)
+        private string SendGet(string url, CookieContainer cok, bool UseProxy)
         {
             Main.reqPool.WaitOne();
 
             doMessage(flag.StripImg, 0, string.Empty, true);
-            var res = Main.GetRequest(url, cookieCont);
+            var res = Main.GetRequest(url, cookieCont, UseProxy);
             doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
@@ -640,7 +640,7 @@ namespace SCMBot
         public StrParam GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
-            string markpage = SendGet(_market, cock);
+            string markpage = SendGet(_market, cock, false);
 
             //For testring purposes!
             //string markpage = File.ReadAllText(@"C:\dollars.html");
@@ -657,9 +657,9 @@ namespace SCMBot
             //Set profileId for old Url format
             myUserId = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
 
-            string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*)(?=<div id=\"global_action_menu\">)", RegexOptions.Singleline).ToString();
-            parseImg = parseImg.Substring(0, parseImg.Length - 46);
-
+            //30.05.14 Update
+            string parseImg = Regex.Match(markpage, "(?<=avatarIcon\"><img src=\")(.*)(?=\" alt=\"\"></span>)", RegexOptions.Singleline).ToString();
+           
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
             currLst.GetType(parseAmount);
@@ -752,6 +752,7 @@ namespace SCMBot
         {
             lst.Clear();
 
+
             if (content == string.Empty)
             {
                 //Content empty
@@ -761,6 +762,11 @@ namespace SCMBot
             {
                 //Json without data
                 return 1;
+            }
+            else if (content == "403")
+            {
+                //403 Forbidden
+                return 5;
             }
             else if (content[0] != '{')
             {
@@ -814,7 +820,7 @@ namespace SCMBot
                         //If we load 1st lot and it's not null
                         if (!full && !isNull)
                             //Fine!
-                            return 5;
+                            return 7;
                     }
                 }
                 else return 1;
@@ -831,7 +837,7 @@ namespace SCMBot
                 return 0;
             else
                 //Fine!
-                return 5;
+                return 7;
         }
 
 

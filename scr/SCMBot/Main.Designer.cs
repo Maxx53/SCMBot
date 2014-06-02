@@ -139,6 +139,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.DonateBox = new System.Windows.Forms.PictureBox();
             this.loginButton = new System.Windows.Forms.Button();
+            this.usingProxyStatuslStrip = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -921,6 +922,7 @@
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.minimizeOnClosingToolStripMenuItem,
             this.settingsToolStripMenuItem,
+            this.usingProxyStatuslStrip,
             this.helpToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -1025,6 +1027,12 @@
             this.loginButton.Name = "loginButton";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            // 
+            // usingProxyStatuslStrip
+            // 
+            this.usingProxyStatuslStrip.Name = "usingProxyStatuslStrip";
+            resources.ApplyResources(this.usingProxyStatuslStrip, "usingProxyStatuslStrip");
+            this.usingProxyStatuslStrip.Click += new System.EventHandler(this.usingProxyStatusToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -1197,6 +1205,7 @@
         private System.Windows.Forms.ToolStripMenuItem importListToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem usingProxyStatuslStrip;
     }
 }
 

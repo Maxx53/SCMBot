@@ -64,6 +64,8 @@ namespace SCMBot
     public partial class Main
     {
         const string logPath = "logfile.txt";
+        const string proxyPath = "proxy.txt";
+
         const string appName = "SCM Bot alpha";
         const string notifTxt = "{0}\r\n{1} {2}";
 
@@ -73,7 +75,7 @@ namespace SCMBot
         const string helpPage = homePage + "/wiki";
 
         public const string cockPath = "coockies.dat";
-        const string chromeUA = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
+        const string steamUA = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; Valve Steam Client/1401381906; ) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19";
         
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
@@ -373,7 +375,7 @@ namespace SCMBot
                     //request.KeepAlive = true;
 
                     //LOL, really?
-                    request.UserAgent = chromeUA;
+                    request.UserAgent = steamUA;
 
                     request.Referer = refer;
                     request.ContentType = "application/x-www-form-urlencoded";
@@ -414,9 +416,39 @@ namespace SCMBot
 
 
 
-        public static string GetRequest(string url, CookieContainer cookie)
+
+        public static int GetFreeIndex()
+        {
+            int min = proxyList[0].WorkLoad;
+            int minIndex = 0;
+            bool used = false;
+
+            for (int i = 0; i < proxyList.Count; i++)
+            {
+                if (proxyList[i].WorkLoad < min)
+                {
+                    if (proxyList[i].InUsing == false)
+                    {
+                        min = proxyList[i].WorkLoad;
+                        minIndex = i;
+                        used = false;
+                    }
+                    else used = true;
+                }
+            }
+
+            if (!used)
+                return minIndex;
+            else return -1;
+        }
+
+
+        public static string GetRequest(string url, CookieContainer cookie, bool UseProxy)
         {
                 string content = string.Empty;
+                int proxyNum = 0;
+
+                bool proxyUsed = false;
 
                 try
                 {
@@ -430,10 +462,24 @@ namespace SCMBot
                     //request.KeepAlive = true;
 
                     //LOL, really?
-                    request.UserAgent = chromeUA;
+                    request.UserAgent = steamUA;
 
                     request.Accept = "application/json";
                     request.CookieContainer = cookie;
+
+
+                    if (UseProxy && (proxyList.Count != 0))
+                    {
+                        proxyNum = GetFreeIndex();
+                        if (proxyNum != -1)
+                        {
+                            proxyList[proxyNum].InUsing = true;
+                            proxyList[proxyNum].WorkLoad++;
+                            request.Proxy = proxyList[proxyNum].Proxy;
+                            proxyUsed = true;
+                        }
+                    }
+
 
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                     var stream = new StreamReader(response.GetResponseStream());
@@ -448,13 +494,29 @@ namespace SCMBot
                 {
                     if (e.Status == WebExceptionStatus.ProtocolError)
                     {
-                        WebResponse resp = e.Response;
-                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+
+                        HttpWebResponse resp = (HttpWebResponse)e.Response;
+                        int statCode = (int)resp.StatusCode;
+
+                        if (statCode == 403)
                         {
-                            content = sr.ReadToEnd();
+                            content = "403";
+                        }
+                        else
+                        {
+                            using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                            {
+                                content = sr.ReadToEnd();
+                            }
                         }
                     }
 
+                }
+
+                //Free proxy
+                if (UseProxy && (proxyList.Count != 0) && proxyUsed)
+                {
+                    proxyList[proxyNum].InUsing = false;
                 }
 
                 return content;
@@ -476,6 +538,8 @@ namespace SCMBot
                 case "3": mess = "Parsing fail";
                     break;
                 case "4": mess = "Wait to Relogin";
+                    break;
+                case "5": mess = "Too much requests per second";
                     break;
                 default: mess = "Unknown error";
                     break;
@@ -545,6 +609,38 @@ namespace SCMBot
                 p.WaitForExit();
         }
 
+    }
+
+
+    public class ProxyItem
+    {
+        public ProxyItem(WebProxy proxy, bool inUsing, int workLoad)
+        {
+            this.Proxy = proxy;
+            this.InUsing = inUsing;
+            this.WorkLoad = workLoad;
+        }
+
+        public WebProxy Proxy { set; get; }
+        public bool InUsing { set; get; }
+        public int WorkLoad { set; get; }
+    }
+
+
+    public class ProxyList : List<ProxyItem>
+    {
+        public void Add(string ProxyStr)
+        {
+            try
+            {
+                this.Add(new ProxyItem(new WebProxy(ProxyStr, false), false, 0));
+            }
+            catch (Exception)
+            {
+                // dummy
+            }
+           
+        }
     }
 
 

@@ -44,12 +44,15 @@ namespace SCMBot
         private ScanItemList scanItems = new ScanItemList();
 
         private SettingsFrm settingsForm = new SettingsFrm();
+        private ProxyStatsFrm proxyStatForm = new ProxyStatsFrm();
         private GraphFrm graphFrm = new GraphFrm();
 
         Properties.Settings settings = Properties.Settings.Default;
 
         private ImageList StatImgLst;
         private List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
+
+        public static ProxyList proxyList = new ProxyList();
 
         private Size lastFrmSize;
         private Point lastFrmPos;
@@ -86,7 +89,6 @@ namespace SCMBot
               System.Globalization.CultureInfo.GetCultureInfo("fr-FR")
             };
 
-
             settingsForm.intLangComboBox.DisplayMember = "NativeName";
             settingsForm.intLangComboBox.ValueMember = "Name";
 
@@ -118,6 +120,27 @@ namespace SCMBot
             openFileDialog1.InitialDirectory = AppPath;
             saveFileDialog1.InitialDirectory = AppPath;
 
+
+            if (File.Exists(proxyPath))
+            {
+                var plines = File.ReadAllLines(proxyPath);
+
+                for (int i = 0; i < plines.Length; i++)
+                {
+                    string proxyPattern = @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}";
+                    Match match = Regex.Match(plines[i], proxyPattern);
+                    if (match.Success)
+                    {
+                        proxyList.Add(plines[i]);
+                    }
+                }
+                StatusLabel1.Text = "Proxy servers loaded: " + proxyList.Count.ToString();
+            }
+            else
+                usingProxyStatuslStrip.Enabled = false;
+
+
+            ListViewHelper.EnableDoubleBuffer(scanListView);
        }
 
         private void Main_Shown(object sender, EventArgs e)
@@ -203,7 +226,17 @@ namespace SCMBot
 
             if (!String.IsNullOrEmpty(settings.Language))
             {
-                settingsForm.intLangComboBox.SelectedValue = settings.Language;
+                switch (settings.Language)
+                {
+                    case "ru-RU": settingsForm.intLangComboBox.SelectedIndex = 0;
+                        break;
+                    case "en-US": settingsForm.intLangComboBox.SelectedIndex = 1;
+                        break;
+                    case "fr-FR": settingsForm.intLangComboBox.SelectedIndex = 2;
+                        break;
+                    default: settingsForm.intLangComboBox.SelectedIndex = 1;
+                        break;
+                }
             }
 
             //You need password crypting
@@ -459,6 +492,9 @@ namespace SCMBot
 
         public void Event_Message(object sender, object data, int searchId, flag myflag, bool isMain)
         {
+            if (data == null)
+                return;
+
             string message = data.ToString();
 
             switch (myflag)
@@ -2551,6 +2587,11 @@ namespace SCMBot
         private void resellComboBox_Click(object sender, EventArgs e)
         {
             ResComboClicked = true;
+        }
+
+        private void usingProxyStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            proxyStatForm.Show();
         }
 
    }

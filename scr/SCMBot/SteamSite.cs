@@ -125,7 +125,7 @@ namespace SCMBot
         public void Logout()
         {
             ThreadStart threadStart = delegate() {
-                SendGet(_logout, cookieCont);
+                SendGet(_logout, cookieCont, false);
                 doMessage(flag.Logout_, 0, string.Empty, true);
                 Logged = false;
             };
@@ -138,7 +138,7 @@ namespace SCMBot
         {
             ThreadStart threadStart = delegate()
             {
-                SendGet(_lang_chg + lang, cookieCont);
+                SendGet(_lang_chg + lang, cookieCont, false);
                 doMessage(flag.Lang_Changed, 0, lang, true);
             };
             Thread pTh = new Thread(threadStart);
@@ -220,7 +220,7 @@ namespace SCMBot
             {
                 try
                 {
-                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, appid, markname), cookieCont));
+                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, appid, markname), cookieCont, false));
 
                     if (priceOver.Success)
                     {
@@ -257,11 +257,11 @@ namespace SCMBot
             if (!LoadOnSale)
             {
                 invCount = ParseInventory(SendGet(string.Format(_jsonInv, myUserId, GetUrlApp(invApp, true).App),
-              cookieCont));
+              cookieCont, false));
             }
             else
             {
-                invCount = ParseOnSale(SendGet(_market, cookieCont), currencies);
+                invCount = ParseOnSale(SendGet(_market, cookieCont, false), currencies);
             }
 
             if (invCount > 0)
@@ -324,7 +324,7 @@ namespace SCMBot
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont), searchList, currencies), true);
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont, false), searchList, currencies), true);
         }
 
 
@@ -560,9 +560,9 @@ namespace SCMBot
             else
             {
                 lotList.Clear();
-                byte ret = ParseLotList(SendGet(link, cookieCont), lotList, currencies, full);
+                byte ret = ParseLotList(SendGet(link, cookieCont, true), lotList, currencies, full);
 
-                if (ret != 5)
+                if (ret != 7)
                 {
                     doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
                     return false;
@@ -600,7 +600,7 @@ namespace SCMBot
 
                 if (BuyNow)
                 {
-                    ParseLotList(SendGet(url, cookieCont), lotList, currencies, false);
+                    ParseLotList(SendGet(url, cookieCont, false), lotList, currencies, false);
 
                     if (lotList.Count == 0)
                     {
@@ -743,7 +743,7 @@ namespace SCMBot
                     }
 
                     //You get the point!
-                    ParseInventory(SendGet(string.Format(_jsonInv, myUserId, appType.App + "/" + appType.Context), cookieCont));
+                    ParseInventory(SendGet(string.Format(_jsonInv, myUserId, appType.App + "/" + appType.Context), cookieCont, false));
 
                     var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.Name == markName).AssetId, sellPrice.ToString());
 
