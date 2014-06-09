@@ -504,7 +504,7 @@ namespace SCMBot
 
             if (total <= wished)
             {
-                if (Input.ToBuy)
+                if ((Input.ToBuy) && (Main.walletVal > Main.stopfundsVal))
                 {
 
                     var buyresp = BuyItem(cookieCont, sessid, ourItem.ListringId, Input.Link, ourItem.Price.ToString(), ourItem.Fee.ToString(), totalStr);

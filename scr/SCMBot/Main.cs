@@ -57,6 +57,10 @@ namespace SCMBot
         private Size lastFrmSize;
         private Point lastFrmPos;
         private bool ResComboClicked = false;
+        private bool sortDirect = true;
+
+        public static int walletVal = 0;
+        public static int stopfundsVal = 0;
 
         public Main()
         {
@@ -192,6 +196,11 @@ namespace SCMBot
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
             settingsForm.actualBox.Checked = settings.loadActual;
 
+            settingsForm.stopFundsBox.Text = MainScanItem.LogItem.DoFracture(settings.StopFunds.ToString());
+            stopfundsVal = settings.StopFunds;
+
+            settingsForm.FeeCheckBox.Checked = settings.withFee;
+
             settingsForm.playSndCheckBox.Checked = settings.playSnd;
 
             settingsForm.resDelayBox.Text = settings.resellDelay.ToString();
@@ -302,6 +311,11 @@ namespace SCMBot
             settings.InvType = comboBox3.SelectedIndex;
             settings.LastCurr = steam_srch.currencies.Current;
 
+            settings.StopFunds = Convert.ToInt32(SteamSite.GetSweetPrice(settingsForm.stopFundsBox.Text));
+            stopfundsVal = settings.StopFunds;
+
+            settings.withFee = settingsForm.FeeCheckBox.Checked;
+
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
 
             settings.formParams = new MainFormParams(lastFrmSize, lastFrmPos, this.WindowState, 
@@ -342,7 +356,9 @@ namespace SCMBot
                       scanListView.Items.Add(lstItem);
                       var scanItem = new MainScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr, settings.ignoreWarn, settings.resellDelay);
 
-                      if (isScanValid(ourItem, true))
+                      
+                    
+                    if (isScanValid(ourItem, true))
                       {
                           ourItem.StatId = status.Ready;
                           setStatImg(i, ourItem.StatId, scanListView);
@@ -446,6 +462,7 @@ namespace SCMBot
             {
                 StartLoadImgTread(mess.P3, pictureBox2);
                 label5.Text = mess.P2;
+                walletVal = Convert.ToInt32(SteamSite.GetSweetPrice(mess.P2));
                 label10.Text = mess.P1;
                 ProgressBar1.Visible = false;
                 SetButton(loginButton, Strings.Logout, 2);
@@ -472,11 +489,12 @@ namespace SCMBot
 
         private void AddToScanLog(string message, int scanId, byte color, bool addcurr, bool ismain)
         {
-            if (ismain)
+           if (ismain)
             {
                 cutLog(scanItems[scanId].LogCont, settings.logCount);
                 scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
                 ScrollLbox(scanId, scanListView, true);
+
             }
             else
             {
@@ -1216,13 +1234,22 @@ namespace SCMBot
             {
                 var ouritem = filteredInvList[InventoryList.CheckedItems[i].Index];
                 if ((ouritem.Marketable) && (ouritem.Price != "0"))
-                steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, ouritem.Price));
+                {
+                    string truePrice = ouritem.Price;
+                    
+                    if (settings.withFee)
+                        truePrice = CalcWithFee(truePrice);
+
+                    steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, truePrice));
+                }
             }
 
             steam_srch.sellDelay = Convert.ToInt32(sellDelayBox.Text);
             steam_srch.ItemSell();
   
         }
+
+
 
         private void InventoryList_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
@@ -1235,8 +1262,55 @@ namespace SCMBot
 
         private void InventoryList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            //itemComparer.ColumnIndex = e.Column;
-            //((ListView)sender).Sort();
+            if (steam_srch.Logged && steam_srch.inventList.Count != 0 && e.Column != 0)
+            {
+                filteredInvList.Clear();
+
+                //Sorry for copypaste
+
+                if (sortDirect)
+                {
+                    switch (e.Column)
+                    {
+                        case 1:
+
+                            filteredInvList = steam_srch.inventList.OrderBy(foo => foo.Type).ToList();
+                            break;
+
+                        case 2:
+                            filteredInvList = steam_srch.inventList.OrderBy(foo => foo.Name).ToList();
+                            break;
+
+                        case 3:
+                            filteredInvList = steam_srch.inventList.OrderBy(foo => foo.Price).ToList();
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (e.Column)
+                    {
+                        case 1:
+
+                            filteredInvList = steam_srch.inventList.OrderByDescending(foo => foo.Type).ToList();
+                            break;
+
+                        case 2:
+                            filteredInvList = steam_srch.inventList.OrderByDescending(foo => foo.Name).ToList();
+                            break;
+
+                        case 3:
+                            filteredInvList = steam_srch.inventList.OrderByDescending(foo => foo.Price).ToList();
+                            break;
+                    }
+
+                }
+                
+
+                FillInventoryList();
+                sortDirect = !sortDirect;
+            }
+
         }
 
 
@@ -1390,6 +1464,11 @@ namespace SCMBot
 
             }
         }
+
+
+       
+
+
 
         private void setButtText(status stat)
         {
@@ -1710,10 +1789,7 @@ namespace SCMBot
                         var steamItem = ourItem.Steam;
                         var paramItem = steamItem.scanInput;
 
-                        if (!steamItem.scaninProg)
-                            continue;
-
-                        if (paramItem.StatId == status.InProcess)
+                        if (steamItem.scaninProg)
                         {
                             steamItem.CancelScan();
                             paramItem.StatId = status.Ready;
@@ -2592,6 +2668,35 @@ namespace SCMBot
         private void usingProxyStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
             proxyStatForm.Show();
+        }
+
+
+        //Not Used Yet!
+        private void scanListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            saveTabLst lst = new saveTabLst();
+            SaveTabs(lst);
+
+            scanItems.Clear();
+            scanListView.Items.Clear();
+
+            switch (e.Column)
+            {
+                case 0:
+                    lst.Sort(delegate(saveTab p1, saveTab p2) { return p1.StatId.CompareTo(p2.StatId); });
+                    break;
+
+                case 1:
+                    lst.Sort(delegate(saveTab p1, saveTab p2){return p1.Name.CompareTo(p2.Name);});
+                    break;
+
+                case 2:
+                    lst.Sort(delegate(saveTab p1, saveTab p2) { return p1.Price.CompareTo(p2.Price); });
+                    break;
+            }
+
+            LoadTabs(lst);
+
         }
 
    }

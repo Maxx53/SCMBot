@@ -60,6 +60,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.FeeCheckBox = new System.Windows.Forms.CheckBox();
+            this.stopFundsBox = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.actualBox = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.keepLogBox = new System.Windows.Forms.CheckBox();
@@ -282,6 +285,9 @@
             // tabPage2
             // 
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.FeeCheckBox);
+            this.tabPage2.Controls.Add(this.stopFundsBox);
+            this.tabPage2.Controls.Add(this.label15);
             this.tabPage2.Controls.Add(this.actualBox);
             this.tabPage2.Controls.Add(this.resDelayBox);
             this.tabPage2.Controls.Add(this.label7);
@@ -291,6 +297,22 @@
             this.tabPage2.Controls.Add(this.ignoreBox);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // FeeCheckBox
+            // 
+            resources.ApplyResources(this.FeeCheckBox, "FeeCheckBox");
+            this.FeeCheckBox.Name = "FeeCheckBox";
+            this.FeeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // stopFundsBox
+            // 
+            resources.ApplyResources(this.stopFundsBox, "stopFundsBox");
+            this.stopFundsBox.Name = "stopFundsBox";
+            // 
+            // label15
+            // 
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
             // 
             // actualBox
             // 
@@ -395,5 +417,8 @@
         private System.Windows.Forms.Button button2;
         public System.Windows.Forms.CheckBox actualBox;
         public System.Windows.Forms.CheckBox keepLogBox;
+        public System.Windows.Forms.TextBox stopFundsBox;
+        private System.Windows.Forms.Label label15;
+        public System.Windows.Forms.CheckBox FeeCheckBox;
     }
 }

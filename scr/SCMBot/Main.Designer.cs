@@ -126,6 +126,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.minimizeOnClosingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.usingProxyStatuslStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,7 +140,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.DonateBox = new System.Windows.Forms.PictureBox();
             this.loginButton = new System.Windows.Forms.Button();
-            this.usingProxyStatuslStrip = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -944,6 +944,12 @@
             resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
+            // usingProxyStatuslStrip
+            // 
+            this.usingProxyStatuslStrip.Name = "usingProxyStatuslStrip";
+            resources.ApplyResources(this.usingProxyStatuslStrip, "usingProxyStatuslStrip");
+            this.usingProxyStatuslStrip.Click += new System.EventHandler(this.usingProxyStatusToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Image = global::SCMBot.Properties.Resources.help;
@@ -1027,12 +1033,6 @@
             this.loginButton.Name = "loginButton";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
-            // 
-            // usingProxyStatuslStrip
-            // 
-            this.usingProxyStatuslStrip.Name = "usingProxyStatuslStrip";
-            resources.ApplyResources(this.usingProxyStatuslStrip, "usingProxyStatuslStrip");
-            this.usingProxyStatuslStrip.Click += new System.EventHandler(this.usingProxyStatusToolStripMenuItem_Click);
             // 
             // Main
             // 

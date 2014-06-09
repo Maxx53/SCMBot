@@ -523,6 +523,33 @@ namespace SCMBot
 
         }
 
+
+        //That's all folks. Not precisely.
+        public static string CalcWithFee(string strInput)
+        {
+
+            int intres = 0;
+            int input = Convert.ToInt32(strInput);
+
+            //Magic
+            double temp = input / 1.15;
+
+            if (input > 10)
+                intres = Convert.ToInt32(Math.Ceiling(temp));
+            else
+                if (input < 4)
+                {
+                    if (input == 3)
+                        intres = 1;
+                    else
+                        intres = 0;
+                }
+                else
+                    intres = Convert.ToInt32(temp) - 1;
+
+            return intres.ToString();
+        }
+
         private string GetScanErrMess(string message)
         {
             string mess = string.Empty;
@@ -805,7 +832,6 @@ namespace SCMBot
                 }
                 return prtoTxt;
             }
-
 
 
             public int Id { get; set; }
