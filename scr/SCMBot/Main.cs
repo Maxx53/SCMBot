@@ -61,6 +61,7 @@ namespace SCMBot
 
         public static int walletVal = 0;
         public static int stopfundsVal = 0;
+        public static string jsonAddon;
 
         public Main()
         {
@@ -462,7 +463,11 @@ namespace SCMBot
             {
                 StartLoadImgTread(mess.P3, pictureBox2);
                 label5.Text = mess.P2;
-                walletVal = Convert.ToInt32(SteamSite.GetSweetPrice(mess.P2));
+
+                jsonAddon = mess.P4;
+
+                walletVal = Convert.ToInt32(SteamSite.GetSweetPrice(Regex.Replace(mess.P2, @"[^\d.,]+", string.Empty)));
+
                 label10.Text = mess.P1;
                 ProgressBar1.Visible = false;
                 SetButton(loginButton, Strings.Logout, 2);
@@ -691,6 +696,8 @@ namespace SCMBot
                     InventoryList.Items[searchId].SubItems[3].Text = lowprice;
                     filteredInvList[searchId].Price = SteamSite.GetSweetPrice(lowprice);
                     textBox1.Text = lowprice;
+                    textBox1_KeyUp(this, null);
+
                     textBox1.ReadOnly = false;
 
                     //sold in the last 24 hours
@@ -1239,7 +1246,6 @@ namespace SCMBot
                     
                     if (settings.withFee)
                         truePrice = CalcWithFee(truePrice);
-
                     steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, truePrice));
                 }
             }
@@ -2252,6 +2258,7 @@ namespace SCMBot
                     lastSelec = lit.Index;
                 }
 
+                textBox1_KeyUp(this, null);
             }
             else pictureBox3.Image = null;
         }
@@ -2698,6 +2705,37 @@ namespace SCMBot
             LoadTabs(lst);
 
         }
+
+
+
+
+        private void textBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (textBox1.Text != string.Empty)
+                    textBox3.Text = MainScanItem.LogItem.DoFracture(CalcWithFee(SteamSite.GetSweetPrice(textBox1.Text)));
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
+        private void textBox3_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (textBox3.Text != string.Empty)
+                    textBox1.Text = MainScanItem.LogItem.DoFracture(AddFee(SteamSite.GetSweetPrice(textBox3.Text)));
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
 
    }
 }

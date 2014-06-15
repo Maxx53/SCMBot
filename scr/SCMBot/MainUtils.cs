@@ -550,6 +550,27 @@ namespace SCMBot
             return intres.ToString();
         }
 
+
+
+        public static string AddFee(string strInput)
+        {
+
+            int intres = 0;
+            int input = Convert.ToInt32(strInput);
+            double temp = 0;
+
+            if (input < 20)
+                temp = 2;
+            else
+            {
+                temp = input * 0.15;
+            }
+
+            intres = input + Convert.ToInt32(temp);
+
+            return intres.ToString();
+        }
+
         private string GetScanErrMess(string message)
         {
             string mess = string.Empty;
@@ -679,16 +700,18 @@ namespace SCMBot
             this.P2 = p2;
         }
 
-        public StrParam(string p1, string p2, string p3)
+        public StrParam(string p1, string p2, string p3, string p4)
         {
             this.P1 = p1;
             this.P2 = p2;
             this.P3 = p3;
+            this.P4 = p4;
         }
 
         public string P1 { set; get; }
         public string P2 { set; get; }
         public string P3 { set; get; }
+        public string P4 { set; get; }
     }
 
     [Serializable]

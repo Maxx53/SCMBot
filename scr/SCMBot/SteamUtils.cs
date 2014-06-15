@@ -53,7 +53,8 @@ namespace SCMBot
         //Old Url format, recommended
         const string _jsonInv = _mainsite + "profiles/{0}/inventory/json/{1}";
 
-        public const string imgUri = "http://cdn.steamcommunity.com/economy/image/";
+        //Fix
+        public const string imgUri = "http://steamcommunity-a.akamaihd.net/economy/image/";
 
         //public const string invImgUrl = imgUri + "{0}/96fx96f";
         public const string fndImgUrl = imgUri + "{0}/62fx62f";
@@ -64,7 +65,10 @@ namespace SCMBot
         public const string searchPageReq = "{0}&start={1}0";
 
         public const string recentMarket = _market + "recent/";
-        public const string priceOverview = _market + "priceoverview/?appid={0}&market_hash_name={1}";
+
+        //New, update fix
+        public const string priceOverview = _market + "priceoverview/?{0}&appid={1}&market_hash_name={2}";
+        public const string jsonAddonUrl = "?country={0}&language={1}&currency={2}&count=10";
 
         //================================ Consts ======================= End ===============================================
 
@@ -662,10 +666,16 @@ namespace SCMBot
            
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
+            string country = Regex.Match(markpage, "(?<=g_strCountryCode = \")(.*)(?=\";)").ToString();
+            string strlang = Regex.Match(markpage, "(?<=g_strLanguage = \")(.*)(?=\";)").ToString();
+
             currLst.GetType(parseAmount);
             parseAmount = currLst.ReplaceAscii(parseAmount);
+            
+            //?country=RU&language=russian&currency=5&count=20
+            string Addon = string.Format(jsonAddonUrl, country, strlang, currLst.GetCode());
 
-            return new StrParam(parseName, parseAmount, parseImg);
+            return new StrParam(parseName, parseAmount, parseImg, Addon);
         }
 
 
@@ -893,7 +903,10 @@ namespace SCMBot
 
                             string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
 
-                            string ItemImg = Regex.Match(currmatch, "(?<=com/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
+                            string ItemImg = Regex.Match(currmatch, "(?<=net/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
+
+
+
 
                             //Заполняем список 
                             lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));

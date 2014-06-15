@@ -220,7 +220,8 @@ namespace SCMBot
             {
                 try
                 {
-                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, appid, markname), cookieCont, false));
+
+                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, Main.jsonAddon, appid, markname), cookieCont, false));
 
                     if (priceOver.Success)
                     {
@@ -580,11 +581,11 @@ namespace SCMBot
 
             if (fint == -1)
             {
-                url += "/render/";
+                url += "/render" + Main.jsonAddon;
             }
             else
             {
-                url = url.Insert(fint, "/render/");
+                url = url.Insert(fint, "/render" + Main.jsonAddon + "/");
             }
             return url;
         }
@@ -655,7 +656,7 @@ namespace SCMBot
             finally
             {
                 doMessage(flag.Scan_cancel, scanID, string.Empty, true);
-                CancelScan();
+                //CancelScan();
             }
 
         }
@@ -681,7 +682,7 @@ namespace SCMBot
 
                 try
                 {
-                    if (fillLotList(recentMarket, true, false))
+                    if (fillLotList(recentMarket + Main.jsonAddon, true, false))
                     {
 
                         for (int i = 0; i < lotList.Count; i++)
