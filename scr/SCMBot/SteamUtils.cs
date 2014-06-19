@@ -498,12 +498,12 @@ namespace SCMBot
 
         }
 
-        private string SendGet(string url, CookieContainer cok, bool UseProxy)
+        private string SendGet(string url, CookieContainer cok, bool UseProxy, bool keepAlive)
         {
             Main.reqPool.WaitOne();
 
             doMessage(flag.StripImg, 0, string.Empty, true);
-            var res = Main.GetRequest(url, cookieCont, UseProxy);
+            var res = Main.GetRequest(url, cookieCont, UseProxy, keepAlive);
             doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
@@ -644,7 +644,7 @@ namespace SCMBot
         public StrParam GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
-            string markpage = SendGet(_market, cock, false);
+            string markpage = SendGet(_market, cock, false, true);
 
             //For testring purposes!
             //string markpage = File.ReadAllText(@"C:\dollars.html");
@@ -768,11 +768,6 @@ namespace SCMBot
                 //Content empty
                 return 0;
             }
-            else if ((content.Length < 200) && (content[0] == '{'))
-            {
-                //Json without data
-                return 1;
-            }
             else if (content == "403")
             {
                 //403 Forbidden
@@ -786,10 +781,13 @@ namespace SCMBot
 
             try
             {
+                //"success":false
+                if (content.Substring(11, 1) == "f")
+                    return 1;
 
                 var pageJS = JsonConvert.DeserializeObject<PageBody>(content);
 
-                if (pageJS.Listing.Count != 0 && pageJS.Success == true)
+                if (pageJS.Listing.Count != 0)
                 {
                     foreach (ListingInfo ourItem in pageJS.Listing.Values)
                     {
@@ -839,7 +837,8 @@ namespace SCMBot
             catch(Exception e)
             {
                 //Parsing fail
-                Main.AddtoLog("Err Source: " + e.Source);
+                Main.AddtoLog("Err Source: " + e.Message);
+                System.IO.File.WriteAllText("xxx.txt", content);
                 return 3;
             }
 

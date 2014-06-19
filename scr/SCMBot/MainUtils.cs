@@ -75,7 +75,7 @@ namespace SCMBot
         const string helpPage = homePage + "/wiki";
 
         public const string cockPath = "coockies.dat";
-        const string steamUA = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; Valve Steam Client/1401381906; ) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19";
+        const string steamUA = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36 OPR/22.0.1471.70";
         
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
@@ -443,7 +443,7 @@ namespace SCMBot
         }
 
 
-        public static string GetRequest(string url, CookieContainer cookie, bool UseProxy)
+        public static string GetRequest(string url, CookieContainer cookie, bool UseProxy, bool keepAlive)
         {
                 string content = string.Empty;
                 int proxyNum = 0;
@@ -458,8 +458,9 @@ namespace SCMBot
                     //New
                     request.Proxy = null;
                     request.Timeout = 30000;
+                
                     //KeepAlive is True by default
-                    //request.KeepAlive = true;
+                    request.KeepAlive = keepAlive;
 
                     //LOL, really?
                     request.UserAgent = steamUA;

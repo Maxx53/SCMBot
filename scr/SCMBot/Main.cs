@@ -8,7 +8,6 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 
 
@@ -1251,6 +1250,7 @@ namespace SCMBot
             }
 
             steam_srch.sellDelay = Convert.ToInt32(sellDelayBox.Text);
+            steam_srch.isDelayRand = randomDelayBox.Checked;
             steam_srch.ItemSell();
   
         }
