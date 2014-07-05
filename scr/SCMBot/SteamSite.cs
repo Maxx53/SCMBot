@@ -574,7 +574,8 @@ namespace SCMBot
             else
             {
                 lotList.Clear();
-                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full);
+
+                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full); ;
 
                 if (ret != 7)
                 {
@@ -611,7 +612,14 @@ namespace SCMBot
                 BackgroundWorker worker = sender as BackgroundWorker;
 
                 string sessid = GetSessId(cookieCont);
-                string url = UrlForRender(scanInput.Link);
+
+                string url = scanInput.Link;
+
+                if (!Main.isHTML)
+                {
+                    url = UrlForRender(scanInput.Link);
+                }
+              
 
                 if (BuyNow)
                 {

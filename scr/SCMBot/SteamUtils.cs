@@ -68,7 +68,10 @@ namespace SCMBot
 
         //New, update fix
         public const string priceOverview = _market + "priceoverview/?{0}&appid={1}&market_hash_name={2}";
-        public const string jsonAddonUrl = "?country={0}&language={1}&currency={2}&count=10";
+        public const string jsonAddonUrl = "?country={0}&language={1}&currency={2}";
+
+        //For html parsing, bulding own json!
+        public string  buildJson = "\"success\":true,\"results_html\":\"\",\"listinginfo\":{0},\"assets\":{1}";
 
         //================================ Consts ======================= End ===============================================
 
@@ -762,21 +765,35 @@ namespace SCMBot
         {
             lst.Clear();
 
+            //Smart ass!
+            if (Main.isHTML)
+            {
 
-            if (content == string.Empty)
-            {
-                //Content empty
-                return 0;
+                string jsonAssets = Regex.Match(content, @"(?<=g_rgAssets \= )(.*)(?=;
+	var g_rgCurrency)", RegexOptions.Singleline).ToString();
+                string jsonListInfo = Regex.Match(content, @"(?<=g_rgListingInfo \= )(.*)(?=;
+	var g_plotPriceHistory)", RegexOptions.Singleline).ToString();
+
+                content = "{" + string.Format(buildJson, jsonListInfo, jsonAssets) + "}";
             }
-            else if (content == "403")
+            else
             {
-                //403 Forbidden
-                return 5;
-            }
-            else if (content[0] != '{')
-            {
-                //Json is not valid
-                return 2;
+
+                if (content == string.Empty)
+                {
+                    //Content empty
+                    return 0;
+                }
+                else if (content == "403")
+                {
+                    //403 Forbidden
+                    return 5;
+                }
+                else if (content[0] != '{')
+                {
+                    //Json is not valid
+                    return 2;
+                }
             }
 
             try
@@ -838,7 +855,6 @@ namespace SCMBot
             {
                 //Parsing fail
                 Main.AddtoLog("Err Source: " + e.Message);
-                System.IO.File.WriteAllText("xxx.txt", content);
                 return 3;
             }
 
@@ -848,6 +864,94 @@ namespace SCMBot
                 //Fine!
                 return 7;
         }
+
+
+
+        public static byte ParseLotListHTMLxxxx(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
+        {
+            lst.Clear();
+
+            if (content == string.Empty)
+            {
+                //Content empty
+                return 0;
+            }
+            else if (content == "403")
+            {
+                //403 Forbidden
+                return 5;
+            }
+
+            try
+            {
+
+                MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_game_name", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
+
+                if (matches.Count != 0)
+                {
+                    //Парсим все лоты (авось пригодится в будущем), но использовать будем пока только первый.
+                    foreach (Match match in matches)
+                    {
+                        string currmatch = match.Groups[1].Value;
+
+                        string itName = Regex.Match(currmatch, "(?<=;\">)(.*)(?=</span>)").ToString();
+
+                        if (full)
+                            itName = Regex.Match(itName, "(?<=\">)(.*)(?=</a>)").ToString();
+
+                        //Чистим результат от тегов
+                        //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
+                        currmatch = Regex.Replace(currmatch, "<[^>]+>", string.Empty).Trim();
+
+                        //Удаляем ascii кода нашей текущей валюты
+                        currmatch = Regex.Replace(currmatch, currLst[currLst.Current].AsciiName, string.Empty);
+
+                        currmatch = Regex.Replace(currmatch, @"[^\.\,\d\ ]+", string.Empty);
+
+                        //Отделяем номер лота
+                        string sellid = currmatch.Substring(2, 19);
+
+                        //Отделяем тип приложения
+                        string appDirty = currmatch.Substring(23, 30);
+
+                        string[] app = Regex.Split(appDirty, ", ");
+                        var appRes = new AppType(app[0], app[1]);
+
+                        //Отделяем строку, содержащую цены
+                        string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
+
+                        string[] parts = Regex.Split(amount, " +");
+
+                        MessageBox.Show(parts[0]);
+
+                        int _price = Convert.ToInt32((parts[0]));
+                        int _subtot = Convert.ToInt32((parts[1]));
+
+                        //Заполняем список лотов
+                       // lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
+                        lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
+
+                        //Remove this to parse all 10 items
+                        if (!full)
+                            return 7;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //Parsing fail
+                Main.AddtoLog("Err Source: " + e.Message);
+                return 3;
+            }
+
+            if (lst.Count == 0)
+                return 0;
+            else
+                //Fine!
+                return 7;
+
+        }
+
 
 
         public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)

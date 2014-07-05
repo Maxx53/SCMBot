@@ -460,7 +460,7 @@ namespace SCMBot
                     request.Timeout = 30000;
                 
                     //KeepAlive is True by default
-                    request.KeepAlive = keepAlive;
+                    //request.KeepAlive = keepAlive;
 
                     //LOL, really?
                     request.UserAgent = steamUA;

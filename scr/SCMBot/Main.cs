@@ -35,7 +35,7 @@ namespace SCMBot
         bool relog = false;
 
         static bool isLog = true;
-
+        public static bool isHTML = true;
         //ItemComparer itemComparer = new ItemComparer();
 
         static public Semaphore reqPool;
@@ -187,7 +187,7 @@ namespace SCMBot
             label3Stretch();
 
             isLog = settings.keepLog;
-            settingsForm.keepLogBox.Checked = isLog;
+            settingsForm.keepLogBox.Checked = settings.keepLog;
 
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
@@ -195,6 +195,9 @@ namespace SCMBot
             settingsForm.numThreadsBox.Value = settings.numThreads;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
             settingsForm.actualBox.Checked = settings.loadActual;
+
+            isHTML = settings.scanHTML;
+            settingsForm.scanHtlmBox.Checked = settings.scanHTML;
 
             settingsForm.stopFundsBox.Text = MainScanItem.LogItem.DoFracture(settings.StopFunds.ToString());
             stopfundsVal = settings.StopFunds;
@@ -306,6 +309,10 @@ namespace SCMBot
 
             settings.playSnd = settingsForm.playSndCheckBox.Checked;
 
+
+            isHTML = settingsForm.scanHtlmBox.Checked;
+            settings.scanHTML = isHTML;
+            
             settings.delayVal = steam_srch.mainDelay;
 
             settings.InvType = comboBox3.SelectedIndex;

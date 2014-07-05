@@ -67,6 +67,7 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.keepLogBox = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.scanHtlmBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -347,11 +348,18 @@
             // tabPage4
             // 
             resources.ApplyResources(this.tabPage4, "tabPage4");
+            this.tabPage4.Controls.Add(this.scanHtlmBox);
             this.tabPage4.Controls.Add(this.label10);
             this.tabPage4.Controls.Add(this.label9);
             this.tabPage4.Controls.Add(this.numThreadsBox);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // scanHtlmBox
+            // 
+            resources.ApplyResources(this.scanHtlmBox, "scanHtlmBox");
+            this.scanHtlmBox.Name = "scanHtlmBox";
+            this.scanHtlmBox.UseVisualStyleBackColor = true;
             // 
             // SettingsFrm
             // 
@@ -420,5 +428,6 @@
         public System.Windows.Forms.TextBox stopFundsBox;
         private System.Windows.Forms.Label label15;
         public System.Windows.Forms.CheckBox FeeCheckBox;
+        public System.Windows.Forms.CheckBox scanHtlmBox;
     }
 }

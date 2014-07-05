@@ -349,9 +349,6 @@
   <data name="label19.Text" xml:space="preserve">
     <value>Получите:</value>
   </data>
-  <data name="textBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 49</value>
-  </data>
   <data name="filterTypeBox.Items" xml:space="preserve">
     <value>Тип</value>
   </data>
@@ -362,10 +359,10 @@
     <value>Цена</value>
   </data>
   <data name="filterTypeBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>521, 46</value>
+    <value>521, 48</value>
   </data>
   <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
-    <value>450, 52</value>
+    <value>455, 52</value>
   </data>
   <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 13</value>
