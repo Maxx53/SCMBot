@@ -231,9 +231,18 @@ namespace SCMBot
                 this.Size = settings.formParams.FrmSize;
                 this.Location = settings.formParams.Location;
                 this.WindowState = settings.formParams.FrmState;
-                splitContainer1.SplitterDistance = settings.formParams.Split1;
-                splitContainer2.SplitterDistance = settings.formParams.Split2;
-                splitContainer3.SplitterDistance = settings.formParams.Split3;
+                try
+                {
+                    splitContainer1.SplitterDistance = settings.formParams.Split1;
+                    splitContainer2.SplitterDistance = settings.formParams.Split2;
+                    splitContainer3.SplitterDistance = settings.formParams.Split3;
+                }
+                catch (Exception)
+                {
+                    AddtoLog(string.Format("Splitter Distance Error: Splitter1={0}, Splitter2={1}, Splitter3={3}", 
+                        settings.formParams.Split1, settings.formParams.Split2, settings.formParams.Split3));
+                }
+
             }
 
             if (!String.IsNullOrEmpty(settings.Language))
@@ -1229,17 +1238,7 @@ namespace SCMBot
                 return;
             }
 
-            if (steam_srch.isRemove)
-            {
-                StatusLabel1.Text = Strings.RemSellStat;
-            }
-            else
-            {
-                StatusLabel1.Text = Strings.AddSell;
-            }
 
-            ProgressBar1.Value = 0;
-            ProgressBar1.Visible = true;
             steam_srch.invApp = comboBox3.SelectedIndex;
             steam_srch.toSellList.Clear();
 
@@ -1256,9 +1255,27 @@ namespace SCMBot
                 }
             }
 
-            steam_srch.sellDelay = Convert.ToInt32(sellDelayBox.Text);
-            steam_srch.isDelayRand = randomDelayBox.Checked;
-            steam_srch.ItemSell();
+            if (steam_srch.toSellList.Count != 0)
+            {
+
+                if (steam_srch.isRemove)
+                {
+                    StatusLabel1.Text = Strings.RemSellStat;
+                }
+                else
+                {
+                    StatusLabel1.Text = Strings.AddSell;
+                }
+
+                ProgressBar1.Value = 0;
+                ProgressBar1.Visible = true;
+
+                steam_srch.sellDelay = Convert.ToInt32(sellDelayBox.Text);
+                steam_srch.isDelayRand = randomDelayBox.Checked;
+                steam_srch.ItemSell();
+            }
+            else
+                MessageBox.Show("Set prices first!", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   
         }
 

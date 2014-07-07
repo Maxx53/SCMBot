@@ -575,7 +575,7 @@ namespace SCMBot
             {
                 lotList.Clear();
 
-                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full); ;
+                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full, ismain);
 
                 if (ret != 7)
                 {
@@ -623,7 +623,7 @@ namespace SCMBot
 
                 if (BuyNow)
                 {
-                    ParseLotList(SendGet(url, cookieCont, false, true), lotList, currencies, false);
+                    ParseLotList(SendGet(url, cookieCont, false, true), lotList, currencies, false, true);
 
                     if (lotList.Count == 0)
                     {

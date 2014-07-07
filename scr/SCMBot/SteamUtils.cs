@@ -761,14 +761,13 @@ namespace SCMBot
             return false;
         }
 
-        public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
+        public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full, bool ismain)
         {
             lst.Clear();
 
             //Smart ass!
-            if (Main.isHTML)
+            if (Main.isHTML && ismain)
             {
-
                 string jsonAssets = Regex.Match(content, @"(?<=g_rgAssets \= )(.*)(?=;
 	var g_rgCurrency)", RegexOptions.Singleline).ToString();
                 string jsonListInfo = Regex.Match(content, @"(?<=g_rgListingInfo \= )(.*)(?=;
@@ -866,94 +865,6 @@ namespace SCMBot
         }
 
 
-
-        public static byte ParseLotListHTMLxxxx(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full)
-        {
-            lst.Clear();
-
-            if (content == string.Empty)
-            {
-                //Content empty
-                return 0;
-            }
-            else if (content == "403")
-            {
-                //403 Forbidden
-                return 5;
-            }
-
-            try
-            {
-
-                MatchCollection matches = Regex.Matches(content, "BuyMarketListing(.*?)market_listing_game_name", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
-
-                if (matches.Count != 0)
-                {
-                    //Парсим все лоты (авось пригодится в будущем), но использовать будем пока только первый.
-                    foreach (Match match in matches)
-                    {
-                        string currmatch = match.Groups[1].Value;
-
-                        string itName = Regex.Match(currmatch, "(?<=;\">)(.*)(?=</span>)").ToString();
-
-                        if (full)
-                            itName = Regex.Match(itName, "(?<=\">)(.*)(?=</a>)").ToString();
-
-                        //Чистим результат от тегов
-                        //Оставляем цифры, пробелы, точки и запятые, разделяющие цены
-                        currmatch = Regex.Replace(currmatch, "<[^>]+>", string.Empty).Trim();
-
-                        //Удаляем ascii кода нашей текущей валюты
-                        currmatch = Regex.Replace(currmatch, currLst[currLst.Current].AsciiName, string.Empty);
-
-                        currmatch = Regex.Replace(currmatch, @"[^\.\,\d\ ]+", string.Empty);
-
-                        //Отделяем номер лота
-                        string sellid = currmatch.Substring(2, 19);
-
-                        //Отделяем тип приложения
-                        string appDirty = currmatch.Substring(23, 30);
-
-                        string[] app = Regex.Split(appDirty, ", ");
-                        var appRes = new AppType(app[0], app[1]);
-
-                        //Отделяем строку, содержащую цены
-                        string amount = currmatch.Substring(43, currmatch.Length - 43).Trim();
-
-                        string[] parts = Regex.Split(amount, " +");
-
-                        MessageBox.Show(parts[0]);
-
-                        int _price = Convert.ToInt32((parts[0]));
-                        int _subtot = Convert.ToInt32((parts[1]));
-
-                        //Заполняем список лотов
-                       // lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
-                        lst.Add(new ScanItem(sellid, _price, _subtot, appRes, itName));
-
-                        //Remove this to parse all 10 items
-                        if (!full)
-                            return 7;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                //Parsing fail
-                Main.AddtoLog("Err Source: " + e.Message);
-                return 3;
-            }
-
-            if (lst.Count == 0)
-                return 0;
-            else
-                //Fine!
-                return 7;
-
-        }
-
-
-
         public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)
         {
             lst.Clear();
@@ -1007,9 +918,6 @@ namespace SCMBot
                             string ItemGame = Regex.Match(currmatch, "(?<=game_name\">)(.*)(?=</span>)").ToString();
 
                             string ItemImg = Regex.Match(currmatch, "(?<=net/economy/image/)(.*)(/62fx62f)", RegexOptions.Singleline).ToString();
-
-
-
 
                             //Заполняем список 
                             lst.Add(new SearchItem(ItemName, ItemGame, ItemUrl, ItemQuan, ItemPrice, ItemImg));
