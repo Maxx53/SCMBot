@@ -216,13 +216,16 @@ namespace SCMBot.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int numThreads {
-            get {
-                return ((int)(this["numThreads"]));
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int reqDelay
+        {
+            get
+            {
+                return ((int)(this["reqDelay"]));
             }
-            set {
-                this["numThreads"] = value;
+            set
+            {
+                this["reqDelay"] = value;
             }
         }
 

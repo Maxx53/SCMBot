@@ -704,9 +704,10 @@ namespace SCMBot
 
                 try
                 {
-                    if (fillLotList(recentMarket + Main.jsonAddon, true, false))
+                    //Recent no-caching
+                    //Thanks to https://github.com/kitzik
+                    if (fillLotList(string.Format("{0}{1}&nocache={2}", recentMarket, Main.jsonAddon, DateTime.Now.Ticks.ToString()), true, false))
                     {
-
                         for (int i = 0; i < lotList.Count; i++)
                         {
                             for (int k = 0; k < recentInputList.Count; k++)

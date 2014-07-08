@@ -61,6 +61,7 @@ namespace SCMBot
         public static int walletVal = 0;
         public static int stopfundsVal = 0;
         public static string jsonAddon;
+        public static int ReqDelay = 100;
 
         public Main()
         {
@@ -192,7 +193,6 @@ namespace SCMBot
             settingsForm.checkBox2.Checked = settings.loginOnstart;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
             settingsForm.searchResBox.Text = settings.searchRes;
-            settingsForm.numThreadsBox.Value = settings.numThreads;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
             settingsForm.actualBox.Checked = settings.loadActual;
 
@@ -213,6 +213,8 @@ namespace SCMBot
 
             comboBox3.SelectedIndex = settings.InvType;
             sellDelayBox.Text = settings.sellDelay.ToString();
+            settingsForm.reqDelayBox.Text = settings.reqDelay.ToString();
+            ReqDelay = settings.reqDelay;
 
             settingsForm.hideInventBox.Checked = settings.hideInvent;
             splitContainer1.Panel2Collapsed = settings.hideInvent;
@@ -273,10 +275,7 @@ namespace SCMBot
                 if (reqPool != null)
                     reqPool.Dispose();
 
-                int num = settings.numThreads;
-                if (num <= 0)
-                    num = 5;
-                 reqPool = new Semaphore(num, num);
+                 reqPool = new Semaphore(1, 1);
             }
         }
 
@@ -303,11 +302,12 @@ namespace SCMBot
             settings.loginOnstart = settingsForm.checkBox2.Checked;
             settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
             settings.hideInvent = settingsForm.hideInventBox.Checked;
-            settings.numThreads = (int)settingsForm.numThreadsBox.Value;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
             settings.resellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
            
             settings.sellDelay = Convert.ToInt32(sellDelayBox.Text);
+            settings.reqDelay = Convert.ToInt32(settingsForm.reqDelayBox.Text);
+            ReqDelay = settings.reqDelay;
 
             isLog = settingsForm.keepLogBox.Checked;
             settings.keepLog = isLog;

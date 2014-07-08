@@ -53,9 +53,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.numThreadsBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
@@ -67,8 +64,11 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.keepLogBox = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.reqDelayBox = new System.Windows.Forms.MaskedTextBox();
+            this.randomDelayBox = new System.Windows.Forms.CheckBox();
             this.scanHtlmBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -131,7 +131,6 @@
             // 
             // comboBox2
             // 
-            resources.ApplyResources(this.comboBox2, "comboBox2");
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
@@ -160,6 +159,7 @@
             resources.GetString("comboBox2.Items22"),
             resources.GetString("comboBox2.Items23"),
             resources.GetString("comboBox2.Items24")});
+            resources.ApplyResources(this.comboBox2, "comboBox2");
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -204,9 +204,9 @@
             // 
             // intLangComboBox
             // 
-            resources.ApplyResources(this.intLangComboBox, "intLangComboBox");
             this.intLangComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.intLangComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.intLangComboBox, "intLangComboBox");
             this.intLangComboBox.Name = "intLangComboBox";
             // 
             // logCountBox
@@ -236,28 +236,13 @@
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
-            // 
-            // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
-            // numThreadsBox
-            // 
-            resources.ApplyResources(this.numThreadsBox, "numThreadsBox");
-            this.numThreadsBox.Name = "numThreadsBox";
-            // 
             // tabControl1
             // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -266,13 +251,13 @@
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.checkBox2);
             this.tabPage1.Controls.Add(this.loginBox);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.passwordBox);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -285,7 +270,6 @@
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.FeeCheckBox);
             this.tabPage2.Controls.Add(this.stopFundsBox);
             this.tabPage2.Controls.Add(this.label15);
@@ -296,6 +280,7 @@
             this.tabPage2.Controls.Add(this.comboBox2);
             this.tabPage2.Controls.Add(this.label13);
             this.tabPage2.Controls.Add(this.ignoreBox);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
@@ -323,7 +308,6 @@
             // 
             // tabPage3
             // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.keepLogBox);
             this.tabPage3.Controls.Add(this.playSndCheckBox);
             this.tabPage3.Controls.Add(this.label1);
@@ -336,6 +320,7 @@
             this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.intLangComboBox);
             this.tabPage3.Controls.Add(this.label5);
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
@@ -347,13 +332,39 @@
             // 
             // tabPage4
             // 
-            resources.ApplyResources(this.tabPage4, "tabPage4");
-            this.tabPage4.Controls.Add(this.scanHtlmBox);
-            this.tabPage4.Controls.Add(this.label10);
             this.tabPage4.Controls.Add(this.label9);
-            this.tabPage4.Controls.Add(this.numThreadsBox);
+            this.tabPage4.Controls.Add(this.label17);
+            this.tabPage4.Controls.Add(this.reqDelayBox);
+            this.tabPage4.Controls.Add(this.randomDelayBox);
+            this.tabPage4.Controls.Add(this.scanHtlmBox);
+            resources.ApplyResources(this.tabPage4, "tabPage4");
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
+            // 
+            // reqDelayBox
+            // 
+            resources.ApplyResources(this.reqDelayBox, "reqDelayBox");
+            this.reqDelayBox.Name = "reqDelayBox";
+            this.reqDelayBox.TabStop = false;
+            // 
+            // randomDelayBox
+            // 
+            resources.ApplyResources(this.randomDelayBox, "randomDelayBox");
+            this.randomDelayBox.Checked = true;
+            this.randomDelayBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.randomDelayBox.Name = "randomDelayBox";
+            this.randomDelayBox.TabStop = false;
+            this.randomDelayBox.UseVisualStyleBackColor = true;
             // 
             // scanHtlmBox
             // 
@@ -373,7 +384,6 @@
             this.MinimizeBox = false;
             this.Name = "SettingsFrm";
             this.Load += new System.EventHandler(this.SettingsFrm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numThreadsBox)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -406,9 +416,6 @@
         public System.Windows.Forms.ComboBox intLangComboBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        public System.Windows.Forms.NumericUpDown numThreadsBox;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         public System.Windows.Forms.MaskedTextBox searchResBox;
         private System.Windows.Forms.Label label12;
@@ -429,5 +436,9 @@
         private System.Windows.Forms.Label label15;
         public System.Windows.Forms.CheckBox FeeCheckBox;
         public System.Windows.Forms.CheckBox scanHtlmBox;
+        private System.Windows.Forms.CheckBox randomDelayBox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label9;
+        public System.Windows.Forms.MaskedTextBox reqDelayBox;
     }
 }

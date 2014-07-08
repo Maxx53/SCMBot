@@ -494,7 +494,7 @@ namespace SCMBot
             doMessage(flag.StripImg, 0, string.Empty, true);
             var res = Main.SendPostRequest(data, url, refer, cookieCont, tolog);
             doMessage(flag.StripImg, 1, string.Empty, true);
-            
+
             Main.reqPool.Release();
 
             return res;
@@ -510,6 +510,8 @@ namespace SCMBot
             doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
+            if (Main.ReqDelay > 0)
+                Main.reqPool.WaitOne(Main.ReqDelay);
 
             Main.reqPool.Release();
 
@@ -763,6 +765,7 @@ namespace SCMBot
 
         public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full, bool ismain)
         {
+
             lst.Clear();
 
             //Smart ass!
@@ -770,6 +773,10 @@ namespace SCMBot
             {
                 string jsonAssets = Regex.Match(content, @"(?<=g_rgAssets \= )(.*)(?=;
 	var g_rgCurrency)", RegexOptions.Singleline).ToString();
+
+                if (jsonAssets == string.Empty)
+                    return 6;
+
                 string jsonListInfo = Regex.Match(content, @"(?<=g_rgListingInfo \= )(.*)(?=;
 	var g_plotPriceHistory)", RegexOptions.Singleline).ToString();
 

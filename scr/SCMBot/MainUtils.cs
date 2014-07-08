@@ -590,6 +590,8 @@ namespace SCMBot
                     break;
                 case "5": mess = "Too much requests per second";
                     break;
+                case "6": mess = "Item is not supported in html source!";
+                    break;
                 default: mess = "Unknown error";
                     break;
             }
@@ -649,6 +651,23 @@ namespace SCMBot
             }
         }
 
+
+
+        public static byte[] GetHash(string inputString)
+        {
+            HashAlgorithm algorithm = MD5.Create();  //or use SHA1.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        public static string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
         public static void StartCmdLine(string process, string param, bool wait)
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();
@@ -659,6 +678,7 @@ namespace SCMBot
         }
 
     }
+
 
 
     public class ProxyItem
