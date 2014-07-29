@@ -316,21 +316,6 @@ namespace SCMBot.Properties {
             }
         }
 
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("true")]
-        public bool withFee
-        {
-            get
-            {
-                return ((bool)(this["withFee"]));
-            }
-            set
-            {
-                this["withFee"] = value;
-            }
-        }
 
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]

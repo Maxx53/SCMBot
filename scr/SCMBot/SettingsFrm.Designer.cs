@@ -57,7 +57,6 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.FeeCheckBox = new System.Windows.Forms.CheckBox();
             this.stopFundsBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.actualBox = new System.Windows.Forms.CheckBox();
@@ -270,7 +269,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.FeeCheckBox);
             this.tabPage2.Controls.Add(this.stopFundsBox);
             this.tabPage2.Controls.Add(this.label15);
             this.tabPage2.Controls.Add(this.actualBox);
@@ -283,12 +281,6 @@
             resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // FeeCheckBox
-            // 
-            resources.ApplyResources(this.FeeCheckBox, "FeeCheckBox");
-            this.FeeCheckBox.Name = "FeeCheckBox";
-            this.FeeCheckBox.UseVisualStyleBackColor = true;
             // 
             // stopFundsBox
             // 
@@ -434,7 +426,6 @@
         public System.Windows.Forms.CheckBox keepLogBox;
         public System.Windows.Forms.TextBox stopFundsBox;
         private System.Windows.Forms.Label label15;
-        public System.Windows.Forms.CheckBox FeeCheckBox;
         public System.Windows.Forms.CheckBox scanHtlmBox;
         private System.Windows.Forms.CheckBox randomDelayBox;
         private System.Windows.Forms.Label label17;

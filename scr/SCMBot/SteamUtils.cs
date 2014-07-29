@@ -1012,17 +1012,16 @@ namespace SCMBot
 
                     string appidRaw = Regex.Match(currmatch, "(?<=market_listing_item_name_link)(.*)(?=</a></span>)").ToString();
                     string pageLnk = Regex.Match(appidRaw, "(?<=href=\")(.*)(?=\">)").ToString();
-               
-                    string captainPrice = Regex.Match(currmatch, "(?<=market_listing_price\">)(.*)(?=			</span>)", RegexOptions.Singleline).ToString().Trim();
 
-                    captainPrice = Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty);
-
+                    string captainPrice = Regex.Match(currmatch, "(?<=This is the price the buyer pays.\">)(.*)(?=This is how much you will receive)", RegexOptions.Singleline).ToString().Trim();
+                   
+                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty));
 
                     string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
 
-                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, GetSweetPrice(captainPrice), ImgLink, string.Empty, true, true, pageLnk));
+                    inventList.Add(new InventItem(listId, LinkName[1], ItemType, captainPrice, ImgLink, string.Empty, true, true, pageLnk));
 
                 }
 

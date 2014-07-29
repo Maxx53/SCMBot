@@ -279,7 +279,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;resDelayBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -310,7 +310,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +340,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="ignoreBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +367,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;ignoreBox.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -394,7 +394,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="comboBox2.Items" xml:space="preserve">
     <value>russian</value>
@@ -490,7 +490,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>233, 208</value>
@@ -840,6 +840,18 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 90</value>
+  </data>
+  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 25</value>
+  </data>
+  <data name="button2.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>Import cookie</value>
+  </data>
   <data name="&gt;&gt;button2.Name" xml:space="preserve">
     <value>button2</value>
   </data>
@@ -879,17 +891,14 @@
   <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;FeeCheckBox.Name" xml:space="preserve">
-    <value>FeeCheckBox</value>
+  <data name="stopFundsBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>136, 121</value>
   </data>
-  <data name="&gt;&gt;FeeCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="stopFundsBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 20</value>
   </data>
-  <data name="&gt;&gt;FeeCheckBox.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;FeeCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="stopFundsBox.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
   </data>
   <data name="&gt;&gt;stopFundsBox.Name" xml:space="preserve">
     <value>stopFundsBox</value>
@@ -901,7 +910,25 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;stopFundsBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
+  </data>
+  <data name="label15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 124</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 13</value>
+  </data>
+  <data name="label15.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>Stop Buying Items at:</value>
   </data>
   <data name="&gt;&gt;label15.Name" xml:space="preserve">
     <value>label15</value>
@@ -913,7 +940,22 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
+  </data>
+  <data name="actualBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="actualBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 98</value>
+  </data>
+  <data name="actualBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 17</value>
+  </data>
+  <data name="actualBox.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="actualBox.Text" xml:space="preserve">
+    <value>Load actual price</value>
   </data>
   <data name="&gt;&gt;actualBox.Name" xml:space="preserve">
     <value>actualBox</value>
@@ -925,7 +967,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;actualBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 24</value>
@@ -953,6 +995,21 @@
   </data>
   <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="keepLogBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="keepLogBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>109, 118</value>
+  </data>
+  <data name="keepLogBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 17</value>
+  </data>
+  <data name="keepLogBox.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="keepLogBox.Text" xml:space="preserve">
+    <value>Keep Log</value>
   </data>
   <data name="&gt;&gt;keepLogBox.Name" xml:space="preserve">
     <value>keepLogBox</value>
@@ -1183,162 +1240,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 90</value>
-  </data>
-  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
-  </data>
-  <data name="button2.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="button2.Text" xml:space="preserve">
-    <value>Import cookie</value>
-  </data>
-  <data name="&gt;&gt;button2.Name" xml:space="preserve">
-    <value>button2</value>
-  </data>
-  <data name="&gt;&gt;button2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button2.Parent" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="FeeCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="FeeCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 98</value>
-  </data>
-  <data name="FeeCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 17</value>
-  </data>
-  <data name="FeeCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>72</value>
-  </data>
-  <data name="FeeCheckBox.Text" xml:space="preserve">
-    <value>Sell by your price with fee</value>
-  </data>
-  <data name="&gt;&gt;FeeCheckBox.Name" xml:space="preserve">
-    <value>FeeCheckBox</value>
-  </data>
-  <data name="&gt;&gt;FeeCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;FeeCheckBox.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;FeeCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="stopFundsBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 121</value>
-  </data>
-  <data name="stopFundsBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 20</value>
-  </data>
-  <data name="stopFundsBox.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
-  </data>
-  <data name="&gt;&gt;stopFundsBox.Name" xml:space="preserve">
-    <value>stopFundsBox</value>
-  </data>
-  <data name="&gt;&gt;stopFundsBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;stopFundsBox.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;stopFundsBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label15.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 124</value>
-  </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 13</value>
-  </data>
-  <data name="label15.TabIndex" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>Stop Buying Items at:</value>
-  </data>
-  <data name="&gt;&gt;label15.Name" xml:space="preserve">
-    <value>label15</value>
-  </data>
-  <data name="&gt;&gt;label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="actualBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="actualBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 98</value>
-  </data>
-  <data name="actualBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 17</value>
-  </data>
-  <data name="actualBox.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
-  </data>
-  <data name="actualBox.Text" xml:space="preserve">
-    <value>Load actual price</value>
-  </data>
-  <data name="&gt;&gt;actualBox.Name" xml:space="preserve">
-    <value>actualBox</value>
-  </data>
-  <data name="&gt;&gt;actualBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;actualBox.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;actualBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="keepLogBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="keepLogBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 118</value>
-  </data>
-  <data name="keepLogBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 17</value>
-  </data>
-  <data name="keepLogBox.TabIndex" type="System.Int32, mscorlib">
-    <value>66</value>
-  </data>
-  <data name="keepLogBox.Text" xml:space="preserve">
-    <value>Keep Log</value>
-  </data>
-  <data name="&gt;&gt;keepLogBox.Name" xml:space="preserve">
-    <value>keepLogBox</value>
-  </data>
-  <data name="&gt;&gt;keepLogBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;keepLogBox.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;keepLogBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

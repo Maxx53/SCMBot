@@ -202,8 +202,6 @@ namespace SCMBot
             settingsForm.stopFundsBox.Text = MainScanItem.LogItem.DoFracture(settings.StopFunds.ToString());
             stopfundsVal = settings.StopFunds;
 
-            settingsForm.FeeCheckBox.Checked = settings.withFee;
-
             settingsForm.playSndCheckBox.Checked = settings.playSnd;
 
             settingsForm.resDelayBox.Text = settings.resellDelay.ToString();
@@ -329,8 +327,6 @@ namespace SCMBot
 
             settings.StopFunds = Convert.ToInt32(SteamSite.GetSweetPrice(settingsForm.stopFundsBox.Text));
             stopfundsVal = settings.StopFunds;
-
-            settings.withFee = settingsForm.FeeCheckBox.Checked;
 
             settings.Language = settingsForm.intLangComboBox.SelectedItem.ToString();
 
@@ -1211,12 +1207,26 @@ namespace SCMBot
                 if (comboBox3.SelectedIndex == 8)
                 {
                     steam_srch.LoadOnSale = true;
+                    SellButton.Text = Strings.RemSell;
+                    steam_srch.isRemove = true;
+                    textBox1.Clear();
+                    textBox3.Clear();
+                    textBox1.ReadOnly = true;
+                    textBox3.ReadOnly = true;
+                    button2.Enabled = false;
                 }
                 else
                 {
                     steam_srch.LoadOnSale = false;
                     steam_srch.invApp = comboBox3.SelectedIndex;
+                    SellButton.Text = Strings.Sell;
+                    steam_srch.isRemove = false;
+                    textBox1.ReadOnly = false;
+                    textBox3.ReadOnly = false;
                 }
+
+                SellButton.Enabled = false;
+                InventoryList.Items.Clear();
                 steam_srch.loadInventory();
 
             } else
@@ -1247,11 +1257,7 @@ namespace SCMBot
                 var ouritem = filteredInvList[InventoryList.CheckedItems[i].Index];
                 if ((ouritem.Marketable) && (ouritem.Price != "0"))
                 {
-                    string truePrice = ouritem.Price;
-                    
-                    if (settings.withFee)
-                        truePrice = CalcWithFee(truePrice);
-                    steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, truePrice));
+                    steam_srch.toSellList.Add(new SteamSite.ItemToSell(ouritem.AssetId, CalcWithFee(ouritem.Price)));
                 }
             }
 
@@ -1445,22 +1451,7 @@ namespace SCMBot
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox3.SelectedIndex == 8)
-            {
-                SellButton.Text = Strings.RemSell;
-                steam_srch.isRemove = true;
-                textBox1.Clear();
-                textBox1.ReadOnly = true;
-                button2.Enabled = false;
-            }
-            else
-            {
-                SellButton.Text = Strings.Sell;
-                steam_srch.isRemove = false;
-                textBox1.ReadOnly = false;
-            }
 
-            SellButton.Enabled = false;
 
         }
 
