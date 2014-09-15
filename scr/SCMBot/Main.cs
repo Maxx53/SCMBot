@@ -1060,7 +1060,8 @@ namespace SCMBot
             var lstItem = new ListViewItem(row);
             recentListView.Items.Add(lstItem);
 
-            var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, steam_srch.mainDelay, 0, false, 0, ourItem.StartPrice, Stat);
+            Int32 delayMax = Convert.ToInt32(delayMaxTextBox.Text);
+            var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delayMax > 0 && delayMax > steam_srch.mainDelay ? delayMax : steam_srch.mainDelay, 0, false, 0, ourItem.StartPrice, Stat);
             steam_srch.recentInputList.Add(ourTab);
 
             setStatImg(recentListView.Items.Count - 1, (status)Convert.ToByte(!isScanValid(ourTab, false)), recentListView);
@@ -2056,8 +2057,8 @@ namespace SCMBot
                         logListBox.DataSource = Item.LogCont;
                         logListBox.DisplayMember = "Text";
 
-                        delayTextBox.DataBindings.Clear();
-                        delayTextBox.DataBindings.Add("Text", ourItem, "Delay");
+                        delayMinTextBox.DataBindings.Clear();
+                        delayMinTextBox.DataBindings.Add("Text", ourItem, "Delay");
 
                         setButtText(Item.Steam.scanInput.StatId);
 
@@ -2069,8 +2070,8 @@ namespace SCMBot
                         logListBox.DataSource = steam_srch.logContainer;
                         logListBox.DisplayMember = "Text";
 
-                        delayTextBox.DataBindings.Clear();
-                        delayTextBox.DataBindings.Add("Text", steam_srch, "mainDelay");
+                        delayMinTextBox.DataBindings.Clear();
+                        delayMinTextBox.DataBindings.Add("Text", steam_srch, "mainDelay");
 
                         setButtText(ourItem.StatId);
                     }
