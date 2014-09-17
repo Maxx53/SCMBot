@@ -161,7 +161,7 @@ namespace SCMBot
         {
             public CurrInfoLst()
             {
-                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL, 11 for MYR
+                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL, 11 for MYR, 13 for SGD, 14 for THB
 
                 this.Add(new CurrencyInfo("&#36;", "$", "1"));
                 this.Add(new CurrencyInfo("p&#1091;&#1073;.", "руб.", "5"));
@@ -172,6 +172,11 @@ namespace SCMBot
                 this.Add(new CurrencyInfo("&#82;&#36;", "R$", "7"));
                 //Fixed, thanks to Malaysian guy.
                 this.Add(new CurrencyInfo("RM", "RM", "11"));
+                //Fixed, thanks to Singaporian guy.
+                this.Add(new CurrencyInfo("S&#36;", "S$ ", "13"));
+                //Fixed, thanks to Thai guy.
+                this.Add(new CurrencyInfo("#x0e3f;", "฿", "14"));
+               
                 this.NotSet = true;
                 this.Current = 0;
             }
@@ -655,7 +660,7 @@ namespace SCMBot
             string markpage = SendGet(_market, cock, false, true);
 
             //For testring purposes!
-            //string markpage = System.IO.File.ReadAllText(@"C:\myr.htm");
+            //string markpage = System.IO.File.ReadAllText(@"C:\sing.htm");
 
             //Fix to getting name regex
             string parseName = Regex.Match(markpage, "(?<=buynow_dialog_myaccountname\">)(.*)(?=</span>)").ToString().Trim();
