@@ -161,7 +161,7 @@ namespace SCMBot
         {
             public CurrInfoLst()
             {
-                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL
+                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL, 11 for MYR
 
                 this.Add(new CurrencyInfo("&#36;", "$", "1"));
                 this.Add(new CurrencyInfo("p&#1091;&#1073;.", "руб.", "5"));
@@ -170,6 +170,8 @@ namespace SCMBot
                 
                 //Fixed, thanks to Brasilian guy.
                 this.Add(new CurrencyInfo("&#82;&#36;", "R$", "7"));
+                //Fixed, thanks to Malaysian guy.
+                this.Add(new CurrencyInfo("RM", "RM", "11"));
                 this.NotSet = true;
                 this.Current = 0;
             }
@@ -649,10 +651,11 @@ namespace SCMBot
         public StrParam GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
         {
             Main.AddtoLog("Getting account name and balance...");
+            
             string markpage = SendGet(_market, cock, false, true);
 
             //For testring purposes!
-            //string markpage = File.ReadAllText(@"C:\dollars.html");
+            //string markpage = System.IO.File.ReadAllText(@"C:\myr.htm");
 
             //Fix to getting name regex
             string parseName = Regex.Match(markpage, "(?<=buynow_dialog_myaccountname\">)(.*)(?=</span>)").ToString().Trim();
@@ -675,6 +678,7 @@ namespace SCMBot
             string strlang = Regex.Match(markpage, "(?<=g_strLanguage = \")(.*)(?=\";)").ToString();
 
             currLst.GetType(parseAmount);
+
             parseAmount = currLst.ReplaceAscii(parseAmount);
             
             //?country=RU&language=russian&currency=5&count=20
@@ -1013,10 +1017,13 @@ namespace SCMBot
                     string appidRaw = Regex.Match(currmatch, "(?<=market_listing_item_name_link)(.*)(?=</a></span>)").ToString();
                     string pageLnk = Regex.Match(appidRaw, "(?<=href=\")(.*)(?=\">)").ToString();
 
-                    string captainPrice = Regex.Match(currmatch, "(?<=This is the price the buyer pays.\">)(.*)(?=This is how much you will receive)", RegexOptions.Singleline).ToString().Trim();
-                   
-                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty));
+                    //phuckin' shit
+                    string captainPrice = Regex.Match(currmatch, @"(?<=>
+						)(.*)(?=					</span>
+					<br>)", RegexOptions.Singleline).ToString();
 
+                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty).Trim());
+                   
                     string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
                    
                     string ItemType = Regex.Match(currmatch, "(?<=_listing_game_name\">)(.*)(?=</span>)").ToString();
@@ -1026,9 +1033,9 @@ namespace SCMBot
                 }
 
             }
-            else
+          //  else
                 //TODO. Add correct error processing
-            MessageBox.Show(Strings.OnSaleErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // MessageBox.Show(Strings.OnSaleErr, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return matches.Count;
         }
