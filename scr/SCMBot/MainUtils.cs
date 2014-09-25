@@ -592,6 +592,8 @@ namespace SCMBot
                     break;
                 case "6": mess = "Item is not supported in html source!";
                     break;
+                case "8": mess = "Move along...";
+                    break;
                 default: mess = "Unknown error";
                     break;
             }

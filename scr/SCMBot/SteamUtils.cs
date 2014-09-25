@@ -804,6 +804,11 @@ namespace SCMBot
                     //403 Forbidden
                     return 5;
                 }
+                else if (content.Length < 40)
+                {
+                    //Move along
+                    return 8;
+                }
                 else if (content[0] != '{')
                 {
                     //Json is not valid
