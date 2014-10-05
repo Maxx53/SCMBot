@@ -64,7 +64,7 @@ namespace SCMBot
     public partial class Main
     {
         const string logPath = "logfile.txt";
-        const string proxyPath = "proxy.txt";
+        const string hostsPath = "hosts.txt";
 
         const string appName = "SCM Bot alpha";
         const string notifTxt = "{0}\r\n{1} {2}";
@@ -419,17 +419,17 @@ namespace SCMBot
 
         public static int GetFreeIndex()
         {
-            int min = proxyList[0].WorkLoad;
+            int min = hostList[0].WorkLoad;
             int minIndex = 0;
             bool used = false;
 
-            for (int i = 0; i < proxyList.Count; i++)
+            for (int i = 0; i < hostList.Count; i++)
             {
-                if (proxyList[i].WorkLoad < min)
+                if (hostList[i].WorkLoad < min)
                 {
-                    if (proxyList[i].InUsing == false)
+                    if (hostList[i].InUsing == false)
                     {
-                        min = proxyList[i].WorkLoad;
+                        min = hostList[i].WorkLoad;
                         minIndex = i;
                         used = false;
                     }
@@ -443,21 +443,36 @@ namespace SCMBot
         }
 
 
-        public static string GetRequest(string url, CookieContainer cookie, bool UseProxy, bool keepAlive)
+        public static string GetRequest(string url, CookieContainer cookie, bool UseHost, bool keepAlive)
         {
                 string content = string.Empty;
-                int proxyNum = 0;
+                int hostNum = 0;
 
-                bool proxyUsed = false;
+                bool hostUsed = false;
 
                 try
                 {
+
+                    if (UseHost && (hostList.Count != 0))
+                    {
+                        hostNum = GetFreeIndex();
+                        if (hostNum != -1)
+                        {
+                            hostList[hostNum].InUsing = true;
+                            hostList[hostNum].WorkLoad++;
+                            url = url.Replace(SteamSite._host, hostList[hostNum].Host);
+                            hostUsed = true;
+                        }
+                    }
+
+
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = "GET";
 
                     //New
                     request.Proxy = null;
                     request.Timeout = 30000;
+                    request.Host = SteamSite._host;
                 
                     //KeepAlive is True by default
                     //request.KeepAlive = keepAlive;
@@ -467,20 +482,6 @@ namespace SCMBot
 
                     request.Accept = "application/json";
                     request.CookieContainer = cookie;
-
-
-                    if (UseProxy && (proxyList.Count != 0))
-                    {
-                        proxyNum = GetFreeIndex();
-                        if (proxyNum != -1)
-                        {
-                            proxyList[proxyNum].InUsing = true;
-                            proxyList[proxyNum].WorkLoad++;
-                            request.Proxy = proxyList[proxyNum].Proxy;
-                            proxyUsed = true;
-                        }
-                    }
-
 
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                     var stream = new StreamReader(response.GetResponseStream());
@@ -514,10 +515,10 @@ namespace SCMBot
 
                 }
 
-                //Free proxy
-                if (UseProxy && (proxyList.Count != 0) && proxyUsed)
+                //Free host
+                if (UseHost && (hostList.Count != 0) && hostUsed)
                 {
-                    proxyList[proxyNum].InUsing = false;
+                    hostList[hostNum].InUsing = false;
                 }
 
                 return content;
@@ -683,28 +684,28 @@ namespace SCMBot
 
 
 
-    public class ProxyItem
+    public class HostItem
     {
-        public ProxyItem(WebProxy proxy, bool inUsing, int workLoad)
+        public HostItem(string host, bool inUsing, int workLoad)
         {
-            this.Proxy = proxy;
+            this.Host = host;
             this.InUsing = inUsing;
             this.WorkLoad = workLoad;
         }
 
-        public WebProxy Proxy { set; get; }
+        public string Host { set; get; }
         public bool InUsing { set; get; }
         public int WorkLoad { set; get; }
     }
 
 
-    public class ProxyList : List<ProxyItem>
+    public class HostList : List<HostItem>
     {
-        public void Add(string ProxyStr)
+        public void Add(string HostStr)
         {
             try
             {
-                this.Add(new ProxyItem(new WebProxy(ProxyStr, false), false, 0));
+                this.Add(new HostItem(HostStr, false, 0));
             }
             catch (Exception)
             {
@@ -824,6 +825,15 @@ namespace SCMBot
             for (int i = 0; i < this.Count; i++)
             {
                 this[i].Steam.scanID = i;
+            }
+
+        }
+
+        public void UpdateCock(CookieContainer cock)
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                this[i].Steam.cookieCont = cock;
             }
 
         }

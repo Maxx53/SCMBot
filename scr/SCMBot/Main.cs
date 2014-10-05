@@ -40,7 +40,7 @@ namespace SCMBot
 
         static public Semaphore reqPool;
 
-        private ScanItemList scanItems = new ScanItemList();
+        public static ScanItemList scanItems = new ScanItemList();
 
         private SettingsFrm settingsForm = new SettingsFrm();
         private ProxyStatsFrm proxyStatForm = new ProxyStatsFrm();
@@ -51,7 +51,7 @@ namespace SCMBot
         private ImageList StatImgLst;
         private List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
 
-        public static ProxyList proxyList = new ProxyList();
+        public static HostList hostList = new HostList();
 
         private Size lastFrmSize;
         private Point lastFrmPos;
@@ -87,6 +87,8 @@ namespace SCMBot
  
         private void Main_Load(object sender, EventArgs e)
         {
+            Application.DoEvents();
+
             settingsForm.intLangComboBox.DataSource = new System.Globalization.CultureInfo[]
             {
               System.Globalization.CultureInfo.GetCultureInfo("ru-RU"),
@@ -102,6 +104,8 @@ namespace SCMBot
 
             if (cook == null)
                 cook =  new CookieContainer();
+
+
 
             steam_srch.cookieCont = cook;
             steam_srch.scanID = 0;
@@ -126,20 +130,20 @@ namespace SCMBot
             saveFileDialog1.InitialDirectory = AppPath;
 
 
-            if (File.Exists(proxyPath))
+            if (File.Exists(hostsPath))
             {
-                var plines = File.ReadAllLines(proxyPath);
+                var plines = File.ReadAllLines(hostsPath);
 
                 for (int i = 0; i < plines.Length; i++)
                 {
-                    string proxyPattern = @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}";
-                    Match match = Regex.Match(plines[i], proxyPattern);
+                    string ipPattern = @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
+                    Match match = Regex.Match(plines[i], ipPattern);
                     if (match.Success)
                     {
-                        proxyList.Add(plines[i]);
+                        hostList.Add(plines[i]);
                     }
                 }
-                StatusLabel1.Text = "Proxy servers loaded: " + proxyList.Count.ToString();
+                StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString();
             }
             else
                 usingProxyStatuslStrip.Enabled = false;

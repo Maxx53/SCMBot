@@ -49,10 +49,22 @@ namespace SCMBot
                 var hugeCock = new CookieContainer();
                 hugeCock.Add(site, new Cookie(CookieFrm.sesid, cookieForm.textBox1.Text));
                 hugeCock.Add(site, new Cookie(CookieFrm.webtrade, cookieForm.textBox2.Text));
-                hugeCock.Add(site, new Cookie(CookieFrm.stlog, cookieForm.textBox3.Text));
 
-                Main.steam_srch.cookieCont = hugeCock;
-                Main.SaveBinary(Main.cockPath, Main.steam_srch.cookieCont);
+                var stlogin = cookieForm.textBox3.Text;
+                if (stlogin.Length > 17)
+                {
+                    hugeCock.Add(site, new Cookie(CookieFrm.stlog, stlogin));
+                    hugeCock.Add(site, new Cookie(CookieFrm.machauth + stlogin.Substring(0, 17), cookieForm.textBox4.Text));
+                    hugeCock.Add(site, new Cookie(CookieFrm.sec, cookieForm.textBox5.Text));
+
+                    Main.steam_srch.cookieCont = hugeCock;
+                    Main.scanItems.UpdateCock(hugeCock);
+                    Main.SaveBinary(Main.cockPath, Main.steam_srch.cookieCont);
+                }
+                else
+                {
+                    MessageBox.Show(CookieFrm.stlog + " parameter is not correct!", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
         }

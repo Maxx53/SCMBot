@@ -16,11 +16,11 @@ namespace SCMBot
         {
             listView1.Items.Clear();
 
-            for (int i = 0; i < Main.proxyList.Count; i++)
+            for (int i = 0; i < Main.hostList.Count; i++)
             {
-                string[] row = { Main.proxyList[i].Proxy.Address.Host.ToString(), Main.proxyList[i].InUsing.ToString(), Main.proxyList[i].WorkLoad.ToString() };
+                string[] row = { Main.hostList[i].Host, Main.hostList[i].InUsing.ToString(), Main.hostList[i].WorkLoad.ToString() };
                 var lstItem = new ListViewItem(row);
-                if (Main.proxyList[i].InUsing)
+                if (Main.hostList[i].InUsing)
                     lstItem.BackColor = Color.OrangeRed;
                 else
                     lstItem.BackColor = Color.LightGreen;

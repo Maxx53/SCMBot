@@ -54,7 +54,7 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "ProxyName";
+            this.columnHeader1.Text = "Host IP";
             this.columnHeader1.Width = 130;
             // 
             // columnHeader2
@@ -83,7 +83,7 @@
             this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "ProxyStatsFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ProxyStatsFrm";
+            this.Text = "Using Host Status";
             this.TopMost = true;
             this.Activated += new System.EventHandler(this.ProxyStatsFrm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProxyStatsFrm_FormClosing);

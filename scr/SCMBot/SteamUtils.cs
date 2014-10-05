@@ -15,10 +15,11 @@ namespace SCMBot
     {
         //================================ Consts ======================= Begin! ============================================
 
-        public const string _mainsite = "http://steamcommunity.com/";
-        public const string _mainsiteS = "https://steamcommunity.com/";
+        public const string _host = "steamcommunity.com";
+        public const string _mainsite = "http://" + _host + "/";
+        public const string _mainsiteS = "https://" + _host + "/";
 
-        const string _comlog = "https://steamcommunity.com/login/";
+        const string _comlog = "https://" + _host + "/login/";
         const string _ref = _comlog + "home/?goto=market%2F";
         const string _getrsa = _comlog + "getrsakey/";
         const string _dologin = _comlog + "dologin/";
@@ -37,8 +38,8 @@ namespace SCMBot
         //public const string _search = _market + "search?q=";
 
 
-        const string _capcha = "https://steamcommunity.com/public/captcha.php?gid=";
-        const string _refrcap = "https://steamcommunity.com/actions/RefreshCaptcha/?count=1";
+        const string _capcha = "https://" + _host + "/public/captcha.php?gid=";
+        const string _refrcap = "https://" + _host + "/actions/RefreshCaptcha/?count=1";
 
         const string _lang_chg = _market + "?l=";
 

@@ -573,9 +573,17 @@ namespace SCMBot
             }
             else
             {
+
+            start:
                 lotList.Clear();
 
                 byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full, ismain);
+
+                if (ret == 8)
+                {
+                    doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
+                    goto start;
+                }
 
                 if (ret != 7)
                 {
