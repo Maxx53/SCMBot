@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
@@ -43,7 +44,7 @@ namespace SCMBot
         public static ScanItemList scanItems = new ScanItemList();
 
         private SettingsFrm settingsForm = new SettingsFrm();
-        private ProxyStatsFrm proxyStatForm = new ProxyStatsFrm();
+        private HostStatsFrm proxyStatForm = new HostStatsFrm();
         private GraphFrm graphFrm = new GraphFrm();
 
         Properties.Settings settings = Properties.Settings.Default;
@@ -87,7 +88,6 @@ namespace SCMBot
  
         private void Main_Load(object sender, EventArgs e)
         {
-            Application.DoEvents();
 
             settingsForm.intLangComboBox.DataSource = new System.Globalization.CultureInfo[]
             {
@@ -140,7 +140,11 @@ namespace SCMBot
                     Match match = Regex.Match(plines[i], ipPattern);
                     if (match.Success)
                     {
-                        hostList.Add(plines[i]);
+                        Application.DoEvents();
+                        Ping ping = new Ping();
+                        PingReply pingReply = ping.Send(plines[i]);
+                        hostList.Add(plines[i], pingReply.RoundtripTime.ToString());
+                        StatusLabel1.Text = "Loading hosts... "+i.ToString() + " of " + plines.Length.ToString();
                     }
                 }
                 StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString();
@@ -199,6 +203,9 @@ namespace SCMBot
             settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
             settingsForm.actualBox.Checked = settings.loadActual;
+            settingsForm.listedCountNumeric.Value = settings.listedCount;
+            settingsForm.reqCountNumeric.Value = settings.reqCount;
+
 
             isHTML = settings.scanHTML;
             settingsForm.scanHtlmBox.Checked = settings.scanHTML;
@@ -277,7 +284,10 @@ namespace SCMBot
                 if (reqPool != null)
                     reqPool.Dispose();
 
-                 reqPool = new Semaphore(1, 1);
+                int num = settings.reqCount;
+                if (num <= 0)
+                    num = 5;
+                reqPool = new Semaphore(num, num);
             }
         }
 
@@ -306,7 +316,9 @@ namespace SCMBot
             settings.hideInvent = settingsForm.hideInventBox.Checked;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
             settings.resellDelay = Convert.ToInt32(settingsForm.resDelayBox.Text);
-           
+            settings.listedCount = (int)settingsForm.listedCountNumeric.Value;
+            settings.reqCount = (int)settingsForm.reqCountNumeric.Value;
+
             settings.sellDelay = Convert.ToInt32(sellDelayBox.Text);
             settings.reqDelay = Convert.ToInt32(settingsForm.reqDelayBox.Text);
             ReqDelay = settings.reqDelay;
@@ -1646,6 +1658,7 @@ namespace SCMBot
                             {
                                 steam_srch.recentInputList[indx].StatId = status.InProcess;
                                 setStatImg(indx, steam_srch.recentInputList[indx].StatId, recentListView);
+                                steam_srch.listedThreadCount = settings.listedCount;
                                 steam_srch.ScanNewListed();
                             }
 
@@ -1783,7 +1796,8 @@ namespace SCMBot
 
                     if ((isReady) && (!steam_srch.scaninProg))
                     {
-                           steam_srch.ScanNewListed();
+                        steam_srch.listedThreadCount = settings.listedCount;
+                        steam_srch.ScanNewListed();
                     }
 
                 }

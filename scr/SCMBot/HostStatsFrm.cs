@@ -5,9 +5,9 @@ using System.Threading;
 
 namespace SCMBot
 {
-    public partial class ProxyStatsFrm : Form
+    public partial class HostStatsFrm : Form
     {
-        public ProxyStatsFrm()
+        public HostStatsFrm()
         {
             InitializeComponent();
         }
@@ -18,7 +18,7 @@ namespace SCMBot
 
             for (int i = 0; i < Main.hostList.Count; i++)
             {
-                string[] row = { Main.hostList[i].Host, Main.hostList[i].InUsing.ToString(), Main.hostList[i].WorkLoad.ToString() };
+                string[] row = { Main.hostList[i].Host, Main.hostList[i].InUsing.ToString(), Main.hostList[i].WorkLoad.ToString(), Main.hostList[i].Pingas };
                 var lstItem = new ListViewItem(row);
                 if (Main.hostList[i].InUsing)
                     lstItem.BackColor = Color.OrangeRed;
@@ -32,6 +32,7 @@ namespace SCMBot
         private void ProxyStatsFrm_Load(object sender, EventArgs e)
         {
             ListViewHelper.EnableDoubleBuffer(listView1);
+            this.Icon = Icon.FromHandle(Properties.Resources.host.GetHicon());
         }
 
         private void ProxyStatsFrm_Shown(object sender, EventArgs e)

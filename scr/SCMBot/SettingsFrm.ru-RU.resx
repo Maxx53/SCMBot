@@ -256,23 +256,11 @@
   <data name="label6.Text" xml:space="preserve">
     <value>* Требуется перезапуск программы</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Логин</value>
-  </data>
   <data name="button2.Text" xml:space="preserve">
     <value>Импорт куки</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>Площадка</value>
-  </data>
-  <data name="FeeCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 108</value>
-  </data>
-  <data name="FeeCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 17</value>
-  </data>
-  <data name="FeeCheckBox.Text" xml:space="preserve">
-    <value>Продажа с учетом комиссии</value>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Логин</value>
   </data>
   <data name="stopFundsBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>206, 124</value>
@@ -295,8 +283,8 @@
   <data name="actualBox.Text" xml:space="preserve">
     <value>Загружать актуальную цену</value>
   </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>Интерфейс</value>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Площадка</value>
   </data>
   <data name="keepLogBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 118</value>
@@ -307,8 +295,35 @@
   <data name="keepLogBox.Text" xml:space="preserve">
     <value>Вести лог</value>
   </data>
-  <data name="tabPage4.Text" xml:space="preserve">
-    <value>Сеть</value>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>Интерфейс</value>
+  </data>
+  <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>261, 18</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 13</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>Число потоков (Новые поступления):</value>
+  </data>
+  <data name="listedCountNumeric.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 44</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 18</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Максимум одновременных запрсов:</value>
+  </data>
+  <data name="reqCountNumeric.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 16</value>
+  </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 75</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 13</value>
@@ -317,7 +332,7 @@
     <value>Задержка между запросами: </value>
   </data>
   <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
-    <value>217, 18</value>
+    <value>261, 75</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
     <value>18, 13</value>
@@ -326,22 +341,19 @@
     <value>мс</value>
   </data>
   <data name="reqDelayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 15</value>
+    <value>207, 72</value>
   </data>
-  <data name="randomDelayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 17</value>
-  </data>
-  <data name="randomDelayBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 17</value>
-  </data>
-  <data name="randomDelayBox.Text" xml:space="preserve">
-    <value>Случайно</value>
+  <data name="scanHtlmBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 103</value>
   </data>
   <data name="scanHtlmBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 17</value>
+    <value>301, 17</value>
   </data>
   <data name="scanHtlmBox.Text" xml:space="preserve">
-    <value>Сканировать HTML вместо JSON</value>
+    <value>Сканировать HTML вместо JSON (Страница предмета)</value>
+  </data>
+  <data name="tabPage4.Text" xml:space="preserve">
+    <value>Сеть</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>347, 248</value>

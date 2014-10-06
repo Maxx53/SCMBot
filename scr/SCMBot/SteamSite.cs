@@ -42,6 +42,24 @@ namespace SCMBot
         public CookieContainer cookieCont { set; get; }
 
         public saveTabLst recentInputList { set; get; }
+
+        public int listedThreadCount
+        {
+            get { return listedThredList.Count; }
+            set
+            {
+                CancelListed();
+                listedThredList.Clear();
+                for (int i = 0; i < value; i++)
+                {
+                    var ourWorker = new BackgroundWorker();
+                    ourWorker.WorkerSupportsCancellation = true;
+                    ourWorker.DoWork += new DoWorkEventHandler(listedThread_DoWork);
+                    listedThredList.Add(ourWorker);
+                }
+            }
+        }
+
         public BindingList<MainScanItem.LogItem> logContainer = new BindingList<MainScanItem.LogItem>();
 
 
@@ -51,7 +69,10 @@ namespace SCMBot
 
         private BackgroundWorker loginThread = new BackgroundWorker();
         private BackgroundWorker scanThread = new BackgroundWorker();
-        private BackgroundWorker listedThread = new BackgroundWorker();
+
+        private List<BackgroundWorker> listedThredList = new List<BackgroundWorker>();
+
+
         private BackgroundWorker reqThread = new BackgroundWorker();
         private BackgroundWorker sellThread = new BackgroundWorker();
 
@@ -64,14 +85,13 @@ namespace SCMBot
 
         public SteamSite()
         {
+
             loginThread.WorkerSupportsCancellation = true;
             loginThread.DoWork += new DoWorkEventHandler(loginThread_DoWork);
 
             scanThread.WorkerSupportsCancellation = true;
             scanThread.DoWork += new DoWorkEventHandler(scanThread_DoWork);
 
-            listedThread.WorkerSupportsCancellation = true;
-            listedThread.DoWork += new DoWorkEventHandler(listedThread_DoWork);
 
             reqThread.WorkerSupportsCancellation = true;
             reqThread.DoWork += new DoWorkEventHandler(reqThread_DoWork);
@@ -171,20 +191,34 @@ namespace SCMBot
 
         internal void ScanNewListed()
         {
-            if (listedThread.IsBusy != true)
+            if (listedThredList.Count != 0)
             {
-                scaninProg = true;
-                listedThread.RunWorkerAsync();
+                if (listedThredList[0].IsBusy != true)
+                {
+                    scaninProg = true;
+
+                    for (int i = 0; i < listedThredList.Count; i++)
+                    {
+                        listedThredList[i].RunWorkerAsync();
+                    }
+
+                }
             }
         }
 
         public void CancelListed()
         {
-            if (listedThread.WorkerSupportsCancellation == true && listedThread.IsBusy)
+            if (listedThredList.Count != 0)
             {
-                scaninProg = false;
-                Sem.Release();
-                listedThread.CancelAsync();
+                if (listedThredList[0].IsBusy)
+                {
+                    scaninProg = false;
+                    Sem.Release();
+                    for (int i = 0; i < listedThredList.Count; i++)
+                    {
+                        listedThredList[i].CancelAsync();
+                    }
+                }
             }
         }
 

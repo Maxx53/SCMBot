@@ -686,14 +686,16 @@ namespace SCMBot
 
     public class HostItem
     {
-        public HostItem(string host, bool inUsing, int workLoad)
+        public HostItem(string host, string pingas, bool inUsing, int workLoad)
         {
             this.Host = host;
+            this.Pingas = pingas;
             this.InUsing = inUsing;
             this.WorkLoad = workLoad;
         }
 
         public string Host { set; get; }
+        public string Pingas { set; get; }
         public bool InUsing { set; get; }
         public int WorkLoad { set; get; }
     }
@@ -701,11 +703,11 @@ namespace SCMBot
 
     public class HostList : List<HostItem>
     {
-        public void Add(string HostStr)
+        public void Add(string HostStr, string pingas)
         {
             try
             {
-                this.Add(new HostItem(HostStr, false, 0));
+                this.Add(new HostItem(HostStr, pingas, false, 0));
             }
             catch (Exception)
             {

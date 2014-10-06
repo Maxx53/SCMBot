@@ -176,6 +176,13 @@ namespace SCMBot.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap host {
+            get {
+                object obj = ResourceManager.GetObject("host", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap import {
             get {
                 object obj = ResourceManager.GetObject("import", resourceCulture);

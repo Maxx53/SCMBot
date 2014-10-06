@@ -120,11 +120,11 @@
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyStatsFrm.cs">
+    <Compile Include="HostStatsFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProxyStatsFrm.Designer.cs">
-      <DependentUpon>ProxyStatsFrm.cs</DependentUpon>
+    <Compile Include="HostStatsFrm.Designer.cs">
+      <DependentUpon>HostStatsFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="SettingsFrm.cs">
       <SubType>Form</SubType>
@@ -189,8 +189,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ProxyStatsFrm.resx">
-      <DependentUpon>ProxyStatsFrm.cs</DependentUpon>
+    <EmbeddedResource Include="HostStatsFrm.resx">
+      <DependentUpon>HostStatsFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.fr-FR.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
@@ -302,6 +302,7 @@
     <Content Include="hosts.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\host.png" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
