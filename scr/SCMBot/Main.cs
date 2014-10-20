@@ -82,7 +82,7 @@ namespace SCMBot
             //Some WebRequest optimizations
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.UseNagleAlgorithm = false;
-            ServicePointManager.DefaultConnectionLimit = 1000;
+            ServicePointManager.DefaultConnectionLimit = 50;
          }
 
  
@@ -533,6 +533,7 @@ namespace SCMBot
                 cutLog(steam_srch.logContainer, settings.logCount);
                 if (message == "Not found")
                     addcurr = false;
+               // MessageBox.Show(scanId.ToString());
                 steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
                 ScrollLbox(scanId, recentListView, false);
             }

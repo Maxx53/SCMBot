@@ -177,7 +177,11 @@ namespace SCMBot
                 this.Add(new CurrencyInfo("S&#36;", "S$ ", "13"));
                 //Fixed, thanks to Thai guy.
                 this.Add(new CurrencyInfo("#x0e3f;", "฿", "14"));
-               
+                //Fixed, thanks to Canadian guy.
+                this.Add(new CurrencyInfo("CDN&#36;", "CDN$ ", "20"));
+                //Fixed, thanks to Norwegian guy.
+                this.Add(new CurrencyInfo("kr", "kr", "9"));
+
                 this.NotSet = true;
                 this.Current = 0;
             }
