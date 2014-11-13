@@ -299,6 +299,9 @@
     <None Include="Resources\copy.png" />
     <None Include="Resources\export.png" />
     <None Include="Resources\import.png" />
+    <Content Include="currency.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="hosts.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -573,6 +573,111 @@ namespace SCMBot
             return intres.ToString();
         }
 
+        public class CurrencyInfo
+        {
+            public CurrencyInfo(string asciiName, string trueName, string index)
+            {
+                this.AsciiName = asciiName;
+                this.TrueName = trueName;
+                this.Index = index;
+            }
+
+            public string AsciiName { set; get; }
+            public string TrueName { set; get; }
+            public string Index { set; get; }
+        }
+
+        public class CurrInfoLst : List<CurrencyInfo>
+        {
+            public void Load(string path)
+            {
+                if (File.Exists(path))
+                {
+                    var list = File.ReadAllLines(path);
+
+                    for (int i = 0; i < list.Length; i++)
+                    {
+                        try
+                        {
+
+                            if (list[i] == string.Empty)
+                                continue;
+                            else
+                                if (list[i][0] == '/')
+                                    continue;
+                                else
+                                {
+                                    var currStr = list[i].Split(',');
+                                    if (currStr.Length == 3)
+                                    {
+                                        this.Add(new CurrencyInfo(currStr[2], currStr[1], currStr[0]));
+                                    }
+                                    else
+                                        if (currStr.Length == 2)
+                                        {
+                                            this.Add(new CurrencyInfo(currStr[1], currStr[1], currStr[0]));
+                                        }
+                                        else continue;
+                                }
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+
+                    this.NotSet = true;
+                    this.Current = 0;
+
+                    if (this.Count == 0)
+                    {
+                          MessageBox.Show("Currency List is empty! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                    MessageBox.Show("Currency List is not exists! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            public int Current { set; get; }
+            public bool NotSet { set; get; }
+
+            public string GetName()
+            {
+                return this[Current].TrueName;
+            }
+
+            public string GetCode()
+            {
+                return this[Current].Index;
+            }
+
+            public string GetAscii()
+            {
+                return this[Current].AsciiName;
+            }
+
+            public void GetType(string input)
+            {
+                for (int i = 0; i < this.Count; i++)
+                {
+                    if (input.Contains(this[i].AsciiName))
+                    {
+                        Current = i;
+                        NotSet = false;
+                        //break;
+                    }
+                }
+            }
+
+
+            public string ReplaceAscii(string parseAmount)
+            {
+                return parseAmount.Replace(GetAscii(), GetName());
+            }
+        }
+
+
         private string GetScanErrMess(string message)
         {
             string mess = string.Empty;
@@ -900,13 +1005,13 @@ namespace SCMBot
             public bool AddCurr { get; set; }
         }
 
-        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, int currency, bool ignoreWarn, int resDel)
+        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, bool ignoreWarn, int resDel)
         {
             Steam.scanInput = scanParams;
             Steam.NotSetHead = (scanParams.Name == string.Empty);
             Steam.delegMessage += deleg;
             Steam.cookieCont = cookie;
-            Steam.currencies.Current = currency;
+            //Steam.currencies.Current = currency;
             Steam.IgnoreWarn = ignoreWarn;
             Steam.resellDelay = resDel;
         }

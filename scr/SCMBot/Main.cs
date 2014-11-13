@@ -53,6 +53,8 @@ namespace SCMBot
         private List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
 
         public static HostList hostList = new HostList();
+        public static CurrInfoLst currencies = new CurrInfoLst();
+
 
         private Size lastFrmSize;
         private Point lastFrmPos;
@@ -98,6 +100,9 @@ namespace SCMBot
 
             settingsForm.intLangComboBox.DisplayMember = "NativeName";
             settingsForm.intLangComboBox.ValueMember = "Name";
+
+            //Loading currency list
+            currencies.Load("currency.txt");
 
             //Hotfix
             var cook = (CookieContainer)LoadBinary(cockPath);
@@ -339,7 +344,7 @@ namespace SCMBot
             settings.delayVal = steam_srch.mainDelay;
 
             settings.InvType = comboBox3.SelectedIndex;
-            settings.LastCurr = steam_srch.currencies.Current;
+            settings.LastCurr = currencies.Current;
 
             settings.StopFunds = Convert.ToInt32(SteamSite.GetSweetPrice(settingsForm.stopFundsBox.Text));
             stopfundsVal = settings.StopFunds;
@@ -382,7 +387,7 @@ namespace SCMBot
                       var lstItem = new ListViewItem(row);
 
                       scanListView.Items.Add(lstItem);
-                      var scanItem = new MainScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.LastCurr, settings.ignoreWarn, settings.resellDelay);
+                      var scanItem = new MainScanItem(ourItem, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.ignoreWarn, settings.resellDelay);
 
                       
                     
@@ -502,21 +507,12 @@ namespace SCMBot
                 addtoScan.Enabled = true;
 
                 setNotifyText(Strings.NotLogged);
-
-                UpdateScanCurrs();
             }
             else
                 MessageBox.Show(Strings.ErrAccInfo, Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
 
-        private void UpdateScanCurrs()
-        {
-            for (int i = 0; i < scanItems.Count; i++)
-            {
-                scanItems[i].Steam.currencies.Current = steam_srch.currencies.Current;
-            } 
-        }
 
 
         private void AddToScanLog(string message, int scanId, byte color, bool addcurr, bool ismain)
@@ -524,7 +520,7 @@ namespace SCMBot
            if (ismain)
             {
                 cutLog(scanItems[scanId].LogCont, settings.logCount);
-                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
+                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName()));
                 ScrollLbox(scanId, scanListView, true);
 
             }
@@ -534,7 +530,7 @@ namespace SCMBot
                 if (message == "Not found")
                     addcurr = false;
                // MessageBox.Show(scanId.ToString());
-                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, steam_srch.currencies.GetName()));
+                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName()));
                 ScrollLbox(scanId, recentListView, false);
             }
 
@@ -815,7 +811,7 @@ namespace SCMBot
                     {
                         var ourItem = steam_srch.searchList[i];
 
-                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + steam_srch.currencies.GetName(), ourItem.Quant };
+                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + currencies.GetName(), ourItem.Quant };
                         var lstItem = new ListViewItem(row);
                         FoundList.Items.Add(lstItem);
                     }
@@ -1066,7 +1062,7 @@ namespace SCMBot
             scanListView.Items.Add(lstItem);
 
             var ourTab = new saveTab(ourItem.Name, ourItem.Link, ourItem.ImgLink, ourItem.StartPrice, delay, buyQuant, tobuy, resellType, ourItem.StartPrice, Stat);
-            scanItems.Add(new MainScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay));
+            scanItems.Add(new MainScanItem(ourTab, steam_srch.cookieCont, new eventDelegate(Event_Message), settings.ignoreWarn, settings.resellDelay));
             setStatImg(scanListView.Items.Count - 1, (status)Convert.ToByte(!isScanValid(ourTab, true)), scanListView);
             SetColumnWidths(scanListView, true);
         }
@@ -2363,7 +2359,7 @@ namespace SCMBot
             if (isFirstTab)
             {
                 sel = scanListView.SelectedIndices[0];
-                var tocopy = new MainScanItem(new saveTab(scanItems[sel].Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay);
+                var tocopy = new MainScanItem(new saveTab(scanItems[sel].Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), settings.ignoreWarn, settings.resellDelay);
                 tocopy.Steam.scanInput.Name += " Copy";
                 scanItems.Insert(sel + 1, tocopy);
 
@@ -2411,7 +2407,7 @@ namespace SCMBot
             graphFrm.chart1.Series[0].BorderWidth = 2;
             graphFrm.chart1.Series[0].MarkerStyle = MarkerStyle.Circle;
 
-            graphFrm.currency = steam_srch.currencies.GetName();
+            graphFrm.currency = currencies.GetName();
         }
 
 
@@ -2520,7 +2516,7 @@ namespace SCMBot
                     itemIndex = dragIndex + i;
 
 
-                MainScanItem insertVItem = new MainScanItem(new saveTab(vdragItem.Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), steam_srch.currencies.Current, settings.ignoreWarn, settings.resellDelay);
+                MainScanItem insertVItem = new MainScanItem(new saveTab(vdragItem.Steam.scanInput), steam_srch.cookieCont, new eventDelegate(Event_Message), settings.ignoreWarn, settings.resellDelay);
                 insertVItem.LogCont = vdragItem.LogCont;
 
                 if (isStart)

@@ -144,86 +144,6 @@ namespace SCMBot
         }
 
 
-        public class CurrencyInfo
-        {
-            public CurrencyInfo(string asciiName, string trueName, string index)
-            {
-                this.AsciiName = asciiName;
-                this.TrueName = trueName;
-                this.Index = index;
-            }
-
-            public string AsciiName { set; get; }
-            public string TrueName { set; get; }
-            public string Index { set; get; }
-        }
-
-        public class CurrInfoLst : List<CurrencyInfo>
-        {
-            public CurrInfoLst()
-            {
-                //1 for USD, 2 for GBP, 3 for EUR, 5 for RUB, 7 for BRL, 11 for MYR, 13 for SGD, 14 for THB
-
-                this.Add(new CurrencyInfo("&#36;", "$", "1"));
-                this.Add(new CurrencyInfo("p&#1091;&#1073;.", "руб.", "5"));
-                this.Add(new CurrencyInfo("&#163;", "£", "2"));
-                this.Add(new CurrencyInfo("&#8364;", "€", "3"));
-                
-                //Fixed, thanks to Brasilian guy.
-                this.Add(new CurrencyInfo("&#82;&#36;", "R$", "7"));
-                //Fixed, thanks to Malaysian guy.
-                this.Add(new CurrencyInfo("RM", "RM", "11"));
-                //Fixed, thanks to Singaporian guy.
-                this.Add(new CurrencyInfo("S&#36;", "S$ ", "13"));
-                //Fixed, thanks to Thai guy.
-                this.Add(new CurrencyInfo("#x0e3f;", "฿", "14"));
-                //Fixed, thanks to Canadian guy.
-                this.Add(new CurrencyInfo("CDN&#36;", "CDN$ ", "20"));
-                //Fixed, thanks to Norwegian guy.
-                this.Add(new CurrencyInfo("kr", "kr", "9"));
-
-                this.NotSet = true;
-                this.Current = 0;
-            }
-
-            public int Current { set; get; }
-            public bool NotSet { set; get; }
-            
-            public string GetName()
-            {
-                return this[Current].TrueName;
-            }
-
-            public string GetCode()
-            {
-                return this[Current].Index;
-            }
-
-            public string GetAscii()
-            {
-                return this[Current].AsciiName;
-            }
-
-            public void GetType(string input)
-            {
-                for (int i = 0; i < this.Count; i++)
-                {
-                    if (input.Contains(this[i].AsciiName))
-                    {
-                        Current = i;
-                        NotSet = false;
-                        //break;
-                    }
-                }
-            }
-
-
-            public string ReplaceAscii(string parseAmount)
-            {
-                return parseAmount.Replace(GetAscii(), GetName());
-            }
-        }
-
 
         public class SearchItem
         {
@@ -658,7 +578,7 @@ namespace SCMBot
 
 
 
-        public StrParam GetNameBalance(CookieContainer cock, CurrInfoLst currLst)
+        public StrParam GetNameBalance(CookieContainer cock)
         {
             Main.AddtoLog("Getting account name and balance...");
             
@@ -687,12 +607,12 @@ namespace SCMBot
             string country = Regex.Match(markpage, "(?<=g_strCountryCode = \")(.*)(?=\";)").ToString();
             string strlang = Regex.Match(markpage, "(?<=g_strLanguage = \")(.*)(?=\";)").ToString();
 
-            currLst.GetType(parseAmount);
+            Main.currencies.GetType(parseAmount);
 
-            parseAmount = currLst.ReplaceAscii(parseAmount);
+            parseAmount = Main.currencies.ReplaceAscii(parseAmount);
             
             //?country=RU&language=russian&currency=5&count=20
-            string Addon = string.Format(jsonAddonUrl, country, strlang, currLst.GetCode());
+            string Addon = string.Format(jsonAddonUrl, country, strlang, Main.currencies.GetCode());
 
             return new StrParam(parseName, parseAmount, parseImg, Addon);
         }
@@ -722,7 +642,7 @@ namespace SCMBot
 
         private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total)
         {
-            string data = string.Format(buyReq, sessid, subtotal, fee, total, currencies.GetCode());
+            string data = string.Format(buyReq, sessid, subtotal, fee, total, Main.currencies.GetCode());
 
             //buy
             //29.08.2013 Steam Update Issue!
@@ -777,7 +697,7 @@ namespace SCMBot
             return false;
         }
 
-        public byte ParseLotList(string content, List<ScanItem> lst, CurrInfoLst currLst, bool full, bool ismain)
+        public byte ParseLotList(string content, List<ScanItem> lst, bool full, bool ismain)
         {
 
             lst.Clear();
@@ -891,7 +811,7 @@ namespace SCMBot
         }
 
 
-        public static string ParseSearchRes(string content, List<SearchItem> lst, CurrInfoLst currLst)
+        public static string ParseSearchRes(string content, List<SearchItem> lst)
         {
             lst.Clear();
             string totalFind = "0";
@@ -922,16 +842,16 @@ namespace SCMBot
                             string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:)(.*)(?=<div class=\"market_listing_right_cell)", RegexOptions.Singleline).ToString();
 
                             //Удаляем ascii кода нашей текущей валюты
-                            if (currLst.NotSet)
+                            if (Main.currencies.NotSet)
                             {
-                                currLst.GetType(ItemPrice);
+                                Main.currencies.GetType(ItemPrice);
                                 //If not loggen in then
-                                ItemPrice = Regex.Replace(ItemPrice, currLst.GetAscii(), string.Empty);
+                                ItemPrice = Regex.Replace(ItemPrice, Main.currencies.GetAscii(), string.Empty);
                                 //currLst.NotSet = true;
                             }
                             else
                             {
-                                ItemPrice = Regex.Replace(ItemPrice, currLst.GetAscii(), string.Empty);
+                                ItemPrice = Regex.Replace(ItemPrice, Main.currencies.GetAscii(), string.Empty);
 
                             }
 
@@ -1009,7 +929,7 @@ namespace SCMBot
         }
 
 
-        public int ParseOnSale(string content, CurrInfoLst currLst)
+        public int ParseOnSale(string content)
         {
             inventList.Clear();
             string parseBody = Regex.Match(content, "(?<=section market_home_listing_table\">)(.*)(?=<div id=\"tabContentsMyMarketHistory)", RegexOptions.Singleline).ToString();
@@ -1037,7 +957,7 @@ namespace SCMBot
 						)(.*)(?=					</span>
 					<br>)", RegexOptions.Singleline).ToString();
 
-                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, currLst.GetAscii(), string.Empty).Trim());
+                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, Main.currencies.GetAscii(), string.Empty).Trim());
                    
                     string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
                    

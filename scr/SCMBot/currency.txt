@@ -1,0 +1,20 @@
+﻿// Rejoice: You can add your currency at this format:
+// Code,Name,AsciiName
+
+// Note: If Name = AsciiName, add this:
+// Code,Name
+
+// Good luck!
+
+1,$,&#36;
+2,£,&#163;
+3,€,&#8364;
+5,руб.,p&#1091;&#1073;.
+7,R$,&#82;&#36;
+9,kr
+11,RM
+12,P
+13,S$ ,S&#36;
+14,฿,#x0e3f;
+17,TL
+20,CDN$ ,CDN&#36;

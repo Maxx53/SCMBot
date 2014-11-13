@@ -81,7 +81,7 @@ namespace SCMBot
         public List<ItemToSell> toSellList = new List<ItemToSell>();
         public List<string> toUnSellList = new List<string>();
 
-        public CurrInfoLst currencies = new CurrInfoLst();
+
 
         public SteamSite()
         {
@@ -265,7 +265,7 @@ namespace SCMBot
                         if (isInv)
                             fl = flag.InvPrice;
 
-                        var low_clean = Regex.Replace(priceOver.Lowest, currencies.GetAscii(), string.Empty).Trim();
+                        var low_clean = Regex.Replace(priceOver.Lowest, Main.currencies.GetAscii(), string.Empty).Trim();
 
                         doMessage(fl, pos, new StrParam(low_clean, priceOver.Volume), true);
                     }
@@ -297,7 +297,7 @@ namespace SCMBot
             }
             else
             {
-                invCount = ParseOnSale(SendGet(_market, cookieCont, false, true), currencies);
+                invCount = ParseOnSale(SendGet(_market, cookieCont, false, true));
             }
 
             if (invCount > 0)
@@ -372,7 +372,7 @@ namespace SCMBot
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont, false, true), searchList, currencies), true);
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont, false, true), searchList), true);
         }
 
 
@@ -396,7 +396,7 @@ namespace SCMBot
 
             LoginProgr("10");
 
-            var accInfo = GetNameBalance(cookieCont, currencies);
+            var accInfo = GetNameBalance(cookieCont);
 
             if (accInfo != null)
             {
@@ -523,7 +523,7 @@ namespace SCMBot
                 if (rFinal.Success && rFinal.isComplete)
                 {
                     //Okay
-                    var accInfo2 = GetNameBalance(cookieCont, currencies);
+                    var accInfo2 = GetNameBalance(cookieCont);
 
                     doMessage(flag.Login_success, 0, accInfo2, true);
 
@@ -611,7 +611,7 @@ namespace SCMBot
             start:
                 lotList.Clear();
 
-                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, currencies, full, ismain);
+                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, full, ismain);
 
                 if (ret == 8)
                 {
@@ -665,7 +665,7 @@ namespace SCMBot
 
                 if (BuyNow)
                 {
-                    ParseLotList(SendGet(url, cookieCont, false, true), lotList, currencies, false, true);
+                    ParseLotList(SendGet(url, cookieCont, false, true), lotList, false, true);
 
                     if (lotList.Count == 0)
                     {
@@ -746,9 +746,7 @@ namespace SCMBot
 
                 try
                 {
-                    //Recent no-caching
-                    //Thanks to https://github.com/kitzik
-                    if (fillLotList(string.Format("{0}{1}&nocache={2}", recentMarket, Main.jsonAddon, DateTime.Now.Ticks.ToString()), true, false))
+                    if (fillLotList(string.Format("{0}{1}", recentMarket, Main.jsonAddon), true, false))
                     {
                         for (int i = 0; i < lotList.Count; i++)
                         {
