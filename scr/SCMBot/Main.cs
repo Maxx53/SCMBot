@@ -2415,6 +2415,7 @@ namespace SCMBot
         {
             if (isFirstTab && (scanListView.SelectedIndices.Count != 0))
             {
+                graphFrm.Hide();
                 ClearGraph();
 
                 var sel = scanListView.SelectedIndices[0];
