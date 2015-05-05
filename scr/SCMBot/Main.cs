@@ -159,6 +159,7 @@ namespace SCMBot
 
 
             ListViewHelper.EnableDoubleBuffer(scanListView);
+            startScan(true); //autoscan after start
        }
 
         private void Main_Shown(object sender, EventArgs e)
