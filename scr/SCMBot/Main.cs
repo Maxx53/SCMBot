@@ -159,7 +159,8 @@ namespace SCMBot
 
 
             ListViewHelper.EnableDoubleBuffer(scanListView);
-            startScan(true); //autoscan after start
+            if (settings.autoscan)
+                startScan(true); //autoscan after start
        }
 
         private void Main_Shown(object sender, EventArgs e)
@@ -205,6 +206,7 @@ namespace SCMBot
             settingsForm.keepLogBox.Checked = settings.keepLog;
 
             settingsForm.checkBox2.Checked = settings.loginOnstart;
+            settingsForm.checkBox1.Checked = settings.autoscan;
             settingsForm.logCountBox.Text = settings.logCount.ToString();
             settingsForm.searchResBox.Text = settings.searchRes;
             settingsForm.ignoreBox.Checked = settings.ignoreWarn;
@@ -318,6 +320,7 @@ namespace SCMBot
         {
             settings.lastLogin = settingsForm.loginBox.Text;
             settings.loginOnstart = settingsForm.checkBox2.Checked;
+            settings.autoscan = settingsForm.checkBox1.Checked;
             settings.minOnClose = minimizeOnClosingToolStripMenuItem.Checked;
             settings.hideInvent = settingsForm.hideInventBox.Checked;
             settings.logCount = Convert.ToInt32(settingsForm.logCountBox.Text);
