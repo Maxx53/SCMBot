@@ -67,5 +67,10 @@ namespace SCMBot
             this.Hide();
             e.Cancel = true;
         }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
