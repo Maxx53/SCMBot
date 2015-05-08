@@ -47,7 +47,7 @@ namespace SCMBot
         const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
         //Currency FIX
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
-        const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}";
+        const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}&quantity=1";
 
         //New url format
         //const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";

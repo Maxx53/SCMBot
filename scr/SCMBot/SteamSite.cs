@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
-using System.Windows.Forms;
-using System.Threading;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace SCMBot
 {
@@ -575,6 +575,7 @@ namespace SCMBot
                         {
                             Input.ToBuy = false;
                             doMessage(flag.Send_cancel, scanID, string.Empty, ismain);
+                            doMessage(flag.Price_htext, scanID, totalStr, ismain);
                         }
 
                         return buyCont;
@@ -584,6 +585,7 @@ namespace SCMBot
                     else
                     {
                         doMessage(flag.Error_buy, scanID, buyresp.Mess, ismain);
+                        doMessage(flag.Price_htext, scanID, totalStr, ismain);
                     }
  
 
