@@ -378,7 +378,7 @@ namespace SCMBot
 
         private RespRSA GetRSA()
         {
-           return JsonConvert.DeserializeObject<RespRSA>(SendPost("username=" + UserName, _getrsa, _ref, true));
+            return JsonConvert.DeserializeObject<RespRSA>(SendPost("username=" + UserName, _getrsa, _ref, true));
         }
 
         private void LoginProgr(string value)
@@ -414,9 +414,9 @@ namespace SCMBot
             string mailId = string.Empty;
 
 
-            //Login cycle
-        begin:
+        //Login cycle
 
+        begin:
 
             if (worker.CancellationPending == true)
                 return;
@@ -451,7 +451,7 @@ namespace SCMBot
                 var rProcess = JsonConvert.DeserializeObject<RespProcess>(BodyResp);
 
                 //Checking Incorrect Login
-                if (rProcess.Message == "Incorrect login")
+                if (rProcess.Message.Contains("Incorrect"))
                 {
                     Main.AddtoLog("Incorrect login");
                     doMessage(flag.Login_cancel, 0, "Incorrect login", true);
@@ -465,7 +465,7 @@ namespace SCMBot
 
                     Dialog guardCheckForm = new Dialog();
 
-                    if (rProcess.isCaptcha)
+                    if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
                     {
                         //Verifying humanity, loading capcha
                         guardCheckForm.capchgroupEnab = true;

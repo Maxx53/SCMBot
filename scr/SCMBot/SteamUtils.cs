@@ -20,14 +20,14 @@ namespace SCMBot
         public const string _mainsiteS = "https://" + _host + "/";
 
         const string _comlog = "https://" + _host + "/login/";
-        const string _ref = _comlog + "home/?goto=market%2F";
+        const string _ref = _comlog + "home/?goto=0";
         const string _getrsa = _comlog + "getrsakey/";
         const string _dologin = _comlog + "dologin/";
         const string _logout = _comlog + "logout/";
         public const string _market = _mainsite + "market/";
+
         //const string _blist = _market + "buylisting/";
         //FIX
-
         const string _blist = _mainsiteS + "market/buylisting/";
 
         public const string _lists = _market + "listings/";
@@ -43,12 +43,12 @@ namespace SCMBot
 
         const string _lang_chg = _market + "?l=";
 
-        const string loginReq = "password={0}&username={1}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}";
-        const string loginStr = "steamid={0}&token={1}&remember_login=false&webcookie={2}";
+        //Request fix for 02/05/15
+        const string loginReq = "password={0}&username={1}&twofactorcode=&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+
         //Currency FIX
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
-        const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}";
-
+        const string buyReq = "sessionid={0}&currency={4}&subtotal={1}&fee={2}&total={3}&quantity=1";
         //New url format
         //const string _jsonInv = _mainsite + "id/{0}/inventory/json/{1}";
         //Old Url format, recommended
@@ -433,12 +433,12 @@ namespace SCMBot
 
         }
 
-        private string SendGet(string url, CookieContainer cok, bool UseProxy, bool keepAlive)
+        private string SendGet(string url, CookieContainer cok, bool UseHost, bool keepAlive)
         {
             Main.reqPool.WaitOne();
 
             doMessage(flag.StripImg, 0, string.Empty, true);
-            var res = Main.GetRequest(url, cookieCont, UseProxy, keepAlive);
+            var res = Main.GetRequest(url, cookieCont, UseHost, keepAlive);
             doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
@@ -647,8 +647,10 @@ namespace SCMBot
             //buy
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
+
+
             string buyres = SendPost(data, _blist + itemId, link, true);
-            
+
             //testing purposes
             //string buyres = File.ReadAllText(@"C:\x.txt");
             

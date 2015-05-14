@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dialog));
             this.okButton = new System.Windows.Forms.Button();
             this.codgroupBox = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.guardBox = new System.Windows.Forms.TextBox();
-            this.mailcodeBox = new System.Windows.Forms.TextBox();
             this.capchgroupBox = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.capchaBox = new System.Windows.Forms.TextBox();
             this.capchapicBox = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.guardBox = new System.Windows.Forms.TextBox();
+            this.mailcodeBox = new System.Windows.Forms.TextBox();
             this.codgroupBox.SuspendLayout();
             this.capchgroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.capchapicBox)).BeginInit();
@@ -60,26 +60,6 @@
             resources.ApplyResources(this.codgroupBox, "codgroupBox");
             this.codgroupBox.Name = "codgroupBox";
             this.codgroupBox.TabStop = false;
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // guardBox
-            // 
-            resources.ApplyResources(this.guardBox, "guardBox");
-            this.guardBox.Name = "guardBox";
-            // 
-            // mailcodeBox
-            // 
-            resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
-            this.mailcodeBox.Name = "mailcodeBox";
             // 
             // capchgroupBox
             // 
@@ -106,6 +86,26 @@
             resources.ApplyResources(this.capchapicBox, "capchapicBox");
             this.capchapicBox.Name = "capchapicBox";
             this.capchapicBox.TabStop = false;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // guardBox
+            // 
+            resources.ApplyResources(this.guardBox, "guardBox");
+            this.guardBox.Name = "guardBox";
+            // 
+            // mailcodeBox
+            // 
+            resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
+            this.mailcodeBox.Name = "mailcodeBox";
             // 
             // Dialog
             // 

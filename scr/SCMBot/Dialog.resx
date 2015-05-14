@@ -177,7 +177,7 @@
     <value>7, 25</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 13</value>
+    <value>60, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -207,7 +207,7 @@
     <value>6</value>
   </data>
   <data name="guardBox.Text" xml:space="preserve">
-    <value>scmarket bot</value>
+    <value>home sweet home</value>
   </data>
   <data name="&gt;&gt;guardBox.Name" xml:space="preserve">
     <value>guardBox</value>
