@@ -41,7 +41,8 @@ namespace SCMBot
         const string _capcha = "https://" + _host + "/public/captcha.php?gid=";
         const string _refrcap = "https://" + _host + "/actions/RefreshCaptcha/?count=1";
 
-        const string _lang_chg = _market + "?l=";
+        const string _lang_chg = _mainsite + "/actions/SetLanguage/";
+        const string _lang_req = "language={0}&sessionid={1}";
 
         //Request fix for 02/05/15
         const string loginReq = "password={0}&username={1}&twofactorcode=&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
@@ -701,7 +702,6 @@ namespace SCMBot
 
         public byte ParseLotList(string content, List<ScanItem> lst, bool full, bool ismain)
         {
-
             lst.Clear();
 
             //Smart ass!
