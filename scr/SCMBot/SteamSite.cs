@@ -404,6 +404,7 @@ namespace SCMBot
                 doMessage(flag.Rep_progress, 0, "100", true);
                 LoginProcess = false;
                 Logged = true;
+                doMessage(flag.Check_AutoScan, 0, "Checking autoscan", true);
                 return;
             }
 
@@ -526,11 +527,13 @@ namespace SCMBot
                     var accInfo2 = GetNameBalance(cookieCont);
 
                     doMessage(flag.Login_success, 0, accInfo2, true);
-
                     LoginProgr("100");
-
                     Logged = true;
+
+                    doMessage(flag.Check_AutoScan, 0, "Checking autoscan", true);
+
                     Main.AddtoLog("Login Success");
+                    
                 }
                 else
                 {

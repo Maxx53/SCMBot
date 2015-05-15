@@ -48,7 +48,8 @@ namespace SCMBot
         SetHeadName = 23,
         ReLogin = 24,
         ResellErr = 25,
-        ActPrice = 26
+        ActPrice = 26,
+        Check_AutoScan = 27
     }
 
 
@@ -224,7 +225,6 @@ namespace SCMBot
                 list.EndUpdate();
 
         }
-
 
         //Acync file access
         public static void AddtoLog(string logstr)

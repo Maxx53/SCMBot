@@ -10,6 +10,7 @@ using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
@@ -159,10 +160,9 @@ namespace SCMBot
 
 
             ListViewHelper.EnableDoubleBuffer(scanListView);
-            if (settings.autoscan)
-                startScan(true); //autoscan after start
+            
        }
-
+        
         private void Main_Shown(object sender, EventArgs e)
         {
             if (settings.firstRun == true)
@@ -509,7 +509,7 @@ namespace SCMBot
                 SetButton(loginButton, Strings.Logout, 2);
                 buyNowButton.Enabled = true;
                 addtoScan.Enabled = true;
-
+                
                 setNotifyText(Strings.NotLogged);
             }
             else
@@ -555,6 +555,11 @@ namespace SCMBot
                     AddtoLog(Strings.AlreadyLogged);
                     StatusLabel1.Text = Strings.AlreadyLogged;
                     GetAccInfo((StrParam)data);
+                    break;
+
+                case flag.Check_AutoScan:
+                    if (settings.autoscan)
+                        startScan(true); //autoscan after start
                     break;
 
                 case flag.Login_success:
@@ -1182,6 +1187,7 @@ namespace SCMBot
                     ProgressBar1.Visible = true;
                     StatusLabel1.Text = Strings.tryLogin;
                     SetButton(loginButton, Strings.Cancel, 3);
+
                 }
 
             }
