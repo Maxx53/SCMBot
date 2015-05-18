@@ -140,24 +140,35 @@ namespace SCMBot
             {
                 var plines = File.ReadAllLines(hostsPath);
 
-                for (int i = 0; i < plines.Length; i++)
+                ThreadStart readThread = delegate()
                 {
-                    string ipPattern = @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
-                    Match match = Regex.Match(plines[i], ipPattern);
-                    if (match.Success)
+
+                    for (int i = 0; i < plines.Length; i++)
                     {
-                        Application.DoEvents();
-                        Ping ping = new Ping();
-                        PingReply pingReply = ping.Send(plines[i]);
-                        hostList.Add(plines[i], pingReply.RoundtripTime.ToString());
-                        StatusLabel1.Text = "Loading hosts... "+i.ToString() + " of " + plines.Length.ToString();
+                        string ipPattern = @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
+                        Match match = Regex.Match(plines[i], ipPattern);
+                        if (match.Success)
+                        {
+                            Application.DoEvents();
+                            Ping ping = new Ping();
+                            PingReply pingReply = ping.Send(plines[i]);
+                            hostList.Add(plines[i], pingReply.RoundtripTime.ToString());
+                            this.Invoke((MethodInvoker)delegate { StatusLabel1.Text = "Loading hosts... " + i.ToString() + " of " + plines.Length.ToString(); });
+                        }
                     }
-                }
-                StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString();
+
+                    this.Invoke((MethodInvoker)delegate { StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString(); });
+
+                };
+                Thread pTh = new Thread(readThread);
+                pTh.IsBackground = true;
+                pTh.Start();
+
+
+
             }
             else
                 usingProxyStatuslStrip.Enabled = false;
-
 
             ListViewHelper.EnableDoubleBuffer(scanListView);
             

@@ -159,7 +159,7 @@ namespace SCMBot
         {
             ThreadStart threadStart = delegate()
             {
-                SendGet(_lang_chg + lang, cookieCont, false, true);
+                SendPost(string.Format(_lang_req, lang, GetSessId(cookieCont)), _lang_chg, _ref, false);
                 doMessage(flag.Lang_Changed, 0, lang, true);
             };
             Thread pTh = new Thread(threadStart);
@@ -452,7 +452,7 @@ namespace SCMBot
                 var rProcess = JsonConvert.DeserializeObject<RespProcess>(BodyResp);
 
                 //Checking Incorrect Login
-                if (rProcess.Message == "Incorrect login")
+                if (rProcess.Message.Contains("Incorrect"))
                 {
                     Main.AddtoLog("Incorrect login");
                     doMessage(flag.Login_cancel, 0, "Incorrect login", true);
@@ -466,7 +466,7 @@ namespace SCMBot
 
                     Dialog guardCheckForm = new Dialog();
 
-                    if (rProcess.isCaptcha)
+                    if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
                     {
                         //Verifying humanity, loading capcha
                         guardCheckForm.capchgroupEnab = true;
