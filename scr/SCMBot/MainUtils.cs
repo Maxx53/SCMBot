@@ -58,6 +58,7 @@ namespace SCMBot
         Ready = 0,
         Warning = 1,
         InProcess = 2,
+        Wait = 3
     }
 
 
@@ -471,7 +472,8 @@ namespace SCMBot
 
                     //New
                     request.Proxy = null;
-                    request.Timeout = 30000;
+                    request.Timeout = 10000;
+                    request.ReadWriteTimeout = 10000;
                     request.Host = SteamSite._host;
                 
                     //KeepAlive is True by default

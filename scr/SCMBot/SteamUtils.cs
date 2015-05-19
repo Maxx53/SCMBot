@@ -705,16 +705,15 @@ namespace SCMBot
             lst.Clear();
 
             //Smart ass!
+            //Lol, fix.
             if (Main.isHTML && ismain)
             {
-                string jsonAssets = Regex.Match(content, @"(?<=g_rgAssets \= )(.*)(?=;
-	var g_rgCurrency)", RegexOptions.Singleline).ToString();
+                string jsonAssets = Regex.Match(content, @"(?<=g_rgAssets \= )(.*)(?=;\r\n\s+var g_rgCurrency)", RegexOptions.Singleline).ToString();
 
                 if (jsonAssets == string.Empty)
                     return 6;
 
-                string jsonListInfo = Regex.Match(content, @"(?<=g_rgListingInfo \= )(.*)(?=;
-	var g_plotPriceHistory)", RegexOptions.Singleline).ToString();
+                string jsonListInfo = Regex.Match(content, @"(?<=g_rgListingInfo \= )(.*)(?=;\r\n\s+var g_plotPriceHistory)", RegexOptions.Singleline).ToString();
 
                 content = "{" + string.Format(buildJson, jsonListInfo, jsonAssets) + "}";
             }

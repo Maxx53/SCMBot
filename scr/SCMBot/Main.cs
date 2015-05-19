@@ -75,6 +75,7 @@ namespace SCMBot
             StatImgLst.Images.Add("Img1", Properties.Resources.ready);
             StatImgLst.Images.Add("Img2", Properties.Resources.warning);
             StatImgLst.Images.Add("Img3", Properties.Resources.clock);
+            StatImgLst.Images.Add("Img4", Properties.Resources.warning);
             StatImgLst.ColorDepth = ColorDepth.Depth32Bit;
             scanListView.SmallImageList = StatImgLst;
             recentListView.SmallImageList = StatImgLst;
@@ -109,8 +110,6 @@ namespace SCMBot
             if (cook == null)
                 cook =  new CookieContainer();
 
-
-
             steam_srch.cookieCont = cook;
             steam_srch.scanID = 0;
             filterTypeBox.SelectedIndex = 1;
@@ -122,21 +121,27 @@ namespace SCMBot
            
             LoadSettings(true);
 
-            if (settings.loginOnstart)
-                loginButton.PerformClick();
-
             setNotifyText(Strings.NotLogged);
-
 
             openFileDialog1.FileName = "scmbot_list_";
             string AppPath = Path.GetDirectoryName(Application.ExecutablePath);
             openFileDialog1.InitialDirectory = AppPath;
             saveFileDialog1.InitialDirectory = AppPath;
 
+            LoadHosts(hostsPath);
 
-            if (File.Exists(hostsPath))
+            if (settings.loginOnstart)
+                loginButton.PerformClick();
+
+            ListViewHelper.EnableDoubleBuffer(scanListView);
+       }
+
+
+        private void LoadHosts(string path)
+        {
+            if (File.Exists(path))
             {
-                var plines = File.ReadAllLines(hostsPath);
+                var plines = File.ReadAllLines(path);
 
                 ThreadStart readThread = delegate()
                 {
@@ -147,30 +152,29 @@ namespace SCMBot
                         Match match = Regex.Match(plines[i], ipPattern);
                         if (match.Success)
                         {
-                            Application.DoEvents();
+                            this.Invoke((MethodInvoker)delegate { StatusLabel1.Text = "Loading hosts... " + (i + 1).ToString() + " of " + plines.Length.ToString(); });
                             Ping ping = new Ping();
-                            PingReply pingReply = ping.Send(plines[i]);
-                            hostList.Add(plines[i], pingReply.RoundtripTime.ToString());
-                            this.Invoke((MethodInvoker)delegate { StatusLabel1.Text = "Loading hosts... " + i.ToString() + " of " + plines.Length.ToString(); });  
+                            PingReply pingReply = ping.Send(plines[i], 2000);
+                            //Don't add dead hosts
+                            if (pingReply.RoundtripTime != 0)
+                            {
+                                hostList.Add(plines[i], pingReply.RoundtripTime.ToString());
+                            }
                         }
                     }
 
-                    this.Invoke((MethodInvoker)delegate { StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString(); });  
+                    this.Invoke((MethodInvoker)delegate
+                    { StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString(); });
 
                 };
                 Thread pTh = new Thread(readThread);
                 pTh.IsBackground = true;
                 pTh.Start();
-
-
-
             }
             else
                 usingProxyStatuslStrip.Enabled = false;
+        }
 
-
-            ListViewHelper.EnableDoubleBuffer(scanListView);
-       }
 
         private void Main_Shown(object sender, EventArgs e)
         {
@@ -713,6 +717,25 @@ namespace SCMBot
 
                 case flag.Scan_cancel:
                     StatusLabel1.Text = Strings.ScanCancel;
+                    if (isMain)
+                    {
+                        scanItems[searchId].Steam.scanInput.StatId = status.Ready;
+                        setStatImg(searchId, status.Ready, scanListView);
+                        BindToControls(scanListView);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < steam_srch.recentInputList.Count; i++)
+                        {
+                            if (steam_srch.recentInputList[i].StatId == status.Wait)
+                            {
+                                steam_srch.recentInputList[i].StatId = status.Ready;
+                                setStatImg(i, status.Ready, recentListView);
+                            }
+                        }
+
+                        BindToControls(recentListView);
+                    }
                     break;
                 case flag.Resold:
                     PlaySound(2, settings.playSnd);
@@ -1534,6 +1557,12 @@ namespace SCMBot
                     scanButton.Image = Properties.Resources.stop;
                     scanButton.Enabled = true;
                     break;
+
+                case status.Wait:
+                    scanButton.Text = "Wait";
+                    scanButton.Image = Properties.Resources.clock;
+                    scanButton.Enabled = false;
+                    break;
             }
 
         }
@@ -1630,9 +1659,7 @@ namespace SCMBot
 
                     if (isScanValid(paramItem, true))
                     {
-
                         startScan(false);
-
                     }
                     else
                     {
@@ -1641,7 +1668,6 @@ namespace SCMBot
                     }
 
                 }
-
                 else
                 {
                     stopScan(false);
@@ -1839,8 +1865,8 @@ namespace SCMBot
                         if (steamItem.scaninProg)
                         {
                             steamItem.CancelScan();
-                            paramItem.StatId = status.Ready;
-                            setStatImg(id, 0, scanListView);
+                            paramItem.StatId = status.Wait;
+                            setStatImg(id, status.Wait, scanListView);
                         }
                     }
 
@@ -1862,7 +1888,7 @@ namespace SCMBot
                                 if (steam_srch.recentInputList[i].StatId == status.InProcess)
                                 {
                                     isReady = true;
-                                    steam_srch.recentInputList[i].StatId = status.Ready;
+                                    steam_srch.recentInputList[i].StatId = status.Wait;
                                     setStatImg(i, steam_srch.recentInputList[i].StatId, recentListView);
                                 }
                             }
@@ -1876,7 +1902,7 @@ namespace SCMBot
                                 if (steam_srch.recentInputList[indx].StatId == status.InProcess)
                                 {
                                     isReady = true;
-                                    steam_srch.recentInputList[indx].StatId = status.Ready;
+                                    steam_srch.recentInputList[indx].StatId = status.Wait;
                                     setStatImg(indx, steam_srch.recentInputList[indx].StatId, recentListView);
                                 }
                             }

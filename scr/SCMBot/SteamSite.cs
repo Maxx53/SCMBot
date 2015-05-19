@@ -91,11 +91,9 @@ namespace SCMBot
 
             scanThread.WorkerSupportsCancellation = true;
             scanThread.DoWork += new DoWorkEventHandler(scanThread_DoWork);
-
-
+  
             reqThread.WorkerSupportsCancellation = true;
             reqThread.DoWork += new DoWorkEventHandler(reqThread_DoWork);
-
 
             getInventory.WorkerSupportsCancellation = true;
             getInventory.DoWork += new DoWorkEventHandler(getInventory_DoWork);
@@ -212,11 +210,19 @@ namespace SCMBot
             {
                 if (listedThredList[0].IsBusy)
                 {
-                    scaninProg = false;
-                    Sem.Release();
-                    for (int i = 0; i < listedThredList.Count; i++)
+                    try
                     {
-                        listedThredList[i].CancelAsync();
+                        scaninProg = false;
+                        Sem.Release();
+                        for (int i = 0; i < listedThredList.Count; i++)
+                        {
+                            listedThredList[i].CancelAsync();
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        //hey, dummy
                     }
                 }
             }
@@ -827,8 +833,6 @@ namespace SCMBot
             pTh.Start();
 
         }
-
-
 
     }
 

@@ -60,7 +60,6 @@
             this.ClientSize = new System.Drawing.Size(526, 375);
             this.Controls.Add(this.chart1);
             this.Name = "GraphFrm";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Graph";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GraphFrm_FormClosing);
