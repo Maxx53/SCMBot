@@ -65,6 +65,7 @@ namespace SCMBot
     public partial class Main
     {
         const string logPath = "logfile.txt";
+        const string webLogPath = "wl.txt"
         const string hostsPath = "hosts.txt";
 
         const string appName = "SCM Bot alpha";
@@ -253,6 +254,23 @@ namespace SCMBot
                 //dummy
             }
           
+        }
+
+        public static void AddtoWeb(string logstr)
+        {
+            using (FileStream fs = new FileStream(webLogPath, FileMode.OpenOrCreate, FileSystemRights.AppendData,
+                FileShare.Write, 4096, FileOptions.None))
+            {
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.AutoFlush = true;
+                    writer.WriteLine(DateTime.Now);
+                    writer.WriteLine(logstr);
+                    writer.WriteLine();
+                    writer.Close();
+                }
+                fs.Close();
+            }
         }
 
         public static void SaveBinary(string p, object o)
