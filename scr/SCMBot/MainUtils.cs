@@ -18,7 +18,7 @@ using System.Security.AccessControl;
 namespace SCMBot
 {
     public delegate void eventDelegate(object sender, object data, int searchId, flag myflag, bool isMain);
-    
+
     [Flags]
     public enum flag : byte
     {
@@ -65,6 +65,7 @@ namespace SCMBot
     public partial class Main
     {
         const string logPath = "logfile.txt";
+        const string webLogPath = "wl.txt";
         const string hostsPath = "hosts.txt";
 
         const string appName = "SCM Bot alpha";
@@ -77,12 +78,12 @@ namespace SCMBot
 
         public const string cockPath = "coockies.dat";
         const string steamUA = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36 OPR/22.0.1471.70";
-        
+
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
         private const string passPhrase = "o6806642kbM7c5";
         private const int keysize = 256;
-            
+
         private void setNotifyText(string mess)
         {
             notifyIcon1.Text = string.Format(notifTxt, appName, settingsForm.loginBox.Text, mess);
@@ -252,7 +253,24 @@ namespace SCMBot
             {
                 //dummy
             }
-          
+
+        }
+
+        public static void AddtoWeb(string logstr)
+        {
+            using (FileStream fs = new FileStream(webLogPath, FileMode.OpenOrCreate, FileSystemRights.AppendData,
+                FileShare.Write, 4096, FileOptions.None))
+            {
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.AutoFlush = true;
+                    writer.WriteLine(DateTime.Now);
+                    writer.WriteLine(logstr);
+                    writer.WriteLine();
+                    writer.Close();
+                }
+                fs.Close();
+            }
         }
 
         public static void SaveBinary(string p, object o)
@@ -301,7 +319,7 @@ namespace SCMBot
             Color back = SystemColors.Control;
             if (doWhite)
                 back = Color.White;
-            Bitmap bitmap =  new Bitmap(img);
+            Bitmap bitmap = new Bitmap(img);
             var colors = new List<Color>();
             for (int y = 0; y < bitmap.Size.Height; y++)
             {
@@ -357,61 +375,61 @@ namespace SCMBot
         public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
         {
 
-                var requestData = Encoding.UTF8.GetBytes(req);
-                string content = string.Empty;
+            var requestData = Encoding.UTF8.GetBytes(req);
+            string content = string.Empty;
 
-                try
+            try
+            {
+                var request = (HttpWebRequest)
+                    WebRequest.Create(url);
+
+                request.CookieContainer = cookie;
+                request.Method = "POST";
+
+                //New
+                request.Proxy = null;
+                request.Timeout = 30000;
+                //KeepAlive is True by default
+                //request.KeepAlive = true;
+
+                //LOL, really?
+                request.UserAgent = steamUA;
+
+                request.Referer = refer;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = requestData.Length;
+
+                using (var s = request.GetRequestStream())
                 {
-                    var request = (HttpWebRequest)
-                        WebRequest.Create(url);
-
-                    request.CookieContainer = cookie;
-                    request.Method = "POST";
-                    
-                    //New
-                    request.Proxy = null;
-                    request.Timeout = 30000;
-                    //KeepAlive is True by default
-                    //request.KeepAlive = true;
-
-                    //LOL, really?
-                    request.UserAgent = steamUA;
-
-                    request.Referer = refer;
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    request.ContentLength = requestData.Length;
-
-                    using (var s = request.GetRequestStream())
-                    {
-                        s.Write(requestData, 0, requestData.Length);
-                    }
-
-                    HttpWebResponse resp = (HttpWebResponse)request.GetResponse();
-
-                    var stream = new StreamReader(resp.GetResponseStream());
-                    content = stream.ReadToEnd();
-
-                    if (tolog)
-                        AddtoLog(content);
-
-                    cookie = request.CookieContainer;
-                    resp.Close();
-                    stream.Close();
-                }
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError)
-                    {
-                        WebResponse resp = e.Response;
-                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
-                        {
-                            content = sr.ReadToEnd();
-                        }
-                    }
-
+                    s.Write(requestData, 0, requestData.Length);
                 }
 
-                return content;
+                HttpWebResponse resp = (HttpWebResponse)request.GetResponse();
+
+                var stream = new StreamReader(resp.GetResponseStream());
+                content = stream.ReadToEnd();
+
+                if (tolog)
+                    AddtoLog(content);
+
+                cookie = request.CookieContainer;
+                resp.Close();
+                stream.Close();
+            }
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    WebResponse resp = e.Response;
+                    using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                    {
+                        content = sr.ReadToEnd();
+                    }
+                }
+
+            }
+
+            return content;
         }
 
 
@@ -445,83 +463,83 @@ namespace SCMBot
 
         public static string GetRequest(string url, CookieContainer cookie, bool UseHost, bool keepAlive)
         {
-                string content = string.Empty;
-                int hostNum = 0;
+            string content = string.Empty;
+            int hostNum = 0;
 
-                bool hostUsed = false;
+            bool hostUsed = false;
 
-                try
+            try
+            {
+
+                if (UseHost && (hostList.Count != 0))
+                {
+                    hostNum = GetFreeIndex();
+                    if (hostNum != -1)
+                    {
+                        hostList[hostNum].InUsing = true;
+                        hostList[hostNum].WorkLoad++;
+                        url = url.Replace(SteamSite._host, hostList[hostNum].Host);
+                        hostUsed = true;
+                    }
+                }
+
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+
+                //New
+                request.Proxy = null;
+                request.Timeout = 30000;
+                request.Host = SteamSite._host;
+
+                //KeepAlive is True by default
+                //request.KeepAlive = keepAlive;
+
+                //LOL, really?
+                request.UserAgent = steamUA;
+
+                request.Accept = "application/json";
+                request.CookieContainer = cookie;
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                var stream = new StreamReader(response.GetResponseStream());
+                content = stream.ReadToEnd();
+
+                response.Close();
+                stream.Close();
+
+            }
+
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.ProtocolError)
                 {
 
-                    if (UseHost && (hostList.Count != 0))
+                    HttpWebResponse resp = (HttpWebResponse)e.Response;
+                    int statCode = (int)resp.StatusCode;
+
+                    if (statCode == 403)
                     {
-                        hostNum = GetFreeIndex();
-                        if (hostNum != -1)
+                        content = "403";
+                    }
+                    else
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
                         {
-                            hostList[hostNum].InUsing = true;
-                            hostList[hostNum].WorkLoad++;
-                            url = url.Replace(SteamSite._host, hostList[hostNum].Host);
-                            hostUsed = true;
+                            content = sr.ReadToEnd();
                         }
                     }
-
-
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Method = "GET";
-
-                    //New
-                    request.Proxy = null;
-                    request.Timeout = 30000;
-                    request.Host = SteamSite._host;
-                
-                    //KeepAlive is True by default
-                    //request.KeepAlive = keepAlive;
-
-                    //LOL, really?
-                    request.UserAgent = steamUA;
-
-                    request.Accept = "application/json";
-                    request.CookieContainer = cookie;
-
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    var stream = new StreamReader(response.GetResponseStream());
-                    content = stream.ReadToEnd();
-
-                    response.Close();
-                    stream.Close();
-
                 }
 
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError)
-                    {
+            }
 
-                        HttpWebResponse resp = (HttpWebResponse)e.Response;
-                        int statCode = (int)resp.StatusCode;
+            //Free host
+            if (UseHost && (hostList.Count != 0) && hostUsed)
+            {
+                hostList[hostNum].InUsing = false;
+            }
 
-                        if (statCode == 403)
-                        {
-                            content = "403";
-                        }
-                        else
-                        {
-                            using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
-                            {
-                                content = sr.ReadToEnd();
-                            }
-                        }
-                    }
-
-                }
-
-                //Free host
-                if (UseHost && (hostList.Count != 0) && hostUsed)
-                {
-                    hostList[hostNum].InUsing = false;
-                }
-
-                return content;
+            return content;
 
         }
 
@@ -631,7 +649,7 @@ namespace SCMBot
 
                     if (this.Count == 0)
                     {
-                          MessageBox.Show("Currency List is empty! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Currency List is empty! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
@@ -818,7 +836,7 @@ namespace SCMBot
             {
                 // dummy
             }
-           
+
         }
     }
 
@@ -965,7 +983,7 @@ namespace SCMBot
                 if (addcur)
                     this.Text = string.Format("{0} {1} {2}", time.ToString("HH:mm:ss"), DoFracture(rawPrice), curr);
                 else
-                    this.Text = string.Format("{0} {1}", time.ToString("HH:mm:ss"), rawPrice); 
+                    this.Text = string.Format("{0} {1}", time.ToString("HH:mm:ss"), rawPrice);
             }
 
             public override string ToString()
@@ -1016,8 +1034,8 @@ namespace SCMBot
             Steam.resellDelay = resDel;
         }
 
-       // public byte StatId { get; set; }
-  
+        // public byte StatId { get; set; }
+
     }
 
 
@@ -1039,7 +1057,7 @@ namespace SCMBot
 
         public const uint FLASHW_ALL = 3;
         public const uint FLASHW_TIMERNOFG = 12;
-  
+
         public static bool Flash(System.Windows.Forms.Form form)
         {
             if (Win2000OrLater)
