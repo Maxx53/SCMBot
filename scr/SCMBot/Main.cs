@@ -528,14 +528,40 @@ namespace SCMBot
 
         }
 
-
+        private MainScanItem.LogItem tmpItem = null;
+        private bool newItem = true;
 
         private void AddToScanLog(string message, int scanId, byte color, bool addcurr, bool ismain)
         {
            if (ismain)
             {
                 cutLog(scanItems[scanId].LogCont, settings.logCount);
-                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName()));
+
+               // new strange part
+                if (newItem || tmpItem == null)
+                {
+                    tmpItem = new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName());
+                    scanItems[scanId].LogCont.Add(tmpItem);
+                    newItem = false;
+                }
+                else
+                {
+                    var secondItem = new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName());
+                    if (tmpItem.RawPrice == secondItem.RawPrice)
+                    {
+                        var ammount = scanItems[scanId].LogCont.Count;
+                        tmpItem = secondItem;
+                        scanItems[scanId].LogCont.RemoveAt(ammount - 1);
+                        scanItems[scanId].LogCont.Add(tmpItem);
+                    }
+                    else
+                    {
+                        tmpItem = secondItem;
+                        scanItems[scanId].LogCont.Add(tmpItem);
+                        newItem = true;
+                    }
+                }
+
                 ScrollLbox(scanId, scanListView, true);
 
             }
@@ -966,6 +992,7 @@ namespace SCMBot
             if (bindingList.Count > limit)
             {
                 bindingList.Clear();
+                newItem = true;
             }
         }
 
