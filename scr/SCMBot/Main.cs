@@ -11,6 +11,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using Nancy.Hosting.Self;
 
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
@@ -79,7 +80,8 @@ namespace SCMBot
             StatImgLst.ColorDepth = ColorDepth.Depth32Bit;
             scanListView.SmallImageList = StatImgLst;
             recentListView.SmallImageList = StatImgLst;
-
+            var host = new NancyHost(new Uri("http://localhost:1234"));
+            host.Start();
             steam_srch.delegMessage += new eventDelegate(Event_Message);
            
             //Some WebRequest optimizations

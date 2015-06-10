@@ -72,5 +72,10 @@ namespace SCMBot
         {
 
         }
+
+        public void GetChart()
+        {
+            chart1.SaveImage("Content/chart.png", ChartImageFormat.Png);
+        }
     }
 }
