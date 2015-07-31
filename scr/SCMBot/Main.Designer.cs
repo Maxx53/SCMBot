@@ -34,11 +34,11 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.NameLabel = new System.Windows.Forms.Label();
+            this.scanButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.linkTextBox = new System.Windows.Forms.TextBox();
-            this.scanButton = new System.Windows.Forms.Button();
             this.delayTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.buyCheckBox = new System.Windows.Forms.CheckBox();
@@ -232,6 +232,13 @@
             resources.ApplyResources(this.NameLabel, "NameLabel");
             this.NameLabel.Name = "NameLabel";
             // 
+            // scanButton
+            // 
+            resources.ApplyResources(this.scanButton, "scanButton");
+            this.scanButton.Name = "scanButton";
+            this.scanButton.UseVisualStyleBackColor = true;
+            this.scanButton.Click += new System.EventHandler(this.scanButton_Click);
+            // 
             // button3
             // 
             this.button3.Image = global::SCMBot.Properties.Resources.copy;
@@ -254,13 +261,6 @@
             // 
             resources.ApplyResources(this.linkTextBox, "linkTextBox");
             this.linkTextBox.Name = "linkTextBox";
-            // 
-            // scanButton
-            // 
-            resources.ApplyResources(this.scanButton, "scanButton");
-            this.scanButton.Name = "scanButton";
-            this.scanButton.UseVisualStyleBackColor = true;
-            this.scanButton.Click += new System.EventHandler(this.scanButton_Click);
             // 
             // delayTextBox
             // 

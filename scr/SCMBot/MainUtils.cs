@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Globalization;
 
 namespace SCMBot
 {
@@ -76,7 +77,7 @@ namespace SCMBot
         const string helpPage = homePage + "/wiki";
 
         public const string cockPath = "coockies.dat";
-        const string steamUA = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36 OPR/22.0.1471.70";
+        const string steamUA = "Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0";
         
         //Just put here your random values
         private const string initVector = "tu89geji340t89u2";
@@ -102,6 +103,9 @@ namespace SCMBot
                     break;
                 case 3:
                     ourButt.Image = (Image)Properties.Resources.cancel;
+                    break;
+                case 4:
+                    ourButt.Image = (Image)Properties.Resources.host;
                     break;
                 default:
                     break;
@@ -372,14 +376,20 @@ namespace SCMBot
                     //New
                     request.Proxy = null;
                     request.Timeout = 30000;
-                    //KeepAlive is True by default
-                    //request.KeepAlive = true;
 
-                    //LOL, really?
+                    request.AutomaticDecompression = DecompressionMethods.GZip;
+                    request.Host = SteamSite._host;
                     request.UserAgent = steamUA;
 
+                    request.Accept = "text/javascript, text/html, application/xml, text/xml, application/json, */*";
+                    request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+
+                    request.Headers.Add("Accept-Encoding", "gzip, deflate");
+                    request.Headers.Add("Accept-Language", "en-US,en;q=0.8,en-US;q=0.5,en;q=0.3");
+                    request.Headers.Add("Cache-Control", "no-cache");
+
                     request.Referer = refer;
-                    request.ContentType = "application/x-www-form-urlencoded";
+
                     request.ContentLength = requestData.Length;
 
                     using (var s = request.GetRequestStream())
@@ -416,6 +426,97 @@ namespace SCMBot
         }
 
 
+        public static string GetRequest(string url, CookieContainer cookie, bool UseHost)
+        {
+            string content = string.Empty;
+
+            int hostNum = 0;
+            bool hostUsed = false;
+
+            try
+            {
+                if (UseHost && (hostList.Count != 0))
+                {
+                    hostNum = GetFreeIndex();
+                    if (hostNum != -1)
+                    {
+                        hostList[hostNum].InUsing = true;
+                        hostList[hostNum].WorkLoad++;
+                        url = url.Replace(SteamSite._host, hostList[hostNum].Host);
+                        hostUsed = true;
+                    }
+                }
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+
+                //New
+                request.Proxy = null;
+                request.Timeout = 10000;
+                request.ReadWriteTimeout = 10000;
+                request.KeepAlive = true;
+                request.AutomaticDecompression = DecompressionMethods.GZip;
+
+
+                request.Host = SteamSite._host;
+                request.Referer = SteamSite._market;
+                request.UserAgent = steamUA;
+
+                request.Accept = "text/javascript, text/html, application/xml, text/xml, application/json, */*";
+                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+
+                request.Headers.Add("Accept-Encoding", "gzip, deflate");
+                request.Headers.Add("Accept-Language", "en-US,en;q=0.8,en-US;q=0.5,en;q=0.3");
+                request.Headers.Add("Cache-Control", "no-cache");
+
+                request.CookieContainer = cookie;
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var stream = new StreamReader(response.GetResponseStream());
+                    content = stream.ReadToEnd();
+                    stream.Close();
+                }
+                else content = string.Empty;
+
+                response.Close();
+
+            }
+
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+
+                    HttpWebResponse resp = (HttpWebResponse)e.Response;
+                    int statCode = (int)resp.StatusCode;
+
+                    if (statCode == 403)
+                    {
+                        content = "403";
+                    }
+                    else
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            content = sr.ReadToEnd();
+                        }
+                    }
+                }
+
+            }
+
+            //Free host
+            if (UseHost && (hostList.Count != 0) && hostUsed)
+            {
+                hostList[hostNum].InUsing = false;
+            }
+
+            return content;
+
+        }
 
 
         public static int GetFreeIndex()
@@ -441,90 +542,6 @@ namespace SCMBot
             if (!used)
                 return minIndex;
             else return -1;
-        }
-
-
-        public static string GetRequest(string url, CookieContainer cookie, bool UseHost, bool keepAlive)
-        {
-                string content = string.Empty;
-                int hostNum = 0;
-
-                bool hostUsed = false;
-
-                try
-                {
-
-                    if (UseHost && (hostList.Count != 0))
-                    {
-                        hostNum = GetFreeIndex();
-                        if (hostNum != -1)
-                        {
-                            hostList[hostNum].InUsing = true;
-                            hostList[hostNum].WorkLoad++;
-                            url = url.Replace(SteamSite._host, hostList[hostNum].Host);
-                            hostUsed = true;
-                        }
-                    }
-
-
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Method = "GET";
-
-                    //New
-                    request.Proxy = null;
-                    request.Timeout = 10000;
-                    request.ReadWriteTimeout = 10000;
-                    request.Host = SteamSite._host;
-                
-                    //KeepAlive is True by default
-                    //request.KeepAlive = keepAlive;
-
-                    //LOL, really?
-                    request.UserAgent = steamUA;
-
-                    request.Accept = "application/json";
-                    request.CookieContainer = cookie;
-
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    var stream = new StreamReader(response.GetResponseStream());
-                    content = stream.ReadToEnd();
-
-                    response.Close();
-                    stream.Close();
-
-                }
-
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError)
-                    {
-
-                        HttpWebResponse resp = (HttpWebResponse)e.Response;
-                        int statCode = (int)resp.StatusCode;
-
-                        if (statCode == 403)
-                        {
-                            content = "403";
-                        }
-                        else
-                        {
-                            using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
-                            {
-                                content = sr.ReadToEnd();
-                            }
-                        }
-                    }
-
-                }
-
-                //Free host
-                if (UseHost && (hostList.Count != 0) && hostUsed)
-                {
-                    hostList[hostNum].InUsing = false;
-                }
-
-                return content;
-
         }
 
 
@@ -573,110 +590,6 @@ namespace SCMBot
             intres = input + Convert.ToInt32(temp);
 
             return intres.ToString();
-        }
-
-        public class CurrencyInfo
-        {
-            public CurrencyInfo(string asciiName, string trueName, string index)
-            {
-                this.AsciiName = asciiName;
-                this.TrueName = trueName;
-                this.Index = index;
-            }
-
-            public string AsciiName { set; get; }
-            public string TrueName { set; get; }
-            public string Index { set; get; }
-        }
-
-        public class CurrInfoLst : List<CurrencyInfo>
-        {
-            public void Load(string path)
-            {
-                if (File.Exists(path))
-                {
-                    var list = File.ReadAllLines(path);
-
-                    for (int i = 0; i < list.Length; i++)
-                    {
-                        try
-                        {
-
-                            if (list[i] == string.Empty)
-                                continue;
-                            else
-                                if (list[i][0] == '/')
-                                    continue;
-                                else
-                                {
-                                    var currStr = list[i].Split(',');
-                                    if (currStr.Length == 3)
-                                    {
-                                        this.Add(new CurrencyInfo(currStr[2], currStr[1], currStr[0]));
-                                    }
-                                    else
-                                        if (currStr.Length == 2)
-                                        {
-                                            this.Add(new CurrencyInfo(currStr[1], currStr[1], currStr[0]));
-                                        }
-                                        else continue;
-                                }
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-                    }
-
-                    this.NotSet = true;
-                    this.Current = 0;
-
-                    if (this.Count == 0)
-                    {
-                          MessageBox.Show("Currency List is empty! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                    MessageBox.Show("Currency List is not exists! Program will not work correctly.", Strings.Attention, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            }
-
-            public int Current { set; get; }
-            public bool NotSet { set; get; }
-
-            public string GetName()
-            {
-                return this[Current].TrueName;
-            }
-
-            public string GetCode()
-            {
-                return this[Current].Index;
-            }
-
-            public string GetAscii()
-            {
-                return this[Current].AsciiName;
-            }
-
-            public void GetType(string input)
-            {
-                for (int i = 0; i < this.Count; i++)
-                {
-                    if (input.Contains(this[i].AsciiName))
-                    {
-                        Current = i;
-                        NotSet = false;
-                        //break;
-                    }
-                }
-            }
-
-
-            public string ReplaceAscii(string parseAmount)
-            {
-                return parseAmount.Replace(GetAscii(), GetName());
-            }
         }
 
 

@@ -144,7 +144,9 @@ namespace SCMBot
         public void Logout()
         {
             ThreadStart threadStart = delegate() {
-                SendGet(_logout, cookieCont, false, true);
+
+                string data = "sessionid=" + GetSessId(cookieCont);
+                SendPost(data, _logout, _market, false);
                 doMessage(flag.Logout_, 0, string.Empty, true);
                 Logged = false;
             };
@@ -262,7 +264,7 @@ namespace SCMBot
                 try
                 {
 
-                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, Main.jsonAddon, appid, markname), cookieCont, false, true));
+                    var priceOver = JsonConvert.DeserializeObject<PriceOverview>(SendGet(string.Format(priceOverview, Main.jsonAddon, appid, markname), cookieCont, false));
 
                     if (priceOver.Success)
                     {
@@ -271,7 +273,8 @@ namespace SCMBot
                         if (isInv)
                             fl = flag.InvPrice;
 
-                        var low_clean = Regex.Replace(priceOver.Lowest, Main.currencies.GetAscii(), string.Empty).Trim();
+                        //TODO
+                        var low_clean = Regex.Replace(priceOver.Lowest, Main.CurrName, string.Empty).Trim();
 
                         doMessage(fl, pos, new StrParam(low_clean, priceOver.Volume), true);
                     }
@@ -299,11 +302,11 @@ namespace SCMBot
             if (!LoadOnSale)
             {
                 invCount = ParseInventory(SendGet(string.Format(_jsonInv, myUserId, GetUrlApp(invApp, true).App),
-              cookieCont, false, true));
+              cookieCont, false));
             }
             else
             {
-                invCount = ParseOnSale(SendGet(_market, cookieCont, false, true));
+                invCount = ParseOnSale(SendGet(_market, cookieCont, false));
             }
 
             if (invCount > 0)
@@ -378,7 +381,7 @@ namespace SCMBot
         private void reqThread_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont, false, true), searchList), true);
+            doMessage(flag.Search_success, 0, ParseSearchRes(SendGet(linkTxt, cookieCont, false), searchList), true);
         }
 
 
@@ -617,7 +620,7 @@ namespace SCMBot
             start:
                 lotList.Clear();
 
-                byte ret = ParseLotList(SendGet(link, cookieCont, true, false), lotList, full, ismain);
+                byte ret = ParseLotList(SendGet(link, cookieCont, true), lotList, full, ismain);
 
                 if (ret == 8)
                 {
@@ -659,7 +662,6 @@ namespace SCMBot
             {
                 BackgroundWorker worker = sender as BackgroundWorker;
 
-                string sessid = GetSessId(cookieCont);
 
                 string url = scanInput.Link;
 
@@ -671,7 +673,7 @@ namespace SCMBot
 
                 if (BuyNow)
                 {
-                    ParseLotList(SendGet(url, cookieCont, false, true), lotList, false, true);
+                    ParseLotList(SendGet(url, cookieCont, true), lotList, false, true);
 
                     if (lotList.Count == 0)
                     {
@@ -680,6 +682,7 @@ namespace SCMBot
                     else
                     {
                         string totalStr = Convert.ToString(lotList[0].Price + lotList[0].Fee);
+                        string sessid = GetSessId(cookieCont);
                         var buyresp = BuyItem(cookieCont, sessid, lotList[0].ListringId, scanInput.Link, lotList[0].Price.ToString(), lotList[0].Fee.ToString(), totalStr);
 
                         BuyNow = false;
@@ -703,6 +706,8 @@ namespace SCMBot
                 {
                     try
                     {
+                        string sessid = GetSessId(cookieCont);
+
                         if (fillLotList(url, false, true))
                             buyCounter = BuyLogic(Convert.ToInt32(GetSweetPrice(scanInput.Price)), sessid, lotList[0], scanInput, buyCounter, true);
 
@@ -813,7 +818,7 @@ namespace SCMBot
                     }
 
                     //You get the point!
-                    ParseInventory(SendGet(string.Format(_jsonInv, myUserId, appType.App + "/" + appType.Context), cookieCont, false, true));
+                    ParseInventory(SendGet(string.Format(_jsonInv, myUserId, appType.App + "/" + appType.Context), cookieCont, false));
 
                     var req = string.Format(sellReq, GetSessId(cookieCont), appType.App, appType.Context, inventList.Find(p => p.Name == markName).AssetId, sellPrice.ToString());
 

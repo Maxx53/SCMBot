@@ -44,7 +44,7 @@ namespace SCMBot
         public static ScanItemList scanItems = new ScanItemList();
 
         private SettingsFrm settingsForm = new SettingsFrm();
-        private HostStatsFrm proxyStatForm = new HostStatsFrm();
+        private HostStatsFrm hostsStatForm = new HostStatsFrm();
         private GraphFrm graphFrm = new GraphFrm();
 
         Properties.Settings settings = Properties.Settings.Default;
@@ -53,8 +53,6 @@ namespace SCMBot
         private List<SteamSite.InventItem> filteredInvList = new List<SteamSite.InventItem>();
 
         public static HostList hostList = new HostList();
-        public static CurrInfoLst currencies = new CurrInfoLst();
-
 
         private Size lastFrmSize;
         private Point lastFrmPos;
@@ -65,6 +63,10 @@ namespace SCMBot
         public static int stopfundsVal = 0;
         public static string jsonAddon;
         public static int ReqDelay = 100;
+
+        //29.07.15 FIX
+        public static string CurrCode = "0";
+        public static string CurrName = string.Empty;
 
         public Main()
         {
@@ -101,9 +103,6 @@ namespace SCMBot
             settingsForm.intLangComboBox.DisplayMember = "NativeName";
             settingsForm.intLangComboBox.ValueMember = "Name";
 
-            //Loading currency list
-            currencies.Load("currency.txt");
-
             //Hotfix
             var cook = (CookieContainer)LoadBinary(cockPath);
 
@@ -130,11 +129,16 @@ namespace SCMBot
 
             LoadHosts(hostsPath);
 
-            if (settings.loginOnstart)
-                loginButton.PerformClick();
+            PerformAutoLogin();
 
             ListViewHelper.EnableDoubleBuffer(scanListView);
        }
+
+        private void PerformAutoLogin()
+        {
+            if (settings.loginOnstart && loginButton.Enabled == true)
+                loginButton.PerformClick();
+        }
 
 
         private void LoadHosts(string path)
@@ -142,6 +146,9 @@ namespace SCMBot
             if (File.Exists(path))
             {
                 var plines = File.ReadAllLines(path);
+
+                SetButton(loginButton, "Wait...", 4);
+                loginButton.Enabled = false;
 
                 ThreadStart readThread = delegate()
                 {
@@ -164,7 +171,14 @@ namespace SCMBot
                     }
 
                     this.Invoke((MethodInvoker)delegate
-                    { StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString(); });
+                    {
+                        StatusLabel1.Text = "Hosts loaded: " + hostList.Count.ToString();
+                        SetButton(loginButton, Strings.Login, 1);
+                        loginButton.Enabled = true;
+
+                        PerformAutoLogin();
+                    
+                    });
 
                 };
                 Thread pTh = new Thread(readThread);
@@ -359,7 +373,6 @@ namespace SCMBot
             settings.delayVal = steam_srch.mainDelay;
 
             settings.InvType = comboBox3.SelectedIndex;
-            settings.LastCurr = currencies.Current;
 
             settings.StopFunds = Convert.ToInt32(SteamSite.GetSweetPrice(settingsForm.stopFundsBox.Text));
             stopfundsVal = settings.StopFunds;
@@ -535,7 +548,7 @@ namespace SCMBot
            if (ismain)
             {
                 cutLog(scanItems[scanId].LogCont, settings.logCount);
-                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName()));
+                scanItems[scanId].LogCont.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, CurrName));
                 ScrollLbox(scanId, scanListView, true);
 
             }
@@ -545,7 +558,7 @@ namespace SCMBot
                 if (message == "Not found")
                     addcurr = false;
                // MessageBox.Show(scanId.ToString());
-                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, currencies.GetName()));
+                steam_srch.logContainer.Add(new MainScanItem.LogItem(color, message, DateTime.Now, addcurr, CurrName));
                 ScrollLbox(scanId, recentListView, false);
             }
 
@@ -845,7 +858,7 @@ namespace SCMBot
                     {
                         var ourItem = steam_srch.searchList[i];
 
-                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + currencies.GetName(), ourItem.Quant };
+                        string[] row = { string.Empty, ourItem.Game, ourItem.Name, ourItem.StartPrice + " " + CurrName, ourItem.Quant };
                         var lstItem = new ListViewItem(row);
                         FoundList.Items.Add(lstItem);
                     }
@@ -2444,7 +2457,7 @@ namespace SCMBot
             graphFrm.chart1.Series[0].BorderWidth = 2;
             graphFrm.chart1.Series[0].MarkerStyle = MarkerStyle.Circle;
 
-            graphFrm.currency = currencies.GetName();
+            graphFrm.currency = CurrName;
         }
 
 
@@ -2496,7 +2509,7 @@ namespace SCMBot
 
                 graphFrm.chart1.ChartAreas[0].AxisY.StripLines.Add(stripWished);
 
-                graphFrm.Show();
+                graphFrm.ShowDialog();
              
             }
         }
@@ -2741,7 +2754,7 @@ namespace SCMBot
 
         private void usingProxyStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            proxyStatForm.Show();
+            hostsStatForm.Show();
         }
 
 

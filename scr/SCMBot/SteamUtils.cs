@@ -434,12 +434,12 @@ namespace SCMBot
 
         }
 
-        private string SendGet(string url, CookieContainer cok, bool UseHost, bool keepAlive)
+        private string SendGet(string url, CookieContainer cok, bool UseHost)
         {
             Main.reqPool.WaitOne();
 
             doMessage(flag.StripImg, 0, string.Empty, true);
-            var res = Main.GetRequest(url, cookieCont, UseHost, keepAlive);
+            var res = Main.GetRequest(url, cookieCont, UseHost);
             doMessage(flag.StripImg, 1, string.Empty, true);
             
             //MessageBox.Show("blocked");
@@ -479,6 +479,7 @@ namespace SCMBot
 
         public static string GetSweetPrice(string input)
         {
+            input = input.Trim();
             string res = string.Empty;
 
             var match = input.IndexOfAny(".,".ToCharArray());
@@ -578,15 +579,14 @@ namespace SCMBot
 
 
 
-
         public StrParam GetNameBalance(CookieContainer cock)
         {
             Main.AddtoLog("Getting account name and balance...");
             
-            string markpage = SendGet(_market, cock, false, true);
+            string markpage = SendGet(_market, cock, false);
 
             //For testring purposes!
-            //string markpage = System.IO.File.ReadAllText(@"C:\sing.htm");
+            //markpage = System.IO.File.ReadAllText(@"");
 
             //Fix to getting name regex
             string parseName = Regex.Match(markpage, "(?<=buynow_dialog_myaccountname\">)(.*)(?=</span>)").ToString().Trim();
@@ -608,18 +608,25 @@ namespace SCMBot
             string country = Regex.Match(markpage, "(?<=g_strCountryCode = \")(.*)(?=\";)").ToString();
             string strlang = Regex.Match(markpage, "(?<=g_strLanguage = \")(.*)(?=\";)").ToString();
 
-            Main.currencies.GetType(parseAmount);
+            //wallet_currency":
+            Main.CurrCode = Regex.Match(markpage, "(?<=wallet_currency\":)(.*)(?=,\"wallet_country)").ToString().Trim();
 
-            parseAmount = Main.currencies.ReplaceAscii(parseAmount);
-            
+            string amountRx = @"[\d-,-.]";
+
+            //Костыль (
+            //If rubbles
+            if (parseAmount.EndsWith("."))
+                amountRx = @"[\d-,]";
+
+            Main.CurrName = Regex.Replace(parseAmount, amountRx, string.Empty).Trim();
+
             //?country=RU&language=russian&currency=5&count=20
-            string Addon = string.Format(jsonAddonUrl, country, strlang, Main.currencies.GetCode());
+            string Addon = string.Format(jsonAddonUrl, country, strlang, Main.CurrCode);
 
             return new StrParam(parseName, parseAmount, parseImg, Addon);
         }
 
-
-
+    
         public static string GetSessId(CookieContainer coock)
         {
             //sessid sample MTMyMTg5MTk5Mw%3D%3D
@@ -643,12 +650,11 @@ namespace SCMBot
 
         private BuyResponse BuyItem(CookieContainer cock, string sessid, string itemId, string link, string subtotal, string fee, string total)
         {
-            string data = string.Format(buyReq, sessid, subtotal, fee, total, Main.currencies.GetCode());
+            string data = string.Format(buyReq, sessid, subtotal, fee, total, Main.CurrCode);
 
             //buy
             //29.08.2013 Steam Update Issue!
             //FIX: using SSL - https:// in url
-
 
             string buyres = SendPost(data, _blist + itemId, link, true);
 
@@ -703,6 +709,8 @@ namespace SCMBot
         public byte ParseLotList(string content, List<ScanItem> lst, bool full, bool ismain)
         {
             lst.Clear();
+
+            
 
             //Smart ass!
             //Lol, fix.
@@ -840,23 +848,9 @@ namespace SCMBot
                             string ItemQuan = Regex.Match(currmatch, "(?<=num_listings_qty\">)(.*)(?=</span>)").ToString();
 
                             //Fix for Steam update 3/26/14 4:00 PM PST
-                            string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:)(.*)(?=<div class=\"market_listing_right_cell)", RegexOptions.Singleline).ToString();
+                            string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:white\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
 
-                            //Удаляем ascii кода нашей текущей валюты
-                            if (Main.currencies.NotSet)
-                            {
-                                Main.currencies.GetType(ItemPrice);
-                                //If not loggen in then
-                                ItemPrice = Regex.Replace(ItemPrice, Main.currencies.GetAscii(), string.Empty);
-                                //currLst.NotSet = true;
-                            }
-                            else
-                            {
-                                ItemPrice = Regex.Replace(ItemPrice, Main.currencies.GetAscii(), string.Empty);
-
-                            }
-
-                            ItemPrice = Regex.Replace(ItemPrice, @"[^\d\,\.]+", string.Empty);
+                            ItemPrice = ItemPrice.Replace(Main.CurrName, string.Empty).Trim();
 
                             //Fix fot Steam update 3/26/14 4:00 PM PST
                             string ItemName = Regex.Match(currmatch, "(?<=listing_item_name\" style=\"color:)(.*)(?=</span>)").ToString();
@@ -958,7 +952,7 @@ namespace SCMBot
 						)(.*)(?=					</span>
 					<br>)", RegexOptions.Singleline).ToString();
 
-                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, Main.currencies.GetAscii(), string.Empty).Trim());
+                    captainPrice = GetSweetPrice(Regex.Replace(captainPrice, Main.CurrName, string.Empty).Trim());
                    
                     string[] LinkName = Regex.Match(currmatch, "(?<=_name_link\" href=\")(.*)(?=</a></span><br/>)").ToString().Split(new string[] { "\">" }, StringSplitOptions.None);
                    
