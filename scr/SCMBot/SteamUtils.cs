@@ -56,7 +56,8 @@ namespace SCMBot
         const string _jsonInv = _mainsite + "profiles/{0}/inventory/json/{1}";
 
         //Fix
-        public const string imgUri = "http://steamcommunity-a.akamaihd.net/economy/image/";
+        public const string imgUri = "https://steamcommunity-a.akamaihd.net/economy/image/";
+
 
         //public const string invImgUrl = imgUri + "{0}/96fx96f";
         public const string fndImgUrl = imgUri + "{0}/62fx62f";
@@ -601,7 +602,7 @@ namespace SCMBot
             myUserId = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
 
             //30.05.14 Update
-            string parseImg = Regex.Match(markpage, "(?<=avatarIcon\"><img src=\")(.*)(?=\" alt=\"\"></span>)", RegexOptions.Singleline).ToString();
+            string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*?)(?=\" alt=\"\"></a>)", RegexOptions.Singleline).ToString();
            
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
@@ -927,16 +928,16 @@ namespace SCMBot
         public int ParseOnSale(string content)
         {
             inventList.Clear();
-            string parseBody = Regex.Match(content, "(?<=section market_home_listing_table\">)(.*)(?=<div id=\"tabContentsMyMarketHistory)", RegexOptions.Singleline).ToString();
+            string parseBody = Regex.Match(content, "(?<=my_listing_section market_home_listing_table\">)(.*)(?=div class=\"my_listing_section market_content_block)", RegexOptions.Singleline).ToString();
 
-            MatchCollection matches = Regex.Matches(parseBody, "(?<=market_recent_listing_row listing_)(.*?)(?=	</div>\r\n</div>)", RegexOptions.Singleline);
+            MatchCollection matches = Regex.Matches(parseBody, "(?<=market_recent_listing_row listing_)(.*?)(?=javascript:RemoveMarketListing)", RegexOptions.Singleline);
             if (matches.Count != 0)
             {
                 foreach (Match match in matches)
                 {
                     string currmatch = match.Groups[1].Value;
 
-                    string ImgLink = Regex.Match(currmatch, "(?<=economy/image/)(.*)(?=/38fx38f)").ToString();
+                    string ImgLink = Regex.Match(currmatch, "(?<=economy/image/)(.*)(?=/38fx38f\")").ToString();
 
                     //If you need:
                     //string assetid = Regex.Match(currmatch, "(?<='mylisting', ')(.*)(?=\" class=\"item_market)").ToString();

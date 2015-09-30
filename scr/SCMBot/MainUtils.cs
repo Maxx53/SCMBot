@@ -116,7 +116,7 @@ namespace SCMBot
 
         public static void StartLoadImgTread(string imgUrl, PictureBox picbox)
         {
-            if (imgUrl.Contains("http://"))
+            if (imgUrl.Contains("http"))
             {
                 ThreadStart threadStart = delegate() { loadImg(imgUrl, picbox, true, false); };
                 Thread pTh = new Thread(threadStart);
