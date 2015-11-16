@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Globalization;
 
 namespace SCMBot
 {
@@ -428,6 +427,9 @@ namespace SCMBot
 
         public static string GetRequest(string url, CookieContainer cookie, bool UseHost)
         {
+            if (banTimer.Enabled)
+                return "B";
+
             string content = string.Empty;
 
             int hostNum = 0;
@@ -456,7 +458,6 @@ namespace SCMBot
                 request.ReadWriteTimeout = 10000;
                 request.KeepAlive = true;
                 request.AutomaticDecompression = DecompressionMethods.GZip;
-
 
                 request.Host = SteamSite._host;
                 request.Referer = SteamSite._market;
@@ -512,6 +513,13 @@ namespace SCMBot
             if (UseHost && (hostList.Count != 0) && hostUsed)
             {
                 hostList[hostNum].InUsing = false;
+            }
+
+
+            if (content.Contains("error_ctn"))
+            {
+                banTimer.Enabled = true;
+                return "B";
             }
 
             return content;
@@ -614,6 +622,8 @@ namespace SCMBot
                 case "6": mess = "Item is not supported in html source!";
                     break;
                 case "8": mess = "Move along...";
+                    break;
+                case "9": mess = "Got Banned! Waiting for UnBan...";
                     break;
                 default: mess = "Unknown error";
                     break;

@@ -627,13 +627,25 @@ namespace SCMBot
                     doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
                     goto start;
                 }
+                else
+                    if (ret == 9)
+                    {
+                        doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
 
-                if (ret != 7)
-                {
-                    doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
-                    return false;
-                }
-                else return true;
+                        while (Main.banTimer.Enabled)
+                        {
+                            Sem.WaitOne(1000);
+                        }
+
+                        goto start;
+                    }
+                    else
+                        if (ret != 7)
+                        {
+                            doMessage(flag.Error_scan, scanID, ret.ToString(), ismain);
+                            return false;
+                        }
+                        else return true;
             }
         }
 

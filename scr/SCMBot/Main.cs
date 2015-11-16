@@ -10,6 +10,7 @@ using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
+using System.Timers;
 
 
 // Внимание! Данная наработка - всего-лишь грубая реализация идеи.
@@ -68,6 +69,9 @@ namespace SCMBot
         public static string CurrCode = "0";
         public static string CurrName = string.Empty;
 
+        public static System.Timers.Timer banTimer = new System.Timers.Timer(120000);
+
+
         public Main()
         {
 
@@ -83,12 +87,19 @@ namespace SCMBot
             recentListView.SmallImageList = StatImgLst;
 
             steam_srch.delegMessage += new eventDelegate(Event_Message);
-           
+
+            // Only raise the event the first time Interval elapses.
+            banTimer.AutoReset = false;
+            banTimer.Enabled = false;
+
+
             //Some WebRequest optimizations
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 50;
          }
+
+
 
  
         private void Main_Load(object sender, EventArgs e)
@@ -265,6 +276,8 @@ namespace SCMBot
 
             lastFrmPos = this.Location;
             lastFrmSize = this.Size;
+
+            banTimer.Interval = settings.UnBanInterval;
 
             if (settings.formParams == null)
             {
@@ -2787,8 +2800,6 @@ namespace SCMBot
         }
 
 
-
-
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -2815,6 +2826,7 @@ namespace SCMBot
 
             }
         }
+
 
 
    }

@@ -412,5 +412,21 @@ namespace SCMBot.Properties {
                 this["lastCurr"] = value;
             }
         }
+
+        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120000")]
+        public int UnBanInterval
+        {
+            get
+            {
+                return ((int)(this["UnBanInterval"]));
+            }
+            set
+            {
+                this["UnBanInterval"] = value;
+            }
+        }
     }
 }

@@ -601,8 +601,11 @@ namespace SCMBot
             //Set profileId for old Url format
             myUserId = Regex.Match(markpage, "(?<=g_steamID = \")(.*)(?=\";)").ToString();
 
+
+            //avatarIcon"><img src="
+
             //30.05.14 Update
-            string parseImg = Regex.Match(markpage, "(?<=headerUserAvatarIcon\" src=\")(.*?)(?=\" alt=\"\"></a>)", RegexOptions.Singleline).ToString();
+            string parseImg = Regex.Match(markpage, "(?<=avatarIcon\">"+@"\r\n\s+"+"<img src=\")(.*?)(?=\" srcset=\")", RegexOptions.Singleline).ToString();
            
             string parseAmount = Regex.Match(markpage, "(?<=marketWalletBalanceAmount\">)(.*)(?=</span>)").ToString();
 
@@ -711,7 +714,10 @@ namespace SCMBot
         {
             lst.Clear();
 
-            
+            if (content == "B")
+                //Got Ban
+                return 9;
+
 
             //Smart ass!
             //Lol, fix.
@@ -733,7 +739,7 @@ namespace SCMBot
                 {
                     //Content empty
                     return 0;
-                }
+                } 
                 else if (content == "403")
                 {
                     //403 Forbidden
@@ -753,7 +759,7 @@ namespace SCMBot
 
             try
             {
-                //"success":false
+
                 if (content.Substring(11, 1) == "f")
                     return 1;
 
