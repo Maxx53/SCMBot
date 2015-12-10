@@ -45,7 +45,7 @@ namespace SCMBot
         const string _lang_req = "language={0}&sessionid={1}";
 
         //Request fix for 02/05/15
-        const string loginReq = "password={0}&username={1}&twofactorcode=&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        const string loginReq = "password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
 
         //Currency FIX
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
@@ -210,6 +210,9 @@ namespace SCMBot
 
             [JsonProperty("bad_captcha")]
             public bool isBadCap { get; set; }
+
+            [JsonProperty("requires_twofactor")]
+            public bool isTwoFactor { get; set; }
         }
 
         public class RespFinal
