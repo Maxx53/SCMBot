@@ -95,6 +95,12 @@
     <Compile Include="CookieFrm.Designer.cs">
       <DependentUpon>CookieFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TwoFactorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TwoFactorDialog.Designer.cs">
+      <DependentUpon>TwoFactorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="GraphFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CookieFrm.ru-RU.resx">
       <DependentUpon>CookieFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TwoFactorDialog.fr-FR.resx">
+      <DependentUpon>TwoFactorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TwoFactorDialog.resx">
+      <DependentUpon>TwoFactorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialog.fr-FR.resx">
       <DependentUpon>Dialog.cs</DependentUpon>
