@@ -860,6 +860,16 @@ namespace SCMBot
                             //Fix for Steam update 3/26/14 4:00 PM PST
                             string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:white\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
 
+                            //<span class="normal_price">1382,76 pуб.</span>< span class="sale_price">1322,64 pуб.</span>
+                            if (string.IsNullOrEmpty(ItemPrice))
+                            {
+                                ItemPrice = Regex.Match(currmatch, "(?<=<span class=\"sale_price\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
+                            }
+                            if (string.IsNullOrEmpty(ItemPrice))
+                            {
+                                ItemPrice = Regex.Match(currmatch, "(?<=<span class=\"normal_price\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
+                            }
+                            
                             ItemPrice = ItemPrice.Replace(Main.CurrName, string.Empty).Trim();
 
                             //Fix fot Steam update 3/26/14 4:00 PM PST
