@@ -421,6 +421,7 @@ namespace SCMBot
             string capchaId = string.Empty;
             string capchaTxt = string.Empty;
             string mailId = string.Empty;
+            string twoFactor = string.Empty;
 
 
         //Login cycle
@@ -443,13 +444,10 @@ namespace SCMBot
                 return;
             }
 
-
             LoginProgr("40");
 
             string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
-
-            string MainReq = string.Format(loginReq, finalpass, UserName, mailCode, guardDesc, capchaId,
-                                                                          capchaTxt, mailId, rRSA.TimeStamp);
+            string MainReq = string.Format(loginReq, finalpass, UserName, mailCode, guardDesc, capchaId, capchaTxt, mailId, rRSA.TimeStamp, twoFactor);
             string BodyResp = SendPost(MainReq, _dologin, _ref, true);
 
             LoginProgr("60");
@@ -472,19 +470,40 @@ namespace SCMBot
                 {
                     //Login correct, checking message type...
 
-                    Dialog guardCheckForm = new Dialog();
-
-                    if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
+                    if (rProcess.isTwoFactor)
                     {
-                        //Verifying humanity, loading capcha
-                        guardCheckForm.capchgroupEnab = true;
-                        guardCheckForm.codgroupEnab = false;
+                        TwoFactorDialog tf = new TwoFactorDialog();
+                        if (tf.ShowDialog() == DialogResult.OK)
+                        {
+                            twoFactor = tf.TwoFactorCode;
+                            goto begin;
+                        }
+                        else
+                        {
+                            Main.AddtoLog("Dialog has been cancelled");
+                            doMessage(flag.Login_cancel, 0, "Dialog has been cancelled", true);
+                            e.Cancel = true;
+                            Logged = false;
+                            LoginProcess = false;
+                            tf.Dispose();
+                            return;
 
-                        string newcap = _capcha + rProcess.Captcha_Id;
-                        Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
+                        }
                     }
                     else
-                        if (rProcess.isEmail)
+                    {
+                        Dialog guardCheckForm = new Dialog();
+
+                        if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
+                        {
+                            //Verifying humanity, loading capcha
+                            guardCheckForm.capchgroupEnab = true;
+                            guardCheckForm.codgroupEnab = false;
+
+                            string newcap = _capcha + rProcess.Captcha_Id;
+                            Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
+                        }
+                        else if (rProcess.isEmail)
                         {
                             //Steam guard wants email code
                             guardCheckForm.capchgroupEnab = false;
@@ -496,28 +515,28 @@ namespace SCMBot
                             goto begin;
                         }
 
-                    //Re-assign main request values
-                    if (guardCheckForm.ShowDialog() == DialogResult.OK)
-                    {
-                        mailCode = guardCheckForm.MailCode;
-                        guardDesc = guardCheckForm.GuardDesc;
-                        capchaId = rProcess.Captcha_Id;
-                        capchaTxt = guardCheckForm.capchaText;
-                        mailId = rProcess.Email_Id;
-                        guardCheckForm.Dispose();
-                    }
-                    else
-                    {
-                        Main.AddtoLog("Dialog has been cancelled");
-                        doMessage(flag.Login_cancel, 0, "Dialog has been cancelled", true);
-                        e.Cancel = true;
-                        Logged = false;
-                        LoginProcess = false;
-                        guardCheckForm.Dispose();
-                        return;
+                        //Re-assign main request values
+                        if (guardCheckForm.ShowDialog() == DialogResult.OK)
+                        {
+                            mailCode = guardCheckForm.MailCode;
+                            guardDesc = guardCheckForm.GuardDesc;
+                            capchaId = rProcess.Captcha_Id;
+                            capchaTxt = guardCheckForm.capchaText;
+                            mailId = rProcess.Email_Id;
+                            guardCheckForm.Dispose();
+                        }
+                        else
+                        {
+                            Main.AddtoLog("Dialog has been cancelled");
+                            doMessage(flag.Login_cancel, 0, "Dialog has been cancelled", true);
+                            e.Cancel = true;
+                            Logged = false;
+                            LoginProcess = false;
+                            guardCheckForm.Dispose();
+                            return;
 
+                        }
                     }
-
                     goto begin;
                 }
 

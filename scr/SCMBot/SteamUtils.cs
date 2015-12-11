@@ -45,7 +45,7 @@ namespace SCMBot
         const string _lang_req = "language={0}&sessionid={1}";
 
         //Request fix for 02/05/15
-        const string loginReq = "password={0}&username={1}&twofactorcode=&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        const string loginReq = "password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
 
         //Currency FIX
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
@@ -210,6 +210,9 @@ namespace SCMBot
 
             [JsonProperty("bad_captcha")]
             public bool isBadCap { get; set; }
+
+            [JsonProperty("requires_twofactor")]
+            public bool isTwoFactor { get; set; }
         }
 
         public class RespFinal
@@ -317,7 +320,7 @@ namespace SCMBot
             [JsonProperty("converted_price")]
             public int price { get; set; }
 
-            [JsonProperty("converted_fee")]
+            [JsonProperty("converted_publisher_fee")]
             public int fee { get; set; }
 
             [JsonProperty("asset")]
@@ -857,6 +860,16 @@ namespace SCMBot
                             //Fix for Steam update 3/26/14 4:00 PM PST
                             string ItemPrice = Regex.Match(currmatch, "(?<=<span style=\"color:white\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
 
+                            //<span class="normal_price">1382,76 pуб.</span>< span class="sale_price">1322,64 pуб.</span>
+                            if (string.IsNullOrEmpty(ItemPrice))
+                            {
+                                ItemPrice = Regex.Match(currmatch, "(?<=<span class=\"sale_price\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
+                            }
+                            if (string.IsNullOrEmpty(ItemPrice))
+                            {
+                                ItemPrice = Regex.Match(currmatch, "(?<=<span class=\"normal_price\">)(.*?)(?=</span>)", RegexOptions.Singleline).ToString();
+                            }
+                            
                             ItemPrice = ItemPrice.Replace(Main.CurrName, string.Empty).Trim();
 
                             //Fix fot Steam update 3/26/14 4:00 PM PST
