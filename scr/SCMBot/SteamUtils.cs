@@ -320,7 +320,7 @@ namespace SCMBot
             [JsonProperty("converted_price")]
             public int price { get; set; }
 
-            [JsonProperty("converted_fee")]
+            [JsonProperty("converted_publisher_fee")]
             public int fee { get; set; }
 
             [JsonProperty("asset")]
