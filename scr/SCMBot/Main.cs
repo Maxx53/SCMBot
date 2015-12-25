@@ -592,13 +592,22 @@ namespace SCMBot
                     AddtoLog(Strings.AlreadyLogged);
                     StatusLabel1.Text = Strings.AlreadyLogged;
                     GetAccInfo((StrParam)data);
+
+                   if (relog)
+                    scanItems.UpdateCock(steam_srch.cookieCont);
+                    relog = false;
+
                     break;
 
                 case flag.Login_success:
-                    relog = false;
                     AddtoLog(Strings.LoginSucc);
                     StatusLabel1.Text = Strings.LoginSucc;
                     GetAccInfo((StrParam)data);
+
+                    if (relog)
+                       scanItems.UpdateCock(steam_srch.cookieCont);
+                    relog = false;
+
                     break;
 
                 case flag.Login_cancel:

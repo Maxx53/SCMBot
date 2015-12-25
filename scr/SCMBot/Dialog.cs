@@ -18,10 +18,16 @@ namespace SCMBot
             set { guardBox.Text = value; }
         }
 
-        public string capchaText
+        public string CapchaText
         {
             get { return capchaBox.Text; }
             set { capchaBox.Text = value; }
+        }
+
+        public string TwoFactorCode
+        {
+            get { return factorTextBox.Text; }
+            set { factorTextBox.Text = value; }
         }
 
         public bool codgroupEnab
@@ -36,7 +42,13 @@ namespace SCMBot
             set { capchgroupBox.Visible = value; }
         }
 
-         public PictureBox capchImg
+        public bool factorgroupEnab
+        {
+            get { return twoFactorGroup.Enabled; }
+            set { twoFactorGroup.Visible = value; }
+        }
+
+        public PictureBox capchImg
         {
             get { return capchapicBox; }
             set { capchapicBox = value; }

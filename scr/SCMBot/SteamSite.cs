@@ -409,10 +409,10 @@ namespace SCMBot
 
             if (accInfo != null)
             {
+                Logged = true;
                 doMessage(flag.Already_logged, 0, accInfo, true);
                 doMessage(flag.Rep_progress, 0, "100", true);
                 LoginProcess = false;
-                Logged = true;
                 return;
             }
 
@@ -421,6 +421,7 @@ namespace SCMBot
             string capchaId = string.Empty;
             string capchaTxt = string.Empty;
             string mailId = string.Empty;
+            string twoFactorCode = string.Empty;
 
 
         //Login cycle
@@ -449,7 +450,7 @@ namespace SCMBot
             string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
 
             string MainReq = string.Format(loginReq, finalpass, UserName, mailCode, guardDesc, capchaId,
-                                                                          capchaTxt, mailId, rRSA.TimeStamp);
+                                                                          capchaTxt, mailId, rRSA.TimeStamp, twoFactorCode);
             string BodyResp = SendPost(MainReq, _dologin, _ref, true);
 
             LoginProgr("60");
@@ -479,30 +480,41 @@ namespace SCMBot
                         //Verifying humanity, loading capcha
                         guardCheckForm.capchgroupEnab = true;
                         guardCheckForm.codgroupEnab = false;
+                        guardCheckForm.factorgroupEnab = false;
 
                         string newcap = _capcha + rProcess.Captcha_Id;
                         Main.loadImg(newcap, guardCheckForm.capchImg, false, false);
                     }
                     else
-                        if (rProcess.isEmail)
+                        if (rProcess.isTwoFactor)
                         {
-                            //Steam guard wants email code
+                            //Steam wants two factor code
                             guardCheckForm.capchgroupEnab = false;
-                            guardCheckForm.codgroupEnab = true;
+                            guardCheckForm.codgroupEnab = false;
+                            guardCheckForm.factorgroupEnab = true;
                         }
                         else
-                        {
-                            //Whoops!
-                            goto begin;
-                        }
+                            if (rProcess.isEmail)
+                            {
+                                //Steam guard wants email code
+                                guardCheckForm.capchgroupEnab = false;
+                                guardCheckForm.codgroupEnab = true;
+                                guardCheckForm.factorgroupEnab = false;
+                            }
+                            else
+                            {
+                                //Whoops!
+                                goto begin;
+                            }
 
                     //Re-assign main request values
                     if (guardCheckForm.ShowDialog() == DialogResult.OK)
                     {
                         mailCode = guardCheckForm.MailCode;
                         guardDesc = guardCheckForm.GuardDesc;
+                        twoFactorCode = guardCheckForm.TwoFactorCode;
                         capchaId = rProcess.Captcha_Id;
-                        capchaTxt = guardCheckForm.capchaText;
+                        capchaTxt = guardCheckForm.CapchaText;
                         mailId = rProcess.Email_Id;
                         guardCheckForm.Dispose();
                     }
@@ -534,11 +546,10 @@ namespace SCMBot
                     //Okay
                     var accInfo2 = GetNameBalance(cookieCont);
 
+                    Logged = true;
                     doMessage(flag.Login_success, 0, accInfo2, true);
 
                     LoginProgr("100");
-
-                    Logged = true;
                     Main.AddtoLog("Login Success");
                 }
                 else

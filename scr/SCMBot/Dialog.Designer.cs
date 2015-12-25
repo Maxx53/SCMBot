@@ -31,17 +31,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dialog));
             this.okButton = new System.Windows.Forms.Button();
             this.codgroupBox = new System.Windows.Forms.GroupBox();
-            this.capchgroupBox = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.capchaBox = new System.Windows.Forms.TextBox();
-            this.capchapicBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.guardBox = new System.Windows.Forms.TextBox();
             this.mailcodeBox = new System.Windows.Forms.TextBox();
+            this.capchgroupBox = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.capchaBox = new System.Windows.Forms.TextBox();
+            this.capchapicBox = new System.Windows.Forms.PictureBox();
+            this.twoFactorGroup = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.factorTextBox = new System.Windows.Forms.TextBox();
             this.codgroupBox.SuspendLayout();
             this.capchgroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.capchapicBox)).BeginInit();
+            this.twoFactorGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -60,6 +64,26 @@
             resources.ApplyResources(this.codgroupBox, "codgroupBox");
             this.codgroupBox.Name = "codgroupBox";
             this.codgroupBox.TabStop = false;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // guardBox
+            // 
+            resources.ApplyResources(this.guardBox, "guardBox");
+            this.guardBox.Name = "guardBox";
+            // 
+            // mailcodeBox
+            // 
+            resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
+            this.mailcodeBox.Name = "mailcodeBox";
             // 
             // capchgroupBox
             // 
@@ -87,25 +111,24 @@
             this.capchapicBox.Name = "capchapicBox";
             this.capchapicBox.TabStop = false;
             // 
-            // label2
+            // twoFactorGroup
             // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
+            this.twoFactorGroup.Controls.Add(this.label5);
+            this.twoFactorGroup.Controls.Add(this.factorTextBox);
+            resources.ApplyResources(this.twoFactorGroup, "twoFactorGroup");
+            this.twoFactorGroup.Name = "twoFactorGroup";
+            this.twoFactorGroup.TabStop = false;
             // 
-            // label1
+            // label5
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
-            // guardBox
+            // factorTextBox
             // 
-            resources.ApplyResources(this.guardBox, "guardBox");
-            this.guardBox.Name = "guardBox";
-            // 
-            // mailcodeBox
-            // 
-            resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
-            this.mailcodeBox.Name = "mailcodeBox";
+            this.factorTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            resources.ApplyResources(this.factorTextBox, "factorTextBox");
+            this.factorTextBox.Name = "factorTextBox";
             // 
             // Dialog
             // 
@@ -114,6 +137,7 @@
             this.Controls.Add(this.capchgroupBox);
             this.Controls.Add(this.codgroupBox);
             this.Controls.Add(this.okButton);
+            this.Controls.Add(this.twoFactorGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Dialog";
             this.codgroupBox.ResumeLayout(false);
@@ -121,6 +145,8 @@
             this.capchgroupBox.ResumeLayout(false);
             this.capchgroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.capchapicBox)).EndInit();
+            this.twoFactorGroup.ResumeLayout(false);
+            this.twoFactorGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -137,5 +163,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox capchaBox;
         private System.Windows.Forms.PictureBox capchapicBox;
+        private System.Windows.Forms.GroupBox twoFactorGroup;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox factorTextBox;
     }
 }
