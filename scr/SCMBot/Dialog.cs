@@ -27,25 +27,43 @@ namespace SCMBot
         public string TwoFactorCode
         {
             get { return factorTextBox.Text; }
-            set { factorTextBox.Text = value; }
+            set { factorTextBox.Text = value;}
         }
 
         public bool codgroupEnab
         {
             get { return codgroupBox.Enabled; }
-            set { codgroupBox.Visible = value; }
+            set
+            {
+                codgroupBox.Visible = value;
+
+                if (value)
+                    mailcodeBox.Select();
+            }
         }
 
         public bool capchgroupEnab
         {
             get { return capchgroupBox.Enabled; }
-            set { capchgroupBox.Visible = value; }
+            set
+            {
+                capchgroupBox.Visible = value;
+
+                if (value)
+                    capchaBox.Select();
+            }
         }
 
         public bool factorgroupEnab
         {
             get { return twoFactorGroup.Enabled; }
-            set { twoFactorGroup.Visible = value; }
+            set
+            {
+                twoFactorGroup.Visible = value;
+
+                if (value)
+                    factorTextBox.Select();
+            }
         }
 
         public PictureBox capchImg
@@ -65,6 +83,12 @@ namespace SCMBot
         {
             this.DialogResult = DialogResult.OK;
             return;
+        }
+
+        private void factorTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                okButton.PerformClick();
         }
 
     }

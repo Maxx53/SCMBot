@@ -89,17 +89,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuyOrders.cs" />
     <Compile Include="CookieFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CookieFrm.Designer.cs">
       <DependentUpon>CookieFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GraphFrm.cs">
+    <Compile Include="Inventory.cs" />
+    <Compile Include="ItemInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GraphFrm.Designer.cs">
-      <DependentUpon>GraphFrm.cs</DependentUpon>
+    <Compile Include="ItemInfoForm.Designer.cs">
+      <DependentUpon>ItemInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListViewHelper.cs" />
     <Compile Include="Main.cs">
@@ -117,6 +119,8 @@
     <Compile Include="MainUtils.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MarketAuth.cs" />
+    <Compile Include="MyEventArgs.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,8 +136,8 @@
     <Compile Include="SettingsFrm.Designer.cs">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SteamSite.cs" />
-    <Compile Include="SteamUtils.cs" />
+    <Compile Include="Steam.cs" />
+    <Compile Include="Search.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -161,11 +165,8 @@
     <EmbeddedResource Include="Dialog.fr-FR.resx">
       <DependentUpon>Dialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GraphFrm.fr-FR.resx">
-      <DependentUpon>GraphFrm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphFrm.resx">
-      <DependentUpon>GraphFrm.cs</DependentUpon>
+    <EmbeddedResource Include="ItemInfoForm.resx">
+      <DependentUpon>ItemInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.fr-FR.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -175,6 +176,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialog.resx">
       <DependentUpon>Dialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.ru-RU.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -194,12 +196,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.fr-FR.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsFrm.ru-RU.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -300,9 +305,14 @@
     <None Include="Resources\export.png" />
     <None Include="Resources\import.png" />
     <None Include="Resources\host.png" />
+    <Content Include="AppTypes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="hosts.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\save.png" />
     <Content Include="Steam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

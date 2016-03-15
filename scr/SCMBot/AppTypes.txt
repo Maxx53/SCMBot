@@ -1,0 +1,8 @@
+﻿Steam=753/6
+TF2=440/2
+DOTA2=570/2
+CS:GO=730/2
+Battleblock Threater=238460/2
+Warframe=230410/2
+Sins of a Dark Age=251970/1
+Path of Exile=238960/1

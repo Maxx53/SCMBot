@@ -10,7 +10,6 @@ using System.Drawing;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Threading;
-using System.ComponentModel;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -22,11 +21,6 @@ namespace SCMBot
     [Flags]
     public enum flag : byte
     {
-        Already_logged = 0,
-        Login_success = 1,
-        Login_cancel = 2,
-        Login_error = 3,
-        Logout_ = 4,
         Price_text = 5,
         Price_htext = 6,
         Rep_progress = 7,
@@ -66,6 +60,7 @@ namespace SCMBot
     {
         const string logPath = "logfile.txt";
         const string hostsPath = "hosts.txt";
+        const string historyPath = "history.json";
 
         const string appName = "SCM Bot alpha";
         const string notifTxt = "{0}\r\n{1} {2}";
@@ -358,9 +353,21 @@ namespace SCMBot
         }
 
 
-        public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie, bool tolog)
+        public void ChangeStatusImage(bool isWork)
         {
+            this.Invoke((MethodInvoker)delegate
+            {
+                if (isWork)
+                    toolStripImage.Image = Properties.Resources.working;
+                else
+                    toolStripImage.Image = Properties.Resources.ready;
 
+            });
+        }
+
+        public static string SendPostRequest(string req, string url, string refer, CookieContainer cookie)
+        {
+           
                 var requestData = Encoding.UTF8.GetBytes(req);
                 string content = string.Empty;
 
@@ -377,7 +384,7 @@ namespace SCMBot
                     request.Timeout = 30000;
 
                     request.AutomaticDecompression = DecompressionMethods.GZip;
-                    request.Host = SteamSite._host;
+                    request.Host = Steam.host;
                     request.UserAgent = steamUA;
 
                     request.Accept = "text/javascript, text/html, application/xml, text/xml, application/json, */*";
@@ -401,8 +408,8 @@ namespace SCMBot
                     var stream = new StreamReader(resp.GetResponseStream());
                     content = stream.ReadToEnd();
 
-                    if (tolog)
-                        AddtoLog(content);
+                    //if (tolog)
+                    //    AddtoLog(content);
 
                     cookie = request.CookieContainer;
                     resp.Close();
@@ -425,29 +432,29 @@ namespace SCMBot
         }
 
 
-        public static string GetRequest(string url, CookieContainer cookie, bool UseHost)
+        public static string GetRequest(string url, CookieContainer cookie)
         {
             if (banTimer.Enabled)
                 return "B";
 
             string content = string.Empty;
 
-            int hostNum = 0;
-            bool hostUsed = false;
+           // int hostNum = 0;
+           // bool hostUsed = false;
 
             try
             {
-                if (UseHost && (hostList.Count != 0))
-                {
-                    hostNum = GetFreeIndex();
-                    if (hostNum != -1)
-                    {
-                        hostList[hostNum].InUsing = true;
-                        hostList[hostNum].WorkLoad++;
-                        url = url.Replace(SteamSite._host, hostList[hostNum].Host);
-                        hostUsed = true;
-                    }
-                }
+                //if (UseHost && (hostList.Count != 0))
+                //{
+                //    hostNum = GetFreeIndex();
+                //    if (hostNum != -1)
+                //    {
+                //        hostList[hostNum].InUsing = true;
+                //        hostList[hostNum].WorkLoad++;
+                //        url = url.Replace(SteamSite._host, hostList[hostNum].Host);
+                //        hostUsed = true;
+                //    }
+                //}
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
@@ -459,8 +466,8 @@ namespace SCMBot
                 request.KeepAlive = true;
                 request.AutomaticDecompression = DecompressionMethods.GZip;
 
-                request.Host = SteamSite._host;
-                request.Referer = SteamSite._market;
+                request.Host = Steam.host;
+                request.Referer = Steam.market;
                 request.UserAgent = steamUA;
 
                 request.Accept = "text/javascript, text/html, application/xml, text/xml, application/json, */*";
@@ -509,11 +516,11 @@ namespace SCMBot
 
             }
 
-            //Free host
-            if (UseHost && (hostList.Count != 0) && hostUsed)
-            {
-                hostList[hostNum].InUsing = false;
-            }
+            ////Free host
+            //if (UseHost && (hostList.Count != 0) && hostUsed)
+            //{
+            //    hostList[hostNum].InUsing = false;
+            //}
 
 
             if (content.Contains("error_ctn"))
@@ -551,94 +558,6 @@ namespace SCMBot
                 return minIndex;
             else return -1;
         }
-
-
-        //That's all folks. Not precisely.
-        public static string CalcWithFee(string strInput)
-        {
-
-            int intres = 0;
-            int input = Convert.ToInt32(strInput);
-
-            //Magic
-            double temp = input / 1.15;
-
-            if (input > 10)
-                intres = Convert.ToInt32(Math.Ceiling(temp));
-            else
-                if (input < 4)
-                {
-                    if (input == 3)
-                        intres = 1;
-                    else
-                        intres = 0;
-                }
-                else
-                    intres = Convert.ToInt32(temp) - 1;
-
-            return intres.ToString();
-        }
-
-
-
-        public static string AddFee(string strInput)
-        {
-
-            int intres = 0;
-            int input = Convert.ToInt32(strInput);
-            double temp = 0;
-
-            if (input < 20)
-                temp = 2;
-            else
-            {
-                temp = input * 0.15;
-            }
-
-            intres = input + Convert.ToInt32(temp);
-
-            return intres.ToString();
-        }
-
-
-        private string GetScanErrMess(string message)
-        {
-            string mess = string.Empty;
-
-            switch (message)
-            {
-                case "0": mess = "Content empty";
-                    break;
-                case "1": mess = "Json without data";
-                    break;
-                case "2": mess = "Json is not valid";
-                    break;
-                case "3": mess = "Parsing fail";
-                    break;
-                case "4": mess = "Wait to Relogin";
-                    break;
-                case "5": mess = "Too much requests per second";
-                    break;
-                case "6": mess = "Item is not supported in html source!";
-                    break;
-                case "8": mess = "Move along...";
-                    break;
-                case "9": mess = "Got Banned! Waiting for UnBan...";
-                    break;
-                default: mess = "Unknown error";
-                    break;
-            }
-            return mess;
-        }
-
-        static bool isScanValid(saveTab item, bool isMain)
-        {
-            if (isMain)
-                return (item.Price != string.Empty && item.Link.Contains(SteamSite._market) && item.Name != string.Empty);
-            else
-                return (item.Price != string.Empty && item.Name != string.Empty);
-        }
-
 
         public static string Encrypt(string plainText)
         {
@@ -793,158 +712,7 @@ namespace SCMBot
         public int Split3 { set; get; }
     }
 
-    [Serializable]
-    public class saveTabLst : List<saveTab>
-    {
-        public int Position { set; get; }
-    }
-
-    [Serializable]
-    public class saveTab
-    {
-        public saveTab(string name, string link, string imglink, string price, int delay, int buyQnt, bool toBuy, int resellType, string resellPrice, status statId)
-        {
-            this.Name = name;
-            this.Price = price;
-            this.Link = link;
-            this.ImgLink = imglink;
-            this.Delay = delay;
-            this.BuyQnt = buyQnt;
-            this.ToBuy = toBuy;
-            this.ResellType = resellType;
-            this.ResellPrice = resellPrice;
-            this.StatId = statId;
-        }
-
-        public saveTab(string link)
-        {
-            this.Link = link;
-        }
-
-        //copy constructor
-        public saveTab(saveTab tocopy)
-        {
-            this.Name = tocopy.Name;
-            this.Price = tocopy.Price;
-            this.Link = tocopy.Link;
-            this.ImgLink = tocopy.ImgLink;
-            this.Delay = tocopy.Delay;
-            this.BuyQnt = tocopy.BuyQnt;
-            this.ToBuy = tocopy.ToBuy;
-            this.ResellType = tocopy.ResellType;
-            this.ResellPrice = tocopy.ResellPrice;
-            this.StatId = tocopy.StatId;
-        }
-
-        public string Name { set; get; }
-        public string ImgLink { set; get; }
-        public string Link { set; get; }
-        public string Price { set; get; }
-        public int BuyQnt { set; get; }
-        public int Delay { set; get; }
-        public bool ToBuy { set; get; }
-        public int ResellType { get; set; }
-        public string ResellPrice { get; set; }
-        public bool HeadSet { get; set; }
-        public status StatId { get; set; }
-    }
-
-
-    public class ScanItemList : List<MainScanItem>
-    {
-        public void UpdateIds()
-        {
-            for (int i = 0; i < this.Count; i++)
-            {
-                this[i].Steam.scanID = i;
-            }
-
-        }
-
-        public void UpdateCock(CookieContainer cock)
-        {
-            for (int i = 0; i < this.Count; i++)
-            {
-                this[i].Steam.cookieCont = cock;
-            }
-
-        }
-    }
-
-
-    public class MainScanItem
-    {
-        public SteamSite Steam = new SteamSite();
-        public BindingList<LogItem> LogCont = new BindingList<LogItem>();
-
-        public class LogItem
-        {
-            public LogItem(int id, string rawPrice, DateTime time, bool addcur, string curr)
-            {
-                this.Id = id;
-
-                this.RawPrice = rawPrice;
-                this.Time = time;
-                this.AddCurr = addcur;
-
-                if (addcur)
-                    this.Text = string.Format("{0} {1} {2}", time.ToString("HH:mm:ss"), DoFracture(rawPrice), curr);
-                else
-                    this.Text = string.Format("{0} {1}", time.ToString("HH:mm:ss"), rawPrice); 
-            }
-
-            public override string ToString()
-            {
-                return this.Text;
-            }
-
-
-            public static string DoFracture(string input)
-            {
-                string prtoTxt = "0,";
-
-                switch (input.Length)
-                {
-                    case 0:
-                        prtoTxt = "0";
-                        break;
-                    case 1:
-                        prtoTxt += "0" + input;
-                        break;
-                    case 2:
-                        prtoTxt += input;
-                        break;
-                    default:
-                        prtoTxt = input.Insert(input.Length - 2, ",");
-                        break;
-                }
-                return prtoTxt;
-            }
-
-
-            public int Id { get; set; }
-            public string Text { get; set; }
-
-            public string RawPrice { get; set; }
-            public DateTime Time { get; set; }
-            public bool AddCurr { get; set; }
-        }
-
-        public MainScanItem(saveTab scanParams, CookieContainer cookie, eventDelegate deleg, bool ignoreWarn, int resDel)
-        {
-            Steam.scanInput = scanParams;
-            Steam.NotSetHead = (scanParams.Name == string.Empty);
-            Steam.delegMessage += deleg;
-            Steam.cookieCont = cookie;
-            //Steam.currencies.Current = currency;
-            Steam.IgnoreWarn = ignoreWarn;
-            Steam.resellDelay = resDel;
-        }
-
-       // public byte StatId { get; set; }
-  
-    }
-
+    
 
     public static class FlashWindow
     {

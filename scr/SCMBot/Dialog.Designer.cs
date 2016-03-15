@@ -84,6 +84,7 @@
             // 
             resources.ApplyResources(this.mailcodeBox, "mailcodeBox");
             this.mailcodeBox.Name = "mailcodeBox";
+            this.mailcodeBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.factorTextBox_KeyDown);
             // 
             // capchgroupBox
             // 
@@ -103,6 +104,7 @@
             // 
             resources.ApplyResources(this.capchaBox, "capchaBox");
             this.capchaBox.Name = "capchaBox";
+            this.capchaBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.factorTextBox_KeyDown);
             // 
             // capchapicBox
             // 
@@ -129,6 +131,7 @@
             this.factorTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             resources.ApplyResources(this.factorTextBox, "factorTextBox");
             this.factorTextBox.Name = "factorTextBox";
+            this.factorTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.factorTextBox_KeyDown);
             // 
             // Dialog
             // 

@@ -45,7 +45,7 @@ namespace SCMBot
         {
             if (cookieForm.ShowDialog() == DialogResult.OK)
             {
-                var site = new Uri(SteamSite._mainsite);
+                var site = new Uri(Steam.site);
                 var hugeCock = new CookieContainer();
                 hugeCock.Add(site, new Cookie(CookieFrm.sesid, cookieForm.textBox1.Text));
                 hugeCock.Add(site, new Cookie(CookieFrm.webtrade, cookieForm.textBox2.Text));
@@ -57,9 +57,8 @@ namespace SCMBot
                     hugeCock.Add(site, new Cookie(CookieFrm.machauth + stlogin.Substring(0, 17), cookieForm.textBox4.Text));
                     hugeCock.Add(site, new Cookie(CookieFrm.sec, cookieForm.textBox5.Text));
 
-                    Main.steam_srch.cookieCont = hugeCock;
-                    Main.scanItems.UpdateCock(hugeCock);
-                    Main.SaveBinary(Main.cockPath, Main.steam_srch.cookieCont);
+                    Main.auth.Cookies = hugeCock;
+                    Main.SaveBinary(Main.cockPath, hugeCock);
                 }
                 else
                 {

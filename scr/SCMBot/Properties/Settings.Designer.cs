@@ -107,40 +107,7 @@ namespace SCMBot.Properties {
             }
         }
 
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //Fucking important!
-        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
-        public global::SCMBot.saveTabLst saveTabs
-        {
-            get
-            {
-                return ((global::SCMBot.saveTabLst)(this["saveTabs"]));
-            }
-            set
-            {
-                this["saveTabs"] = value;
-            }
-        }
-
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //Fucking important!
-        [global::System.Configuration.SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
-        public global::SCMBot.saveTabLst saveRecent
-        {
-            get
-            {
-                return ((global::SCMBot.saveTabLst)(this["saveRecent"]));
-            }
-            set
-            {
-                this["saveRecent"] = value;
-            }
-        }
-
+       
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -200,18 +167,6 @@ namespace SCMBot.Properties {
             }
         }
 
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int logCount {
-            get {
-                return ((int)(this["logCount"]));
-            }
-            set {
-                this["logCount"] = value;
-            }
-        }
 
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
@@ -245,31 +200,16 @@ namespace SCMBot.Properties {
             }
         }
 
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int listedCount
-        {
-            get
-            {
-                return ((int)(this["listedCount"]));
-            }
-            set
-            {
-                this["listedCount"] = value;
-            }
-        }
-
+     
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public string searchRes
+        public int searchRes
         {
             get
             {
-                return ((string)(this["searchRes"]));
+                return ((int)(this["searchRes"]));
             }
             set
             {
@@ -316,21 +256,6 @@ namespace SCMBot.Properties {
             }
         }
 
-        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool scanHTML
-        {
-            get
-            {
-                return ((bool)(this["scanHTML"]));
-            }
-            set
-            {
-                this["scanHTML"] = value;
-            }
-        }
 
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
         [global::System.Configuration.UserScopedSettingAttribute()]
@@ -353,11 +278,11 @@ namespace SCMBot.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int StopFunds
+        public decimal StopFunds
         {
             get
             {
-                return ((int)(this["stopFunds"]));
+                return ((decimal)(this["stopFunds"]));
             }
             set
             {
