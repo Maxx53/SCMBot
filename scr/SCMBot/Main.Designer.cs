@@ -169,10 +169,12 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
@@ -185,6 +187,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.orderPictureBox);
             this.splitContainer2.Panel1.Controls.Add(this.linkTextBox);
             this.splitContainer2.Panel1.Controls.Add(this.getActualButton);
@@ -208,6 +211,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Paint);
             // 
@@ -228,8 +232,8 @@
             // 
             // getActualButton
             // 
-            this.getActualButton.Image = global::SCMBot.Properties.Resources.accept;
             resources.ApplyResources(this.getActualButton, "getActualButton");
+            this.getActualButton.Image = global::SCMBot.Properties.Resources.accept;
             this.getActualButton.Name = "getActualButton";
             this.getActualButton.UseVisualStyleBackColor = true;
             this.getActualButton.Click += new System.EventHandler(this.getActualButton_Click);
@@ -278,13 +282,13 @@
             // 
             // resellTypeComboBox
             // 
+            resources.ApplyResources(this.resellTypeComboBox, "resellTypeComboBox");
             this.resellTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resellTypeComboBox.FormattingEnabled = true;
             this.resellTypeComboBox.Items.AddRange(new object[] {
             resources.GetString("resellTypeComboBox.Items"),
             resources.GetString("resellTypeComboBox.Items1"),
             resources.GetString("resellTypeComboBox.Items2")});
-            resources.ApplyResources(this.resellTypeComboBox, "resellTypeComboBox");
             this.resellTypeComboBox.Name = "resellTypeComboBox";
             // 
             // groupBox7
@@ -300,20 +304,20 @@
             // 
             // OrderScanButton
             // 
-            this.OrderScanButton.Image = global::SCMBot.Properties.Resources.start;
             resources.ApplyResources(this.OrderScanButton, "OrderScanButton");
+            this.OrderScanButton.Image = global::SCMBot.Properties.Resources.start;
             this.OrderScanButton.Name = "OrderScanButton";
             this.OrderScanButton.UseVisualStyleBackColor = true;
             this.OrderScanButton.Click += new System.EventHandler(this.OrderScanButton_Click);
             // 
             // resellDelayNumeric
             // 
+            resources.ApplyResources(this.resellDelayNumeric, "resellDelayNumeric");
             this.resellDelayNumeric.Increment = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            resources.ApplyResources(this.resellDelayNumeric, "resellDelayNumeric");
             this.resellDelayNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -333,12 +337,12 @@
             // 
             // scanDelayNumeric
             // 
+            resources.ApplyResources(this.scanDelayNumeric, "scanDelayNumeric");
             this.scanDelayNumeric.Increment = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            resources.ApplyResources(this.scanDelayNumeric, "scanDelayNumeric");
             this.scanDelayNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -368,13 +372,13 @@
             // 
             // resellValueNumeric
             // 
+            resources.ApplyResources(this.resellValueNumeric, "resellValueNumeric");
             this.resellValueNumeric.DecimalPlaces = 2;
             this.resellValueNumeric.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            resources.ApplyResources(this.resellValueNumeric, "resellValueNumeric");
             this.resellValueNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -394,13 +398,13 @@
             // 
             // priceNumeric
             // 
+            resources.ApplyResources(this.priceNumeric, "priceNumeric");
             this.priceNumeric.DecimalPlaces = 2;
             this.priceNumeric.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            resources.ApplyResources(this.priceNumeric, "priceNumeric");
             this.priceNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -495,32 +499,32 @@
             // 
             // replaceOrderButton
             // 
-            this.replaceOrderButton.Image = global::SCMBot.Properties.Resources.edit;
             resources.ApplyResources(this.replaceOrderButton, "replaceOrderButton");
+            this.replaceOrderButton.Image = global::SCMBot.Properties.Resources.edit;
             this.replaceOrderButton.Name = "replaceOrderButton";
             this.replaceOrderButton.UseVisualStyleBackColor = true;
             this.replaceOrderButton.Click += new System.EventHandler(this.replaceOrderButton_Click);
             // 
             // LoadOrdersButton
             // 
-            this.LoadOrdersButton.Image = global::SCMBot.Properties.Resources.box;
             resources.ApplyResources(this.LoadOrdersButton, "LoadOrdersButton");
+            this.LoadOrdersButton.Image = global::SCMBot.Properties.Resources.box;
             this.LoadOrdersButton.Name = "LoadOrdersButton";
             this.LoadOrdersButton.UseVisualStyleBackColor = true;
             this.LoadOrdersButton.Click += new System.EventHandler(this.LoadOrdersButton_Click);
             // 
             // cancelOrderButton
             // 
-            this.cancelOrderButton.Image = global::SCMBot.Properties.Resources.cancel;
             resources.ApplyResources(this.cancelOrderButton, "cancelOrderButton");
+            this.cancelOrderButton.Image = global::SCMBot.Properties.Resources.cancel;
             this.cancelOrderButton.Name = "cancelOrderButton";
             this.cancelOrderButton.UseVisualStyleBackColor = true;
             this.cancelOrderButton.Click += new System.EventHandler(this.cancelOrderButton_Click);
             // 
             // placeOrderButton
             // 
-            this.placeOrderButton.Image = global::SCMBot.Properties.Resources.export;
             resources.ApplyResources(this.placeOrderButton, "placeOrderButton");
+            this.placeOrderButton.Image = global::SCMBot.Properties.Resources.export;
             this.placeOrderButton.Name = "placeOrderButton";
             this.placeOrderButton.UseVisualStyleBackColor = true;
             this.placeOrderButton.Click += new System.EventHandler(this.placeOrderButton_Click);
@@ -691,13 +695,13 @@
             // 
             // filterTypeBox
             // 
+            resources.ApplyResources(this.filterTypeBox, "filterTypeBox");
             this.filterTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filterTypeBox.FormattingEnabled = true;
             this.filterTypeBox.Items.AddRange(new object[] {
             resources.GetString("filterTypeBox.Items"),
             resources.GetString("filterTypeBox.Items1"),
             resources.GetString("filterTypeBox.Items2")});
-            resources.ApplyResources(this.filterTypeBox, "filterTypeBox");
             this.filterTypeBox.Name = "filterTypeBox";
             this.filterTypeBox.SelectedIndexChanged += new System.EventHandler(this.filterTypeBox_SelectedIndexChanged);
             // 
@@ -779,13 +783,13 @@
             // 
             // paysNumeric
             // 
+            resources.ApplyResources(this.paysNumeric, "paysNumeric");
             this.paysNumeric.DecimalPlaces = 2;
             this.paysNumeric.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            resources.ApplyResources(this.paysNumeric, "paysNumeric");
             this.paysNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -796,13 +800,13 @@
             // 
             // receiveNumeric
             // 
+            resources.ApplyResources(this.receiveNumeric, "receiveNumeric");
             this.receiveNumeric.DecimalPlaces = 2;
             this.receiveNumeric.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            resources.ApplyResources(this.receiveNumeric, "receiveNumeric");
             this.receiveNumeric.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -818,24 +822,24 @@
             // 
             // SellButton
             // 
-            this.SellButton.Image = global::SCMBot.Properties.Resources.coins;
             resources.ApplyResources(this.SellButton, "SellButton");
+            this.SellButton.Image = global::SCMBot.Properties.Resources.coins;
             this.SellButton.Name = "SellButton";
             this.SellButton.UseVisualStyleBackColor = true;
             this.SellButton.Click += new System.EventHandler(this.SellButton_Click);
             // 
             // inventoryComboBox
             // 
+            resources.ApplyResources(this.inventoryComboBox, "inventoryComboBox");
             this.inventoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.inventoryComboBox.FormattingEnabled = true;
-            resources.ApplyResources(this.inventoryComboBox, "inventoryComboBox");
             this.inventoryComboBox.Name = "inventoryComboBox";
             this.inventoryComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // loadInventoryButton
             // 
-            this.loadInventoryButton.Image = global::SCMBot.Properties.Resources.box;
             resources.ApplyResources(this.loadInventoryButton, "loadInventoryButton");
+            this.loadInventoryButton.Image = global::SCMBot.Properties.Resources.box;
             this.loadInventoryButton.Name = "loadInventoryButton";
             this.loadInventoryButton.UseVisualStyleBackColor = true;
             this.loadInventoryButton.Click += new System.EventHandler(this.loadInventoryButton_Click);
@@ -908,21 +912,22 @@
             // 
             // pictureBox2
             // 
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // contextMenuStrip2
             // 
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.minimizeOnClosingToolStripMenuItem,
             this.settingsToolStripMenuItem,
@@ -931,49 +936,48 @@
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             // 
             // minimizeOnClosingToolStripMenuItem
             // 
+            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             this.minimizeOnClosingToolStripMenuItem.Checked = true;
             this.minimizeOnClosingToolStripMenuItem.CheckOnClick = true;
             this.minimizeOnClosingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeOnClosingToolStripMenuItem.Name = "minimizeOnClosingToolStripMenuItem";
-            resources.ApplyResources(this.minimizeOnClosingToolStripMenuItem, "minimizeOnClosingToolStripMenuItem");
             // 
             // settingsToolStripMenuItem
             // 
+            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Image = global::SCMBot.Properties.Resources.settings;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // usingProxyStatuslStrip
             // 
+            resources.ApplyResources(this.usingProxyStatuslStrip, "usingProxyStatuslStrip");
             this.usingProxyStatuslStrip.Image = global::SCMBot.Properties.Resources.host;
             this.usingProxyStatuslStrip.Name = "usingProxyStatuslStrip";
-            resources.ApplyResources(this.usingProxyStatuslStrip, "usingProxyStatuslStrip");
             this.usingProxyStatuslStrip.Click += new System.EventHandler(this.usingProxyStatusToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Image = global::SCMBot.Properties.Resources.help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Image = global::SCMBot.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Image = global::SCMBot.Properties.Resources.logout;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // label3
@@ -1004,13 +1008,13 @@
             // 
             // StatusLabel1
             // 
-            this.StatusLabel1.Name = "StatusLabel1";
             resources.ApplyResources(this.StatusLabel1, "StatusLabel1");
+            this.StatusLabel1.Name = "StatusLabel1";
             // 
             // ProgressBar1
             // 
-            this.ProgressBar1.Name = "ProgressBar1";
             resources.ApplyResources(this.ProgressBar1, "ProgressBar1");
+            this.ProgressBar1.Name = "ProgressBar1";
             // 
             // saveFileDialog1
             // 
@@ -1033,8 +1037,8 @@
             // 
             // loginButton
             // 
-            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             resources.ApplyResources(this.loginButton, "loginButton");
+            this.loginButton.Image = global::SCMBot.Properties.Resources.login;
             this.loginButton.Name = "loginButton";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);

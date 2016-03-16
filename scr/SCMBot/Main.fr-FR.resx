@@ -118,113 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="NameLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
-  </data>
-  <data name="NameLabel.Text" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="button3.Text" xml:space="preserve">
-    <value>Copier</value>
-  </data>
-  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 36</value>
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>Lien vers l'objet</value>
-  </data>
-  <data name="scanButton.Text" xml:space="preserve">
-    <value>Démarrer</value>
-  </data>
-  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 60</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 13</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Prix souhaité</value>
-  </data>
-  <data name="buyCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 107</value>
-  </data>
-  <data name="buyCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
-  </data>
-  <data name="buyCheckBox.Text" xml:space="preserve">
-    <value>qté. achat :</value>
-  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Valeur</value>
-  </data>
-  <data name="ExtraGroup.Text" xml:space="preserve">
-    <value>Revendre pour</value>
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 13</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Délai</value>
-  </data>
-  <data name="columnHeader10.Text" xml:space="preserve">
-    <value>Statut</value>
-  </data>
-  <data name="columnHeader11.Text" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="columnHeader12.Text" xml:space="preserve">
-    <value>Prix souhaité</value>
-  </data>
-  <data name="deleteMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="deleteMenuItem.Text" xml:space="preserve">
-    <value>Supprimer</value>
-  </data>
-  <data name="startSelectedMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="startSelectedMenuItem.Text" xml:space="preserve">
-    <value>Démarrer la sélection</value>
-  </data>
-  <data name="stopSelectedMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="stopSelectedMenuItem.Text" xml:space="preserve">
-    <value>Arrêter la sélection</value>
-  </data>
-  <data name="startAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="startAllMenuItem.Text" xml:space="preserve">
-    <value>Tout démarrer</value>
-  </data>
-  <data name="stopAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="stopAllMenuItem.Text" xml:space="preserve">
-    <value>Tout arrêter</value>
-  </data>
-  <data name="contextMenuStrip3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 114</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Page d'objet</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>Nouvellement listé</value>
-  </data>
-  <data name="button4.Text" xml:space="preserve">
-    <value>Regarder le graphique</value>
-  </data>
-  <data name="scanGroupBox.Text" xml:space="preserve">
-    <value>Analyse des objets</value>
   </data>
   <data name="searchBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>372, 20</value>
@@ -241,51 +139,6 @@
   <data name="columnHeader9.Text" xml:space="preserve">
     <value>Quantité</value>
   </data>
-  <data name="buyNowButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 16</value>
-  </data>
-  <data name="buyNowButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 25</value>
-  </data>
-  <data name="buyNowButton.Text" xml:space="preserve">
-    <value>Achat immédiat</value>
-  </data>
-  <data name="selectedItemToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 22</value>
-  </data>
-  <data name="selectedItemToolStripMenuItem.Text" xml:space="preserve">
-    <value>Mettre dans l'onglet sélectionné</value>
-  </data>
-  <data name="checkedToBothSourcesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 22</value>
-  </data>
-  <data name="checkedToBothSourcesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Mettre dans les 2 onglets</value>
-  </data>
-  <data name="fullSetToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 22</value>
-  </data>
-  <data name="fullSetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Liste complète</value>
-  </data>
-  <data name="emptyTabToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 22</value>
-  </data>
-  <data name="emptyTabToolStripMenuItem.Text" xml:space="preserve">
-    <value>Onglet vide</value>
-  </data>
-  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 92</value>
-  </data>
-  <data name="addtoScan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>487, 16</value>
-  </data>
-  <data name="addtoScan.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 25</value>
-  </data>
-  <data name="addtoScan.Text" xml:space="preserve">
-    <value>Aux scans</value>
-  </data>
   <data name="searchButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>389, 16</value>
   </data>
@@ -299,13 +152,10 @@
     <value>Chercher un objet</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
+    <value>57, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Votre prix :</value>
-  </data>
-  <data name="button2.Text" xml:space="preserve">
-    <value>Fixer prix</value>
   </data>
   <data name="columnHeader2.Text" xml:space="preserve">
     <value>Nom</value>
@@ -317,7 +167,7 @@
     <value>5, 50</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 13</value>
+    <value>56, 13</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>Quantité : </value>
@@ -325,14 +175,11 @@
   <data name="SellButton.Text" xml:space="preserve">
     <value>Vendre</value>
   </data>
-  <data name="button1.Text" xml:space="preserve">
-    <value>Charger</value>
-  </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>63, 50</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>44, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Aucune</value>
@@ -344,13 +191,13 @@
     <value>132, 21</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 13</value>
+    <value>38, 13</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>Aucun</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 13</value>
+    <value>81, 13</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>Porte-monnaie :</value>
@@ -359,7 +206,7 @@
     <value>132, 40</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 13</value>
+    <value>28, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Vide</value>
@@ -391,6 +238,9 @@
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Paramètres</value>
   </data>
+  <data name="usingProxyStatuslStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
   <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>190, 22</value>
   </data>
@@ -410,7 +260,7 @@
     <value>Quitter</value>
   </data>
   <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 114</value>
+    <value>191, 136</value>
   </data>
   <data name="notifyIcon1.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -549,7 +399,7 @@
 </value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 13</value>
+    <value>84, 13</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Nom d'utilisateur</value>
@@ -558,13 +408,13 @@
     <value>706, 9</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+    <value>70, 13</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>Vous aimez ?</value>
   </data>
   <data name="StatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 17</value>
+    <value>28, 17</value>
   </data>
   <data name="StatusLabel1.Text" xml:space="preserve">
     <value>Prêt</value>
