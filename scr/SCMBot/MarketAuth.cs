@@ -62,7 +62,8 @@ namespace SCMBot
 
         private Steam.RespRSA GetRSA()
         {
-            return JsonConvert.DeserializeObject<Steam.RespRSA>(SendPost("username=" + UserName, Steam.getRsaUrl, Steam.loginRef));
+            var rsaJson = SendPost(string.Format(Steam.rsaReq, Steam.GetNoCacheTime(), UserName), Steam.getRsaUrl, Steam.loginRef);
+            return JsonConvert.DeserializeObject<Steam.RespRSA>(rsaJson);
         }
 
         
@@ -188,7 +189,7 @@ namespace SCMBot
 
             string mailCode = string.Empty;
             string guardDesc = string.Empty;
-            string capchaId = string.Empty;
+            string capchaId = "-1";
             string capchaTxt = string.Empty;
             string mailId = string.Empty;
             string twoFactorCode = string.Empty;
@@ -227,7 +228,7 @@ namespace SCMBot
             string finalpass = Steam.EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
 
             string MainReq = string.Format(Steam.loginReq, finalpass, UserName, mailCode, guardDesc, capchaId,
-                                                                          capchaTxt, mailId, rRSA.TimeStamp, twoFactorCode);
+                                                                          capchaTxt, mailId, rRSA.TimeStamp, twoFactorCode, Steam.GetNoCacheTime());
             string BodyResp = SendPost(MainReq, Steam.doLoginUrl, Steam.loginRef);
 
             fireMessage(0, 60, "Processing Messages...");
@@ -257,7 +258,7 @@ namespace SCMBot
 
                     Dialog guardCheckForm = new Dialog();
 
-                    if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
+                    if (rProcess.isCaptcha)
                     {
                         //Verifying humanity, loading capcha
                         guardCheckForm.capchgroupEnab = true;
@@ -285,8 +286,9 @@ namespace SCMBot
                             }
                             else
                             {
-                                //Whoops!
-                                goto begin;
+                                Main.AddtoLog("Other error: " + rProcess.Message);
+                                fireMessage(2, 0, rProcess.Message);
+                                return;
                             }
 
                     //Re-assign main request values

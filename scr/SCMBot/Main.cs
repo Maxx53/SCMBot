@@ -232,8 +232,11 @@ namespace SCMBot
 
                     if (infoFrm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        priceNumeric.Value = infoFrm.SelectedPrice;
-                        addHistoryButton.PerformClick();
+                        if (infoFrm.SelectedPrice > priceNumeric.Minimum)
+                        {
+                            priceNumeric.Value = infoFrm.SelectedPrice;
+                            addHistoryButton.PerformClick();
+                        }
                     }
 
              

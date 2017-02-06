@@ -29,9 +29,14 @@ namespace SCMBot
         public const string langChangeUrl = siteSSL + "actions/SetLanguage/";
         
         // Login Reqs ===============================================
-        public const string loginReq = "password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        public const string loginReq = "donotcache={9}&password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        public const string rsaReq = "donotcache={0}&username={1}";
         public const string langReq = "language={0}&sessionid={1}";
         public const string jsonAddonUrl = "?country={0}&language={1}&currency={2}";
+
+
+
+
 
 
         // Orders Urls ===============================================
@@ -261,46 +266,37 @@ namespace SCMBot
 
         public static string EncryptPassword(string password, string modval, string expval)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            RSAParameters rsaParams = new RSAParameters();
-            rsaParams.Modulus = HexToByte(modval);
-            rsaParams.Exponent = HexToByte(expval);
-            rsa.ImportParameters(rsaParams);
-
-            byte[] bytePassword = Encoding.ASCII.GetBytes(password);
-            byte[] encodedPassword = rsa.Encrypt(bytePassword, false);
-            string encryptedPass = Convert.ToBase64String(encodedPassword);
-
-            return Uri.EscapeDataString(encryptedPass);
-        }
-
-
-        private static byte[] HexToByte(string hex)
-        {
-            if (hex.Length % 2 == 1)
+            RNGCryptoServiceProvider secureRandom = new RNGCryptoServiceProvider();
+            byte[] encryptedPasswordBytes;
+            using (var rsaEncryptor = new RSACryptoServiceProvider())
             {
-                Main.AddtoLog("HexToByte: The binary key cannot have an odd number of digits");
-                return null;
+                var passwordBytes = Encoding.ASCII.GetBytes(password);
+                var rsaParameters = rsaEncryptor.ExportParameters(false);
+                rsaParameters.Exponent = HexStringToByteArray(expval);
+                rsaParameters.Modulus = HexStringToByteArray(modval);
+                rsaEncryptor.ImportParameters(rsaParameters);
+                encryptedPasswordBytes = rsaEncryptor.Encrypt(passwordBytes, false);
             }
 
-            byte[] arr = new byte[hex.Length >> 1];
-            int l = hex.Length;
-
-            for (int i = 0; i < (l >> 1); ++i)
-            {
-                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
-            }
-
-            return arr;
+            return Uri.EscapeDataString(Convert.ToBase64String(encryptedPasswordBytes));
         }
 
-        private static int GetHexVal(char hex)
+
+        public static byte[] HexStringToByteArray(string hex)
         {
-            int val = (int)hex;
-            return val - (val < 58 ? 48 : 55);
+            int hexLen = hex.Length;
+            byte[] ret = new byte[hexLen / 2];
+            for (int i = 0; i < hexLen; i += 2)
+            {
+                ret[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            }
+            return ret;
         }
 
-
+        public static long GetNoCacheTime()
+        {
+            return ((long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+        }
 
         public static string GetSweetPrice(string input)
         {
