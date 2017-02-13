@@ -1,9 +1,9 @@
 ﻿![Steam Icon](http://scmbot.ru/img/steam-icon.png) SCMBot
 ======
 
-SCMBot (or Steam Community Market Bot) is designed to simplify purchasing and selling items at Steam Community Market. SCMBot works with trading operations automatically, without user’s participation, that will save your time.
+SCMBot (or Steam Community Market Bot) is designed to simplify purchasing and selling items on the Steam Community Market. SCMBot works with trading operations automatically, without user’s participation, which will save your time.
 
-If you can't build the source for unknown reason, you can [download binary files](http://scmbot.ru/uploads/scmbot_bin.rar).
+If you can't build the source for unknown reasons, you can [download the binary files](http://scmbot.ru/uploads/scmbot_bin.rar).
 
 ***
 
