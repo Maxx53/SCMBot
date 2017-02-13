@@ -44,8 +44,8 @@ namespace SCMBot
         const string _lang_chg = _mainsite + "/actions/SetLanguage/";
         const string _lang_req = "language={0}&sessionid={1}";
 
-        //Request fix for 02/05/15
-        const string loginReq = "password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        const string loginReq = "donotcache={9}&password={0}&username={1}&twofactorcode={8}&emailauth={2}&loginfriendlyname={3}&captchagid={4}&captcha_text={5}&emailsteamid={6}&rsatimestamp={7}&remember_login=true";
+        const string rsaReq = "donotcache={0}&username={1}";
 
         //Currency FIX
         //1 = USD, 2 = GBP, 3 = EUR, 5 = RUB
@@ -455,31 +455,21 @@ namespace SCMBot
             return res;
         }
 
-        static byte[] HexToByte(string hex)
+        public static byte[] HexStringToByteArray(string hex)
         {
-            if (hex.Length % 2 == 1)
+            int hexLen = hex.Length;
+            byte[] ret = new byte[hexLen / 2];
+            for (int i = 0; i < hexLen; i += 2)
             {
-                Main.AddtoLog("HexToByte: The binary key cannot have an odd number of digits");
-                return null;
+                ret[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
             }
-
-            byte[] arr = new byte[hex.Length >> 1];
-            int l = hex.Length;
-
-            for (int i = 0; i < (l >> 1); ++i)
-            {
-                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
-            }
-
-            return arr;
+            return ret;
         }
 
-        static int GetHexVal(char hex)
+        public static long GetNoCacheTime()
         {
-            int val = (int)hex;
-            return val - (val < 58 ? 48 : 55);
+            return ((long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
         }
-
 
         public static string GetSweetPrice(string input)
         {
@@ -519,17 +509,19 @@ namespace SCMBot
 
         public static string EncryptPassword(string password, string modval, string expval)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            RSAParameters rsaParams = new RSAParameters();
-            rsaParams.Modulus = HexToByte(modval);
-            rsaParams.Exponent = HexToByte(expval);
-            rsa.ImportParameters(rsaParams);
+            RNGCryptoServiceProvider secureRandom = new RNGCryptoServiceProvider();
+            byte[] encryptedPasswordBytes;
+            using (var rsaEncryptor = new RSACryptoServiceProvider())
+            {
+                var passwordBytes = Encoding.ASCII.GetBytes(password);
+                var rsaParameters = rsaEncryptor.ExportParameters(false);
+                rsaParameters.Exponent = HexStringToByteArray(expval);
+                rsaParameters.Modulus = HexStringToByteArray(modval);
+                rsaEncryptor.ImportParameters(rsaParameters);
+                encryptedPasswordBytes = rsaEncryptor.Encrypt(passwordBytes, false);
+            }
 
-            byte[] bytePassword = Encoding.ASCII.GetBytes(password);
-            byte[] encodedPassword = rsa.Encrypt(bytePassword, false);
-            string encryptedPass = Convert.ToBase64String(encodedPassword);
-
-            return Uri.EscapeDataString(encryptedPass);
+            return Uri.EscapeDataString(Convert.ToBase64String(encryptedPasswordBytes));
         }
 
 

@@ -387,7 +387,8 @@ namespace SCMBot
 
         private RespRSA GetRSA()
         {
-            return JsonConvert.DeserializeObject<RespRSA>(SendPost("username=" + UserName, _getrsa, _ref, true));
+          var rsaJson = SendPost(string.Format(rsaReq, GetNoCacheTime(), UserName), _getrsa, _ref, true);
+          return JsonConvert.DeserializeObject<RespRSA>(rsaJson);
         }
 
         private void LoginProgr(string value)
@@ -418,7 +419,7 @@ namespace SCMBot
 
             string mailCode = string.Empty;
             string guardDesc = string.Empty;
-            string capchaId = string.Empty;
+            string capchaId = "-1";
             string capchaTxt = string.Empty;
             string mailId = string.Empty;
             string twoFactorCode = string.Empty;
@@ -450,7 +451,7 @@ namespace SCMBot
             string finalpass = EncryptPassword(Password, rRSA.Module, rRSA.Exponent);
 
             string MainReq = string.Format(loginReq, finalpass, UserName, mailCode, guardDesc, capchaId,
-                                                                          capchaTxt, mailId, rRSA.TimeStamp, twoFactorCode);
+                                                                          capchaTxt, mailId, rRSA.TimeStamp, twoFactorCode, GetNoCacheTime());
             string BodyResp = SendPost(MainReq, _dologin, _ref, true);
 
             LoginProgr("60");
@@ -475,7 +476,7 @@ namespace SCMBot
 
                     Dialog guardCheckForm = new Dialog();
 
-                    if ((rProcess.isCaptcha) && (rProcess.Message.Contains("humanity")))
+                    if (rProcess.isCaptcha)
                     {
                         //Verifying humanity, loading capcha
                         guardCheckForm.capchgroupEnab = true;
