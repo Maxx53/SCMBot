@@ -3,12 +3,12 @@
 
 SCMBot (or Steam Community Market Bot) is designed to simplify purchasing and selling items at Steam Community Market. SCMBot works with trading operations automatically, without user’s participation, that will save your time.
 
-If you can't build the source for unknown reason, you can [download binary files](http://scmbot.ru/uploads/scmbot_bo_bin.rar).
+If you can't build the source for unknown reason, you can [download binary files](https://www.dropbox.com/sh/d2wjui7qyrzva4l/AACtSsn9svBqpH8otDnU5QNja).
 
 ***
 
 SCMBot (или Бот для Торговой площадки сообщества Steam) разработан с целью упростить покупку и продажу предметов на Торговой площадке Steam. SCMBot позволяет совершать торговые операции автоматически, что существенно сэкономит ваше время.
 
-Если вы не можете собрать код по той или иной причине, [скачайте бинарные файлы](http://scmbot.ru/uploads/scmbot_bo_bin.rar).
+Если вы не можете собрать код по той или иной причине, [скачайте бинарные файлы](https://www.dropbox.com/sh/d2wjui7qyrzva4l/AACtSsn9svBqpH8otDnU5QNja).
 
-![Screenshot](http://scmbot.ru/img/boscr.png)
+![Screenshot](http://images.illuzor.com/uploads/boscr.png)
