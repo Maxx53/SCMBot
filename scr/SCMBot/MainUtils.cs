@@ -558,6 +558,7 @@ namespace SCMBot
         {
 
             int intres = 0;
+            if (strInput.Contains("$")) strInput = strInput.Substring(1);
             int input = Convert.ToInt32(strInput);
 
             //Magic
